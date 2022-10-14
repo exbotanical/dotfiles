@@ -1,5 +1,14 @@
 ### Launch Utilities {{{
 
+# Prompt Colors
+red='\[\e[31m\]'
+green='\[\e[32m\]'
+yellow='\[\e[33m\]'
+purple='\[\e[34m\]'
+pink='\[\e[35m\]'
+blue='\[\e[36m\]'
+stop='\[\e[m\]'
+
 # auto-launch shell as tmux session
 __default_to_tmux () {
   if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
@@ -84,7 +93,7 @@ fi
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # prompts
-export PS1="\[\e[36m\]\u\[\e[m\]\[\e[35m\](\[\e[m\]\[\e[35m\](\[\e[m\]\[\e[32m\]\w\[\e[m\]\[\e[35m\])\[\e[m\]\[\e[35m\])\[\e[m\]\[\e[34m\]\`__parse_git_branch\`\[\e[m\]\[\e[33m\]>\[\e[m\]\[\e[31m\]>\[\e[m\]\[\e[36m\]>\[\e[m\] "
-export PS2="\[$(tput setaf 3)\]continue-->\[\e[m\] "
+export PS1="$blue\u$stop$pink($stop$pink($stop$green\w$stop$pink)$stop$pink)$stop$purple\$(__parse_git_branch)$stop$yellow>$stop$red>$stop$blue>$stop "
+export PS2="\[$(tput setaf 3)\]continue-->$stop "
 
 ### End Initializations ### }}}

@@ -19,18 +19,15 @@ __prompt_command () {
 ### Interactive Mode Settings {{{
 PROMPT_COMMAND="__prompt_command"
 
-# prevent duplicate lines; lines space-prepended in hist
-HISTCONTROL=ignoreboth
-
 # append to hist; don't overwrite
 shopt -s histappend
 
-# set hist len
+# prevent duplicate lines; lines space-prepended in hist
+HISTCONTROL=ignorespace:erasedups
 HISTSIZE=1000
 HISTFILESIZE=2000
-
 # ignore short commands
-HISTIGNORE="&:ls:[bf]g:exit:pwd:clear:[ \t]*"
+HISTIGNORE="&:ls:[bf]g:exit:pwd:clear:history:ps[ \t]*"
 
 # eval window size after ea cmd and recalibrate if needed
 shopt -s checkwinsize
@@ -43,8 +40,8 @@ shopt -s globstar
 
 # bash completion on
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
+  if [ -f /usr/share/bash-completion/completions ]; then
+    . /usr/share/bash-completion/completions
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
   fi

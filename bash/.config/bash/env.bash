@@ -1,6 +1,9 @@
 # shpec
 SHPEC_PATH=/usr/local/etc/shpec/bin
 
+# X11
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # golang
 export GOPATH=$HOME/go
 
