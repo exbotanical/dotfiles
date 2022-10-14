@@ -1,0 +1,203 @@
+{ 
+  /**
+   * VSC Settings
+   */
+
+  "editor.minimap.enabled": false,
+  "editor.codeLens": false,
+  "editor.tabSize": 2,
+  "editor.cursorBlinking": "phase",
+  "editor.cursorStyle": "line",
+  "editor.codeActionsOnSave": {},
+  "editor.suggestSelection": "first",
+  "editor.accessibilitySupport": "off",
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 16,
+  "editor.fontWeight": "400",
+
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+
+  "extensions.ignoreRecommendations": false,
+
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.associations": {
+    "*.html": "html",
+    "*.tsx": "typescriptreact",
+    "*.ts": "typescript"
+  },
+
+  "liveServer.settings.donotShowInfoMsg": true,
+
+  "security.workspace.trust.enabled": false,
+
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.tabs.showActiveTerminal": "always",
+  "terminal.integrated.useWslProfiles": false,
+  "terminal.integrated.windowsEnableConpty": false,
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "terminal.integrated.fontFamily": "Fira Code",
+  "terminal.integrated.fontWeight": "700",
+  "terminal.integrated.fontSize": 18,
+  "terminal.integrated.enableMultiLinePasteWarning": false,
+
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+
+  "window.openFoldersInNewWindow": "on",
+  "window.titleBarStyle": "custom",
+  "window.newWindowDimensions": "inherit",
+  "window.menuBarVisibility": "compact",
+
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.startupEditor": "none",
+  "workbench.editor.enablePreview": false,
+  "workbench.colorTheme": "Nord Deep",
+
+  /**
+   * LSP Configurations
+   */
+
+  "go.useLanguageServer": true,
+  "go.languageServerExperimentalFeatures": {
+    "diagnostics": true // for diagnostics as you type
+  }, 
+  "go.coverShowCounts": true,
+  "go.toolsManagement.autoUpdate": true,
+  "gopls": {
+    "usePlaceholders": false // add parameter placeholders when completing a function
+  }, 
+  "[go]": {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
+    "files.eol": "\n",
+    "editor.tabSize": 4,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+  },
+
+  "[c]": {
+    "editor.formatOnPaste": false,
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": ["--skip-string-normalization"],
+  "python.terminal.activateEnvironment": false,
+  "[python]": {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "files.eol": "\n",
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+
+  "redhat.telemetry.enabled": false,
+  "java.configuration.updateBuildConfiguration": "disabled",
+  "java.format.settings.url": "~/.vscode/java-google-style.xml",
+  "java.maven.downloadSources": true,
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "files.eol": "\n",
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+  },
+
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+
+  "[shellscript]": {
+    "files.eol": "\n",
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+
+  "haskell.manageHLS": "PATH",
+  "[haskell]": {
+    "files.eol": "\n",
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+
+  "[markdown]": {
+    "editor.formatOnPaste": true,
+    "editor.wordWrap": "on",
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+
+  "[html]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true
+  },
+
+  /**
+   * Misc / Extension Settings
+   */
+
+  "everforest.darkContrast": "hard",
+  "everforest.darkCursor": "orange",
+  "everforest.darkWorkbench": "high-contrast",
+  "everforest.highContrast": true,
+
+  "glassit.alpha": 245, 
+
+  "npm.keybindingsChangedWarningShown": true
+}

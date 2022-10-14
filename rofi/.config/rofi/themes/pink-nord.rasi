@@ -1,0 +1,13 @@
+* {
+  font: "Fira Code 22";
+  foreground: #D8DEE9;
+  background-color: #2E3440;
+  active-background: #c394b4;
+  urgent-background: #ff5555;
+  urgent-foreground: #BF616A;
+  selected-background: @active-background;
+  selected-urgent-background: @urgent-background;
+  selected-active-background: @active-background;
+  separatorcolor: @active-background;
+  bordercolor: @active-background;
+}
