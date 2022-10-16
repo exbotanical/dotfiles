@@ -38,7 +38,7 @@ function M.lsp_diagnostics()
 end
 
 function M.lsp_highlight(client, bufnr)
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
         hi LspReferenceRead cterm=bold ctermbg=red guibg=#282f45
@@ -77,11 +77,11 @@ function M.lsp_config(client, bufnr)
   whichkey.register_lsp(client)
 
   if client.name == "tsserver" or client.name == "jsonls" then
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+    client.server_capabilities.document_formatting = false
+    client.server_capabilities.document_range_formatting = false
   end
 
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.document_formatting then
     vim.cmd "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()"
   end
 end

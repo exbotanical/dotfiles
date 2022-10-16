@@ -29,7 +29,6 @@ function M.setup()
           nvim_lsp = "[LSP]",
           buffer = "[Buffer]",
           nvim_lua = "[Lua]",
-          ultisnips = "[UltiSnips]",
           vsnip = "[vSnip]",
           treesitter = "[treesitter]",
           look = "[Look]",
@@ -87,63 +86,10 @@ function M.setup()
         behavior = cmp.ConfirmBehavior.Replace,
         select = true,
       },
-      ["<C-Space>"] = cmp.mapping {
-        i = function(fallback)
-          if cmp.visible() then
-            if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-              return press "<C-R>=UltiSnips#ExpandSnippet()<CR>"
-            end
-            cmp.confirm { behavior = cmp.ConfirmBehavior.Replace }
-          elseif has_any_words_before() then
-            press "<Space>"
-          else
-            fallback()
-          end
-        end,
-        c = function()
-          if cmp.visible() then
-            cmp.confirm { behavior = cmp.ConfirmBehavior.Replace }
-          else
-            vim.api.nvim_feedkeys(t "<Down>", "n", true)
-          end
-        end,
-      },
-      ["<Tab>"] = cmp.mapping(function(fallback)
-        if cmp.get_selected_entry() == nil and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-          press "<C-R>=UltiSnips#ExpandSnippet()<CR>"
-        elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-          press "<ESC>:call UltiSnips#JumpForwards()<CR>"
-        elseif cmp.visible() then
-          cmp.select_next_item()
-        elseif has_any_words_before() then
-          press "<Tab>"
-        else
-          press "<Tab>"
-          fallback()
-        end
-      end, {
-        "i",
-        "s",
-        "c",
-      }),
-      ["<S-Tab>"] = cmp.mapping(function(fallback)
-        if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-          press "<ESC>:call UltiSnips#JumpBackwards()<CR>"
-        elseif cmp.visible() then
-          cmp.select_prev_item()
-        else
-          press "<S-Tab>"
-          fallback()
-        end
-      end, {
-        "i",
-        "s",
-        "c",
-      }),
     },
     snippet = {
       expand = function(args)
-        vim.fn["UltiSnips#Anon"](args.body)
+        require('luasnip').lsp_expand(args.body) 
       end,
     },
     sources = {
@@ -167,7 +113,6 @@ function M.setup()
   local cmp_autopairs = require "nvim-autopairs.completion.cmp"
 
   cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = "" } })
-  cmp_autopairs.lisp[#cmp_autopairs.lisp + 1] = "racket"
 
   -- Use cmdline & path source for ':'.
   cmp.setup.cmdline(":", {

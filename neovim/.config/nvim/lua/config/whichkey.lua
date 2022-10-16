@@ -195,7 +195,6 @@ local mappings = {
     l = { "<Cmd>lua require('utils.cheatsheet').cheatsheet()<CR>", "Search code" },
     o = { "<Cmd>SymbolsOutline<CR>", "Symbols Outline" },
     b = { "<Cmd>Telescope current_buffer_fuzzy_find<CR>", "Fuzzy find buffer" },
-    u = { "<Cmd>Telescope ultisnips<CR>", "Search snippets" },
   },
 
   -- Run
@@ -321,7 +320,7 @@ function M.register_lsp(client)
   for _, m in pairs(lsp_mappings_opts) do
     local capability, key = unpack(m)
     
-    if client.resolved_capabilities[capability] then
+    if client.server_capabilities[capability] then
       wk.register(key, opts)
     end
   end

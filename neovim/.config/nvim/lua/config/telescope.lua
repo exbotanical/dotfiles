@@ -56,7 +56,6 @@ function M.setup()
   require("telescope").load_extension "bookmarks"
   require("telescope").load_extension "neoclip"
   require("telescope").load_extension "zoxide"
-  require("telescope").load_extension "ultisnips"
   require("telescope").load_extension "repo"
   require("telescope").load_extension "gh"
   require("telescope").load_extension "arecibo"

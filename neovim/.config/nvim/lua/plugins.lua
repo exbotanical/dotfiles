@@ -140,7 +140,6 @@ function M.setup()
         "nvim-telescope/telescope-media-files.nvim",
         "nvim-telescope/telescope-file-browser.nvim",
         "nvim-telescope/telescope-github.nvim",
-        "fhill2/telescope-ultisnips.nvim",
         "cljoly/telescope-repo.nvim",
         "jvgrootveld/telescope-zoxide",
         "dhruvmanila/telescope-bookmarks.nvim",
@@ -189,7 +188,6 @@ function M.setup()
       requires = {
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-nvim-lsp",
-        "quangnguyen30192/cmp-nvim-ultisnips",
         "hrsh7th/cmp-nvim-lua",
         "octaltree/cmp-look",
         "hrsh7th/cmp-path",
@@ -248,17 +246,8 @@ function M.setup()
     use { "antoinemadec/FixCursorHold.nvim", event = "BufReadPost" }
 
     -- Snippets
-    use {
-      "SirVer/ultisnips",
-      requires = { { "honza/vim-snippets", rtp = "." }, "mlaursen/vim-react-snippets" },
-      config = function()
-        vim.g.UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
-        vim.g.UltiSnipsJumpForwardTrigger = "<Plug>(ultisnips_jump_forward)"
-        vim.g.UltiSnipsJumpBackwardTrigger = "<Plug>(ultisnips_jump_backward)"
-        vim.g.UltiSnipsListSnippets = "<c-x><c-s>"
-        vim.g.UltiSnipsRemoveSelectModeMappings = 0
-      end,
-    }
+    use({"L3MON4D3/LuaSnip", tag = "v<CurrentMajor>.*"})
+
     -- Lua development
     use { "folke/lua-dev.nvim", event = "VimEnter" }
     use {

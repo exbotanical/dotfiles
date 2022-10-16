@@ -15,7 +15,7 @@ function M.setup()
     [[ \\//\/                            \/\\//]],
     [[  \/                                  \/ ]],
     [[  /\                                  /\ ]],
-    [[ //\\              Neovim            //\\]],
+    [[ //\\             Neovim             //\\]],
     [[ \\//                                \\//]],
     [[  \/                                  \/ ]],
     [[  /\                                  /\ ]],
@@ -51,11 +51,7 @@ function M.setup()
       .. "   "
       .. datetime
 
-    -- Quote
-    local fortune = require "alpha.fortune"
-    local quote = table.concat(fortune(), "\n")
-
-    return plugins_text .. "\n" .. quote
+    return plugins_text
   end
 
   dashboard.section.footer.val = footer()
