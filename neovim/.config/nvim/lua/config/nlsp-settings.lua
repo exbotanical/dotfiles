@@ -1,7 +1,7 @@
 local M = {}
 
 function M.setup()
-  vim.g.doge_doc_standard_python = "google"
+  require("nlspsettings").setup()
 end
 
 return M

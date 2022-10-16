@@ -1,12 +1,7 @@
 local M = {}
 
-local M.setup() 
-  local status_ok, neogit = pcall(require, "neogit")
-  if not status_ok then
-    return
-  end
-
-  neogit.setup()
+function M.setup()
+  require("neogit").setup { integrations = { diffview = true } }
 end
 
 return M

@@ -1,18 +1,23 @@
 local M = {}
 
-function M.setup() 
-  require("nvim-treesitter.configs").setup {
-    -- List of parser names (or "all")
-    ensure_installed = "all",
+function M.setup()
+  local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
 
-    -- Install languages synchronously (or applied to `ensure_installed`)
-    sync_install = false,
-
-    highlight = {
-      -- `false` here will disable the entire extension
-      enable = true,
+  parser_configs.norg = {
+    install_info = {
+      url = "https://github.com/nvim-neorg/tree-sitter-norg",
+      files = { "src/parser.c", "src/scanner.cc" },
+      branch = "main",
     },
+  }
 
+  require("nvim-treesitter.configs").setup {
+    ensure_installed = "all", 
+    highlight = {
+      enable = true,
+      disable = {},
+      additional_vim_regex_highlighting = true,
+    },
     incremental_selection = {
       enable = true,
       keymaps = {
@@ -22,20 +27,19 @@ function M.setup()
         node_decremental = "grm",
       },
     },
-
     indent = { enable = true },
-
-    -- vim matchup
-    matchup = {
+    playground = {
       enable = true,
+      disable = {},
+      updatetime = 25, 
+      persist_queries = false, -- whether the query persists across vim sessions
     },
-
-    -- nvim-treesitter-textobjects
+    rainbow = { enable = true, extended_mode = true },
     textobjects = {
       select = {
         enable = true,
 
-        -- Automatically jump forward to textobject
+        -- Automatically jump forward to textobj
         lookahead = true,
 
         keymaps = {
@@ -45,22 +49,9 @@ function M.setup()
           ["ic"] = "@class.inner",
         },
       },
-
-      
-      swap = {
-        enable = true,
-        swap_next = {
-          ["<leader>rx"] = "@parameter.inner",
-        },
-        swap_previous = {
-          ["<leader>rX"] = "@parameter.inner",
-        },
-      },
-
       move = {
         enable = true,
-        -- Set jumps in jumplist
-        set_jumps = true,
+        set_jumps = true, -- whether to set jumps in the jumplist
         goto_next_start = {
           ["]m"] = "@function.outer",
           ["]]"] = "@class.outer",
@@ -78,21 +69,29 @@ function M.setup()
           ["[]"] = "@class.outer",
         },
       },
-
+      swap = {
+        enable = true,
+        swap_next = { ["<Leader>rx"] = "@parameter.inner" },
+        swap_previous = { ["<Leader>rX"] = "@parameter.inner" },
+      },
       lsp_interop = {
         enable = true,
         border = "none",
         peek_definition_code = {
-          ["<leader>df"] = "@function.outer",
-          ["<leader>dF"] = "@class.outer",
+          ["df"] = "@function.outer",
+          ["dF"] = "@class.outer",
         },
       },
     },
-    
-    -- Endwise
-    endwise = {
+    context_commentstring = { enable = true, enable_autocmd = false },
+    textsubjects = {
       enable = true,
+      keymaps = {
+        ["."] = "textsubjects-smart",
+        [";"] = "textsubjects-container-outer",
+      },
     },
+    matchup = { enable = true },
   }
 end
 
