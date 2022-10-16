@@ -37,16 +37,6 @@ shopt -s globstar
 # prettify less
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-
-# bash completion on
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/completions ]; then
-    . /usr/share/bash-completion/completions
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
-
 # file perms
 umask 022
 ### Interactive Mode Settings ### }}}
