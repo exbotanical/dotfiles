@@ -63,7 +63,6 @@
    * LSP Configurations
    */
 
-  "go.useLanguageServer": true,
   "go.languageServerExperimentalFeatures": {
     "diagnostics": true // for diagnostics as you type
   }, 
@@ -199,5 +198,6 @@
 
   "glassit.alpha": 245, 
 
-  "npm.keybindingsChangedWarningShown": true
+  "npm.keybindingsChangedWarningShown": true,
+  "window.zoomLevel": -1
 }

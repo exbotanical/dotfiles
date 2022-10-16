@@ -15,14 +15,17 @@ export MAVEN_OPTS="-Xms256m -Xmx512m"
 export PATH=$M2:$PATH
 
 # nvm
-export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# resolve global npm modules
+# pnpm
+export PNPM_HOME="/home/goldmund/.local/share/pnpm"
+
+# npm
 export NODE_PATH="$NODE_PATH:$(npm root -g)"
 # migrate modules via `nvm install node --reinstall-packages-from=<prev>`
 
 ### Path {{{
-export PATH="$PATH:$HOME/.local/bin:/usr/local/go/bin:$GOPATH/bin:$SHPEC_PATH:$JAVA_HOME"
+export PATH="$PATH:$HOME/.local/bin:/usr/local/go/bin:$GOPATH/bin:$SHPEC_PATH:$JAVA_HOME:$PNPM_HOME"
 ### End Path ### }}}
