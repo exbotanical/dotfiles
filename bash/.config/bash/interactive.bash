@@ -1,18 +1,18 @@
 ### Helpers {{{
 # if the exit status was 127, remove the erroneous command from history
 __prompt_command () {
-	local exit_status=$?
-	local number=$(history 1)
+  local exit_status=$?
+  local number=$(history 1)
 
-	number=${number%% *}
+  number=${number%% *}
 
-	if [ -n "$number" ]; then
-		if [ $exit_status -eq 127 ] && ([ -z $HISTLASTENTRY ] || [ $HISTLASTENTRY -lt $number ]); then
-			history -d $number
-		else
-			HISTLASTENTRY=$number
-		fi
-	fi
+  if [ -n "$number" ]; then
+    if [ $exit_status -eq 127 ] && ([ -z $HISTLASTENTRY ] || [ $HISTLASTENTRY -lt $number ]); then
+      history -d $number
+    else
+      HISTLASTENTRY=$number
+    fi
+  fi
 }
 ### End Helpers ### }}}
 
