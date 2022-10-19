@@ -7,10 +7,10 @@
   signingkey = 583F94EFB513DA5F
 
 [github]
-	user = exbotanical
+  user = exbotanical
 
 [credential]
-	helper = cache
+  helper = cache
 
 [core]
   editor = vim
@@ -22,11 +22,11 @@
   current = green reverse
   local = green
   remote = blue
-	upstream = blue
+  upstream = blue
   plain = black
 
 [color "diff"]
-	context = black
+  context = black
   meta = normal
   frag = blue
   old = red

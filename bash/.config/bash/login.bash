@@ -83,7 +83,9 @@ fi
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Prompts
-export PS1="$blue\u$stop$pink($stop$pink($stop$green\w$stop$pink)$stop$pink)$stop$purple\$(__parse_git_branch)$stop$yellow>$stop$red>$stop$blue>$stop "
+# export PS1="$blue\u$stop$pink($stop$pink($stop$green\w$stop$pink)$stop$pink)$stop$purple\$(__parse_git_branch)$stop$yellow>$stop$red>$stop$blue>$stop "
 export PS2="\[$(tput setaf 3)\]continue-->$stop "
 
+# oh-my-posh PS1 prompt
+eval "$(oh-my-posh init bash --config $HOME/dotfiles/ohmyposh/.ohmyposh/themes/nord.omp.json)"
 ### End Initializations ### }}}
