@@ -198,6 +198,5 @@
 
   "glassit.alpha": 245, 
 
-  "npm.keybindingsChangedWarningShown": true,
-  "window.zoomLevel": -1
+  "npm.keybindingsChangedWarningShown": true
 }

@@ -1,7 +1,8 @@
 ### Extract - Unzip anything ### {{{
 # src: http://nparikh.org/notes/zshrc.txt
 extract () {
-  echo Extracting $1 ...
+  echo Extracting $1...
+
   if [[ -f $1 ]]; then
     case $1 in
       *.tar.bz2)  tar xjf $1      ;;
@@ -204,3 +205,16 @@ darken () {
   xrandr --output $default_output --brightness $percentage
 }
 ### End Monitor Ctrl ### }}}
+
+### Sys Info {{{
+
+# See system uptime
+lsuptime () {
+  uptime | awk '{ print "Uptime:", $3, $4, $5 }' | sed 's/,//g'
+}
+
+# View most used commands
+lscmd () {
+  history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
+}
+### End Sys Info ### }}}

@@ -16,17 +16,10 @@ __default_to_tmux () {
   fi
 }
 
-# base16 shell
-__use_base16_shell () {
-  BASE16_SHELL="$HOME/.config/base16-shell/"
-  [ -n "$PS1" ] && \
-  [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-  eval "$("$BASE16_SHELL/profile_helper.sh")"
-}
-
 # get current branch in git repo
 __parse_git_branch () {
   BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+
   if [ ! "${BRANCH}" == "" ]
   then
     STAT=$(__parse_git_dirty)
@@ -81,18 +74,15 @@ __parse_git_dirty () {
 
 ### Initializations {{{
 
-# remap caps -> super
-setxkbmap -option caps:super 2>/dev/null
-
 # LSCOLORS config
 if [[ -e ~/.dir_colors/dircolors ]]; then
-  eval `dircolors "$HOME/.dir_colors/goldmund.dircolors"`
+  eval `dircolors "$HOME/.dir_colors/nord.dircolors"`
 fi
 
 # GCC color config
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# prompts
+# Prompts
 export PS1="$blue\u$stop$pink($stop$pink($stop$green\w$stop$pink)$stop$pink)$stop$purple\$(__parse_git_branch)$stop$yellow>$stop$red>$stop$blue>$stop "
 export PS2="\[$(tput setaf 3)\]continue-->$stop "
 

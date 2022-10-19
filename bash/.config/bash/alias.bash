@@ -18,12 +18,19 @@ alias repos='cd ~/repositories'
 alias docs='cd ~/Documents'
 alias desktop='cd ~/Desktop'
 alias open='xdg-open'
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
 ### End Navigation ### }}}
 
 ### Git {{{
 alias gpull='git pull'
 alias gpush='git push'
-alias ga='git add .'
+alias ga='git add'
+alias gaa='git add .'
 alias gs='git status'
 alias gunstage='git reset'
 alias gstash='git stash'
@@ -52,13 +59,11 @@ alias gwrm='git worktree remove worktree && git worktree prune'
 alias upgrade='sudo pacman -Syu'
 ### End Package Management ### }}}
 
-### Work Related {{{
-alias bb='brazil build'
-### End Work Related ### }}}
-
 ### Miscellaneous {{{
-# purge bash hist
+# purge bash history
 alias purgehist='cat /dev/null > ~/.bash_history'
+# search bash history
+alias hs='history | grep'
 ### End Miscellaneous ### }}}
 
 ### Overrides {{{

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-Nl=$'\n'
-IFS=$Nl
+#desc           :Bootstrap a new project template.
+#author         :Matthew Zito
+#===============================================================================
 
 clib_setup_files () {
   # the include header
@@ -31,7 +32,6 @@ END
 $incl_header
 END
 }
-
 
 designate () {
   local proj=$1
@@ -93,6 +93,8 @@ main () {
   echo -e "[+] Project setup complete\n"
 }
 
+IFS=$'\n'
+
 GITHUB_URL=https://github.com/exbotanical
 
 TS_NPM_REPO=$GITHUB_URL/ts-npm-boilerplate
@@ -104,7 +106,6 @@ C_LIB_REPO=$GITHUB_URL/dll-boilerplate
 # stop here if being sourced
 return 2>/dev/null
 
-# stop on errors and unset variable refs
 set -o errexit
 set -o nounset
 

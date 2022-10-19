@@ -1,0 +1,44 @@
+[init]
+  defaultBranch = master
+
+[user]
+  email = exbotanical@protonmail.com
+  name = Matthew Zito
+  signingkey = 583F94EFB513DA5F
+
+[github]
+	user = exbotanical
+
+[credential]
+	helper = cache
+
+[core]
+  editor = vim
+
+[color]
+  ui = auto
+
+[color "branch"]
+  current = green reverse
+  local = green
+  remote = blue
+	upstream = blue
+  plain = black
+
+[color "diff"]
+	context = black
+  meta = normal
+  frag = blue
+  old = red
+  new = green
+  commit = cyan
+  whitespace = yellow red
+
+[color "status"]
+  header = normal
+  added = green
+  changed = red
+  untracked = black
+
+[branch "master"]
+  remote = origin
