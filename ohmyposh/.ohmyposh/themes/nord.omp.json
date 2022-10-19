@@ -51,11 +51,11 @@
           "type": "path"
         },
         {
-          "background": "p:orange",
+          "background": "p:green",
           "foreground": "p:text",
           "background_templates": [
             "{{ if or (.Working.Changed) (.Staging.Changed) }}p:orange{{ end }}",
-            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:orange{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:red{{ end }}",
             "{{ if gt .Ahead 0 }}p:purple{{ end }}",
             "{{ if gt .Behind 0 }}p:purple{{ end }}"
           ],
@@ -107,7 +107,7 @@
           "foreground": "p:text",
           "invert_powerline": true,
           "style": "diamond",
-          "template": "\ue71e {{ .Full }} ",
+          "template": " \ue71e {{ .Full }} ",
           "trailing_diamond": "\ue0b0",
           "type": "npm"
         },
