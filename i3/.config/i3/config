@@ -61,7 +61,7 @@ set $darkblue           #c394b4
 set $barbg              #161516
 
 # paths
-set $config_dir ~/.config
+set $config_dir $HOME/.config
 
 # Percentage amount to increase/decrease volume
 set $volume_step 5
@@ -84,8 +84,8 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork --color $
 exec --no-startup-id blueman-applet
 
 # Wallpaper
-# exec --no-startup-id feh --bg-scale ~/Pictures/dream_house.jpg
-exec --no-startup-id feh --bg-scale ~/Pictures/wave.jpg
+# exec --no-startup-id feh --bg-scale $HOME/Pictures/dream_house.jpg
+exec --no-startup-id feh --bg-scale $HOME/Pictures/wave.jpg
 
 # Notifications Daemon
 exec_always --no-startup-id dunst -config $config_dir/dunst/dunstrc

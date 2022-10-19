@@ -75,7 +75,7 @@ __parse_git_dirty () {
 ### Initializations {{{
 
 # LSCOLORS config
-if [[ -e ~/.dir_colors/dircolors ]]; then
+if [[ -e $HOME/.dir_colors/dircolors ]]; then
   eval `dircolors "$HOME/.dir_colors/nord.dircolors"`
 fi
 

@@ -90,7 +90,7 @@ psaux () {
 open_enc () {
   local mount="$1" proxy="$2"
 
-  encfs ${mount:-~/.enc/} ${proxy:-~/enc/}
+  encfs ${mount:-$HOME/.enc/} ${proxy:-$HOME/enc/}
 }
 ### End open_enc ### }}}
 
@@ -98,7 +98,7 @@ open_enc () {
 close_enc () {
   local proxy="$1"
 
-  fusermount -u ${proxy:-~/enc}
+  fusermount -u ${proxy:-$HOME/enc}
 }
 ### End close_enc ### }}}
 
