@@ -1,4 +1,4 @@
-{ 
+{
   /**
    * VSC Settings
    */
@@ -15,6 +15,7 @@
   "editor.fontLigatures": true,
   "editor.fontSize": 16,
   "editor.fontWeight": "400",
+  "editor.linkedEditing": true,
 
   "explorer.confirmDragAndDrop": false,
   "explorer.confirmDelete": false,
@@ -36,11 +37,8 @@
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.tabs.showActiveTerminal": "always",
-  "terminal.integrated.useWslProfiles": false,
-  "terminal.integrated.windowsEnableConpty": false,
   "terminal.integrated.defaultProfile.linux": "bash",
-  "terminal.integrated.defaultProfile.windows": "Git Bash",
-  "terminal.integrated.fontFamily": "Fira Code",
+  "terminal.integrated.fontFamily": "Inconsolata Nerd Font Mono",
   "terminal.integrated.fontWeight": "700",
   "terminal.integrated.fontSize": 18,
   "terminal.integrated.enableMultiLinePasteWarning": false,
@@ -48,6 +46,7 @@
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
 
   "window.openFoldersInNewWindow": "on",
+  "window.title": "${dirty}${activeEditorShort}${separator}${rootName}",
   "window.titleBarStyle": "custom",
   "window.newWindowDimensions": "inherit",
   "window.menuBarVisibility": "compact",
@@ -56,7 +55,7 @@
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "workbench.startupEditor": "none",
-  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreview": true,
   "workbench.colorTheme": "Nord Deep",
 
   /**
@@ -65,12 +64,12 @@
 
   "go.languageServerExperimentalFeatures": {
     "diagnostics": true // for diagnostics as you type
-  }, 
+  },
   "go.coverShowCounts": true,
   "go.toolsManagement.autoUpdate": true,
   "gopls": {
     "usePlaceholders": false // add parameter placeholders when completing a function
-  }, 
+  },
   "[go]": {
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
@@ -196,7 +195,7 @@
   "everforest.darkWorkbench": "high-contrast",
   "everforest.highContrast": true,
 
-  "glassit.alpha": 245, 
+  "glassit.alpha": 245,
 
   "npm.keybindingsChangedWarningShown": true
 }
