@@ -79,7 +79,7 @@
     "files.eol": "\n",
     "editor.tabSize": 4,
     "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
+    "files.trimTrailingWhitespace": true
   },
 
   "[c]": {
@@ -134,7 +134,7 @@
     "editor.tabSize": 2,
     "files.eol": "\n",
     "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
+    "files.trimTrailingWhitespace": true
   },
 
   "[typescriptreact]": {
@@ -184,6 +184,17 @@
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "editor.formatOnType": true
+  },
+
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
   },
 
   /**

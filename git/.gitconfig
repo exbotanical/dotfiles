@@ -9,6 +9,9 @@
 [github]
   user = exbotanical
 
+[commit]
+	gpgsign = true
+
 [credential]
   helper = cache
 
