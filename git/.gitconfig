@@ -6,9 +6,6 @@
   name = Matthew Zito
   signingkey = 583F94EFB513DA5F
 
-[github]
-  user = exbotanical
-
 [commit]
 	gpgsign = true
 
@@ -45,3 +42,9 @@
 
 [branch "master"]
   remote = origin
+
+[github]
+  user = exbotanical
+
+[gpg]
+  program = /usr/bin/gpg
