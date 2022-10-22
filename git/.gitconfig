@@ -7,7 +7,7 @@
   signingkey = 583F94EFB513DA5F
 
 [commit]
-	gpgsign = true
+  gpgsign = true
 
 [credential]
   helper = cache

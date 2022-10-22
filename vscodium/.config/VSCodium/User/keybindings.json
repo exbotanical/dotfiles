@@ -1,0 +1,18 @@
+[
+  {
+    "key": "alt+right",
+    "command": "cursorLineEnd"
+  },
+  {
+    "key": "shift+alt+right",
+    "command": "cursorLineEndSelect"
+  },
+  {
+    "key": "alt+left",
+    "command": "cursorLineStart"
+  },
+  {
+    "key": "shift+alt+left",
+    "command": "cursorLineStartSelect"
+  }
+]
