@@ -58,15 +58,18 @@ alias gwrm='git worktree remove worktree && git worktree prune'
 ### End Git ### }}}
 
 ### Package Management {{{
-# quick pacman update alias
+# Quick pacman update alias
 alias upgrade='sudo pacman -Syu'
 ### End Package Management ### }}}
 
 ### Miscellaneous {{{
-# purge bash history
+# Purge bash history
 alias purgehist='cat /dev/null > ~/.bash_history'
-# search bash history
+# Search bash history
 alias hs='history | grep'
+
+# Taskell
+alias tasks='taskell ~/taskell.md'
 ### End Miscellaneous ### }}}
 
 ### Overrides {{{

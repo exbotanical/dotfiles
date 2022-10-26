@@ -39,5 +39,5 @@ export NODE_PATH="$NODE_PATH:$(npm root -g)"
 ### End App Paths ### }}}
 
 ### Path {{{
-export PATH="$PATH:$HOME/.local/bin:/usr/local/go/bin:$GOPATH/bin:$SHPEC_PATH:$JAVA_HOME:$PNPM_HOME"
+export PATH="$PATH:$HOME/.local/bin:$GOPATH/bin:$SHPEC_PATH:$JAVA_HOME:$PNPM_HOME"
 ### End Path ### }}}

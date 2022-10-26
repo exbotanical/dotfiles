@@ -40,6 +40,12 @@ designate () {
   sed -i "s/<year>/$(date +%Y)/" LICENSE
 }
 
+git_setup () {
+  # Remove existing git dir
+  rm -rf .git
+  git init
+}
+
 setup () {
   local env=$1
   local proj=$2
@@ -57,7 +63,7 @@ setup () {
       pnpm install
       ;;
 
-    golang )
+    go )
       git clone $GO_REPO .
       designate $proj
       go mod init $proj
@@ -79,6 +85,8 @@ setup () {
       exit 1
       ;;
   esac
+
+  git_setup
 }
 
 main () {
