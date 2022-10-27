@@ -1,5 +1,4 @@
 ### Extract - Unzip anything ### {{{
-# src: http://nparikh.org/notes/zshrc.txt
 extract () {
   local file_name="$1"
 
@@ -51,11 +50,24 @@ base64 () {
 }
 ### End Base64 ### }}}
 
-### RMD - Render a Markdown File ### {{{
+### rmd - Render a Markdown File ### {{{
 rmd () {
   pandoc "$1" | lynx -stdin
 }
-### End RMD ### }}}
+### End rmd ### }}}
+
+### bu - Backup a file ### {{{
+bak () {
+  cp $1 ${1}-`date +%Y%m%d%H%M`.bak
+}
+### End bu ### }}}
+
+### ptree - Display a process tree ### {{{
+ptree () {
+  ps f -u $USER -o command,pid,%cpu,%mem,time,etime,tty | \
+    awk 'NR <= 1 {print;next} !/awk/ && $0~var' var=${1:-".*"}
+}
+### End ptree ### }}}
 
 ### Mk_alias - Add a New Alias ### {{{
 # mk_alias name "val"
