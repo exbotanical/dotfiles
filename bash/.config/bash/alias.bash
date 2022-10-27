@@ -19,11 +19,11 @@ alias docs='cd ~/Documents'
 alias desktop='cd ~/Desktop'
 alias open='xdg-open'
 
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ......="cd ../../../../.."
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
 ### End Navigation ### }}}
 
 ### Git {{{
@@ -70,6 +70,18 @@ alias hs='history | grep'
 
 # Taskell
 alias tasks='taskell ~/taskell.md'
+
+# Notify for long-running commands
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Perms helpers
+alias mx='chmod a+x'
+alias ux='chmod u+x'
+alias 000='chmod -R 000'
+alias 644='chmod -R 644'
+alias 666='chmod -R 666'
+alias 755='chmod -R 755'
+alias 777='chmod -R 777'
 ### End Miscellaneous ### }}}
 
 ### Overrides {{{

@@ -1,26 +1,28 @@
 ### Extract - Unzip anything ### {{{
 # src: http://nparikh.org/notes/zshrc.txt
 extract () {
-  echo Extracting $1...
+  local file_name="$1"
 
-  if [[ -f $1 ]]; then
-    case $1 in
-      *.tar.bz2)  tar xjf $1      ;;
-      *.tar.gz)   tar xzf $1      ;;
-      *.bz2)      bunzip2 $1      ;;
-      *.rar)      rar x $1        ;;
-      *.gz)       gunzip $1       ;;
-      *.tar)      tar xf $1       ;;
-      *.tbz2)     tar xjf $1      ;;
-      *.tgz)      tar xzf $1      ;;
-      *.zip)      unzip $1        ;;
-      *.Z)        uncompress $1   ;;
-      *.7z)       7z x $1         ;;
-      *.xz)       xz -d $1        ;;
-      *)          echo "'$1' cannot be extracted via `extract`" ;;
+  echo Extracting $file_name...
+
+  if [[ -f $file_name ]]; then
+    case $file_name in
+      *.tar.bz2)  tar xjf $file_name      ;;
+      *.tar.gz)   tar xzf $file_name      ;;
+      *.bz2)      bunzip2 $file_name      ;;
+      *.rar)      rar x $file_name        ;;
+      *.gz)       gunzip $file_name       ;;
+      *.tar)      tar xf $file_name       ;;
+      *.tbz2)     tar xjf $file_name      ;;
+      *.tgz)      tar xzf $file_name      ;;
+      *.zip)      unzip $file_name        ;;
+      *.Z)        uncompress $file_name   ;;
+      *.7z)       7z x $file_name         ;;
+      *.xz)       xz -d $file_name        ;;
+      *)          echo "'$file_name' cannot be extracted via `extract`" ;;
     esac
   else
-    echo "'$1' is not a valid file"
+    echo "'$file_name' is not a valid file"
   fi
 }
 ### End Extract ### }}}
@@ -88,13 +90,14 @@ psaux () {
 
 ### open_enc - Mount Encrypted Directories {{{
 open_enc () {
-  local mount="$1" proxy="$2"
+  local mount="$1"
+  local proxy="$2"
 
   encfs ${mount:-$HOME/.enc/} ${proxy:-$HOME/enc/}
 }
 ### End open_enc ### }}}
 
-### close_enc - Unmount Encrypted Directories {{{
+### Close_enc - Unmount Encrypted Directories {{{
 close_enc () {
   local proxy="$1"
 
