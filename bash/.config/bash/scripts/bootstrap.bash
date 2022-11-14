@@ -2,6 +2,7 @@
 #desc           :Bootstrap a new project template.
 #author         :Matthew Zito
 #===============================================================================
+# shellcheck disable=SC2046,SC2048,SC2086
 
 clib_setup_files () {
   # the include header
@@ -11,10 +12,13 @@ clib_setup_files () {
   local source=src/$proj.c
 
   # the include guard
-  local incl_guard=$(echo $proj | tr '[a-z]' '[A-Z]')_H
+  local incl_guard
 
   # include header statement
-  local incl_header="#include \"$(echo ${header:4:${#header}})\""
+  local incl_header
+
+  incl_guard=$(echo $proj | tr 'a-z' 'A-Z')_H
+  incl_header="#include \"${header:4:${#header}}\""
 
   # create the main header file and...
   touch $source
@@ -36,7 +40,7 @@ END
 designate () {
   local proj=$1
 
-  find . -type f -exec sed -i "s/<project>/"$proj"/g" {} \;
+  find . -type f -exec sed -i "s/<project>/$proj/g" {} \;
   sed -i "s/<year>/$(date +%Y)/" LICENSE
 }
 
@@ -90,7 +94,8 @@ setup () {
 }
 
 main () {
-  local dir_name=$(basename $(pwd))
+  local dir_name
+  dir_name=$(basename $(pwd))
   local env=$1
   local proj=$2
 
@@ -109,7 +114,7 @@ TS_NPM_REPO=$GITHUB_URL/ts-npm-boilerplate
 JS_NPM_REPO=$GITHUB_URL/js-npm-boilerplate
 GO_REPO=$GITHUB_URL/go-lib-boilerplate
 C_REPO=$GITHUB_URL/c-boilerplate
-C_LIB_REPO=$GITHUB_URL/dll-boilerplate
+C_LIB_REPO=$GITHUB_URL/clib-boilerplate
 
 # stop here if being sourced
 return 2>/dev/null

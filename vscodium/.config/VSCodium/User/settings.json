@@ -27,7 +27,9 @@
   "files.associations": {
     "*.html": "html",
     "*.tsx": "typescriptreact",
-    "*.ts": "typescript"
+    "*.ts": "typescript",
+    "*.h": "c",
+    "*.bash": "shellscript"
   },
 
   "liveServer.settings.donotShowInfoMsg": true,
@@ -55,7 +57,7 @@
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "workbench.startupEditor": "none",
-  "workbench.editor.enablePreview": true,
+  "workbench.editor.enablePreview": false,
   "workbench.colorTheme": "Nord Deep",
 
   /**
@@ -82,8 +84,21 @@
     "files.trimTrailingWhitespace": true
   },
 
+  "C_Cpp.default.includePath": [
+    "${workspaceFolder}/**",
+    "${workspaceFolder}/deps"
+  ],
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google }",
   "[c]": {
-    "editor.formatOnPaste": false,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+  },
+  "[cpp]": {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
     "editor.tabSize": 2,
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true
@@ -102,6 +117,13 @@
   },
 
   "redhat.telemetry.enabled": false,
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-19",
+      "path": "/usr/lib/jvm/java-19-openjdk",
+      "default": true
+    }
+  ],
   "java.configuration.updateBuildConfiguration": "disabled",
   "java.format.settings.url": "~/.vscode/java-google-style.xml",
   "java.maven.downloadSources": true,

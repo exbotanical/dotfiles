@@ -2,6 +2,8 @@
 #desc           :A simple TODO manager.
 #author         :Matthew Zito
 #===============================================================================
+# shellcheck disable=SC2086,SC2048
+
 
 panic () {
   local exit_status=$1

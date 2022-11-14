@@ -71,7 +71,8 @@ export HISTIGNORE="&:ls:[bf]g:exit:pwd:clear:history:ps[ \t]*"
 
 export HISTSIZE=10000
 
-export HISTFILESIZE=$(bc<<<$HISTSIZE*2)
+HISTFILESIZE=$(bc<<<$HISTSIZE*2)
+export HISTFILESIZE
 
 # Use standard ISO 8601 timestamp
 # %F -> %Y-%m-%d

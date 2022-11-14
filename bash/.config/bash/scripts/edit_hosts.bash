@@ -2,9 +2,10 @@
 #desc           :add, remove /etc/hosts entries by IP and hostname
 #author         :Matthew Zito
 #===============================================================================
+# shellcheck disable=SC2086,SC2048
 
 current_time () {
-  echo $(date +'%Y-%m-%dT%H:%M:%S%z')
+  date +'%Y-%m-%dT%H:%M:%S%z'
 }
 
 panic () {

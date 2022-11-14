@@ -41,6 +41,7 @@ alias gl='git log --pretty=format:"%C(yellow)%h%Cred%d %Creset%s%Cblue [%cn]" --
 # Fetch all remotes
 alias gfetch='git fetch --all'
 # Fetch all remotes and track each
+# shellcheck disable=SC2154
 alias gfetchtrack='git branch -r | grep -v "\->" | while read remote; do git branch --track "${remote#origin/}" "$remote"; done'
 # Stage all changes and take them to a new branch
 alias gswitch='git add . && git switch -c'
@@ -82,6 +83,10 @@ alias 644='chmod -R 644'
 alias 666='chmod -R 666'
 alias 755='chmod -R 755'
 alias 777='chmod -R 777'
+
+# Run shpec e.g. `tdd t/test.shpec.bash`
+# shellcheck disable=SC2142
+alias tdd='find . -path ./.git -prune -o -type f -print | entr bash -c "shpec $1"'
 ### End Miscellaneous ### }}}
 
 ### Overrides {{{

@@ -30,7 +30,7 @@ main () {
     y )
       if [[ ! -x $TABLES_DIR ]]; then
         echo "[-] \"${TABLES_DIR}\" not found.";
-        exit $E_FILENOTFOUND;
+        exit "$E_FILENOTFOUND";
       fi
 
       echo "[+] Flushing IP Tables..."

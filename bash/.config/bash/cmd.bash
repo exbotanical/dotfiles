@@ -2,23 +2,23 @@
 extract () {
   local file_name="$1"
 
-  echo Extracting $file_name...
+  echo Extracting "$file_name"...
 
   if [[ -f $file_name ]]; then
     case $file_name in
-      *.tar.bz2)  tar xjf $file_name      ;;
-      *.tar.gz)   tar xzf $file_name      ;;
-      *.bz2)      bunzip2 $file_name      ;;
-      *.rar)      rar x $file_name        ;;
-      *.gz)       gunzip $file_name       ;;
-      *.tar)      tar xf $file_name       ;;
-      *.tbz2)     tar xjf $file_name      ;;
-      *.tgz)      tar xzf $file_name      ;;
-      *.zip)      unzip $file_name        ;;
-      *.Z)        uncompress $file_name   ;;
-      *.7z)       7z x $file_name         ;;
-      *.xz)       xz -d $file_name        ;;
-      *)          echo "'$file_name' cannot be extracted via `extract`" ;;
+      *.tar.bz2)  tar xjf "$file_name"      ;;
+      *.tar.gz)   tar xzf "$file_name"      ;;
+      *.bz2)      bunzip2 "$file_name"      ;;
+      *.rar)      rar x "$file_name"        ;;
+      *.gz)       gunzip "$file_name"       ;;
+      *.tar)      tar xf "$file_name"       ;;
+      *.tbz2)     tar xjf "$file_name"      ;;
+      *.tgz)      tar xzf "$file_name"      ;;
+      *.zip)      unzip "$file_name"        ;;
+      *.Z)        uncompress "$file_name"   ;;
+      *.7z)       7z x "$file_name"         ;;
+      *.xz)       xz -d "$file_name"        ;;
+      *)          echo "'$file_name' cannot be extracted via extract" ;;
     esac
   else
     echo "'$file_name' is not a valid file"
@@ -58,14 +58,15 @@ rmd () {
 
 ### bu - Backup a file ### {{{
 bak () {
-  cp $1 ${1}-`date +%Y%m%d%H%M`.bak
+  local file_name="$1"
+  cp "$file_name" "${file_name}-$(date +%Y%m%d%H%M).bak"
 }
 ### End bu ### }}}
 
 ### ptree - Display a process tree ### {{{
 ptree () {
-  ps f -u $USER -o command,pid,%cpu,%mem,time,etime,tty | \
-    awk 'NR <= 1 {print;next} !/awk/ && $0~var' var=${1:-".*"}
+  ps f -u "$USER" -o command,pid,%cpu,%mem,time,etime,tty | \
+    awk 'NR <= 1 {print;next} !/awk/ && $0~var' var="${1:-".*"}"
 }
 ### End ptree ### }}}
 
@@ -76,7 +77,7 @@ mk_alias () {
 
   shift
 
-  local alias_body="$@"
+  local alias_body="$*"
 
   [[ -z "$alias_name" ]] && {
     echo "[-] Alias name not provided"
@@ -105,7 +106,7 @@ open_enc () {
   local mount="$1"
   local proxy="$2"
 
-  encfs ${mount:-$HOME/.enc/} ${proxy:-$HOME/enc/}
+  encfs "${mount:-$HOME/.enc/}" "${proxy:-$HOME/enc/}"
 }
 ### End open_enc ### }}}
 
@@ -113,7 +114,7 @@ open_enc () {
 close_enc () {
   local proxy="$1"
 
-  fusermount -u ${proxy:-$HOME/enc}
+  fusermount -u "${proxy:-$HOME/enc}"
 }
 ### End close_enc ### }}}
 
@@ -128,10 +129,10 @@ blue_conn () {
 
 ### Dockerize - Launch a Containerized Dev Env of PWD {{{
 dockerize () {
-  docker_image='ghcr.io/exbotanical/docker-dev-env:latest'
+  local docker_image='ghcr.io/exbotanical/docker-dev-env:latest'
 
   echo -e "Building a fresh dev environment as an ephemeral container in $(pwd)...\n"
-  docker run --rm -it -v "$(pwd):/ephemeral" "ghcr.io/exbotanical/docker-dev-env:latest"
+  docker run --rm -it -v "$(pwd):/ephemeral" "$docker_image"
 }
 ### End Dockerize ### }}}
 
@@ -142,7 +143,7 @@ bootstrap () {
   if (( $# != 2 )); then
     echo -e "[!] No arguments supplied\n"
   else
-    bash $script_loc "$1" "$2"
+    bash "$script_loc" "$1" "$2"
   fi
 }
 ### End Bootstrap ### }}}
@@ -159,15 +160,16 @@ gtrack () {
 # Checkout HEAD branch and pull latest
 gm () {
   local default_head='master'
-  local head="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo $default_head)"
+  local head_branch
+  head_branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo $default_head)"
 
-  git checkout $head && git pull origin $head
+  git checkout "$head_branch" && git pull origin "$head_branch"
 }
 ### End Git ### }}}
 
 ### Cheat - cheat.sh {{{
 cheat () {
-  curl cht.sh/$*
+  curl "cht.sh/$*"
 }
 ### End Cheat ### }}}
 
@@ -217,7 +219,7 @@ darken () {
   local percentage="${1:-.7}"
   local default_output="eDP-1"
 
-  xrandr --output $default_output --brightness $percentage
+  xrandr --output $default_output --brightness "$percentage"
 }
 ### End Monitor Ctrl ### }}}
 

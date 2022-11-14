@@ -2,9 +2,10 @@
 #desc           :Kill process running on given port.
 #author         :Matthew Zito
 #===============================================================================
+# shellcheck disable=SC2086,SC2048
 
 current_time () {
-  echo $(date +'%Y-%m-%dT%H:%M:%S%z')
+  date +'%Y-%m-%dT%H:%M:%S%z'
 }
 
 panic () {
@@ -18,7 +19,7 @@ panic () {
 
 get_pid () {
   local target_port=$1
-  echo $(lsof -ni :$target_port 2>/dev/null | grep LISTEN | awk '{ print $2 }')
+  lsof -ni :$target_port 2>/dev/null | grep LISTEN | awk '{ print $2 }'
 }
 
 main () {

@@ -1,3 +1,5 @@
+# shellcheck disable=SC1091
+
 BASH_CONFIG="$HOME/.config/bash"
 
 ### Environment ### {{{

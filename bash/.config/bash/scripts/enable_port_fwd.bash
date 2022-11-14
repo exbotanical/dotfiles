@@ -4,13 +4,13 @@
 #===============================================================================
 
 main () {
-  read -p "[*] Warning: this script will modify your IP Tables configurations. Continue? (y/n) " answer
+  read -pr "[*] Warning: this script will modify your IP Tables configurations. Continue? (y/n) " answer
 
   case $answer in
     y )
       if [[ ! -x $TABLES_F ]]; then
         echo "[-] \"${TABLES_F}\" not found.";
-        exit $E_FILENOTFOUND;
+        exit "$E_FILENOTFOUND";
       fi
 
       echo "[+] Updating rules..."

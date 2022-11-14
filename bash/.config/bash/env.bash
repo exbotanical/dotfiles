@@ -1,8 +1,10 @@
+# shellcheck disable=SC1091
+
 ### Program Paths {{{
 export PAGER='less'
 
 # Shpec
-export SHPEC_PATH=/usr/local/etc/shpec/bin
+export SHPEC_PATH=/usr/local/bin/shpec
 
 # X11
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -26,7 +28,8 @@ export NVM_DIR="$HOME/.config/nvm"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 
 # NPM - migrate modules via `nvm install node --reinstall-packages-from=<prev>`
-export NODE_PATH="$NODE_PATH:$(npm root -g)"
+NODE_PATH="$NODE_PATH:$(npm root -g)"
+export NODE_PATH
 ### End App Paths ### }}}
 
 ### Path {{{

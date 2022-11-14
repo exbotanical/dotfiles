@@ -121,12 +121,11 @@ bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+q kill
 
-## TODO configure for arch
 # screenshot
-# bindsym $mod+Print exec gnome-screenshot -w
+bindsym $mod+Print exec coreshot -w
 
 # screenshot interactive mode
-# bindsym $mod+Shift+Print exec gnome-screenshot -i
+bindsym $mod+Shift+Print exec coreshot -s
 
 # htop mod+h
 bindsym $mod+h exec alacritty -e htop
