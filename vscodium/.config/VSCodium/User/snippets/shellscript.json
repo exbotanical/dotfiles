@@ -4,8 +4,8 @@
     "body": "${1|#!/usr/bin/env bash,#!/bin/sh|}\n"
   },
   "BashHereDoc": {
-    "prefix": "heredoc",
-    "body": ["cat <<END\n\nEND"]
+    "prefix": "heredoc - TODO: fixme",
+    "body": ["cat <<END\n${0:VAR}\nEND"]
   },
   "if": {
     "prefix": "if",
@@ -13,7 +13,7 @@
   },
   "case": {
     "prefix": "case",
-    "body": "case \"$${0:VAR}\" in\n\t${1:1}) echo 1\n\t;;\n\t${2:2|3}) echo 2 or 3\n\t;;\n\t*) echo default\n\t;;\nesac\n"
+    "body": "case \"$${0:VAR}\" in\n\t${1:1})\n\t\techo 1\n\t\t;;\n\t${2:2|3})\n\t\techo 2\n\t\t;;\n\t*)\n\t\techo default\n\t\t;;\nesac\n"
   },
   "function": {
     "prefix": "function",
@@ -39,21 +39,26 @@
     "prefix": "read",
     "body": "read -r ${0:VAR}"
   },
-  "shellcheck_aliases": {
-    "prefix": "shellcheck",
+  "source": {
+    "prefix": "source",
+    "body": "$(dirname \"$(readlink -f \"$BASH_SOURCE\")\")${0:VAR}"
+  },
+  "shpec_aliases": {
+    "prefix": "shpec",
     "body": [
-      "alias it='(_shpec_failures=0; alias setup=setup &>/dev/null && { setup; unalias setup; alias teardown=teardown &>/dev/null && trap teardown EXIT ;}; it'",
+      "shopt -s expand_aliases\n",
+      "alias it='(_shpec_failures=0; alias setup &>/dev/null && { setup; unalias setup; alias teardown &>/dev/null && trap teardown EXIT ;}; it'",
       "# shellcheck disable=SC2154",
-      "alias ti='return \"$_shpec_failures\"); (( _shpec_failures += $?, _shpec_examples++ ))'",
+      "alias ti='return \"\\$_shpec_failures\"); (( _shpec_failures += $?, _shpec_examples++ ))'",
       "alias end_describe='end; unalias setup teardown 2>/dev/null'"
     ]
   },
-  "shellcheck_describe": {
+  "shpec_describe": {
     "prefix": "describe",
-    "body": "describe ''\n\nend_describe"
+    "body": "describe '${0:VAR}'\n\nend_describe"
   },
-  "shellcheck_test": {
-    "prefix": "test",
-    "body": "it ''\n\nti"
+  "shpec_test": {
+    "prefix": "it",
+    "body": "it '${0:VAR}'\n\nti"
   }
 }

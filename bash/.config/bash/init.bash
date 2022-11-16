@@ -1,28 +1,43 @@
-# shellcheck disable=SC1091
+# Root is this location, normalized for symlinks
+Root=$(cd "$(dirname "$BASH_SOURCE")"; cd -P "$(dirname "$(readlink "$BASH_SOURCE" || echo .)")"; pwd)
+# SettingsDir is the location of my Bash settings
+SettingsDir="$Root/settings"
+# ExecDir is the locaton of my userspace executables
+ExecDir="$HOME/.local/bin"
 
-BASH_CONFIG="$HOME/.config/bash"
+# Set the force-reload flag
+[[ $1 == reload ]] && Reload=1 || Reload=0
 
-### Environment ### {{{
-source "$BASH_CONFIG/env.bash"
-### End Environment ### }}}
+EphemeralVars=( Reload Root SettingsDir ExecDir ) # vars to cleanup
 
-### Commands ### {{{
-source "$BASH_CONFIG/cmd.bash"
-### End Commands ### }}}
+source "$Root/lib/support.bash" # support functions - we leave these in the global namespace
+source "$Root/initutil.bash" # init utilities - we unset these after init
 
-### Aliases ### {{{
-source "$BASH_CONFIG/alias.bash"
-### End Aliases ### }}}
+# Turn off expansion i.e. no need to quote vars from here onward, until we turn it back on
+support::splitspace off
+support::globbing off
 
-### Interactive ### {{{
-if [[ $- == *i* ]]; then
-  source "$BASH_CONFIG/interactive.bash"
-  source "$BASH_CONFIG/login.bash"
-fi
-### End Interactive ### }}}
+# Only source env vars if this is the first login or a force-reload
+{ init::login? || (( Reload )); } && source $SettingsDir/env.bash
 
-### GUI {{{
-if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-	exec startx
-fi
-### End GUI }}}
+# Source aliases and commands - contents must be quoted as they'll run in other contexts
+source $SettingsDir/alias.bash
+source $SettingsDir/cmd.bash
+
+# Source interactive settings only if we're in an interactive shell
+support::interactive? && source $SettingsDir/interactive.bash
+
+# Source login settings only if we're logging in for the first time
+# and in an interactive shell
+{
+  (support::interactive? && init::login?) || (( Reload ));
+} && source $SettingsDir/login.bash
+
+# Set the global login flag so we can dedupe login sourcing
+export ENV_SET=1
+
+# Cleanup
+support::splitspace on
+support::globbing on
+unset -f "${EphemeralFunctions[@]}" # Remove functions declared in init:: namespace
+unset -v "${EphemeralVars[@]}" # Remove ephemeral vars

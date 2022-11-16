@@ -1,23 +1,3 @@
-### Helpers {{{
-__prompt_command () {
-  local exit_status=$?
-  local number=$(history 1)
-
-  number=${number%% *}
-
-  if [ -n "$number" ]; then
-    # if the exit status was 127, remove the erroneous command from history
-    if [ $exit_status -eq 127 ] && ([ -z $HISTLASTENTRY ] || [ $HISTLASTENTRY -lt $number ]); then
-      history -d $number
-    else
-      HISTLASTENTRY=$number
-    fi
-  fi
-}
-### End Helpers ### }}}
-
-### Interactive Mode Settings {{{
-
 # Prevent file overwrite on stdout redirection
 # Use `>|` to force redirection to an existing file
 set -o noclobber
@@ -36,6 +16,7 @@ shopt -s globstar
 
 # Enable extended pattern-matching features
 shopt -s extglob
+
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob
 
@@ -55,40 +36,36 @@ shopt -s histappend
 shopt -s cmdhist
 
 # Case insensitive file completion
-bind "set completion-ignore-case on"
+bind 'set completion-ignore-case on'
 
 # Show auto-completion list automatically, without double tab
-bind "set show-all-if-ambiguous on"
+bind 'set show-all-if-ambiguous on'
 
 # Where cd looks for targets
-export CDPATH="."
+init::export CDPATH .
 
 # Prevent duplicate lines; lines space-prepended in hist
-export HISTCONTROL="erasedups:ignoreboth"
+init::export HISTCONTROL erasedups:ignoreboth
 
 # Ignore short commands
-export HISTIGNORE="&:ls:[bf]g:exit:pwd:clear:history:ps[ \t]*"
+init::export HISTIGNORE '&:ls:[bf]g:exit:pwd:clear:history:ps[ \t]*'
 
-export HISTSIZE=10000
-
-HISTFILESIZE=$(bc<<<$HISTSIZE*2)
-export HISTFILESIZE
+init::export HISTSIZE 10000
+init::export HISTFILESIZE $(bc<<<$HISTSIZE*2)
 
 # Use standard ISO 8601 timestamp
 # %F -> %Y-%m-%d
 # %T -> %H:%M:%S (24-hr fmt)
-export HISTTIMEFORMAT='[%F %T] '
+init::export HISTTIMEFORMAT '[%F %T]'
 
 # Colorful manpages - TODO: src colors
-export LESS_TERMCAP_mb=$(printf '\e[01;31m') # enter blinking mode – red
-export LESS_TERMCAP_md=$(printf '\e[01;35m') # enter double-bright mode – bold, magenta
-export LESS_TERMCAP_me=$(printf '\e[0m') # turn off all appearance modes (mb, md, so, us)
-export LESS_TERMCAP_se=$(printf '\e[0m') # leave standout mode
-export LESS_TERMCAP_so=$(printf '\e[01;33m') # enter standout mode – yellow
-export LESS_TERMCAP_ue=$(printf '\e[0m') # leave underline mode
-export LESS_TERMCAP_us=$(printf '\e[04;36m') # enter underline mode – cyan
-
-export PROMPT_COMMAND="__prompt_command"
+init::export LESS_TERMCAP_mb $(printf '\e[01;31m') # enter blinking mode – red
+init::export LESS_TERMCAP_md $(printf '\e[01;35m') # enter double-bright mode – bold, magenta
+init::export LESS_TERMCAP_me $(printf '\e[0m') # turn off all appearance modes (mb, md, so, us)
+init::export LESS_TERMCAP_se $(printf '\e[0m') # leave standout mode
+init::export LESS_TERMCAP_so $(printf '\e[01;33m') # enter standout mode – yellow
+init::export LESS_TERMCAP_ue $(printf '\e[0m') # leave underline mode
+init::export LESS_TERMCAP_us $(printf '\e[04;36m') # enter underline mode – cyan
 
 # Remap caps -> super
 setxkbmap -option caps:super 2>/dev/null
@@ -99,6 +76,17 @@ stty -ixon -ixoff
 # Prettify less
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# LSCOLORS config
+[[ -e $HOME/.dir_colors/nord.dircolors ]] && eval "$(dircolors "$HOME/.dir_colors/nord.dircolors")"
+
+# GCC color config
+init::export GCC_COLORS 'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# PS1 prompt
+eval "$(oh-my-posh init bash --config "$HOME/dotfiles/ohmyposh/.ohmyposh/themes/nord.omp.json")"
+
+# PS2 prompt
+init::export PS2 "\[$(tput setaf 3)\]continue--> "
+
 # File perms
 umask 022
-### Interactive Mode Settings ### }}}

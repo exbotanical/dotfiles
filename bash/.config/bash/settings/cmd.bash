@@ -1,4 +1,4 @@
-### Extract - Unzip anything ### {{{
+# extract unarchives the file based on the archive type
 extract () {
   local file_name="$1"
 
@@ -24,9 +24,8 @@ extract () {
     echo "'$file_name' is not a valid file"
   fi
 }
-### End Extract ### }}}
 
-### Base64 ### {{{
+# base64 encodes to and decodes from base64
 base64 () {
   while getopts ":d:e:" opt; do
     case $opt in
@@ -40,7 +39,8 @@ base64 () {
         echo "[-] Invalid option: -$OPTARG" >&2
         ;;
       :)
-        echo "[!] Option -$OPTARG requires an argument" >&2
+        echo "[!] Option -$OPTARG requires an argument"
+        return 1
         ;;
     esac
   done
@@ -48,29 +48,25 @@ base64 () {
   # reset because we're probably going to be in the same shell for a while
   OPTIND=1
 }
-### End Base64 ### }}}
 
-### rmd - Render a Markdown File ### {{{
+# rmd renders a markdown file
 rmd () {
   pandoc "$1" | lynx -stdin
 }
-### End rmd ### }}}
 
-### bu - Backup a file ### {{{
+# bak backs up a file with a timestamp in the name
 bak () {
   local file_name="$1"
   cp "$file_name" "${file_name}-$(date +%Y%m%d%H%M).bak"
 }
-### End bu ### }}}
 
-### ptree - Display a process tree ### {{{
+# ptree displays tree of running user processes
 ptree () {
   ps f -u "$USER" -o command,pid,%cpu,%mem,time,etime,tty | \
     awk 'NR <= 1 {print;next} !/awk/ && $0~var' var="${1:-".*"}"
 }
-### End ptree ### }}}
 
-### Mk_alias - Add a New Alias ### {{{
+# mk_alias adds new aliases
 # mk_alias name "val"
 mk_alias () {
   local alias_name="$1"
@@ -93,50 +89,44 @@ mk_alias () {
 
   (( "$?" == 0 )) && echo "[+] Successfully added new alias"
 }
-### End Mk_alias ### }}}
 
-### Psaux - Less Running Processes of Target ### {{{
+# psaux less-es running processes of the given target
 psaux () {
   pgrep -f "$@" | xargs ps -fp 2>/dev/null
 }
-### End Psaux ### }}}
 
-### open_enc - Mount Encrypted Directories {{{
+# open_enc mounts an encrypted directory
 open_enc () {
   local mount="$1"
   local proxy="$2"
 
   encfs "${mount:-$HOME/.enc/}" "${proxy:-$HOME/enc/}"
 }
-### End open_enc ### }}}
 
-### Close_enc - Unmount Encrypted Directories {{{
+# close_enc unmounts an encrypted directory
 close_enc () {
   local proxy="$1"
 
   fusermount -u "${proxy:-$HOME/enc}"
 }
-### End close_enc ### }}}
 
-### Connect Bluetooth Device Connection {{{
+# blue_conn connects a bluetooth device by its MAC address
 blue_conn () {
   local default='28:F0:33:D0:61:14'
 
   # must have edited config rules
   bluetoothctl connect "${1:-$default}"
 }
-### End Bluetooth Device Connection ### }}}
 
-### Dockerize - Launch a Containerized Dev Env of PWD {{{
+# dockerize launches a containerized dev env of the PWD
 dockerize () {
   local docker_image='ghcr.io/exbotanical/docker-dev-env:latest'
 
   echo -e "Building a fresh dev environment as an ephemeral container in $(pwd)...\n"
   docker run --rm -it -v "$(pwd):/ephemeral" "$docker_image"
 }
-### End Dockerize ### }}}
 
-### Bootstrap - Initialize a New Project of Type $1 {{{
+# bootstrap initializes a new project of type $1 using my templates
 bootstrap () {
   local script_loc="$BASH_CONFIG/scripts/bootstrap.bash"
 
@@ -146,18 +136,15 @@ bootstrap () {
     bash "$script_loc" "$1" "$2"
   fi
 }
-### End Bootstrap ### }}}
 
-### Git {{{
-
-# Set Current Branch to Track Remote (default: 'origin')
+# gtrack sets the current branch to track its remote counterpart
 gtrack () {
   local remote="$1"
 
   git branch -u "${remote:-origin}/$(git rev-parse --abbrev-ref HEAD)"
 }
 
-# Checkout HEAD branch and pull latest
+# gm checkouts the HEAD branch and pulls its latest changes
 gm () {
   local default_head='master'
   local head_branch
@@ -165,16 +152,13 @@ gm () {
 
   git checkout "$head_branch" && git pull origin "$head_branch"
 }
-### End Git ### }}}
 
-### Cheat - cheat.sh {{{
+# cheat searches cheat.sh
 cheat () {
   curl "cht.sh/$*"
 }
-### End Cheat ### }}}
 
-### Webcam Ctrl {{{
-# Link external webcam to default.
+# webcam links external webcam to default
 webcam () {
   DEFAULT_WEBCAM='video0'
   EXTERNAL_WEBCAM='video2'
@@ -182,9 +166,8 @@ webcam () {
   sudo unlink /dev/$EXTERNAL_WEBCAM
   sudo ln -s /dev/$DEFAULT_WEBCAM /dev/$EXTERNAL_WEBCAM
 }
-### End Webcam Ctrl ### }}}
 
-### Monitor Ctrl {{{
+# mon sets the screen layout
 mon () {
   local mode="$1"
 
@@ -215,23 +198,20 @@ mon () {
   esac
 }
 
+# darken lowers the screen brightness beyond the percentage
 darken () {
   local percentage="${1:-.7}"
   local default_output="eDP-1"
 
   xrandr --output $default_output --brightness "$percentage"
 }
-### End Monitor Ctrl ### }}}
 
-### Sys Info {{{
-
-# See system uptime
+# lsuptime prints the system uptime
 lsuptime () {
   uptime | awk '{ print "Uptime:", $3, $4, $5 }' | sed 's/,//g'
 }
 
-# View most used commands
+# lscmd prints the most used commands
 lscmd () {
   history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
 }
-### End Sys Info ### }}}

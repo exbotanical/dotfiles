@@ -1,0 +1,10 @@
+external-sources=true
+
+# globbing and word-splitting turned off
+disable=SC1091
+disable=SC2046
+disable=SC2086
+disable=SC2154
+disable=SC2207
+disable=SC2211
+disable=SC2231

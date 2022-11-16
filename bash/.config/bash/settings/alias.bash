@@ -1,19 +1,17 @@
-### Colorize {{{
-alias ls='ls --color=auto'
+# Colorization
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-### End Colorize ### }}}
 
-### ls Flag Aliases {{{
+# ls
+alias ls='ls --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-### End ls Flag Aliases ### }}}
 
-### Navigation {{{
+# Navigation
 alias repos='cd ~/repositories'
 alias docs='cd ~/Documents'
 alias desktop='cd ~/Desktop'
@@ -24,9 +22,8 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
-### End Navigation ### }}}
 
-### Git {{{
+# Git
 # I prefer defining my Git aliases in bash over gitconfig
 alias gpull='git pull'
 alias gpush='git push'
@@ -56,14 +53,11 @@ alias gh="git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname
 alias gw='git worktree add worktree'
 alias gwl='git worktree list'
 alias gwrm='git worktree remove worktree && git worktree prune'
-### End Git ### }}}
 
-### Package Management {{{
+# Package Management
 # Quick pacman update alias
 alias upgrade='sudo pacman -Syu'
-### End Package Management ### }}}
 
-### Miscellaneous {{{
 # Purge bash history
 alias purgehist='cat /dev/null > ~/.bash_history'
 # Search bash history
@@ -87,8 +81,6 @@ alias 777='chmod -R 777'
 # Run shpec e.g. `tdd t/test.shpec.bash`
 # shellcheck disable=SC2142
 alias tdd='find . -path ./.git -prune -o -type f -print | entr bash -c "shpec $1"'
-### End Miscellaneous ### }}}
 
-### Overrides {{{
+# Overrides
 alias code='codium'
-### End Overrides ### }}}

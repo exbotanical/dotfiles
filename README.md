@@ -15,3 +15,7 @@ These configs are:
 - *login* settings and configurations that need only be sourced upon login
 
 There's also the `scripts` directory under `$HOME/.config/bash`, which houses scripts used by the functions in `cmd.bash`, where a command is more complicated than can be crammed into `cmd.bash` alone.
+
+## Attributions
+
+A huge amount of my work with Bash is owed to Ted Lilley aka [binaryphile](https://github.com/binaryphile) and his incredible [Bash series](https://www.binaryphile.com/bash/2018/07/26/approach-bash-like-a-developer-part-1-intro.html). The idea behind my Bash support library (and many of its functions) are from this blog series. Highly recommended reading if you're interested in Bash.
