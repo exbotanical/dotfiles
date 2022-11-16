@@ -5,7 +5,7 @@ alias it='(_shpec_failures=0; alias setup &>/dev/null && { setup; unalias setup;
 alias ti='return "$_shpec_failures"); (( _shpec_failures += $?, _shpec_examples++ ))'
 alias end_describe='end; unalias setup teardown 2>/dev/null'
 
-source "$(dirname "$(readlink -f "BASH_SOURCE")")/../.config/bash/cmd.bash"
+source "$(dirname "$(readlink -f "BASH_SOURCE")")/../.config/bash/settings/cmd.bash"
 
 describe 'cmd'
 

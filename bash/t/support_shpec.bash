@@ -9,6 +9,13 @@ alias ti='return "$_shpec_failures"); (( _shpec_failures += $?, _shpec_examples+
 alias end_describe='end; unalias setup teardown 2>/dev/null'
 
 describe 'support'
+  describe 'interactive?'
+    it 'returns false because these tests are not in an interactive shell'
+      result=$(support::interactive? || echo 1)
+      assert equal 1 $result
+    ti
+  end_describe
+
   describe 'sourced?'
     # shellcheck disable=SC2154
     alias setup='file=$(mktemp) || return; printf '\''source "%s"\nsupport::sourced?'\'' "$support_lib" > "$file"'
@@ -23,6 +30,33 @@ describe 'support'
       chmod 775 "$file"
       "$file"
       assert unequal 0 $?
+    ti
+  end_describe
+
+  describe 'defined?'
+    it 'returns true if the variable is defined'
+      defined_var=1
+      result=$(support::defined? $defined_var && echo 1)
+      assert equal 1 "$result"
+    ti
+
+    it 'returns false if the variable is undefined'
+      result=$(support::defined? $defined_var && echo 1)
+      assert unequal 1 "$result"
+    ti
+  end_describe
+
+  describe 'extant?'
+    it 'returns true if the provided entity exists'
+      fn () {
+        :
+      }
+
+      assert equal 1 "$(support::extant? fn && echo 1)"
+    ti
+
+    it 'returns false if the provided entity does not exist'
+      assert unequal 1 "$(support::extant? fn && echo 1)"
     ti
   end_describe
 
@@ -80,6 +114,57 @@ describe 'support'
       support::debug_mode off
       [[ $- == *x* ]]
       assert unequal 0 $?
+    ti
+  end_describe
+
+  describe 'globbing'
+    it 'sets globbing'
+      set -o noglob
+      support::globbing on
+      [[ $- == *f* ]]
+      assert equal 1 $?
+    ti
+
+    it 'unsets globbing'
+      set +o noglob
+      support::globbing off
+      [[ $- == *f* ]]
+      assert equal 0 $?
+    ti
+  end_describe
+
+  describe 'splitspace'
+    it 'sets IFS to split on newlines'
+      support::splitspace off
+
+      text="Welcome to the jungle"
+      read -a arr <<< "$text"
+
+      assert equal "$arr" "Welcome to the jungle"
+    ti
+
+    it 'sets IFS to split on spaces'
+      support::splitspace on
+
+      text="Welcome to the jungle"
+      read -a arr <<< "$text"
+
+      assert equal "$arr" "Welcome"
+    ti
+  end_describe
+
+  describe 'aliases'
+    it 'turns on aliases'
+      shopt -u expand_aliases
+      support::aliases on
+      alias hello='echo var'
+      assert equal "$(hello)" 'var'
+    ti
+
+    it 'turns on aliases'
+      support::aliases off
+      alias hello='echo var'
+      assert unequal "$(hello)" 'var'
     ti
   end_describe
 
@@ -157,21 +242,21 @@ describe 'support'
       defs=( -o,o_flag,f  )
       args=( -o           )
       support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      assert equal o_flag=1 $options
+      assert equal o_flag=1 "$options"
     ti
 
     it 'returns with _err_=1 if the argument is undefined'
       defs=( -o,o_flag,f  )
       args=( --other      )
       support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      assert equal 1 $_err_
+      assert equal 1 "$_err_"
     ti
 
     it 'returns a named argument'
       defs=( --option,option_val  )
       args=( --option sample      )
       support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      assert equal option_val=sample $options
+      assert equal option_val=sample "$options"
     ti
 
     it "returns a named argument and a flag"
@@ -192,7 +277,7 @@ describe 'support'
       defs=( --option,option_val  )
       args=( --option sample -    )
       support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      assert equal option_val=sample $options
+      assert equal option_val=sample "$options"
     ti
 
     it 'stops when it encounters --'
@@ -202,7 +287,7 @@ describe 'support'
       )
       args=( --option sample -- -p )
       support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      assert equal option_val=sample $options
+      assert equal option_val=sample "$options"
     ti
 
     it 'returns positional arguments'
