@@ -11,8 +11,9 @@ alias end_describe='end; unalias setup teardown 2>/dev/null'
 describe 'support'
   describe 'interactive?'
     it 'returns false because these tests are not in an interactive shell'
-      result=$(support::interactive? || echo 1)
-      assert equal 1 $result
+      support::interactive?
+      # result=$(support::interactive? || echo 1)
+      assert equal 1 $?
     ti
   end_describe
 
@@ -36,13 +37,13 @@ describe 'support'
   describe 'defined?'
     it 'returns true if the variable is defined'
       defined_var=1
-      result=$(support::defined? $defined_var && echo 1)
-      assert equal 1 "$result"
+      support::defined? $defined_var
+      assert equal 0 $?
     ti
 
     it 'returns false if the variable is undefined'
-      result=$(support::defined? $defined_var && echo 1)
-      assert unequal 1 "$result"
+      support::defined? $undefined_var
+      assert unequal 0 $?
     ti
   end_describe
 
@@ -51,12 +52,13 @@ describe 'support'
       fn () {
         :
       }
-
-      assert equal 1 "$(support::extant? fn && echo 1)"
+      support::extant? fn
+      assert equal 0 $?
     ti
 
     it 'returns false if the provided entity does not exist'
-      assert unequal 1 "$(support::extant? fn && echo 1)"
+      support::extant? fn
+      assert unequal 0 $?
     ti
   end_describe
 
@@ -136,19 +138,15 @@ describe 'support'
   describe 'splitspace'
     it 'sets IFS to split on newlines'
       support::splitspace off
-
       text="Welcome to the jungle"
       read -a arr <<< "$text"
-
       assert equal "$arr" "Welcome to the jungle"
     ti
 
     it 'sets IFS to split on spaces'
       support::splitspace on
-
       text="Welcome to the jungle"
       read -a arr <<< "$text"
-
       assert equal "$arr" "Welcome"
     ti
   end_describe
@@ -161,7 +159,7 @@ describe 'support'
       assert equal "$(hello)" 'var'
     ti
 
-    it 'turns on aliases'
+    it 'turns off aliases'
       support::aliases off
       alias hello='echo var'
       assert unequal "$(hello)" 'var'

@@ -1,14 +1,9 @@
-shopt -s expand_aliases
+ROOT_DIR="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
-alias it='(_shpec_failures=0; alias setup &>/dev/null && { setup; unalias setup; alias teardown &>/dev/null && trap teardown EXIT ;}; it'
-# shellcheck disable=SC2154
-alias ti='return "$_shpec_failures"); (( _shpec_failures += $?, _shpec_examples++ ))'
-alias end_describe='end; unalias setup teardown 2>/dev/null'
-
-source "$(dirname "$(readlink -f "BASH_SOURCE")")/../.config/bash/settings/cmd.bash"
+source "$ROOT_DIR/shpec_util.bash"
+source "$ROOT_DIR/../.config/bash/settings/cmd.bash"
 
 describe 'cmd'
-
   describe 'base64'
     it 'encodes to and decodes from base64'
       test_str='string'
@@ -44,5 +39,4 @@ describe 'cmd'
       unstub_command "date"
     ti
   end_describe
-
 end_describe

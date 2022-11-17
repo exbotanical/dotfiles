@@ -28,7 +28,7 @@ init::append_path () {
 # prepend_path prepends the given argument to the PATH
 init::prepend_path () {
   init::contains? "$PATH" $1 && return
-  declare -g PATH=$1:${!PATH}
+  declare -g PATH=$1:${PATH}
 }
 
 # export_builtin sets the variable $1 to the first verified builtin
