@@ -166,4 +166,35 @@ END
       assert equal 1 $?
     ti
   end_describe
+
+  describe 'source?'
+    alias setup='source $initutil_lib'
+
+    it 'sources a the provided argument only if it is a file'
+      file=$(mktemp)
+      printf 'echo 2' > "$file"
+      assert equal 2 $(init::source? "$file")
+      rm "$file"
+    ti
+
+    it 'returns early if the provided argument is not a file'
+      file=$(mktemp -d)
+      $(init::source? "$file")
+      assert equal 1 $?
+      rmdir "$file"
+    ti
+  end_describe
+
+  describe 'list_dir'
+    alias setup='source $initutil_lib'
+
+    it 'enumerates the directory contents as a single line'
+      file=$(mktemp -d)
+      pushd "$file"
+      touch {a..z}
+      result=$(init::list_dir "$file")
+      expected=$(echo {a..z})
+      assert equal "$expected" "$result"
+    ti
+  end_describe
 end_describe

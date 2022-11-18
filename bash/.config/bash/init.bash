@@ -20,8 +20,10 @@ support::globbing off
 # Only source env vars if this is the first login or a force-reload
 { init::login? || (( Reload )); } && source $SettingsDir/env.bash
 
-# Source aliases and commands - contents must be quoted as they'll run in other contexts
-source $SettingsDir/alias.bash
+source $Root/lib/apps.bash # app-specific environment and commands
+source $SettingsDir/alias.bash # aliases
+# commands - contents must be quoted as they'll run in
+# other envs where globbing/splitspace may be on
 source $SettingsDir/cmd.bash
 
 # Source interactive settings only if we're in an interactive shell

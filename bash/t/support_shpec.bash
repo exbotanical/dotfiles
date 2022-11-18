@@ -235,65 +235,55 @@ describe 'support'
     ti
   end_describe
 
-  describe 'parseopts'
-    it 'returns a short flag'
-      defs=( -o,o_flag,f  )
-      args=( -o           )
-      support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      assert equal o_flag=1 "$options"
-    ti
+  describe 'filter'
+    it 'filters a stream against a unary predicate'
+      support::splitspace off
 
-    it 'returns with _err_=1 if the argument is undefined'
-      defs=( -o,o_flag,f  )
-      args=( --other      )
-      support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      assert equal 1 "$_err_"
-    ti
-
-    it 'returns a named argument'
-      defs=( --option,option_val  )
-      args=( --option sample      )
-      support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      assert equal option_val=sample "$options"
-    ti
-
-    it "returns a named argument and a flag"
-      defs=(
-        --option,option_val
-        -p,p_flag,f
-      )
-      args=( --option sample -p )
-      support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      expecteds=(
-        option_val=sample
-        p_flag=1
-      )
-      assert equal "${expecteds[*]}" "${options[*]}"
-    ti
-
-    it 'stops when it encounters a non-option'
-      defs=( --option,option_val  )
-      args=( --option sample -    )
-      support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      assert equal option_val=sample "$options"
-    ti
-
-    it 'stops when it encounters --'
-      defs=(
-        --option,option_val
-        -p,p_flag,f
-      )
-      args=( --option sample -- -p )
-      support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      assert equal option_val=sample "$options"
-    ti
-
-    it 'returns positional arguments'
-      defs=( -o,o_flag,f  )
-      args=( -o one two   )
-      support::parseopts "${args[*]}" "${defs[*]}" options posargs
-      expecteds=( one two )
-      assert equal "${expecteds[*]}" "${posargs[*]}"
+      even? () { (( $1 % 2 == 0 )) ;}
+      integers=( 1 2 3 4 )
+      result=$(echo "${integers[*]}" | support::filter even?)
+      expected=( 2 4 )
+      assert equal "${expected[*]}" "$result"
     ti
   end_describe
+
+  describe 'file?'
+    alias teardown='rm "$file"'
+
+    it 'returns true if the provided argument is a file'
+      file=$(mktemp)
+      support::file? $file
+      assert equal 0 $?
+    ti
+
+    it 'returns true if the provided argument is a directory (also a file)'
+      file=$(mktemp -d)
+      support::file? $file
+      assert equal 0 $?
+    ti
+
+    it 'returns false if the provided argument is not a file'
+      file=$(echo hi)
+      support::file? $file
+      assert unequal 0 $?
+    ti
+  end_describe
+
+  describe 'dir?'
+    alias teardown='rm "$file"'
+
+    it 'returns true if the provided argument is a directory'
+      file=$(mktemp -d)
+      support::dir? $file
+      assert equal 0 $?
+    ti
+
+    it 'returns false if the provided argument is not a directory'
+      file=$(mktemp)
+      support::dir? $file
+      assert unequal 0 $?
+    ti
+  end_describe
+
+
 end_describe

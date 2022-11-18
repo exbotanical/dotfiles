@@ -1,4 +1,4 @@
-
+# TODO: source lib/support.bash if not already
 PreexistingFunctions=$(compgen -A function | sort)
 
 # login? returns true if the global `ENV_SET` flag has not been set, indicating
@@ -44,6 +44,35 @@ init::export_builtin () {
     return
   }
 }
+
+# source? sources the provided argument if it is a file
+init::source? () {
+  support::file? $1 && source $1
+}
+
+init::load_app? () {
+  local dir=$1
+  local predicate_file=$dir/predicate.bash
+
+  # If it has a predicate file, invoke said predicate
+  support::file? $predicate_file && {
+    source $predicate_file
+    return
+  }
+
+  # Ensure the directory name matches an actual executable
+  type $dir &>/dev/null
+}
+
+# list_dir lists the directory's contents without newlines
+init::list_dir () { (
+  local items=()
+
+  cd $1
+  support::globbing on
+  items=( * )
+  echo "${items[*]}"
+) }
 
 # Diff the pre-existing functions against the ones declared in this file
 # shellcheck disable=SC2034

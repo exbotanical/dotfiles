@@ -14,10 +14,6 @@ support::defined? () {
   [[ -v "$1" ]]
 }
 
-support::present? () {
-  [[ -n ${1:-} ]]
-}
-
 # extant? returns true if the argument is an available command
 support::extant? () {
   type $1 &>/dev/null
@@ -63,6 +59,7 @@ support::globbing () {
   esac
 }
 
+# splitspace toggles splitting on spaces
 support::splitspace () {
   case $1 in
     on  ) IFS=$' \t\n';;
@@ -103,67 +100,22 @@ support::traceback () {
   return $rc
 } >&2
 
-# Parse named options and positional arguments
-# TODO: support short named args with or without whitespace
-# TODO: support long named args with or without whitespace, with `=`
-support::parseopts () {
-  local defs_=$2
-  local -n opts_=$3
-  local -n posargs_=$4
-  local -A flags_=()
-  # A hash, indexed by an option pointing to its value
-  local -A names_=()
+# filter applies a unary function on a stream of values,
+# returning only those values for which the function evaluates to true
+support::filter () {
+  local item
 
-  _err_=0
-  set -- $1
-
-  # Create a hash whose keys are the flag opts
-  denormopts "$defs_" names_ flags_
-
-  # Process multiple arguments, gathering resulting key=value pairs
-  # into an array, which is passed back via indirection through ref_.
-  # Stop parsing when encountering an argument that doesn't begin with a hyphen.
-  while [[ ${1:-} == -?* ]]; do
-    # -- signifies end of opts
-    [[ $1 == -- ]] && {
-      shift
-      break
-    }
-
-    # Test whether the option is in the hash
-    support::defined? names_[$1] || {
-      _err_=1
-      return
-    }
-
-    ! support::defined? flags_[$1]
-    case $? in
-      0 )
-        opts_+=( ${names_[$1]}=$2 )
-        shift
-        ;;
-      * ) opts_+=( ${names_[$1]}=1 );;
-    esac
-    shift
+  while read -r item; do
+    $1 $item && echo $item
   done
-  posargs_=( $@ )
 }
 
-denormopts () {
-  local -n _names_=$2
-  local -n _flags_=$3
-  local IFS=$IFS
-  local _defn_
-  local _opt_
+# file? returns true if the provided argument is a file
+support::file? () {
+  [[ -r $1 ]]
+}
 
-  for _defn_ in $1; do
-    IFS=,
-    set -- $_defn_
-    IFS='|'
-
-    for _opt_ in $1; do
-      _names_[$_opt_]=$2
-      support::present? ${3:-} && _flags_[$_opt_]=1
-    done
-  done
+# dir? returns true if the provided argument is a directory
+support::dir? () {
+  [[ -d $1 ]]
 }

@@ -76,14 +76,8 @@ stty -ixon -ixoff
 # Prettify less
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# LSCOLORS config
-[[ -e $HOME/.dir_colors/nord.dircolors ]] && eval "$(dircolors "$HOME/.dir_colors/nord.dircolors")"
-
 # GCC color config
 init::export GCC_COLORS 'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# PS1 prompt
-eval "$(oh-my-posh init bash --config "$HOME/dotfiles/ohmyposh/.ohmyposh/themes/nord.omp.json")"
 
 # PS2 prompt
 init::export PS2 "\[$(tput setaf 3)\]continue--> "

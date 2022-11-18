@@ -25,35 +25,6 @@ extract () {
   fi
 }
 
-# base64 encodes to and decodes from base64
-base64 () {
-  while getopts ":d:e:" opt; do
-    case $opt in
-      d)
-        echo $OPTARG | openssl enc -d -base64
-        ;;
-      e)
-        openssl base64<<<"$OPTARG"
-        ;;
-      \?)
-        echo "[-] Invalid option: -$OPTARG" >&2
-        ;;
-      :)
-        echo "[!] Option -$OPTARG requires an argument"
-        return 1
-        ;;
-    esac
-  done
-
-  # reset because we're probably going to be in the same shell for a while
-  OPTIND=1
-}
-
-# rmd renders a markdown file
-rmd () {
-  pandoc "$1" | lynx -stdin
-}
-
 # bak backs up a file with a timestamp in the name
 bak () {
   local file_name="$1"
@@ -110,22 +81,6 @@ close_enc () {
   fusermount -u "${proxy:-$HOME/enc}"
 }
 
-# blue_conn connects a bluetooth device by its MAC address
-blue_conn () {
-  local default='28:F0:33:D0:61:14'
-
-  # must have edited config rules
-  bluetoothctl connect "${1:-$default}"
-}
-
-# dockerize launches a containerized dev env of the PWD
-dockerize () {
-  local docker_image='ghcr.io/exbotanical/docker-dev-env:latest'
-
-  echo -e "Building a fresh dev environment as an ephemeral container in $(pwd)...\n"
-  docker run --rm -it -v "$(pwd):/ephemeral" "$docker_image"
-}
-
 # bootstrap initializes a new project of type $1 using my templates
 bootstrap () {
   local script_loc="$BASH_CONFIG/scripts/bootstrap.bash"
@@ -135,22 +90,6 @@ bootstrap () {
   else
     bash "$script_loc" "$1" "$2"
   fi
-}
-
-# gtrack sets the current branch to track its remote counterpart
-gtrack () {
-  local remote="$1"
-
-  git branch -u "${remote:-origin}/$(git rev-parse --abbrev-ref HEAD)"
-}
-
-# gm checkouts the HEAD branch and pulls its latest changes
-gm () {
-  local default_head='master'
-  local head_branch
-  head_branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo $default_head)"
-
-  git checkout "$head_branch" && git pull origin "$head_branch"
 }
 
 # cheat searches cheat.sh
@@ -165,45 +104,6 @@ webcam () {
 
   sudo unlink /dev/$EXTERNAL_WEBCAM
   sudo ln -s /dev/$DEFAULT_WEBCAM /dev/$EXTERNAL_WEBCAM
-}
-
-# mon sets the screen layout
-mon () {
-  local mode="$1"
-
-  if [[ -z "$mode" ]]; then
-    echo "[-] No argument supplied."
-    exit 1
-  fi
-
-  local dir="$HOME/config/.screenlayout"
-
-  case $mode in
-    1)
-      "$dir/singlescreen.sh"
-      ;;
-    2)
-      "$dir/dualscreen.sh"
-      ;;
-    3)
-      "$dir/triscreen.sh"
-      ;;
-    4)
-      "$dir/quadscreen.sh"
-      ;;
-    *)
-      echo "[-] '$mode' is not a valid option"
-      exit 1
-      ;;
-  esac
-}
-
-# darken lowers the screen brightness beyond the percentage
-darken () {
-  local percentage="${1:-.7}"
-  local default_output="eDP-1"
-
-  xrandr --output $default_output --brightness "$percentage"
 }
 
 # lsuptime prints the system uptime
