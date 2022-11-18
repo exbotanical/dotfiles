@@ -28,23 +28,17 @@ main () {
 
   case $answer in
     y )
-      if [[ ! -x $TABLES_DIR ]]; then
+      [[ ! -x $TABLES_DIR ]] && {
         echo "[-] \"${TABLES_DIR}\" not found.";
         exit "$E_FILENOTFOUND";
-      fi
+      }
 
       echo "[+] Flushing IP Tables..."
       flush
       echo "[+] Flush completed."
       ;;
-
-    n )
-      exit 0
-      ;;
-
-    * )
-      main
-      ;;
+    n ) exit 0 ;;
+    * ) main   ;;
   esac
 }
 
@@ -59,9 +53,9 @@ return 2>/dev/null
 
 set -o errexit
 
-if [[ $EUID -ne $ROOT_UID ]]; then
+[[ $EUID -ne $ROOT_UID ]] && {
   echo "[-] This script should be run as root.";
   exit $E_NOTROOT;
-fi
+}
 
 main

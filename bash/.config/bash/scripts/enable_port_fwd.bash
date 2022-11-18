@@ -8,10 +8,10 @@ main () {
 
   case $answer in
     y )
-      if [[ ! -x $TABLES_F ]]; then
+      [[ ! -x $TABLES_F ]] && {
         echo "[-] \"${TABLES_F}\" not found.";
         exit "$E_FILENOTFOUND";
-      fi
+      }
 
       echo "[+] Updating rules..."
       echo 1 > /proc/sys/net/ipv4/ip_forward
@@ -43,9 +43,9 @@ return 2>/dev/null
 
 set -o errexit
 
-if [[ $EUID -ne $ROOT_UID ]]; then
+[[ $EUID -ne $ROOT_UID ]] && {
   echo "[-] This script should be run as root.";
   exit $E_NOTROOT;
-fi
+}
 
 main

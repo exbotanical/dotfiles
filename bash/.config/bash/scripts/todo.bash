@@ -4,7 +4,6 @@
 #===============================================================================
 # shellcheck disable=SC2086,SC2048
 
-
 panic () {
   local exit_status=$1
 
@@ -15,15 +14,15 @@ panic () {
 }
 
 verify_args () {
-  if (( $# < 1 )); then
+  (( $# < 1 )) && {
     panic $E_ARGS 'Insufficient arguments'
-  fi
+  }
 }
 
 check_todo_file () {
-  if [[ ! -e $TODO_FILE ]];then
+  [[ ! -e $TODO_FILE ]]&& {
     panic $E_FILENOTFOUND "File $TODO_FILE does not exist. Add a TODO to create one."
-  fi
+  }
 }
 
 logo () {
@@ -55,7 +54,7 @@ Examples:
   $0 -d 5,10 # delete TODOs 5 - 10
 
 END
-  exit 1
+  exit 0
 }
 
 add_todo () {
@@ -98,9 +97,7 @@ main () {
       show_todos
       ;;
 
-    * )
-      usage
-      ;;
+    * ) usage ;;
   esac
 }
 

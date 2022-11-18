@@ -9,9 +9,7 @@ current_time () {
 }
 
 panic () {
-  local exit_status=$1
-
-  shift
+  local exit_status=$1; shift
 
   echo "[-] ERROR ($(current_time)): $*" >&2
   exit $exit_status
@@ -19,22 +17,23 @@ panic () {
 
 get_pid () {
   local target_port=$1
+
   lsof -ni :$target_port 2>/dev/null | grep LISTEN | awk '{ print $2 }'
 }
 
 main () {
   local port=$1
 
-  if [[ ${#port} -lt 4 || ${#port} -gt 5 ]]; then
+  [[ ${#port} -lt 4 || ${#port} -gt 5 ]] && {
     panic $E_BADARG "Invalid port number: $port"
-  fi
+  }
 
   pid=$(get_pid $port)
 
-  if [[ -z "$pid" ]]; then
+  [[ -z "$pid" ]] && {
     echo "[*] Port not in use"
     exit 0
-  fi
+  }
 
   kill -9 $pid 2>/dev/null && echo "[+] Process terminated"
 
@@ -46,8 +45,6 @@ IFS=$'\n'
 E_ARGS=88
 E_BADARG=89
 
-if [[ -z "$1" ]]; then
-  panic $E_ARGS "A parameter is required"
-fi
+[[ -z "$1" ]] && panic $E_ARGS "A parameter is required"
 
 main $1

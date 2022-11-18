@@ -11,8 +11,9 @@ ExecDir="$HOME/.local/bin"
 EphemeralVars=( Reload Root SettingsDir ExecDir ) # vars to cleanup
 
 source "$Root/lib/support.bash" # support functions - we leave these in the global namespace
-source "$Root/initutil.bash" # init utilities - we unset these after init
+source "$Root/lib/initutil.bash" # init utilities - we unset these after init
 
+init::toggle_debug
 # Turn off expansion i.e. no need to quote vars from here onward, until we turn it back on
 support::splitspace off
 support::globbing off
@@ -21,22 +22,32 @@ support::globbing off
 { init::login? || (( Reload )); } && source $SettingsDir/env.bash
 
 source $Root/lib/apps.bash # app-specific environment and commands
+
+init::debug 'Loading primary aliases'
 source $SettingsDir/alias.bash # aliases
+
+init::debug 'Loading primary commands'
 # commands - contents must be quoted as they'll run in
 # other envs where globbing/splitspace may be on
 source $SettingsDir/cmd.bash
 
 # Source interactive settings only if we're in an interactive shell
-support::interactive? && source $SettingsDir/interactive.bash
+support::interactive? && {
+  init::debug 'Loading primary interactive'
+  source $SettingsDir/interactive.bash
+}
 
 # Source login settings only if we're logging in for the first time
 # and in an interactive shell
 {
   (support::interactive? && init::login?) || (( Reload ));
-} && source $SettingsDir/login.bash
+} && {
+  init::debug 'Loading primary login'
+  source $SettingsDir/login.bash
+}
 
 # Set the global login flag so we can dedupe login sourcing
-export ENV_SET=1
+init::set_login
 
 # Cleanup
 support::splitspace on

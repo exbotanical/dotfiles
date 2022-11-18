@@ -9,9 +9,7 @@ current_time () {
 }
 
 panic () {
-  local exit_status=$1
-
-  shift # pop exit status; we don't want to print it
+  local exit_status=$1; shift
 
   echo "[-] ERROR ($(current_time)): $*" >&2
   exit $exit_status
@@ -46,17 +44,17 @@ HOSTS_FILE="/etc/hosts"
 DEFAULT_IP="127.0.0.1"
 IP=${3:-$DEFAULT_IP}
 
-if [[ ! -e $HOSTS_FILE ]];then
+[[ ! -e $HOSTS_FILE ]] && {
   panic $E_FILENOTFOUND "Hosts file not found"
-fi
+}
 
-if [[ ! $UID -eq $ROOT_UID ]]; then
+[[ ! $UID -eq $ROOT_UID ]] && {
   panic $E_NOTROOT "Must execute as root"
-fi
+}
 
-if (( $# < 2 )); then
+(( $# < 2 )) && {
   panic $E_ARGS "Insufficient arguments"
-fi
+}
 
 case "$1" in
   add )

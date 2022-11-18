@@ -7,6 +7,11 @@ init::login? () {
   ! (( ENV_SET ))
 }
 
+# Set the `ENV_SET` flag to indicate we've logged in
+init::set_login () {
+  export ENV_SET=1
+}
+
 # export exports the key value pair, only using the value $2 if the
 # export key is not already set.
 init::export () {
@@ -73,6 +78,19 @@ init::list_dir () { (
   items=( * )
   echo "${items[*]}"
 ) }
+
+# Write arguments to stdout only if the debug flag is set
+init::debug () {
+  ! (( INIT_DEBUG_MODE )) && return
+
+  echo -e "[$(date +"%T.%3N")] $1"
+}
+
+# Toggle the debug flag
+init::toggle_debug () {
+  (( INIT_DEBUG_MODE ^= 1));:
+  export INIT_DEBUG_MODE
+}
 
 # Diff the pre-existing functions against the ones declared in this file
 # shellcheck disable=SC2034

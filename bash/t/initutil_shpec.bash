@@ -1,11 +1,8 @@
-initutil_lib="$(dirname "$(readlink -f "BASH_SOURCE")")/../.config/bash/initutil.bash"
+ROOT_DIR="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
-shopt -s expand_aliases
+source "$ROOT_DIR/shpec_util.bash"
 
-alias it='(_shpec_failures=0; alias setup &>/dev/null && { setup; unalias setup; alias teardown &>/dev/null && trap teardown EXIT ;}; it'
-# shellcheck disable=SC2154
-alias ti='return "$_shpec_failures"); (( _shpec_failures += $?, _shpec_examples++ ))'
-alias end_describe='end; unalias setup teardown 2>/dev/null'
+initutil_lib="$ROOT_DIR/../.config/bash/lib/initutil.bash"
 
 describe 'initutil'
   describe 'globals'
@@ -56,7 +53,7 @@ END
       source "$initutil_lib"
       init::login?
       assert equal 0 $?
-      export ENV_SET=1
+      init::set_login
       init::login?
       assert equal 1 $?
     ti
@@ -195,6 +192,7 @@ END
       result=$(init::list_dir "$file")
       expected=$(echo {a..z})
       assert equal "$expected" "$result"
+      rm -r "$file"
     ti
   end_describe
 end_describe

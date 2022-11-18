@@ -13,11 +13,10 @@ clib_setup_files () {
 
   # the include guard
   local incl_guard
+  incl_guard=$(echo $proj | tr 'a-z' 'A-Z')_H
 
   # include header statement
   local incl_header
-
-  incl_guard=$(echo $proj | tr 'a-z' 'A-Z')_H
   incl_header="#include \"${header:4:${#header}}\""
 
   # create the main header file and...

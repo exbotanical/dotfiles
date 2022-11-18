@@ -1,21 +1,15 @@
 # Personal Configurations
 
-This directory houses configuration files for my personal Linux machine. I'll also share how you can do this in the following sections.
+This directory houses my configuration files. It's also home to probably the most intense bash setup ever.
 
 ## Better Bash Configurations
 
-I don't use `.bashrc` (or common alternatives), not in a traditional manner anyway. Using a single config for the many settings one can configure for bash is cumbersome. Instead, my `.bashrc` sources from a special `$HOME/.config/bash` [directory](https://github.com/exbotanical/dotfiles/tree/master/bash/.config/bash), which houses separate files for discrete bash configurations. I recommend any regular bash user do the same.
+I don't use `.bashrc` (this is technically incorrect, actually) or common alternatives, not in a traditional manner anyway. Instead, I use a single `init.bash` file that initializes all of my settings and configurations in a smart way.
 
-These configs are:
-
-- *alias* persistent aliases; we can add to these using a custom command `mk_alias`
-- *cmd* reusable functions - these are sourced for use during interactive shell sessions
-- *env* PATHs, global environment variables, and shellopts
-- *interactive* settings for interactive mode; these are sourced on every session
-- *login* settings and configurations that need only be sourced upon login
-
-There's also the `scripts` directory under `$HOME/.config/bash`, which houses scripts used by the functions in `cmd.bash`, where a command is more complicated than can be crammed into `cmd.bash` alone.
+TODO: Write details on how all this works when I feel like writing.
 
 ## Attributions
 
-A huge amount of my work with Bash is owed to Ted Lilley aka [binaryphile](https://github.com/binaryphile) and his incredible [Bash series](https://www.binaryphile.com/bash/2018/07/26/approach-bash-like-a-developer-part-1-intro.html). The idea behind my Bash support library (and many of its functions) are from this blog series. Highly recommended reading if you're interested in Bash.
+A huge amount of my work with Bash is owed to Ted Lilley aka [binaryphile](https://github.com/binaryphile) and his incredible [Bash series](https://www.binaryphile.com/bash/2018/07/26/approach-bash-like-a-developer-part-1-intro.html). Highly recommended reading if you're interested in Bash.
+
+Another influence in my setup was flowblok's shell startup [setup](https://heptapod.host/flowblok/shell-startup) and diagram.

@@ -9,6 +9,8 @@ APP_LIST=$(
 # Load app-specific configurations, only if that app exists
 # and meets the predicate conditions for this environment (if any).
 for app in $APP_LIST; do
+  init::debug "Loading configurations for $app"
+
   { init::login? || [[ $1 == reload ]]; } && init::source? $app/env.bash
 
   support::splitspace on
