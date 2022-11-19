@@ -1,6 +1,9 @@
 ROOT_DIR="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
+source "$ROOT_DIR/shpec_util.bash"
+
 support_lib="$ROOT_DIR/../.config/bash/lib/support.bash"
+
 source "$support_lib"
 
 describe 'support'
@@ -198,7 +201,9 @@ describe 'support'
       set -- $(support::traceback 2>&1)
       IFS=:
       set -- $3
-      assert equal support_shpec.bash $(basename $1)
+      echo "$1"
+      # TODO: fix, where indentation changes by loc
+      assert equal 'support_shpec.bash' "$(basename $1)"
     ti
 
     it "prints the line number"
@@ -279,6 +284,4 @@ describe 'support'
       assert unequal 0 $?
     ti
   end_describe
-
-
 end_describe

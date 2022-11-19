@@ -41,7 +41,7 @@
   },
   "source": {
     "prefix": "source",
-    "body": "$(dirname \"$(readlink -f \"$BASH_SOURCE\")\")${0:VAR}"
+    "body": "source $(dirname \"$(readlink -f \"\\$BASH_SOURCE\")\")/${0:VAR}"
   },
   "shpec_aliases": {
     "prefix": "shpec",
