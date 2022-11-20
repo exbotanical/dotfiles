@@ -80,6 +80,17 @@ function M.setup()
       end
     }
 
+    -- Useful lua functions (used by telescope)
+    use { 'nvim-lua/plenary.nvim' }
+    -- Find, filter, preview
+    use {
+      'nvim-telescope/telescope.nvim',
+      tag = '0.1.0',
+      config = function ()
+        require('config.telescope').setup()
+      end
+    }
+
     if packer_bootstrap then
       print 'Setting up Neovim. Restart required after installation.'
       require('packer').sync()

@@ -1,0 +1,6 @@
+{
+  "LuaModule": {
+    "prefix": "module",
+    "body": "local M = {}\n\nfunction M.setup()\n\t${0:VAR}\nend\n\nreturn M"
+  }
+}
