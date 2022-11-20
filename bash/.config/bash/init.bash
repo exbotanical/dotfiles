@@ -13,7 +13,7 @@ EphemeralVars=( Reload Root SettingsDir ExecDir ) # vars to cleanup
 source "$Root/lib/support.bash" # support functions - we leave these in the global namespace
 source "$Root/lib/initutil.bash" # init utilities - we unset these after init
 
-# init::toggle_debug # TODO: flag opts
+init::toggle_debug # TODO: flag opts
 # Turn off expansion i.e. no need to quote vars from here onward, until we turn it back on
 support::splitspace off
 support::globbing off

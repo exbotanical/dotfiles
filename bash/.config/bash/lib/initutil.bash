@@ -57,11 +57,11 @@ init::source? () {
 
 init::load_app? () {
   local dir=$1
-  local predicate_file=$dir/predicate.bash
+  local detect_file=$dir/detect.bash
 
-  # If it has a predicate file, invoke said predicate
-  support::file? $predicate_file && {
-    source $predicate_file
+  # If it has a detect file, invoke it
+  support::file? $detect_file && {
+    source $detect_file
     return
   }
 

@@ -1,0 +1,6 @@
+{
+  "VimPlugImport": {
+    "prefix": "plugimport",
+    "body": "if exists('g:vim_plug_installing_plugins')\n\t${0:VAR}\nendif"
+  }
+}

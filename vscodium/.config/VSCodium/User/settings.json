@@ -29,7 +29,8 @@
     "*.tsx": "typescriptreact",
     "*.ts": "typescript",
     "*.h": "c",
-    "*.bash": "shellscript"
+    "*.bash": "shellscript",
+    ".vimrc": "viml"
   },
 
   "liveServer.settings.donotShowInfoMsg": true,
