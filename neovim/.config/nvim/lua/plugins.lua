@@ -115,8 +115,24 @@ function M.setup()
     -- Highlighting
     use { 'RRethy/vim-illuminate', }
 
+    -- Completions
+    use {
+      "hrsh7th/nvim-cmp",
+      config = function()
+        require('config.cmp').setup()
+      end
+    }
+    -- Buffer completions
+    use { "hrsh7th/cmp-buffer", }
+    -- Path completions
+    use { "hrsh7th/cmp-path", }
+    -- Snippet completions
+    use { "saadparwaiz1/cmp_luasnip", }
+    use { "hrsh7th/cmp-nvim-lsp", }
+    use { "hrsh7th/cmp-nvim-lua", }
+
     if packer_bootstrap then
-      print 'Setting up Neovim. Restart required after installation.'
+      print '[log] Setting up Neovim. Restart required after installation.'
       require('packer').sync()
     end
   end
