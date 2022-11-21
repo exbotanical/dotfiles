@@ -77,6 +77,7 @@ function M.setup()
     set statusline+=%=                            " Use a divider to separate left and right sides
     set laststatus=2                              " Show the status on the second to last line
   ]]
+
 end
 
 return M

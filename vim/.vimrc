@@ -39,7 +39,6 @@ set listchars=tab:▸▸                          " Characters used to show tabs
 set textwidth=80                              " Wrap lines at n characters
 
 " UI Options
-set laststatus=2                              " Always display the status bar
 set ruler                                     " Always show cursor position
 set wildmenu                                  " Display command line's tab complete options as a menu
 set wildmode=list:longest                     " Make wildmenu behave like Bash completions

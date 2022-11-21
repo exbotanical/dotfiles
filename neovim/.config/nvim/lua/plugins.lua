@@ -60,6 +60,9 @@ function M.setup()
 			end,
 		}
 
+    -- Icons
+    use { "kyazdani42/nvim-web-devicons" }
+
     -- Key mappings menu
     use {
       'folke/which-key.nvim',
@@ -117,19 +120,31 @@ function M.setup()
 
     -- Completions
     use {
-      "hrsh7th/nvim-cmp",
+      'hrsh7th/nvim-cmp',
       config = function()
         require('config.cmp').setup()
       end
     }
     -- Buffer completions
-    use { "hrsh7th/cmp-buffer", }
+    use { 'hrsh7th/cmp-buffer', }
     -- Path completions
-    use { "hrsh7th/cmp-path", }
+    use { 'hrsh7th/cmp-path', }
     -- Snippet completions
-    use { "saadparwaiz1/cmp_luasnip", }
-    use { "hrsh7th/cmp-nvim-lsp", }
-    use { "hrsh7th/cmp-nvim-lua", }
+    use { 'saadparwaiz1/cmp_luasnip', }
+    use { 'hrsh7th/cmp-nvim-lsp', }
+    use { 'hrsh7th/cmp-nvim-lua', }
+
+    -- Lualine
+    use {
+      'nvim-lualine/lualine.nvim',
+      requires = {
+        'kyazdani42/nvim-web-devicons',
+        opt = true
+      },
+      config = function()
+        require('config.lualine')
+      end
+    }
 
     if packer_bootstrap then
       print '[log] Setting up Neovim. Restart required after installation.'
