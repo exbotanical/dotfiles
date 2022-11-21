@@ -2,7 +2,8 @@ return {
   settings = {
     python = {
       analysis = {
-        typeCheckingMode = 'off',
+        -- Determines the default type-checking level used by pyright
+        typeCheckingMode = 'strict',
       },
     },
   },

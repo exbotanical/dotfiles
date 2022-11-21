@@ -38,6 +38,12 @@ function M.setup()
   }
 
   local function plugins(use)
+    -- Packer
+    use { "wbthomason/packer.nvim" }
+
+    -- Performance
+    use { 'lewis6991/impatient.nvim' }
+
     -- File tree
     use {
       'nvim-tree/nvim-tree.lua',
@@ -61,7 +67,7 @@ function M.setup()
 		}
 
     -- Icons
-    use { "kyazdani42/nvim-web-devicons" }
+    use { 'kyazdani42/nvim-web-devicons' }
 
     -- Key mappings menu
     use {
@@ -116,7 +122,12 @@ function M.setup()
       end
     }
     -- Highlighting
-    use { 'RRethy/vim-illuminate', }
+    use {
+      'RRethy/vim-illuminate',
+      config = function()
+        require('config.illuminate')
+      end
+    }
 
     -- Completions
     use {
@@ -137,14 +148,27 @@ function M.setup()
     -- Lualine
     use {
       'nvim-lualine/lualine.nvim',
+      -- event = 'BufReadPre',
       requires = {
         'kyazdani42/nvim-web-devicons',
         opt = true
       },
       config = function()
-        require('config.lualine')
+        require('lualine').setup()
       end
     }
+
+    -- Bufferline
+    use {
+      'akinsho/bufferline.nvim',
+      event = 'BufReadPre',
+      config = function()
+        require('config.bufferline')
+      end
+    }
+
+    -- Automatic pairs
+    use { "windwp/nvim-autopairs", }
 
     if packer_bootstrap then
       print '[log] Setting up Neovim. Restart required after installation.'

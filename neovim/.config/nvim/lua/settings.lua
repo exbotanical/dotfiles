@@ -3,6 +3,7 @@ local M = {}
 function M.setup()
   vim.g.mapleader = " "
   vim.g.maplocalleader = ","
+
   -- TODO: do this in lua
   vim.cmd [[
     " Indentation
@@ -32,7 +33,6 @@ function M.setup()
     set textwidth=80                              " Wrap lines at n characters
 
     " UI Options
-    set laststatus=2                              " Always display the status bar
     set ruler                                     " Always show cursor position
     set wildmenu                                  " Display command line's tab complete options as a menu
     set wildmode=list:longest                     " Make wildmenu behave like Bash completions
@@ -70,12 +70,6 @@ function M.setup()
 
     " Formatting Configurations
     :autocmd BufWritePre * :%s/\s\+$//e           " Strip trailing whitespace when a file is saved
-
-    " Status Line
-    set statusline=                               " Clear status line when vimrc is reloaded
-    set statusline+=\ %F\ %M\ %Y\ %R              " Status line on left side
-    set statusline+=%=                            " Use a divider to separate left and right sides
-    set laststatus=2                              " Show the status on the second to last line
   ]]
 
 end

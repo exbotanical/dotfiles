@@ -21,8 +21,6 @@ function M.setup()
 		'gradle_ls',
 		-- HTML
 		'html',
-		-- Haskell
-		'hls',
 		-- JSON
 		'jsonls',
 		-- Java
