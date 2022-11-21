@@ -3,7 +3,7 @@ local M = {}
 function M.setup()
   vim.g.mapleader = " "
   vim.g.maplocalleader = ","
-
+  -- TODO: do this in lua
   vim.cmd [[
     " Indentation
     set expandtab                                 " Convert tabs to spaces

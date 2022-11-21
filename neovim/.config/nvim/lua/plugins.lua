@@ -91,6 +91,30 @@ function M.setup()
       end
     }
 
+    -- LSP --
+
+    -- Enable LSP
+    use { 'neovim/nvim-lspconfig', }
+    -- Manage LSP servers
+    use {
+      'williamboman/mason.nvim',
+      config = function()
+        require('config.lsp.mason').setup()
+        require('config.lsp.handlers').setup()
+      end
+    }
+    -- Bridge mason-lspconfig
+    use { 'williamboman/mason-lspconfig.nvim', }
+    -- Static analysis
+    use {
+      'jose-elias-alvarez/null-ls.nvim',
+      config = function()
+        require('config.lsp.null-ls')
+      end
+    }
+    -- Highlighting
+    use { 'RRethy/vim-illuminate', }
+
     if packer_bootstrap then
       print 'Setting up Neovim. Restart required after installation.'
       require('packer').sync()
