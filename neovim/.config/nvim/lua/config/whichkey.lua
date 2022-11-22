@@ -32,15 +32,22 @@ local v_opts = {
 
 local function normal_keymap()
   local keymap_f = nil -- File search
+  local keymap_t = nil -- Terminal
 
   keymap_f = {
     name = 'Find',
     e = { '<cmd>NvimTreeToggle<cr>', 'Explorer' },
   }
 
+  keymap_t = {
+    name = 'Terminal',
+    t = { '<cmd>ToggleTerm<cr>', 'Terminal' }
+  }
+
   local keymap = {
     ['w'] = { '<cmd>update!<CR>', 'Save' },
     f = keymap_f,
+    t = keymap_t
   }
 
   whichkey.register(keymap, opts)

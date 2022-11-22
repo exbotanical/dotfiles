@@ -81,17 +81,6 @@ close_enc () {
   fusermount -u "${proxy:-$HOME/enc}"
 }
 
-# bootstrap initializes a new project of type $1 using my templates
-bootstrap () {
-  local script_loc="$BASH_CONFIG/scripts/bootstrap.bash"
-
-  if (( $# != 2 )); then
-    echo -e "[!] No arguments supplied\n"
-  else
-    bash "$script_loc" "$1" "$2"
-  fi
-}
-
 # cheat searches cheat.sh
 cheat () {
   curl "cht.sh/$*"

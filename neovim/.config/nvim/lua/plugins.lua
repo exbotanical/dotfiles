@@ -39,7 +39,7 @@ function M.setup()
 
   local function plugins(use)
     -- Packer
-    use { "wbthomason/packer.nvim" }
+    use { 'wbthomason/packer.nvim' }
 
     -- Performance
     use { 'lewis6991/impatient.nvim' }
@@ -145,6 +145,28 @@ function M.setup()
     use { 'hrsh7th/cmp-nvim-lsp', }
     use { 'hrsh7th/cmp-nvim-lua', }
 
+    -- snippet engine
+    use { 'L3MON4D3/LuaSnip' }
+    -- snippets
+    use { 'rafamadriz/friendly-snippets' }
+
+     -- Treesitter
+    use {
+      'nvim-treesitter/nvim-treesitter',
+      config = function()
+        require('config.treesitter')
+      end
+    }
+
+    -- Auto-closing of pairs
+    use {
+      'windwp/nvim-autopairs',
+      event = 'InsertEnter',
+      config = function()
+        require('config.autopairs').setup()
+      end,
+    }
+
     -- Lualine
     use {
       'nvim-lualine/lualine.nvim',
@@ -167,8 +189,17 @@ function M.setup()
       end
     }
 
-    -- Automatic pairs
-    use { "windwp/nvim-autopairs", }
+    -- Indent indicators
+    use { 'lukas-reineke/indent-blankline.nvim'}
+
+    -- Integrated terminal
+    use {
+      'akinsho/toggleterm.nvim',
+      tag = '*',
+      config = function()
+        require('toggleterm').setup()
+      end
+    }
 
     if packer_bootstrap then
       print '[log] Setting up Neovim. Restart required after installation.'

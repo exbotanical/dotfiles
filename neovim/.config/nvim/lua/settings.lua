@@ -3,6 +3,7 @@ local M = {}
 function M.setup()
   vim.g.mapleader = " "
   vim.g.maplocalleader = ","
+  vim.opt.termguicolors = true
 
   -- TODO: do this in lua
   vim.cmd [[
@@ -47,6 +48,7 @@ function M.setup()
     set mouse=a                                   " Enable mouse for scrolling and resizing
     set title                                     " Set the window's title, reflecting the file currently being edited
     set background=dark                           " Use colors that suit a dark background
+    set number                                    " Show line numbers
 
     " Behavior
     set clipboard+=unnamed                        " Yanks go on clipboard instead
