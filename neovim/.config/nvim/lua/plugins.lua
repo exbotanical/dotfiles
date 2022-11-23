@@ -201,6 +201,11 @@ function M.setup()
       end
     }
 
+    -- I WANNA VIM GOOD! BY TEH PRIMEAGEN VIMLORD
+    use {
+      'ThePrimeagen/vim-be-good'
+    }
+
     if packer_bootstrap then
       print '[log] Setting up Neovim. Restart required after installation.'
       require('packer').sync()

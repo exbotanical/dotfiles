@@ -80,9 +80,9 @@ function M.setup()
 
 		server = vim.split(server, '@')[1]
 
-		local require_ok, conf_opts = pcall(require, 'config.lsp.settings' .. server)
+		local require_ok, lsp_config = pcall(require, 'config.lsp.settings' .. server)
 		if require_ok then
-			opts = vim.tbl_deep_extend('force', conf_opts, opts)
+			opts = vim.tbl_deep_extend('force', lsp_config, opts)
 		end
 
 		lspconfig[server].setup(opts)
