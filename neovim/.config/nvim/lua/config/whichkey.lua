@@ -2,12 +2,11 @@ local M = {}
 
 -- This is where key mappings are configured
 local whichkey = require 'which-key'
-local next = next
 
 local conf = {
   window = {
-    border = 'single', -- none, single, double, shadow
-    position = 'bottom', -- bottom, top
+    border = 'single',
+    position = 'bottom',
   },
 }
 whichkey.setup(conf)
@@ -16,23 +15,24 @@ local opts = {
   mode = 'n', -- Normal mode
   prefix = '<leader>',
   buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true, -- use `silent` when creating keymaps
-  noremap = true, -- use `noremap` when creating keymaps
-  nowait = false, -- use `nowait` when creating keymaps
+  silent = true,
+  noremap = true,
+  nowait = false,
 }
 
 local v_opts = {
   mode = 'v', -- Visual mode
   prefix = '<leader>',
   buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true, -- use `silent` when creating keymaps
-  noremap = true, -- use `noremap` when creating keymaps
-  nowait = false, -- use `nowait` when creating keymaps
+  silent = true,
+  noremap = true,
+  nowait = false,
 }
 
 local function normal_keymap()
   local keymap_f = nil -- File search
-  local keymap_t = nil -- Terminal
+  local keymap_t = nil -- Utilities
+  local keymap_g = nil -- Git
 
   keymap_f = {
     name = 'Find',
@@ -40,14 +40,21 @@ local function normal_keymap()
   }
 
   keymap_t = {
-    name = 'Terminal',
-    t = { '<cmd>ToggleTerm<cr>', 'Terminal' }
+    name = 'Utilities',
+    t = { '<cmd>ToggleTerm<cr>', 'Terminal' },
+    e = { '<cmd>TroubleToggle<cr>', 'Diagnostics' },
+  }
+
+  keymap_g = {
+    name = 'Git',
+    b = { '<cmd>Gitsigns toggle_current_line_blame<cr>', 'Blame' },
   }
 
   local keymap = {
     ['w'] = { '<cmd>update!<CR>', 'Save' },
     f = keymap_f,
-    t = keymap_t
+    t = keymap_t,
+    g = keymap_g,
   }
 
   whichkey.register(keymap, opts)

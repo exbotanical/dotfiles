@@ -1,10 +1,7 @@
 local M = {}
 
 function M.setup()
-  local status_ok, illuminate = pcall(require, 'illuminate')
-  if not status_ok then
-    return
-  end
+  local illuminate = require('illuminate')
 
   vim.g.Illuminate_ftblacklist = {'alpha', 'NvimTree'}
   vim.api.nvim_set_keymap('n', '<a-n>', '<cmd>lua require\'illuminate\'.next_reference{wrap=true}<cr>', {noremap=true})

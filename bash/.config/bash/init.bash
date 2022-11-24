@@ -21,7 +21,7 @@ support::globbing off
 # Only source env vars if this is the first login or a force-reload
 { init::login? || (( Reload )); } && source $SettingsDir/env.bash
 
-source $Root/lib/apps.bash # app-specific environment and commands
+source $Root/lib/apps.bash $1 # app-specific environment and commands
 
 init::debug 'Loading primary aliases'
 source $SettingsDir/alias.bash # aliases

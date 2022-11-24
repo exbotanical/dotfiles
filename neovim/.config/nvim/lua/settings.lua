@@ -1,8 +1,8 @@
 local M = {}
 
 function M.setup()
-  vim.g.mapleader = " "
-  vim.g.maplocalleader = ","
+  vim.g.mapleader = ' '
+  vim.g.maplocalleader = ','
   vim.opt.termguicolors = true
 
   -- TODO: do this in lua

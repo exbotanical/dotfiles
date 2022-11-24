@@ -60,16 +60,13 @@ function M.setup()
 		max_concurrent_installers = 4,
 	}
 
-	require('mason').setup(settings)
+	-- require('mason').setup(settings)
 	require('mason-lspconfig').setup({
 		ensure_installed = servers,
 		automatic_installation = true,
 	})
 
-	local lspconfig_status_ok, lspconfig = pcall(require, 'lspconfig')
-	if not lspconfig_status_ok then
-		return
-	end
+	local lspconfig = require('lspconfig')
 
 	local opts = {}
 	for _, server in pairs(servers) do
@@ -80,8 +77,8 @@ function M.setup()
 
 		server = vim.split(server, '@')[1]
 
-		local require_ok, lsp_config = pcall(require, 'config.lsp.settings' .. server)
-		if require_ok then
+		local ok, lsp_config = pcall(require, 'config.lsp.settings' .. server)
+		if ok then
 			opts = vim.tbl_deep_extend('force', lsp_config, opts)
 		end
 

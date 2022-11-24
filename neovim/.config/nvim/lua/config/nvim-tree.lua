@@ -1,16 +1,13 @@
 local M = {}
 
 function M.setup()
-  local config_status_ok, nvim_tree_config = pcall(require, 'nvim-tree.config')
-  if not config_status_ok then
-    return
-  end
+  local config = require('nvim-tree.config')
 
   -- disable netrw
   vim.g.loaded_netrw = 1
   vim.g.loaded_netrwPlugin = 1
 
-  local tree_cb = nvim_tree_config.nvim_tree_callback
+  local tree_cb = config.nvim_tree_callback
 
   require('nvim-tree').setup({
     -- Open tree when opening dir
