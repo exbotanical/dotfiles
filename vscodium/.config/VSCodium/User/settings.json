@@ -216,5 +216,5 @@
   "glassit.alpha": 245,
 
   "npm.keybindingsChangedWarningShown": true,
-  "window.zoomLevel": 1
+  "editor.largeFileOptimizations": false
 }

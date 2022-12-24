@@ -115,6 +115,8 @@ bindsym XF86AudioPrev exec playerctl previous
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# border_radius 4
+
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
