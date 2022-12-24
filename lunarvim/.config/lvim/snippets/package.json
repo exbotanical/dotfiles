@@ -1,0 +1,31 @@
+{
+    "name": "nvim-snippets",
+    "author": "authorname",
+    "engines": {
+        "vscode": "^1.11.0"
+    },
+    "contributes": {
+        "snippets": [
+            {
+                "language": "c",
+                "path": "./c.json"
+            },
+            {
+                "language": "lua",
+                "path": "./lua.json"
+            },
+            {
+                "language": "python",
+                "path": "./python.json"
+            },
+            {
+                "language": "shellscript",
+                "path": "./shellscript.json"
+            },
+            {
+                "language": "viml",
+                "path": "./viml.json"
+            }
+        ]
+    }
+}

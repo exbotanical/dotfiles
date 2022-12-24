@@ -110,17 +110,19 @@ function M.setup()
       disable = false,
     }
 
-    -- Lualine
+    -- Top window Bar
     use {
-      'nvim-lualine/lualine.nvim',
-      -- event = 'BufReadPre',
-      requires = {
-        'kyazdani42/nvim-web-devicons',
-        opt = true
-      },
+      'SmiteshP/nvim-navic',
+      requires = 'neovim/nvim-lspconfig'
+    }
+
+    -- Status line
+    use {
+      "nvim-lualine/lualine.nvim",
+      event = "BufReadPre",
       config = function()
-        require('lualine').setup()
-      end
+        require("config.lualine").setup()
+      end,
     }
 
     -- Bufferline

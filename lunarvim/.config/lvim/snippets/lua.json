@@ -1,0 +1,10 @@
+{
+  "LuaModule": {
+    "prefix": "module",
+    "body": "local M = {}\n\nfunction M.setup()\n\t${0:VAR}\nend\n\nreturn M"
+  },
+  "LuaConfigFunction": {
+    "prefix": "config",
+    "body": "config = function()\n\trequire('${0:VAR}')\nend"
+  }
+}

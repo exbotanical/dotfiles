@@ -15,7 +15,15 @@ function M.setup()
     },
   })
 
-  vim.notify = notify
+  -- vim.notify = notify
+  -- TODO: https://github.com/jose-elias-alvarez/null-ls.nvim/issues/428
+  vim.notify = function(msg, ...)
+    if msg:match("warning: multiple different client offset_encodings") then
+        return
+    end
+
+    notify(msg, ...)
+  end
 end
 
 return M

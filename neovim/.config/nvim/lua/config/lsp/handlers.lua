@@ -1,17 +1,17 @@
 local M = {}
 
 local cmp_nvim_lsp = require('cmp_nvim_lsp')
+local icons = require("config.icons")
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 M.capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 M.setup = function()
-	local signs = {
-
-		{ name = 'DiagnosticSignError', text = '' },
-		{ name = 'DiagnosticSignWarn', text = '' },
-		{ name = 'DiagnosticSignHint', text = '' },
-		{ name = 'DiagnosticSignInfo', text = '' },
+  local signs = {
+    { name = "DiagnosticSignError", text = icons.diagnostics.Error },
+    { name = "DiagnosticSignWarn", text = icons.diagnostics.Warning },
+    { name = "DiagnosticSignHint", text = icons.diagnostics.Hint },
+    { name = "DiagnosticSignInfo", text = icons.diagnostics.Info },
 	}
 
 	for _, sign in ipairs(signs) do
@@ -19,35 +19,48 @@ M.setup = function()
 	end
 
 	local config = {
-		virtual_text = false, -- disable virtual text
-		signs = {
-			active = signs, -- show signs
-		},
-		update_in_insert = true,
-		underline = true,
-		severity_sort = true,
-		float = {
-			focusable = true,
-			style = 'minimal',
-			border = 'rounded',
-			source = 'always',
-			header = '',
-			prefix = '',
-		},
-	}
+    float = {
+      focusable = true,
+      style = "minimal",
+      border = "rounded",
+    },
 
-	vim.diagnostic.config(config)
+    diagnostic = {
+      virtual_text = {
+        severity = {
+          min = vim.diagnostic.severity.ERROR,
+        },
+      },
+      signs = {
+        active = signs,
+      },
+      underline = true,
+      update_in_insert = false,
+      severity_sort = true,
+      float = {
+        focusable = true,
+        style = "minimal",
+        border = "rounded",
+        source = "always",
+        header = "",
+        prefix = "",
+      },
+      -- virtual_lines = true,
+    },
+  }
 
-	vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-		border = 'rounded',
-	})
+
+  -- Diagnostic configuration
+  vim.diagnostic.config(config.diagnostic)
+
+  -- Hover configuration
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, config.float)
+
+  -- Signature help configuration
+  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, config.float)
 
 	cmp_nvim_lsp.setup({
 		capabilities = M.capabilities
-	})
-
-	vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-		border = 'rounded',
 	})
 end
 
