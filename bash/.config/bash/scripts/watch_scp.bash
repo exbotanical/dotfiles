@@ -168,7 +168,7 @@ option_defs=(
 
 # declare -a options
 parser::parseopts "$*" "${option_defs[*]}" options pos_args
-
+# shellcheck disable=SC2068
 (( ${#options[@]}                    )) && declare ${options[@]}
 (( VERSION_FLAG                      )) && panic "$PROG version $VERSION"
 (( HELP_FLAG || ${#pos_args[@]} != 3 )) && usage

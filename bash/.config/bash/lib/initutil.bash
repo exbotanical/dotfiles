@@ -65,7 +65,7 @@ init::load_app? () {
     return
   }
 
-  # Ensure the directory name matches an actual executable
+  # Ensure the directory name matches that of an actual executable
   type $dir &>/dev/null
 }
 
@@ -90,6 +90,40 @@ init::debug () {
 init::toggle_debug () {
   (( INIT_DEBUG_MODE ^= 1));:
   export INIT_DEBUG_MODE
+}
+
+# Wrapper; order app by dependencies
+init::order_by_dependencies () {
+  local -A satisfied=()
+
+  init::_order_by_dependencies
+}
+
+# order_by_dependencies recurses a stream of apps
+# and orders them by dependencies declared in app/deps
+init::_order_by_dependencies () {
+  local app
+  local dep
+
+  while read -r app; do
+    (( ${satisfied[$app]} )) && continue
+
+    # If the deps file exists for this app...
+    ! support::file? $app/deps && {
+        echo $app
+        satisfied[$app]=1
+        continue
+    }
+
+    for dep in $(init::_order_by_dependencies <$app/deps); do
+      (( ${satisfied[$dep]} )) && continue
+      echo $dep
+      satisfied[$dep]=1
+    done
+
+    echo $app
+    satisfied[$app]=1
+  done
 }
 
 # Diff the pre-existing functions against the ones declared in this file

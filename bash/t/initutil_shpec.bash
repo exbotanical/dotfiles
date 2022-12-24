@@ -186,13 +186,41 @@ END
     alias setup='source $initutil_lib'
 
     it 'enumerates the directory contents as a single line'
-      file=$(mktemp -d)
-      pushd "$file"
+      dir=$(mktemp -d)
+      pushd "$dir"
       touch {a..z}
-      result=$(init::list_dir "$file")
+      result=$(init::list_dir "$dir")
       expected=$(echo {a..z})
       assert equal "$expected" "$result"
-      rm -r "$file"
+      rm -r "$dir"
+    ti
+  end_describe
+
+  describe 'order_by_dependencies'
+    alias setup='source $initutil_lib'
+
+    it 'orders apps by dependencies'
+      support::splitspace off
+      support::globbing off
+
+      dir=$(mktemp -d)
+      pushd "$dir"
+      mkdir {a..d}
+      touch {a..d}/deps
+
+      echo 'd' > a/deps
+      echo 'b' > d/deps
+
+      apps=$(init::list_dir $dir | init::order_by_dependencies)
+
+      arr=($apps)
+
+      assert equal 'a' ${arr[2]}
+      assert equal 'b' ${arr[0]}
+      assert equal 'c' ${arr[3]}
+      assert equal 'd' ${arr[1]}
+
+      rm -r "$dir"
     ti
   end_describe
 end_describe

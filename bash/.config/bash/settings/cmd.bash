@@ -104,3 +104,8 @@ lsuptime () {
 lscmd () {
   history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
 }
+
+toggle_k () {
+  local current_variant=$(setxkbmap -query | grep "variant")
+  [[ "$current_variant" == '' ]] && setxkbmap -variant dvp || setxkbmap us
+}

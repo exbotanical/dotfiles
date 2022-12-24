@@ -1,9 +1,10 @@
 pushd $Root/apps >/dev/null
 
 APP_LIST=$(
-  init::list_dir .  \
-  | support::filter support::dir? \
-  | support::filter init::load_app?
+  init::list_dir . |
+  support::filter support::dir? |
+  support::filter init::load_app? |
+  init::order_by_dependencies
 )
 
 # Load app-specific configurations, only if that app exists
