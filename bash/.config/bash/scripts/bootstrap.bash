@@ -93,10 +93,10 @@ setup () {
 }
 
 main () {
-  local dir_name
-  dir_name=$(basename $(pwd))
   local env=$1
   local proj=$2
+  local dir_name
+  dir_name=$(basename $(pwd))
 
   echo -e "[+] Initializing a new $env environment for $proj in $dir_name...\n"
 
