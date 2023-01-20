@@ -1,6 +1,8 @@
 ROOT_DIR="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
+echo $ROOT_DIR
 source "$ROOT_DIR/shpec_util.bash"
+
 source "$ROOT_DIR/../.config/bash/settings/cmd.bash"
 
 describe 'cmd'
@@ -20,6 +22,39 @@ describe 'cmd'
       assert file_present "$file-$stubbed_date.bak"
 
       unstub_command "date"
+    ti
+  end_describe
+
+  describe 'cmd_out'
+    alias setup="dir=$(mktemp -d) && stub_command some_cmd '>&2 echo error && echo ok'"
+    alias teardown='unstub_command some_cmd'
+
+    it 'pipes command stdout and stderr to two respective files'
+      pushd $dir
+
+      cmd_out 'some_cmd'
+      assert file_present stdout.txt
+      assert file_present stderr.txt
+      assert equal $(cat ./stdout.txt) 'ok'
+      assert equal $(cat ./stderr.txt) 'error'
+
+      rm -r "$dir"
+    ti
+  end_describe
+
+  describe 'cmd_out_clean'
+    it 'removes the stdout and stderr files'
+      pushd $dir
+
+      cmd_out 'some_cmd'
+      assert file_present stdout.txt
+      assert file_present stderr.txt
+
+      cmd_out_clean
+      assert file_absent stdout.txt
+      assert file_absent stderr.txt
+
+      rm -r "$dir"
     ti
   end_describe
 end_describe

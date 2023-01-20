@@ -30,7 +30,27 @@ Examples:
   $0 rm local-dev.site 127.0.0.1
 
 EOF
-  exit 1
+}
+
+validate_hosts_file () {
+  [[ ! -e $HOSTS_FILE ]] && {
+    panic $E_FILENOTFOUND "Hosts file not found"
+  }
+}
+
+validate_root_user () {
+  [[ ! $UID -eq $ROOT_UID ]] && {
+    panic $E_NOTROOT "Must execute as root"
+  }
+}
+
+validate_args () {
+  local n_expected_args=$1
+  local n_args=$2
+
+  (( n_args < n_expected_args )) && {
+    panic $E_ARGS "Insufficient arguments"
+  }
 }
 
 IFS=$'\n'
@@ -44,28 +64,29 @@ HOSTS_FILE="/etc/hosts"
 DEFAULT_IP="127.0.0.1"
 IP=${3:-$DEFAULT_IP}
 
-[[ ! -e $HOSTS_FILE ]] && {
-  panic $E_FILENOTFOUND "Hosts file not found"
-}
-
-[[ ! $UID -eq $ROOT_UID ]] && {
-  panic $E_NOTROOT "Must execute as root"
-}
-
-(( $# < 2 )) && {
-  panic $E_ARGS "Insufficient arguments"
-}
+validate_args 1 $#
 
 case "$1" in
   add )
-    echo "$IP $2" >> $HOSTS_FILE
+    validate_args 2 $#
+    validate_hosts_file
+    validate_root_user
+
+    echo -e "$IP\t$2" >> $HOSTS_FILE
     ;;
   rm )
+    validate_args 2 $#
+    validate_hosts_file
+    validate_root_user
+
     sed -ie "\|^$IP $2\$|d" $HOSTS_FILE
     ;;
-  * )
+  help | --help )
     usage
+    exit 0
+    ;;
+  * )
+    echo "Unknown argument $1"
+    exit $E_ARGS
     ;;
 esac
-
-exit

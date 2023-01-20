@@ -12,12 +12,6 @@ init::set_login () {
   export ENV_SET=1
 }
 
-# export exports the key value pair, only using the value $2 if the
-# export key is not already set.
-init::export () {
-  export $1=${!1:-$2}
-}
-
 # contains? returns true if $1 contains $2
 init::contains? () { (
   IFS=:
@@ -34,6 +28,12 @@ init::append_path () {
 init::prepend_path () {
   init::contains? "$PATH" $1 && return
   declare -g PATH=$1:${PATH}
+}
+
+# export exports the key value pair, only using the value $2 if the
+# export key is not already set.
+init::export () {
+  export $1=${!1:-$2}
 }
 
 # export_builtin sets the variable $1 to the first verified builtin

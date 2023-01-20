@@ -54,4 +54,3 @@ support::splitspace on
 support::globbing on
 unset -f "${EphemeralFunctions[@]}" # Remove functions declared in init:: namespace
 unset -v "${EphemeralVars[@]}" # Remove ephemeral vars
-. "$HOME/.cargo/env"

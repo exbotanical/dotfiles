@@ -1,0 +1,10 @@
+{
+  "VueScriptSetupComponent": {
+    "prefix": "setup",
+    "body": [
+      "<script lang=\"ts\" setup>\n\n</script>",
+      "\n<template>\n\n</template>",
+      "\n<style>\n\n</style>"
+    ]
+  }
+}

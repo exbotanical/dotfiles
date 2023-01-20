@@ -37,30 +37,6 @@ ptree () {
     awk 'NR <= 1 {print;next} !/awk/ && $0~var' var="${1:-".*"}"
 }
 
-# mk_alias adds new aliases
-# mk_alias name "val"
-mk_alias () {
-  local alias_name="$1"
-
-  shift
-
-  local alias_body="$*"
-
-  [[ -z "$alias_name" ]] && {
-    echo "[-] Alias name not provided"
-    return 1
-  }
-
-  [[ -z "$alias_body" ]] && {
-    echo "[-] Alias body not provided"
-    return 1
-  }
-
-  echo "alias $alias_name='$alias_body'" >> "$BASH_CONFIG/alias.bash"
-
-  (( "$?" == 0 )) && echo "[+] Successfully added new alias"
-}
-
 # psaux less-es running processes of the given target
 psaux () {
   pgrep -f "$@" | xargs ps -fp 2>/dev/null
@@ -102,7 +78,7 @@ lsuptime () {
 
 # lscmd prints the most used commands
 lscmd () {
-  history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
+  history | awk '{CMD[$4]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
 }
 
 # toggle_k toggles the keyboard layout between qwerty and programmer dvorak
@@ -111,15 +87,13 @@ toggle_k () {
   [[ "$current_variant" == '' ]] && setxkbmap -variant dvp || setxkbmap us
 }
 
-# mon_3 switches to a tri-monitor layout
-mon_3 () {
-  xrandr --output eDP-1 --primary --mode 2256x1504 --pos 0x416 --rotate normal \
-  --output DP-1 --mode 3840x2160 --pos 3336x0 --rotate normal                  \
-  --output DP-2 --mode 1920x1080 --pos 2256x0 --rotate left                    \
-  --output DP-3 --off --output DP-4 --off
+# cmd_out runs a command and pipes its stdout and stderr to respective files
+cmd_out () {
+  local cmd="$*"
+  $cmd >| stdout.txt 2>| stderr.txt
 }
 
-# mon_default resets the display configurations to the defaults
-mon_default () {
-  xrandr -s 0
+# cmd_out_clean quietly tries to remove the cmd_out artifacts
+cmd_out_clean () {
+  rm stdout.txt stderr.txt &>/dev/null
 }

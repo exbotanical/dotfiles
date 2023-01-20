@@ -1,1 +1,1 @@
-init::export $HOME/.cargo/env
+init::append_path $HOME/.cargo/bin
