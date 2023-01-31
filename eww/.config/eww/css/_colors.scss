@@ -1,16 +1,18 @@
 $rosewater: #f5e0dc;
 $flamingo: #f2cdcd;
 $pink: #f5c2e7;
-$mauve: #cba6f7;
-$red: #f38ba8;
+$mauve: #B48EAD;
+$mauve-dark: #BF616A;
+$red: #BF616A;
 $maroon: #eba0ac;
-$peach: #fab387;
+$peach: #EBCB8B;
 $yellow: #f9e2af;
-$green: #a6e3a1;
-$teal: #94e2d5;
+$green: #A3BE8C;
+$teal: #8FBCBB;
 $sky: #89dceb;
 $sapphire: #74c7ec;
-$blue: #89b4fa;
+$blue: #81A1C1                                         ;
+$blue-dark: #7ba2e1;
 $lavender: #b4befe;
 
 $text: #cdd6f4;
@@ -22,9 +24,9 @@ $overlay0: #6c7086;
 
 $surface2: #585b70;
 $surface1: #45475a;
-$surface0: #313244;
+$surface0: #4C566A;
 
-$base: #1e1e2e;
+$base: #2E3440;
 $mantle: #181825;
 $crust: #11111b;
 
@@ -33,3 +35,13 @@ $bg: $base;
 $bg1: $surface0;
 $border: #28283d;
 $shadow: $crust;
+
+// base, surface0
+$polar: #ECEFF4;
+$ice: #E5E9F0;
+$sleet: #D8DEE9;
+
+// $ax:#2E3440; $ax:#3B4252; $ax:#434C5E; $ax:#4C566A;
+// $ax:#D8DEE9; $ax:#E5E9F0; $ax:#ECEFF4;
+// $ax:#8FBCBB; $ax:#88C0D0; $ax:#81A1C1; $ax:#5E81AC;
+// $ax:#BF616A; $ax:#D08770; $ax:#EBCB8B; $ax:#A3BE8C; $ax:#B48EAD;

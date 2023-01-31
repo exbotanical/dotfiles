@@ -5,15 +5,15 @@ icons=("" "" "" "" "" "" "" "")
 num_icons=$(bc <<< "100 / ${#icons[@]}")
 
 
-geticon() {
-  level=$(awk -v n="$CAPACITY" -v c="$num_icons" 'BEGIN{print int(n/c-1)}')
+geticon () {
+  local level=$(awk -v n="$CAPACITY" -v c="$num_icons" 'BEGIN{print int(n/c-1)}')
 	if [[ "$level" -lt 0 ]]; then
 		level=0
 	fi
 	echo "${icons[$level]}"
 }
 
-status() {
+status () {
 	if [ "$STATE" = "Charging" ]; then
 		echo -n "charging"
 
@@ -29,7 +29,7 @@ status() {
 	fi
 }
 
-color() {
+color () {
 	if [ "$CAPACITY" -le 20 ]; then
 		echo '#f38ba8'
 	else
@@ -37,20 +37,20 @@ color() {
 	fi
 }
 
-wattage() {
-	microwatts=1000000
+wattage () {
+	local microwatts=1000000
 	echo "$(bc -l <<< "scale=1; $RATE / $microwatts") W"
 }
 
-gettime() {
-	FULL=$(cat /sys/class/power_supply/BAT1/charge_full)
-	NOW=$(cat /sys/class/power_supply/BAT1/charge_now)
+gettime () {
+	local full=$(cat /sys/class/power_supply/BAT1/charge_full)
+	local now=$(cat /sys/class/power_supply/BAT1/charge_now)
 
 	if [ "$RATE" -gt 0 ]; then
 		if [ "$STATE" = "Discharging" ]; then
-			EX="$NOW / $RATE"
+			EX="$now / $RATE"
 		else
-			EX="($FULL - $NOW) / $RATE"
+			EX="($full - $now) / $RATE"
 		fi
 		date -u -d@"$(bc -l <<< "$EX * 3600")" +%H:%M
 	fi

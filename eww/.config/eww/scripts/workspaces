@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-# define colors
 #        red       peach     green     blue
-colors=("#f38ba8" "#fab387" "#a6e3a1" "#89b4fa")
+declare -a colors=('#f38ba8' '#fab387' '#a6e3a1' '#89b4fa')
 #        pink      yellow    teal      lavender
-dimmed=("#f5c2e7" "#f9e2af" "#94e2d5" "#b4befe")
-empty="#313244"
+declare -a dimmed=('#f5c2e7' '#f9e2af' '#94e2d5' '#b4befe')
+empty='#313244'
 
 # get initial focused workspace
 focusedws=$(hyprctl -j monitors | jaq -r '.[] | select(.focused == true) | .activeWorkspace.id')

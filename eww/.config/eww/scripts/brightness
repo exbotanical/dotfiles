@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-declare icons=("" "" "")
+declare icons=('' '' '')
 
 get_level () {
   awk -v n="$(light)" 'BEGIN{print int(n/34)}'

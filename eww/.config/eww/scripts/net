@@ -1,42 +1,52 @@
 #!/usr/bin/env bash
 
-toggle() {
-  # status=$(rfkill -J | jaq -r '.rfkilldevices[] | select(.type == "wlan") | .soft' | head -1)
+INTERVAL=3
+
+toggle () {
+  local status=$(rfkill -J | jaq -r '.rfkilldevices[] | select(.type == "wlan") | .soft' | head -1)
   status='unblocked'
-  if [ "$status" = "unblocked" ]; then
+
+  if [[ "$status" == 'unblocked' ]]; then
     rfkill block wlan
   else
     rfkill unblock wlan
   fi
 }
 
-if [ "$1" = "toggle" ]; then
-  toggle
-else
-  while true; do
-    status=$(nmcli g | tail -n 1 | awk '{print $1}')
-    signal=$(nmcli -f in-use,signal dev wifi | rg "\*" | awk '{ print $2 }')
-    essid=$(nmcli -t -f NAME connection show --active | head -n1 | sed 's/\"/\\"/g')
+main () {
+  if [[ "$1" == "toggle" ]]; then
+    toggle
+  else
+    while true; do
+      local status=$(nmcli g | tail -n 1 | awk '{print $1}')
+      local signal=$(nmcli -f in-use,signal dev wifi | rg "\*" | awk '{ print $2 }')
+      local essid=$(nmcli -t -f NAME connection show --active | head -n1 | sed 's/\"/\\"/g')
+      local icon
+      local level
+      local color
 
-    icons=("" "" "" "" "")
+      declare icons=('' '' '' '' '')
 
-    if [ "$status" = "disconnected" ] ; then
-      icon=""
-      color="#988ba2"
-      class=""
-    else
-      level=$(awk -v n="$signal" 'BEGIN{print int((n-1)/20)}')
-      if [ "$level" -gt 4 ]; then
-        level=4
+      if [[ "$status" == 'disconnected' ]]; then
+        icon='\ue1da'
+        color='#988ba2'
+        class=''
+      else
+        level=$(awk -v n="$signal" 'BEGIN{print int((n-1)/20)}')
+        if (( "$level" > 4 )); then
+          level=4
+        fi
+
+        icon=${icons[$level]}
+        color='#ECEFF4'
+        class='wifi-connected'
       fi
 
-      icon=${icons[$level]}
-      color="#cba6f7"
-      class="wifi-connected"
-    fi
+      echo '{ "essid": "'"$essid"'", "icon": "'"$icon"'", "color": "'"$color"'", "class": "'"$class"'" }'
 
-    echo '{ "essid": "'"$essid"'", "icon": "'"$icon"'", "color": "'"$color"'", "class": "'"$class"'" }'
+      sleep $INTERVAL
+    done
+  fi
+}
 
-    sleep 3
-  done
-fi
+main "$*"

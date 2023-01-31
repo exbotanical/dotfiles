@@ -14,7 +14,7 @@
 * {
   all: unset;
   transition: 200ms ease;
-  font-family: "Togalite", Roboto, sans-serif;
+  font-family: "", Roboto, sans-serif;
 }
 
 @import 'css/calendar';
@@ -70,7 +70,7 @@ tooltip {
 }
 
 .brightness-icon {
-  color: $yellow;
+  color: $polar;
 }
 
 .module-bluetooth {
