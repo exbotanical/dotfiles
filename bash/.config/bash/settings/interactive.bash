@@ -68,7 +68,7 @@ init::export LESS_TERMCAP_ue $(printf '\e[0m') # leave underline mode
 init::export LESS_TERMCAP_us $(printf '\e[04;36m') # enter underline mode – cyan
 
 # Remap caps -> super
-setxkbmap -option caps:super 2>/dev/null
+# setxkbmap -option caps:super 2>/dev/null
 
 # Reclaim ctrl-s, ctrl-q
 stty -ixon -ixoff

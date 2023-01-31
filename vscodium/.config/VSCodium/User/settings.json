@@ -5,7 +5,6 @@
 
   "editor.minimap.enabled": false,
   "editor.codeLens": false,
-  "editor.tabSize": 2,
   "editor.cursorBlinking": "phase",
   "editor.cursorStyle": "line",
   "editor.codeActionsOnSave": {},
@@ -16,6 +15,10 @@
   "editor.fontSize": 16,
   "editor.fontWeight": "400",
   "editor.linkedEditing": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.tabSize": 2,
+  "files.eol": "\n",
 
   "explorer.confirmDragAndDrop": false,
   "explorer.confirmDelete": false,
@@ -23,6 +26,7 @@
   "extensions.ignoreRecommendations": false,
 
   "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
   "files.trimFinalNewlines": true,
   "files.associations": {
     "*.html": "html",
@@ -41,7 +45,7 @@
   "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.tabs.showActiveTerminal": "always",
   "terminal.integrated.defaultProfile.linux": "bash",
-  "terminal.integrated.fontFamily": "Inconsolata Nerd Font Mono",
+  "terminal.integrated.fontFamily": "Inconsolata",
   "terminal.integrated.fontWeight": "700",
   "terminal.integrated.fontSize": 18,
   "terminal.integrated.enableMultiLinePasteWarning": false,
@@ -65,9 +69,6 @@
    * LSP Configurations
    */
 
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
-
   "go.languageServerExperimentalFeatures": {
     "diagnostics": true // for diagnostics as you type
   },
@@ -80,38 +81,22 @@
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
     },
-    "files.eol": "\n",
-    "editor.tabSize": 4,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "editor.tabSize": 4
   },
 
-  "[c]": {
-    "editor.tabSize": 2,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
-  },
+  "[c]": {},
 
   "C_Cpp.default.includePath": [
     "${workspaceFolder}/**",
     "${workspaceFolder}/deps"
   ],
   "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google }",
-  "[cpp]": {
-    "editor.tabSize": 2,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
-  },
+  "[cpp]": {},
 
   "python.formatting.provider": "black",
   "python.formatting.blackArgs": ["--skip-string-normalization"],
   "python.terminal.activateEnvironment": false,
-  "[python]": {
-    "files.eol": "\n",
-    "editor.tabSize": 2,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
-  },
+  "[python]": {},
 
   "redhat.telemetry.enabled": false,
   "java.configuration.runtimes": [
@@ -125,75 +110,47 @@
   "java.format.settings.url": "~/.vscode/java-google-style.xml",
   "java.maven.downloadSources": true,
   "[java]": {
-    "editor.defaultFormatter": "redhat.java",
-    "editor.tabSize": 2,
-    "files.eol": "\n",
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "editor.defaultFormatter": "redhat.java"
   },
 
   "javascript.updateImportsOnFileMove.enabled": "always",
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "files.eol": "\n",
-    "editor.tabSize": 2,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "typescript.updateImportsOnFileMove.enabled": "always",
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.tabSize": 2,
-    "files.eol": "\n",
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.tabSize": 2,
-    "files.eol": "\n",
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "[vue]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.tabSize": 2,
-    "files.eol": "\n",
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
-  "[shellscript]": {
-    "files.eol": "\n",
-    "editor.tabSize": 2,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
-  },
+  "[shellscript]": {},
 
   "haskell.manageHLS": "PATH",
   "[haskell]": {
     "editor.formatOnPaste": false,
-    "editor.formatOnSave": false,
-    "files.eol": "\n",
-    "editor.tabSize": 2,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "editor.formatOnSave": false
+  },
+
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "[markdown]": {
-    "editor.formatOnPaste": true,
     "editor.formatOnSave": false,
-    "editor.wordWrap": "on",
-    "editor.tabSize": 2,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "editor.wordWrap": "on"
   },
 
   "[html]": {
-    "editor.formatOnType": true
+    "editor.formatOnType": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "[jsonc]": {
@@ -217,5 +174,6 @@
 
   "npm.keybindingsChangedWarningShown": true,
   "editor.largeFileOptimizations": false,
-  "vitest.enable": true
+  "vitest.enable": true,
+  "window.zoomLevel": 2
 }

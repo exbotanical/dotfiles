@@ -1,4 +1,4 @@
-# darken lowers the screen brightness beyond the percentage
+# darken lowers the screen brightness beyond the lowest percentage
 darken () {
   local percentage="${1:-.7}"
   local default_output="eDP-1"
