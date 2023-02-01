@@ -88,3 +88,12 @@ scale trough {
 .workspaces {
   margin-left: 10px;
 }
+
+
+
+.news-box {
+  @include rounding;
+  background-color: $surface0;
+  margin: .5rem 1rem;
+  padding: 1.5rem;
+}

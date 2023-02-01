@@ -1,0 +1,35 @@
+
+(defwidget news-widget []
+  (box
+    :class "system-menu-box"
+    :space-evenly false
+    :orientation "v"
+
+    (box
+      :orientation "v"
+
+      (box
+        :orientation "v"
+        (for story in {news.stories}
+          (box
+            :class "news-box"
+            :space-evenly false
+            :halign "start"
+            (label :text "${story.title}")
+          )
+        )
+      )
+    )
+  ))
+
+; windows
+(defwindow news-window
+  :stacking "fg"
+  :monitor 0
+  :geometry (geometry
+    :x "0"
+    :y "0"
+    :width "0%"
+    :height "0%"
+  :anchor "right top")
+  (news-widget))

@@ -11,3 +11,4 @@
 (deflisten net "scripts/net")
 (deflisten volume "scripts/volume")
 (deflisten workspace "scripts/workspaces")
+(deflisten news "scripts/news")

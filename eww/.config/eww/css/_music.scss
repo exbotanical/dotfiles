@@ -17,10 +17,12 @@
 .music-cover-art {
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
   border-radius: 8px;
   margin: 1em;
   min-height: 170px;
-  min-width: 170px;
+  min-width: 340px;
+
 }
 
 .music-box {
@@ -57,6 +59,6 @@
     border-radius: 24px;
     margin-top: 0;
     min-height: 10px;
-    min-width: 170px;
+    min-width: 475px;
   }
 }

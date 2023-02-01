@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+XDG_CACHE_HOME="/home/goldmund/.cache" # TODO: setenv
 get_status() {
 	s=$1
 	if [ "$s" = "Playing" ]; then
@@ -48,6 +48,11 @@ get_position_time() {
 	fi
 }
 
+is_webp () {
+	local path="$1"
+	[[ "$(identify "$path"| awk '{print $2}')" == "WEBP" ]]
+}
+
 get_cover() {
 	mkdir -p "$XDG_CACHE_HOME/eww_covers"
 	cd "$XDG_CACHE_HOME/eww_covers" || exit
@@ -60,6 +65,11 @@ get_cover() {
 		if [ ! -e "$XDG_CACHE_HOME/eww_covers/$(basename "$COVER_URL")" ]; then
 			wget -N "$COVER_URL" -o /dev/null
 		fi
+
+		is_webp "$(basename "$COVER_URL")" && {
+			convert "$(basename "$COVER_URL")" "$(basename "$COVER_URL").jpg" >/dev/null
+			COVER_URL="$(basename "$COVER_URL").jpg"
+		}
 
 		rm "$IMGPATH"
 		ln -s "$(basename "$COVER_URL")" "$IMGPATH"
@@ -93,10 +103,11 @@ playerctl -F metadata -f '{{title}}\{{artist}}\{{status}}\{{position}}\{{mpris:l
 			color2="#28283d"
 		fi
 	fi
-
+	title=$(sanitize "$title")
 	jaq --null-input -r -c \
 		--arg artist "$(sanitize "$artist")" \
-		--arg title "$(sanitize "$title")" \
+		--arg display_title "$(echo $title | awk -v len=40 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')" \
+		--arg title "$title" \
 		--arg status "$(get_status "$status")" \
 		--arg pos "$(get_position "$position" "$len")" \
 		--arg pos_time "$(get_position_time "$position" "$len")" \
@@ -104,7 +115,7 @@ playerctl -F metadata -f '{{title}}\{{artist}}\{{status}}\{{position}}\{{mpris:l
 		--arg cover "$COVER" \
 		--arg color1 "$color1" \
 		--arg color2 "$color2" \
-		'{"artist": $artist, "title": $title, "status": $status, "position": $pos, "position_time": $pos_time, "length": $length, "cover": $cover, "color1": $color1, "color2": $color2}'
+		'{"artist": $artist, "title": $title, "display_title": $display_title, "status": $status, "position": $pos, "position_time": $pos_time, "length": $length, "cover": $cover, "color1": $color1, "color2": $color2}'
 
 	prevCover=$cover
 done
