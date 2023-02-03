@@ -23,6 +23,7 @@
 @import 'css/sidebar';
 @import 'css/system';
 @import 'css/volume';
+@import 'css/notifications';
 
 .bar {
   background-color: $bg;
@@ -88,8 +89,6 @@ scale trough {
 .workspaces {
   margin-left: 10px;
 }
-
-
 
 .news-box {
   @include rounding;

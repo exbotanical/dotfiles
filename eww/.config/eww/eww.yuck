@@ -5,15 +5,15 @@
 (include "./modules/music.yuck")
 (include "./modules/net.yuck")
 (include "./modules/sys.yuck")
-(include "./modules/news.yuck")
 (include "./modules/volume.yuck")
 (include "./modules/workspaces.yuck")
+(include "./modules/notifications.yuck")
 
 (include "./windows/calendar.yuck")
 (include "./windows/music.yuck")
 (include "./windows/osd.yuck")
 (include "./windows/system-menu.yuck")
-(include "./windows/news.yuck")
+
 
 (defwidget left []
   (box
@@ -25,7 +25,7 @@
   (box
     :space-evenly false
     :halign "end"
-    ; (news)
+    ; (notif)
     (brightness)
     (volume)
     (bluetooth)

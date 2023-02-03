@@ -1,5 +1,0 @@
-(defwidget news []
-  (button
-    :class "module icon"
-    :onclick "${EWW_CMD} open --toggle news-window"
-    (label :text "")))

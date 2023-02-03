@@ -1,8 +1,5 @@
-(defvar music_reveal false)
+(defpoll time :interval "5s" `date +'{"date": "%d/%m", "hour": "%I", "minute": "%M", "day": "%A"}'`)
 
-(defpoll time :interval "5s" `date +'{"date": "%d/%m", "hour": "%H", "minute": "%M", "day": "%A"}'`)
-
-(deflisten airplane "scripts/airplane")
 (deflisten battery "scripts/battery")
 (deflisten bluetooth "scripts/bluetooth")
 (deflisten brightness "scripts/brightness")
@@ -10,5 +7,3 @@
 (deflisten music "scripts/music")
 (deflisten net "scripts/net")
 (deflisten volume "scripts/volume")
-(deflisten workspace "scripts/workspaces")
-(deflisten news "scripts/news")

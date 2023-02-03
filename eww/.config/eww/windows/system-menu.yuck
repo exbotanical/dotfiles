@@ -1,3 +1,5 @@
+(deflisten airplane "scripts/airplane")
+
 (defwidget system-menu []
   (box
     :class "system-menu-box"
@@ -60,7 +62,7 @@
           :text "│")
           (button
             :class "bluetooth-arrow-btn"
-            :onclick "eww close system-menu && blueman-manager"
+            :onclick "eww close system-menu && blueman-manager &"
           ""))
         (label
           :text {bluetooth.text}

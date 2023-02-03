@@ -175,5 +175,5 @@
   "npm.keybindingsChangedWarningShown": true,
   "editor.largeFileOptimizations": false,
   "vitest.enable": true,
-  "window.zoomLevel": 2
+  "window.zoomLevel": 3
 }

@@ -1,28 +1,28 @@
 #!/usr/bin/env bash
 # see: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/include/linux/power_supply.h?h=v6.0.11
 
-icons=("" "" "" "" "" "" "" "")
-num_icons=$(bc <<< "100 / ${#icons[@]}")
-
+declare ICONS=("" "" "" "" "" "" "" "")
+NUM_ICONS=$(bc <<< "100 / ${#ICONS[@]}")
+INTERVAL=3
 
 geticon () {
-  local level=$(awk -v n="$CAPACITY" -v c="$num_icons" 'BEGIN{print int(n/c-1)}')
-	if [[ "$level" -lt 0 ]]; then
+  local level=$(awk -v n="$CAPACITY" -v c="$NUM_ICONS" 'BEGIN{print int(n/c-1)}')
+	(( "$level" < 0 )) && {
 		level=0
-	fi
-	echo "${icons[$level]}"
+	}
+	echo "${ICONS[$level]}"
 }
 
 status () {
-	if [ "$STATE" = "Charging" ]; then
+	if [[ "$STATE" == "Charging" ]]; then
 		echo -n "charging"
 
-		if [ "$RATE" -gt 0 ]; then
+		if (( "$RATE" > 0 )); then
 			echo ", $(gettime) left"
 		else
 			echo ""
 		fi
-	elif [ "$STATE" = "Discharging" ]; then
+	elif [[ "$STATE" == "Discharging" ]]; then
 		echo "$(gettime)h left"
 	else
 		echo "fully charged"
@@ -30,10 +30,12 @@ status () {
 }
 
 color () {
-	if [ "$CAPACITY" -le 20 ]; then
-		echo '#f38ba8'
+	if (( "$CAPACITY" <= 20 )); then
+		echo '#F38BA8'
+	elif (( "$CAPACITY" <= 60 )); then
+		echo '#EBCB8B'
 	else
-		echo '#a6e3a1'
+		echo '#A6E3A1'
 	fi
 }
 
@@ -46,8 +48,8 @@ gettime () {
 	local full=$(cat /sys/class/power_supply/BAT1/charge_full)
 	local now=$(cat /sys/class/power_supply/BAT1/charge_now)
 
-	if [ "$RATE" -gt 0 ]; then
-		if [ "$STATE" = "Discharging" ]; then
+	if (( "$RATE" > 0 )); then
+		if [[ "$STATE" == "Discharging" ]]; then
 			EX="$now / $RATE"
 		else
 			EX="($full - $now) / $RATE"
@@ -62,5 +64,5 @@ while true; do
 	STATE=$(cat /sys/class/power_supply/BAT1/status)
 
 	echo '{ "icon": "'"$(geticon)"'", "percentage": '"$CAPACITY"', "wattage": "'"$(wattage)"'", "status": "'"$(status)"'", "color": "'"$(color)"'" }'
-	sleep 3
+	sleep $INTERVAL
 done

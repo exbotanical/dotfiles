@@ -1,0 +1,56 @@
+.notification {
+  all: unset;
+  background-color: red;
+  padding: 20px 25px 20px 17px;
+  margin: 0px 0px 0px 0px;
+  border-radius: 12px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: $red;
+}
+
+.notification-header {
+  all: unset;
+  background-color: red;
+  padding: 20px 25px 20px 17px;
+  margin: 20px 0px 10px 0px;
+  border-radius: 12px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: $green;
+}
+
+.notification-icon {
+  color: white;
+  font-size: 36px;
+  margin: 0px 20px 0px 10px;
+}
+
+.notification-appname {
+  font-size: 14px;
+  font-weight: bold;
+  color: orange;
+}
+
+.notification-summary {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+.notification-body {
+  font-size: 14px;
+  color: white;
+}
+
+.notification-label {
+  font-size: 30px;
+  color: blue;
+  margin: 0px 50px 0px 0px;
+}
+
+.notification-action {
+  font-size: 36px;
+  color: white;
+  margin: 0px 0px 0px 20px;
+}
