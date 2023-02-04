@@ -173,6 +173,9 @@ bindsym $MOD+h exec alacritty -e htop
 # rofi
 bindsym $MOD+d exec --no-startup-id rofi -show combi -run-command "i3-msg exec '{cmd}'" -show-icons
 
+# File search
+bindsym $MOD+s exec --no-startup-id rofi -show file-browser-extended
+
 # thunar fs ui
 bindsym $MOD+slash exec "thunar"
 ### End App Bindings ### }}}

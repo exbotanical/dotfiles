@@ -1,0 +1,4 @@
+cmd        "xdg-open"
+
+open-parent-as-self
+show-hidden
