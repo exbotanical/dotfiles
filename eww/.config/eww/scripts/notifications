@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# TODO: fix (for some reason eww cannot parse the returned JSON array)
 tmp=/tmp/dunst-history.json
 
 notif() {
@@ -9,12 +9,13 @@ notif() {
 
     for id in "${ids[@]}"; do
         mapfile -t notification < <(gojq -r ".data[] | .[] | select(.id.data == $id) | .appname.data, .icon_path.data, .summary.data, .body.data" "$tmp" | sed -r '/^\s*$/d' | sed -e 's/\%/ percent/g')
-        notifications[$i]="{\"application\":\"${notification[0]}\",\"title\":\"${notification[1]}\",\"body\":\"${notification[2]}\"}"
+        # notifications[$i]="{\"application\":\"${notification[0]}\",\"title\":\"${notification[1]}\",\"body\":\"${notification[2]}\"}"
+        notifications[$i]="${notification[*]}"
         ((i++))
     done
 
-    echo "[$(echo "${notifications[*]}" | sed -e 's/\s\+/,/g' )]"
-    # echo -e "${notifications[*]}" | gojq --slurp --raw-input 'split("\n")[:-1] | map({application: split(" ")[0], title: split(" ")[1], body: split(" ")[2]})'
+    # echo "[$(echo "${notifications[*]}" | sed -e 's/\s\+/,/g' )]"
+    echo -e "${notifications[*]}" | gojq --slurp --raw-input 'split("\n")[:-1] | map({application: split(" ")[0], title: split(" ")[1], body: split(" ")[2]})'
 }
 
 notif

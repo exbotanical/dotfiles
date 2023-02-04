@@ -7,13 +7,11 @@
 (include "./modules/sys.yuck")
 (include "./modules/volume.yuck")
 (include "./modules/workspaces.yuck")
-(include "./modules/notifications.yuck")
 
 (include "./windows/calendar.yuck")
 (include "./windows/music.yuck")
 (include "./windows/osd.yuck")
 (include "./windows/system-menu.yuck")
-
 
 (defwidget left []
   (box
@@ -25,7 +23,6 @@
   (box
     :space-evenly false
     :halign "end"
-    ; (notif)
     (brightness)
     (volume)
     (bluetooth)

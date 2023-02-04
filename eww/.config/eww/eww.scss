@@ -23,7 +23,6 @@
 @import 'css/sidebar';
 @import 'css/system';
 @import 'css/volume';
-@import 'css/notifications';
 
 .bar {
   background-color: $bg;
@@ -63,10 +62,9 @@ tooltip {
 
 .date {
   background: $bg;
-  color: $flamingo;
 
   label {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
   }
 }
 

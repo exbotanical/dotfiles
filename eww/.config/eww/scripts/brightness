@@ -6,7 +6,6 @@ get_level () {
   awk -v n="$(light)" 'BEGIN{print int(n/34)}'
 }
 
-# initial
 main () {
   local icon=${icons[$(get_level)]}
   echo '{ "level": '"$(light)"', "icon": "'"$icon"'" }'

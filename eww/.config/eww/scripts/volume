@@ -1,55 +1,86 @@
 #!/usr/bin/env bash
 
-volicons=("" "" "")
+declare vol_icons=("" "" "")
+SOURCE="SOURCE"
+SINK="SINK"
 
-vol() {
-  wpctl get-volume @DEFAULT_AUDIO_$1@ | awk '{print int($2*100)}'
+get_vol () {
+  local device="$1"
+  wpctl get-volume "@DEFAULT_AUDIO_$device@" | awk '{print int($2*100)}'
 }
-ismuted() {
-  wpctl get-volume @DEFAULT_AUDIO_"$1"@ | rg -i muted
+
+is_muted () {
+  local device="$1"
+  wpctl get-volume "@DEFAULT_AUDIO_$device"@ | rg -i muted
   echo $?
 }
-setvol() {
-  wpctl set-volume @DEFAULT_AUDIO_"$1"@ "$(awk -v n="$2" 'BEGIN{print (n / 100)}')"
-}
-setmute() {
-  wpctl set-mute @DEFAULT_AUDIO_"$1"@ toggle
+
+set_vol () {
+  local device="$1"
+  local volume="$2"
+  wpctl set-volume "@DEFAULT_AUDIO_$device"@ "$(awk -v n="$volume" 'BEGIN{print (n / 100)}')"
 }
 
-if [ "$1" = "mute" ]; then
-  if [ "$2" != "SOURCE" ] && [ "$2" != "SINK" ]; then
-    echo "Can only mute SINK or SOURCE"; exit 1
-  fi
-  setmute "$2"
-elif [ "$1" = "setvol" ]; then
-  if [ "$2" != "SOURCE" ] && [ "$2" != "SINK" ]; then
-    echo "Can only set volume for SINK or SOURCE"; exit 1
-  elif [ "$3" -lt 1 ] || [ "$3" -gt 100 ]; then
-    echo "Volume must be between 1 and 100"; exit 1
-  fi
-  setvol "$2" "$3"
-else
-  # initial values
-  lvl=$(awk -v n="$(vol "SINK")" 'BEGIN{print int(n/34)}')
-  ismuted=$(ismuted "SINK")
+set_mute () {
+  local device="$1"
+  wpctl set-mute "@DEFAULT_AUDIO_$device"@ toggle
+}
 
-  if [ "$ismuted" = 1 ]; then
-  	icon="${volicons[$lvl]}"
+is_invalid_src () {
+  local src="$1"
+  [[ "$src" != "$SOURCE" ]] && [[ "$src" != "$SINK" ]] && {
+    echo 1
+  }
+}
+
+panic () {
+  local ec=$1; shift
+
+  echo "[-] ERROR ($(current_time)): $*" >&2
+  exit $ec
+}
+
+main () {
+  local command="$1"
+  local src="$2"
+  local volume="$3"
+
+  if [[ "$command" == "mute" ]]; then
+    if [[ $(is_invalid_src "$src") ]]; then
+      panic 1 "Can only mute $SINK or $SOURCE"
+    fi
+
+    set_mute "$src"
+  elif [[ "$command" = "set_vol" ]]; then
+    if [[ $(is_invalid_src "$src") ]]; then
+      panic 1 "Can only set volume for $SINK or $SOURCE"
+    elif (( "$volume" < 1 )) || (( "$volume" > 100 )); then
+      panic 1 "Volume must be between 1 and 100"
+    fi
+
+    set_vol "$src" "$volume"
   else
-    icon=""
-  fi
-  echo '{ "icon": "'"$icon"'", "percent": "'"$(vol "SINK")"'", "microphone": "'"$(vol "SOURCE")"'" }'
+    local lvl=$(awk -v n="$(get_vol "$SINK")" 'BEGIN{print int(n/34)}')
 
-  # event loop
-  pactl subscribe | rg --line-buffered "change" | while read -r _; do
-    lvl=$(awk -v n="$(vol "SINK")" 'BEGIN{print int(n/34)}')
-    ismuted=$(ismuted "SINK")
-
-    if [ "$ismuted" = 1 ]; then
-    	icon="${volicons[$lvl]}"
+    if [[ "$(is_muted "$SINK")" == 1 ]]; then
+      icon="${vol_icons[$lvl]}"
     else
       icon=""
     fi
-    echo '{ "icon": "'"$icon"'", "percent": "'"$(vol "SINK")"'", "microphone": "'"$(vol "SOURCE")"'" }'
-  done
-fi
+    echo '{ "icon": "'"$icon"'", "percent": "'"$(get_vol "$SINK")"'", "microphone": "'"$(get_vol "$SOURCE")"'" }'
+
+    # event loop
+    pactl subscribe | rg --line-buffered "change" | while read -r _; do
+      lvl=$(awk -v n="$(get_vol "$SINK")" 'BEGIN{print int(n/34)}')
+
+      if [[ "$(is_muted "$SINK")" == 1 ]]; then
+        icon="${vol_icons[$lvl]}"
+      else
+        icon=""
+      fi
+      echo '{ "icon": "'"$icon"'", "percent": "'"$(get_vol "$SINK")"'", "microphone": "'"$(get_vol "$SOURCE")"'" }'
+    done
+  fi
+}
+
+main "$*"
