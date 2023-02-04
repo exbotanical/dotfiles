@@ -1,0 +1,31 @@
+(defwidget arch-info []
+
+  (box
+    :class "arch-logo"
+    :style "background-color: ${arch.color}"
+    (eventbox
+      :onhover "${EWW_CMD} open arch-info"
+      :onhoverlost "${EWW_CMD} close arch-info"
+    "󰣇")
+  ))
+
+(defwindow arch-info
+  :stacking "fg"
+  :focusable false
+  :monitor 0
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :width "0%"
+    :height "0%"
+  :anchor "top left")
+  (box
+    :space-evenly false
+    :orientation "v"
+    :class "arch-menu-box"
+    (label :xalign 0 :text "Kernel                       ${arch.version}")
+    (label :xalign 0 :text "Available updates                        ${arch.total}")
+    (label :xalign 0 :text "Core updates                               ${arch.warn}")
+  ))
+
+(deflisten arch "scripts/arch")

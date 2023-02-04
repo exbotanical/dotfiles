@@ -54,16 +54,16 @@
 
   "window.openFoldersInNewWindow": "on",
   "window.title": "${dirty}${activeEditorShort}${separator}${rootName}",
-  "window.titleBarStyle": "custom",
+  "window.titleBarStyle": "native",
   "window.newWindowDimensions": "inherit",
-  "window.menuBarVisibility": "compact",
+  "window.menuBarVisibility": "hidden",
 
   "workbench.iconTheme": "material-icon-theme",
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "workbench.startupEditor": "none",
   "workbench.editor.enablePreview": false,
-  "workbench.colorTheme": "Nord Deep",
+  "workbench.colorTheme": "Nordracula",
 
   /**
    * LSP Configurations

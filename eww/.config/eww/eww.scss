@@ -25,6 +25,7 @@ $font-xl: 3rem;
   font-size: $font-base;
 }
 
+@import 'css/arch';
 @import 'css/calendar';
 @import 'css/music';
 @import 'css/osd';
@@ -105,4 +106,23 @@ scale trough {
   background-color: $surface0;
   margin: .5rem 1rem;
   padding: 1.5rem;
+}
+
+.arch-logo {
+  margin-right: .25rem;
+
+  label {
+    color: $mantle;
+    font-size: 3rem;
+    margin: -.8rem 1rem;
+    padding: 0;
+  }
+}
+
+.workspaces {
+  label {
+    font-size: 1.75rem;
+    margin: -.1rem 0;
+    margin-bottom: .15rem;
+  }
 }

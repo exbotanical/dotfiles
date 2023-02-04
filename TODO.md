@@ -10,6 +10,7 @@
 - [ ] arch logo in status bar
 - [ ] chron task to cleanup music script images
 - [ ] add status bar news panel
+- [ ] modularize and reuse eww widgets
 
 # Deps
 
