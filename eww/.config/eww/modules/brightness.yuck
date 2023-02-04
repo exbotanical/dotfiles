@@ -1,4 +1,4 @@
-(defwidget brightness []
+(defwidget brightness-widget []
   (box
     :class "module"
     (eventbox

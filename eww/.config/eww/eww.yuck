@@ -4,7 +4,7 @@
 (include "./modules/clock.yuck")
 (include "./modules/music.yuck")
 (include "./modules/net.yuck")
-(include "./modules/sys.yuck")
+(include "./modules/system-bar.yuck")
 (include "./modules/volume.yuck")
 (include "./modules/workspaces.yuck")
 (include "./modules/arch.yuck")
@@ -14,37 +14,37 @@
 (include "./windows/osd.yuck")
 (include "./windows/system-menu.yuck")
 
-(defwidget left []
+(defwidget left-widget []
   (box
     :space-evenly false
     :halign "start"
-    (arch-info)
-    (workspaces)))
+    (arch-info-widget)
+    (workspaces-widget)))
 
-(defwidget right []
+(defwidget right-widget []
   (box
     :space-evenly false
     :halign "end"
-    (brightness)
-    (volume)
-    (bluetooth)
-    (net)
-    (sys)
-    (clock)
+    (brightness-widget)
+    (volume-widget)
+    (bluetooth-widget)
+    (net-widget)
+    (system-bar-widget)
+    (clock-widget)
   ))
 
-(defwidget center []
+(defwidget center-widget []
   (box
     :space-evenly false
     :halign "center"
-    (music-module)))
+    (music-widget)))
 
-(defwidget bar []
+(defwidget bar-widget []
   (centerbox
     :class "bar"
-    (left)
-    (center)
-    (right)))
+    (left-widget)
+    (center-widget)
+    (right-widget)))
 
 (defwindow bar
   :monitor 0
@@ -55,4 +55,4 @@
   :anchor "top center")
   :stacking "fg"
   :exclusive true
-  (bar))
+  (bar-widget))

@@ -1,15 +1,16 @@
-(defwidget arch-info []
+(deflisten arch "scripts/arch")
 
+(defwidget arch-info-widget []
   (box
     :class "arch-logo"
     :style "background-color: ${arch.color}"
     (eventbox
-      :onhover "${EWW_CMD} open arch-info"
-      :onhoverlost "${EWW_CMD} close arch-info"
+      :onhover "${EWW_CMD} open arch-info-window"
+      :onhoverlost "${EWW_CMD} close arch-info-window"
     "󰣇")
   ))
 
-(defwindow arch-info
+(defwindow arch-info-window
   :stacking "fg"
   :focusable false
   :monitor 0
@@ -27,5 +28,3 @@
     (label :xalign 0 :text "Available updates                        ${arch.total}")
     (label :xalign 0 :text "Core updates                               ${arch.warn}")
   ))
-
-(deflisten arch "scripts/arch")

@@ -1,4 +1,4 @@
-(defwidget net []
+(defwidget net-widget []
   (button
     :class "module icon"
     :onclick "iwgtk &"

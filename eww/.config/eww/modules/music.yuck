@@ -1,6 +1,6 @@
 (defvar music_reveal false)
 
-(defwidget music-module []
+(defwidget music-widget []
   (eventbox
     :onhover "${EWW_CMD} update music_reveal=true"
     :onhoverlost "${EWW_CMD} update music_reveal=false"

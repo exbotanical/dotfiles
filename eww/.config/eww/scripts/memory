@@ -1,20 +1,22 @@
 #!/usr/bin/env bash
 
+INTERVAL=3
+
 while true; do
   # human-readable
-  freeH=$(free -h --si | rg "Mem:")
+  free_h=$(free -h --si | rg "Mem:")
   # non-human-readable
-  freeN=$(free --mega | rg "Mem:")
+  free_n=$(free --mega | rg "Mem:")
 
-  total="$(echo "$freeH" | awk '{ print $2 }')"
-  used="$(echo "$freeH" | awk '{ print $3 }')"
-  t="$(echo "$freeN" | awk '{ print $2 }')"
-  u="$(echo "$freeN" | awk '{ print $3 }')"
+  total="$(echo "$free_h" | awk '{ print $2 }')"
+  used="$(echo "$free_h" | awk '{ print $3 }')"
+  t="$(echo "$free_n" | awk '{ print $2 }')"
+  u="$(echo "$free_n" | awk '{ print $3 }')"
 
   free=$(printf '%.1fG' "$(bc -l <<< "($t - $u) / 1000")")
   perc=$(printf '%.1f' "$(free -m | rg Mem | awk '{print ($3/$2)*100}')")
 
   echo '{ "total": "'"$total"'", "used": "'"$used"'", "free": "'"$free"'", "percentage": '"$perc"' }'
 
-  sleep 3
+  sleep $INTERVAL
 done

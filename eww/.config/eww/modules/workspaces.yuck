@@ -1,6 +1,6 @@
 (deflisten workspace "scripts/workspaces")
 
-(defwidget workspaces []
+(defwidget workspaces-widget []
   (eventbox
     :onscroll "echo {} | sed -e \"s/up/-1/g\" -e \"s/down/+1/g\" | xargs hyprctl dispatch workspace"
     (box

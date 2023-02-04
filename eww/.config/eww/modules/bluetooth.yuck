@@ -1,4 +1,4 @@
-(defwidget bluetooth []
+(defwidget bluetooth-widget []
   (button
     :class "module-bluetooth module icon"
     :onclick "blueman-manager &"

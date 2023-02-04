@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
-toggle() {
-  status=$(rfkill -J | jaq -r '.rfkilldevices[] | select(.type == "bluetooth") | .soft' | head -1)
+INTERNAL=3
 
-  if [ "$status" = "unblocked" ]; then
+toggle () {
+  local status=$(rfkill -J | jaq -r '.rfkilldevices[] | select(.type == "bluetooth") | .soft' | head -1)
+
+  if [[ "$status" == "unblocked" ]]; then
     rfkill block bluetooth
   else
     rfkill unblock bluetooth
   fi
 }
 
-if [ "$1" = "toggle" ]; then
+if [[ "$1" == "toggle" ]]; then
   toggle
 else
   while true; do
@@ -25,8 +27,8 @@ else
       battery=""
     fi
 
-    if [ "$powered" = "yes" ]; then
-      if [ "$status" != "Missing device address argument" ]; then
+    if [[ "$powered" == "yes" ]]; then
+      if [[ "$status" != "Missing device address argument" ]]; then
         text="$name"
         icon=""
         color="#89b4fa"
@@ -46,6 +48,6 @@ else
 
     echo '{ "icon": "'"$icon"'", "battery": "'"$battery"'", "text": "'"$text"'", "color": "'"$color"'", "class": "'"$class"'" }'
 
-    sleep 3
+    sleep $INTERNAL
   done
 fi

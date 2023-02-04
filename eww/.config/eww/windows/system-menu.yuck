@@ -1,6 +1,6 @@
 (deflisten airplane "scripts/airplane")
 
-(defwidget system-menu []
+(defwidget system-menu-widget []
   (box
     :class "system-menu-box"
     :space-evenly false
@@ -202,8 +202,8 @@
           :onclick "wlogout -p layer-shell &"
         "")))))
 
-; windows
-(defwindow system-menu
+
+(defwindow system-menu-window
   :stacking "fg"
   :monitor 0
   :geometry (geometry
@@ -212,4 +212,4 @@
     :width "0%"
     :height "0%"
   :anchor "right top")
-  (system-menu))
+  (system-menu-widget))

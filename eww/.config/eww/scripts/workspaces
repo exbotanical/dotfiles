@@ -15,10 +15,10 @@ declare -A workspaces
 
 # set color for each workspace
 status() {
-  if [ "${o[$1]}" -eq 1 ]; then
+  if (( "${o[$1]}" == 1 )); then
     mon=${monitormap[${workspaces[$1]}]}
 
-    if [ $focusedws -eq "$1" ]; then
+    if (( "$focusedws" == "$1" )); then
       echo -n "${colors[$mon]}"
     else
       echo -n "${dimmed[$mon]}"
@@ -40,7 +40,7 @@ monitor_event() {
 
 # get all apps titles in a workspace
 applist() {
-  ws="$1"
+  local ws="$1"
 
   apps=$(hyprctl -j clients | jaq -jr '.[] | select(.workspace.id == '"$ws"') | .title + "\\n"')
   echo -En ${apps%"\n"}

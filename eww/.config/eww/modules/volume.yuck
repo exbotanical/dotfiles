@@ -1,4 +1,4 @@
-(defwidget volume []
+(defwidget volume-widget []
   (box
     :class "module icon"
     (eventbox
