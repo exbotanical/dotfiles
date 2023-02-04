@@ -3,14 +3,15 @@
   background-color: $bg;
   border: 1px solid $border;
   color: $fg;
-  padding: .2em;
+  padding: .5em;
+  font-size: $font-base;
 }
 
 calendar {
   padding: 5px;
 
   :selected {
-    color: $mauve;
+    color: $yellow;
   }
 
   .header {
@@ -18,7 +19,7 @@ calendar {
   }
 
   .highlight {
-    color: $maroon;
+    color: $blue;
     font-weight: bold;
   }
 

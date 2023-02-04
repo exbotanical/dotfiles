@@ -12,7 +12,8 @@
           :text {time.hour}
         :class "hour")
         (label
-        :text ":")
+          :class "time-delimiter"
+        :text "")
         (label
           :text {time.minute}
         :class "minute"))

@@ -126,13 +126,14 @@
         (circular-progress
           :value "${EWW_CPU.avg}"
           :class "sys-cpu"
-          :thickness 3
+          :thickness {sys_circle_thickness}
           (label
             :text ""
           :class "sys-icon-cpu icon"))
         (box
           :orientation "v"
           :vexpand false
+          :class "system-info-text"
           (label
             :text "cpu"
             :halign "start"
@@ -151,15 +152,18 @@
         :class "sys-box"
         :space-evenly false
         :halign "end"
+
         (circular-progress
           :value {memory.percentage}
           :class "sys-mem"
-          :thickness 3
+          :thickness {sys_circle_thickness}
           (label
             :text ""
           :class "sys-icon-mem icon"))
         (box
           :orientation "v"
+          :class "system-info-text"
+
           (label
             :text "memory"
             :halign "start"

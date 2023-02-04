@@ -6,7 +6,7 @@
     (circular-progress
       :value "${EWW_CPU.avg}"
       :class "circular-progress cpubar"
-      :thickness 3
+      :thickness {bar_circle_thickness}
       (button
         :tooltip "using ${round(EWW_CPU.avg,0)}% cpu"
         :onclick "${EWW_CMD} open --toggle system-menu"
@@ -15,7 +15,7 @@
     (circular-progress
       :value {memory.percentage}
       :class "circular-progress membar"
-      :thickness 3
+      :thickness {bar_circle_thickness}
       (button
         :tooltip "using ${round(memory.percentage,0)}% ram"
         :onclick "${EWW_CMD} open --toggle system-menu"
@@ -25,7 +25,7 @@
       :value "${EWW_BATTERY["BAT1"].capacity}"
       :class "circular-progress batbar"
       :style "color: ${battery.color};"
-      :thickness 3
+      :thickness {bar_circle_thickness}
       (button
         :tooltip "battery on ${EWW_BATTERY["BAT1"].capacity}%"
         :onclick "${EWW_CMD} open --toggle system-menu"

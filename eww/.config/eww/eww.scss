@@ -1,5 +1,12 @@
 @import 'css/colors';
 
+$font-xs: 1rem;
+$font-sm: 1.25rem;
+$font-base: 1.5rem;
+$font-md: 2rem;
+$font-lg: 2.5rem;
+$font-xl: 3rem;
+
 @mixin rounding {
   border-radius: 1rem;
 }
@@ -15,6 +22,7 @@
   all: unset;
   transition: 200ms ease;
   font-family: "", Roboto, sans-serif;
+  font-size: $font-base;
 }
 
 @import 'css/calendar';
@@ -29,7 +37,7 @@
   color: $fg;
 
   label {
-    font-size: 1.25rem;
+    font-size: $font-base;
   }
 }
 
@@ -39,7 +47,7 @@ tooltip {
   border-radius: 8px;
 
   label {
-    font-size: 1rem;
+    font-size: $font-xs;
   }
 }
 
@@ -56,6 +64,10 @@ tooltip {
   padding-left: 1rem;
 }
 
+.time-delimiter {
+  margin: 4px 1px 0px 0px;
+}
+
 .minute {
   padding-right: .7rem;
 }
@@ -64,7 +76,7 @@ tooltip {
   background: $bg;
 
   label {
-    font-size: 1.25rem;
+    font-size: $font-base;
   }
 }
 
@@ -73,7 +85,7 @@ tooltip {
 }
 
 .module-bluetooth {
-  font-size: 1.2rem;
+  font-size: $font-base;
 }
 
 scale trough {

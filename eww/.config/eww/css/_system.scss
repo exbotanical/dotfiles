@@ -15,7 +15,7 @@
 }
 
 .circular-progress {
-  margin: 0 .15rem;
+  margin: 0 .2rem;
 }
 
 .iconmem {
@@ -31,8 +31,8 @@
 }
 
 .icon-text {
-  font-size: 3rem;
-  padding: .7rem;
+  font-size: $font-base;
+  padding: .75rem;
 }
 
 .sys-text-sub {
@@ -41,21 +41,28 @@
 
 .sys-text-mem,
 .sys-text-cpu {
-  font-size: 1rem;
+  font-size: $font-sm;
   font-weight: bold;
 }
 
 .sys-icon-mem,
 .sys-icon-cpu {
-  font-size: 1.5rem;
+  font-size: $font-xl;
   margin: 1.5rem;
 }
+
 
 .system-info-box {
   @include rounding;
   background-color: $surface0;
   margin: .5rem 1rem;
   padding: .5rem;
+}
+
+.system-info-text {
+  label {
+    font-size: $font-sm;
+  }
 }
 
 .sys-mem,

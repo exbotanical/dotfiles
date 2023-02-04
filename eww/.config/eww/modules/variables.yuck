@@ -7,3 +7,6 @@
 (deflisten music "scripts/music")
 (deflisten net "scripts/net")
 (deflisten volume "scripts/volume")
+
+(defvar bar_circle_thickness 3)
+(defvar sys_circle_thickness 6)
