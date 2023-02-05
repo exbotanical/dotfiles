@@ -34,7 +34,7 @@ $font-xl: 3rem;
 @import 'css/volume';
 
 .bar {
-  background-color: $bg;
+  background-color: rgba(46, 52, 64, 1);
   color: $fg;
 
   label {
