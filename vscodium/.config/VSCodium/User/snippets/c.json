@@ -6,5 +6,9 @@
       "#define ${TM_FILENAME_BASE/(.*)$/${1:/upcase}/g}_H",
       "\n#endif /* ${TM_FILENAME_BASE/(.*)$/${1:/upcase}/g}_H */"
     ]
+  },
+  "CMainFunction": {
+    "prefix": "main",
+    "body": ["int main(int argc, char **argv) {$0}"]
   }
 }

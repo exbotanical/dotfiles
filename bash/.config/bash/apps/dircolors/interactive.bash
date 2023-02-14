@@ -1,2 +1,6 @@
 # LSCOLORS config
-[[ -e $HOME/.dir_colors/nord.dircolors ]] && eval "$(dircolors "$HOME/.dir_colors/nord.dircolors")"
+LS_COLORS_DIR="$HOME/.dir_colors/nord.dircolors"
+EphemeralVars+=( LS_COLORS_DIR )
+[[ -e $LS_COLORS_DIR ]] && {
+  eval "$(dircolors $LS_COLORS_DIR)"
+}

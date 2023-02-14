@@ -20,7 +20,7 @@
         (label
           :class "day"
         :text {time.day})))
-
+    
     (centerbox
       :class "system-row"
       (box
@@ -39,13 +39,13 @@
           :text "│")
           (button
             :class "wifi-arrow-btn"
-            :onclick "eww close system-menu && nm-connection-editor &"
+            :onclick "eww close system-menu-window && nm-connection-editor &"
           ""))
         (label
           :text {net.essid}
           :xalign 0.5
         :limit-width 15))
-
+      
       (box
         :class "bluetooth-box"
         :space-evenly false
@@ -62,7 +62,7 @@
           :text "│")
           (button
             :class "bluetooth-arrow-btn"
-            :onclick "eww close system-menu && blueman-manager &"
+            :onclick "eww close system-menu-window && blueman-manager &"
           ""))
         (label
           :text {bluetooth.text}
@@ -70,7 +70,7 @@
           :tooltip "${bluetooth.text} ${bluetooth.battery}"
         :limit-width 15)
       )
-
+      
       (box
         :class "airplane-box"
         :space-evenly false
@@ -85,9 +85,9 @@
           :text "Airplane Mode"
           :xalign 0.5
         :limit-width 16))
-
+      
     )
-
+    
     (box
       :class "sliders"
       :orientation "v"
@@ -102,7 +102,7 @@
           :class "volume-bar"
           :value {volume.percent}
           :tooltip "volume on ${volume.percent}%"
-        :onchange "scripts/volume setvol SINK {}"))
+        :onchange "scripts/volume set_vol SINK {}"))
       (box
         :class "brightness-slider-box"
         :space-evenly false
@@ -114,10 +114,10 @@
           :value {brightness.level}
           :marks true
         :onchange "light -S {}")))
-
+    
     (box
       :class "system-info-box"
-
+      
       ; cpu
       (box
         :class "sys-box"
@@ -146,13 +146,13 @@
             :text "${EWW_CPU.cores[0].freq} MHz"
             :halign "start"
           :class "sys-text-sub")))
-
+      
       ; memory
       (box
         :class "sys-box"
         :space-evenly false
         :halign "end"
-
+        
         (circular-progress
           :value {memory.percentage}
           :class "sys-mem"
@@ -163,7 +163,7 @@
         (box
           :orientation "v"
           :class "system-info-text"
-
+          
           (label
             :text "memory"
             :halign "start"
@@ -172,7 +172,7 @@
             :text "${memory.used} | ${memory.total}"
             :halign "start"
           :class "sys-text-sub"))))
-
+    
     (centerbox
       :class "bottom-row"
       (box

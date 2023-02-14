@@ -57,13 +57,12 @@
   "window.titleBarStyle": "native",
   "window.newWindowDimensions": "inherit",
   "window.menuBarVisibility": "hidden",
-
+  "editor.rulers": [80],
   "workbench.iconTheme": "material-icon-theme",
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "workbench.startupEditor": "none",
   "workbench.editor.enablePreview": false,
-  "workbench.colorTheme": "Nordracula",
 
   /**
    * LSP Configurations
@@ -175,5 +174,7 @@
   "npm.keybindingsChangedWarningShown": true,
   "editor.largeFileOptimizations": false,
   "vitest.enable": true,
-  "window.zoomLevel": 3
+  "window.zoomLevel": 2,
+  "workbench.activityBar.visible": false,
+  "workbench.colorTheme": "night nord theme"
 }

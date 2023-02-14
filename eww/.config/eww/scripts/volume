@@ -6,7 +6,13 @@ SINK="SINK"
 
 get_vol () {
   local device="$1"
-  wpctl get-volume "@DEFAULT_AUDIO_$device@" | awk '{print int($2*100)}'
+  local vol="$(wpctl get-volume @DEFAULT_AUDIO_$device@ | awk '{print int($2*100)}')"
+
+  if (( "$vol" > 100 )); then
+    echo 100
+  else
+    echo "$vol"
+  fi
 }
 
 is_muted () {
@@ -78,6 +84,7 @@ main () {
       else
         icon=""
       fi
+
       echo '{ "icon": "'"$icon"'", "percent": "'"$(get_vol "$SINK")"'", "microphone": "'"$(get_vol "$SOURCE")"'" }'
     done
   fi

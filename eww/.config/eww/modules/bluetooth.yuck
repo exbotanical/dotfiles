@@ -2,7 +2,7 @@
   (button
     :class "module-bluetooth module icon"
     :onclick "blueman-manager &"
-    :onrightclick "scripts/bluetooth toggle"
+    :onrightclick "scripts/bluetooth connect"
     :tooltip "${bluetooth.text} ${bluetooth.battery}"
     :style "color: ${bluetooth.color};"
   {bluetooth.icon}))

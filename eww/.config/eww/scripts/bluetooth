@@ -1,53 +1,56 @@
 #!/usr/bin/env bash
 
-INTERNAL=3
+connect () {
+  local mac='28:F0:33:D0:61:14';
+  local connected="$(bluetoothctl info $mac | grep "Connected" | awk '{ print $2 }')"
 
-toggle () {
-  local status=$(rfkill -J | jaq -r '.rfkilldevices[] | select(.type == "bluetooth") | .soft' | head -1)
-
-  if [[ "$status" == "unblocked" ]]; then
-    rfkill block bluetooth
-  else
-    rfkill unblock bluetooth
-  fi
+  [[ "$connected" == 'no' ]] && {
+    bluetoothctl connect "$mac"
+  }
 }
 
-if [[ "$1" == "toggle" ]]; then
-  toggle
-else
-  while true; do
-    powered=$(bluetoothctl show | rg Powered | cut -f 2- -d ' ')
-    status=$(bluetoothctl info)
-    name=$(echo "$status" | rg Name | cut -f 2- -d ' ')
-    mac=$(echo "$status" | head -1 | awk '{print $2}' | tr ':' '_')
+main () {
+  if [[ "$1" == "connect" ]]; then
+    connect
+  else
+    while true; do
+      powered=$(bluetoothctl show | rg Powered | cut -f 2- -d ' ')
+      status=$(bluetoothctl info)
+      name=$(echo "$status" | rg Name | cut -f 2- -d ' ')
+      mac=$(echo "$status" | head -1 | awk '{print $2}' | tr ':' '_')
 
-    if [[ "$(echo "$status" | rg Percentage)" != "" ]]; then
-      battery="$(upower -i /org/freedesktop/UPower/devices/headset_dev_"$mac" | rg percentage | awk '{print $2}' | cut -f 1 -d '%')%"
-    else
-      battery=""
-    fi
-
-    if [[ "$powered" == "yes" ]]; then
-      if [[ "$status" != "Missing device address argument" ]]; then
-        text="$name"
-        icon=""
-        color="#89b4fa"
-        class="bt-connected"
+      if [[ "$(echo "$status" | rg Percentage)" != "" ]]; then
+        battery="$(upower -i /org/freedesktop/UPower/devices/headset_dev_"$mac" | rg percentage | awk '{print $2}' | cut -f 1 -d '%')%"
       else
-        icon=""
-        text="Disconnected"
+        battery=""
+      fi
+
+      if [[ "$powered" == "yes" ]]; then
+        if [[ "$status" != "Missing device address argument" ]]; then
+          text="$name"
+          icon=""
+          color="#89b4fa"
+          class="bt-connected"
+        else
+          icon=""
+          text="Disconnected"
+          color="#45475a"
+          class=""
+        fi
+      else
+        icon=""
+        text="Bluetooth off"
         color="#45475a"
         class=""
       fi
-    else
-      icon=""
-      text="Bluetooth off"
-      color="#45475a"
-      class=""
-    fi
 
-    echo '{ "icon": "'"$icon"'", "battery": "'"$battery"'", "text": "'"$text"'", "color": "'"$color"'", "class": "'"$class"'" }'
+      echo '{ "icon": "'"$icon"'", "battery": "'"$battery"'", "text": "'"$text"'", "color": "'"$color"'", "class": "'"$class"'" }'
 
-    sleep $INTERNAL
-  done
-fi
+      sleep $INTERNAL
+    done
+  fi
+}
+
+INTERNAL=3
+
+main $*

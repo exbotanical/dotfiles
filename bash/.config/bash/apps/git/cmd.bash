@@ -13,3 +13,11 @@ gm () {
 
   git checkout "$head_branch" && git pull origin "$head_branch"
 }
+
+# grm_all_but removes all branches in the current repository except
+# those provided as a space-delimited list
+grm_all_but () {
+  local raw="$*"
+  local branches_to_ignore="${raw// /|}"
+  git branch | grep -vE "$branches_to_ignore" | xargs git branch -D
+}

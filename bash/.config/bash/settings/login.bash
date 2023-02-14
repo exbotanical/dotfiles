@@ -11,3 +11,7 @@
 
 # Start X
 # [ -z $DISPLAY ] && [ $XDG_VTNR -eq 1 ] && exec startx
+
+# Ask for password now and get it over with
+# We'll probably want to upgrade the system soon
+sudo -v

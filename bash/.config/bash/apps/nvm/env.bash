@@ -2,7 +2,11 @@
 init::export NVM_DIR $HOME/.config/nvm
 
 # Load NVM
-[ -s "$NVM_DIR/nvm.sh" ] && source $NVM_DIR/nvm.sh
+[ -s "$NVM_DIR/nvm.sh" ] && {
+  source $NVM_DIR/nvm.sh
+}
 
 # Load NVM completions
-[ -s "$NVM_DIR/bash_completion" ] && source $NVM_DIR/bash_completion
+[ -s "$NVM_DIR/bash_completion" ] && {
+  source $NVM_DIR/bash_completion
+}

@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 # see: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/include/linux/power_supply.h?h=v6.0.11
 
-declare ICONS=("" "" "" "" "" "" "" "")
+declare ICONS=('' '' '' '' '' '' '' '')
 NUM_ICONS=$(bc <<< "100 / ${#ICONS[@]}")
-INTERVAL=3
+INTERVAL=1
+
+RED='#BF616A'
+GREEN='#A3BE8C'
+YELLOW='#EBCB8B'
+BLUE='#B48EAD'
 
 geticon () {
   local level=$(awk -v n="$CAPACITY" -v c="$NUM_ICONS" 'BEGIN{print int(n/c-1)}')
@@ -30,12 +35,20 @@ status () {
 }
 
 color () {
-	if (( "$CAPACITY" <= 20 )); then
-		echo '#F38BA8'
-	elif (( "$CAPACITY" <= 60 )); then
-		echo '#EBCB8B'
+	if [[ $(status) == charging* ]]; then
+		if (($ALTERNATOR % 2 == 0)); then
+			echo "$BLUE"
+		else
+			echo "$GREEN"
+		fi
 	else
-		echo '#A6E3A1'
+		if (( "$CAPACITY" <= 20 )); then
+			echo "$RED"
+		elif (( "$CAPACITY" <= 60 )); then
+			echo "$YELLOW"
+		else
+			echo "$GREEN"
+		fi
 	fi
 }
 
@@ -58,6 +71,7 @@ gettime () {
 	fi
 }
 
+ALTERNATOR=1
 while true; do
 	RATE=$(cat /sys/class/power_supply/BAT1/current_now)
 	CAPACITY=$(cat /sys/class/power_supply/BAT1/capacity)
@@ -65,4 +79,5 @@ while true; do
 
 	echo '{ "icon": "'"$(geticon)"'", "percentage": '"$CAPACITY"', "wattage": "'"$(wattage)"'", "status": "'"$(status)"'", "color": "'"$(color)"'" }'
 	sleep $INTERVAL
+	((ALTERNATOR++))
 done

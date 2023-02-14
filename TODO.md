@@ -7,10 +7,10 @@
 - [ ] Add contexts
 - [ ] enable shellcheck expansion, globbing rules in alias and cmd files
 - [ ] bash macros (copies file into other file)
-- [ ] arch logo in status bar
+- [x] arch logo in status bar
 - [ ] chron task to cleanup music script images
 - [ ] add status bar news panel
-- [ ] modularize and reuse eww widgets
+- [x] modularize and reuse eww widgets
 
 # Deps
 
