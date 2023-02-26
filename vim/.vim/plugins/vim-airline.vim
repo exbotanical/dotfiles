@@ -2,7 +2,7 @@ if exists('g:vim_plug_installing_plugins')
   Plug 'vim-airline/vim-airline'
 endif
 
-let g:airline_theme='base16_nord'
+let g:airline_theme='nord'
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}

@@ -53,6 +53,8 @@ set cursorcolumn                              " Highlight the screen column of t
 set mouse=a                                   " Enable mouse for scrolling and resizing
 set title                                     " Set the window's title, reflecting the file currently being edited
 set background=dark                           " Use colors that suit a dark background
+set number                                    " Show line number
+set guifont="Fira Code"\ 16                   " Set font
 
 " Behavior
 set clipboard+=unnamed                        " Yanks go on clipboard instead
