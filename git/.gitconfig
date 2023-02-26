@@ -19,11 +19,11 @@
   ui = auto
 
 [color "branch"]
-  current = green reverse
-  local = green
-  remote = blue
+  current = 225 reverse
+  local = 110
+  remote = 244
   upstream = blue
-  plain = black
+  plain = 110
 
 [color "diff"]
   context = black
@@ -36,9 +36,9 @@
 
 [color "status"]
   header = normal
-  added = green
-  changed = red
-  untracked = black
+  added = 42
+  changed = 202
+  untracked = 244
 
 [branch "master"]
   remote = origin
