@@ -6,20 +6,19 @@ filled in as strings with either
 a global executable or a path to
 an executable
 ]]
-
 -- Overrides
 
 -- see: https://github.com/LunarVim/LunarVim/issues/2597
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "clangd" })
 local capabilities = require("lvim.lsp").common_capabilities()
 capabilities.offsetEncoding = { "utf-16" }
-local opts = {capabilities = capabilities}
+local opts = { capabilities = capabilities }
 require("lvim.lsp.manager").setup("clangd", opts)
 
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save.enabled = false
-lvim.colorscheme = "tokyonight-night"
+lvim.colorscheme = "onenord"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -76,7 +75,7 @@ lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
- lvim.builtin.treesitter.ensure_installed = {
+lvim.builtin.treesitter.ensure_installed = {
   "bash",
   "c",
   "javascript",
@@ -97,7 +96,7 @@ lvim.builtin.treesitter.highlight.enable = true
 
 -- make sure server will always be installed even if the server is in skipped_servers list
 lvim.lsp.installer.setup.ensure_installed = {
-    "clangd",
+  "clangd",
 }
 -- -- change UI setting of `LspInstallInfo`
 -- -- see <https://github.com/williamboman/nvim-lsp-installer#default-configuration>
@@ -193,51 +192,52 @@ lvim.plugins = {
 
 -- General Settings
 
-vim.opt.backup = false                                    -- creates a backup file
-vim.opt.clipboard = "unnamedplus"                         -- allows neovim to access the system clipboard
-vim.opt.cmdheight = 2                                     -- more space in the neovim command line for displaying messages
-vim.opt.colorcolumn = "99999"                             -- fixes indentline for now
+vim.opt.backup = false -- creates a backup file
+vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
+vim.opt.cmdheight = 2 -- more space in the neovim command line for displaying messages
+vim.opt.colorcolumn = "99999" -- fixes indentline for now
 vim.opt.completeopt = { "menuone", "noselect" }
-vim.opt.conceallevel = 0                                  -- so that `` is visible in markdown files
-vim.opt.fileencoding = "utf-8"                            -- the encoding written to a file
-vim.opt.foldmethod = "manual"                             -- folding set to "expr" for treesitter based folding
-vim.opt.foldexpr = ""                                     -- set to "nvim_treesitter#foldexpr()" for treesitter based folding
-vim.opt.guifont = "monospace:h17"                         -- the font used in graphical neovim applications
-vim.opt.hidden = true                                     -- required to keep multiple buffers and open multiple buffers
-vim.opt.hlsearch = true                                   -- highlight all matches on previous search pattern
-vim.opt.ignorecase = true                                 -- ignore case in search patterns
-vim.opt.mouse = "a"                                       -- allow the mouse to be used in neovim
-vim.opt.pumheight = 10                                    -- pop up menu height
-vim.opt.showmode = true                                   -- show mode e.g. INSERT, VISUAL, et al
-vim.opt.showtabline = 2                                   -- always show tabs
-vim.opt.smartcase = true                                  -- smart case
-vim.opt.smartindent = true                                -- make indenting smarter again
-vim.opt.splitbelow = true                                 -- force all horizontal splits to go below current window
-vim.opt.splitright = true                                 -- force all vertical splits to go to the right of current window
-vim.opt.swapfile = false                                  -- creates a swapfile
-vim.opt.termguicolors = true                              -- set term gui colors (most terminals support this)
-vim.opt.timeoutlen = 100                                  -- time to wait for a mapped sequence to complete (in milliseconds)
-vim.opt.title = true                                      -- set the title of window to the value of the titlestring
-vim.opt.titlestring = "%<%F%=%l/%L - nvim"                -- what the title of the window will be set to
+vim.opt.conceallevel = 0 -- so that `` is visible in markdown files
+vim.opt.fileencoding = "utf-8" -- the encoding written to a file
+vim.opt.foldmethod = "manual" -- folding set to "expr" for treesitter based folding
+vim.opt.foldexpr =
+"" -- set to "nvim_treesitter#foldexpr()" for treesitter based folding
+vim.opt.guifont = "monospace:h17" -- the font used in graphical neovim applications
+vim.opt.hidden = true -- required to keep multiple buffers and open multiple buffers
+vim.opt.hlsearch = true -- highlight all matches on previous search pattern
+vim.opt.ignorecase = true -- ignore case in search patterns
+vim.opt.mouse = "a" -- allow the mouse to be used in neovim
+vim.opt.pumheight = 10 -- pop up menu height
+vim.opt.showmode = true -- show mode e.g. INSERT, VISUAL, et al
+vim.opt.showtabline = 2 -- always show tabs
+vim.opt.smartcase = true -- smart case
+vim.opt.smartindent = true -- make indenting smarter again
+vim.opt.splitbelow = true -- force all horizontal splits to go below current window
+vim.opt.splitright = true -- force all vertical splits to go to the right of current window
+vim.opt.swapfile = false -- creates a swapfile
+vim.opt.termguicolors = true -- set term gui colors (most terminals support this)
+vim.opt.timeoutlen = 100 -- time to wait for a mapped sequence to complete (in milliseconds)
+vim.opt.title = true -- set the title of window to the value of the titlestring
+vim.opt.titlestring = "%<%F%=%l/%L - nvim" -- what the title of the window will be set to
 vim.opt.undodir = vim.fn.stdpath "cache" .. "/undo"
-vim.opt.undofile = true                                  -- enable persistent undo
-vim.opt.updatetime = 300                                 -- faster completion
-vim.opt.writebackup = false                              -- if a file is being edited by another program (or was written to file while editing with another program) it is not allowed to be edited
-vim.opt.expandtab = true                                 -- Convert tabs to spaces
-vim.opt.shiftwidth = 2                                   -- When shifting, indent using n spaces
-vim.opt.tabstop = 2                                      -- Indent using n spaces
-vim.opt.cursorline = true                                -- Highlight the line currently under cursor
-vim.opt.cursorcolumn = true                              -- Highlight the screen column of the cursor
-vim.opt.number = true                                    -- set numbered lines
-vim.opt.relativenumber = false                           -- set relative numbered lines
-vim.opt.numberwidth = 4                                  -- set number column width to 2 {default 4}
-vim.opt.signcolumn = "yes"                               -- always show the sign column otherwise it would shift the text each time
-vim.opt.wrap = true                                      -- Enable line wrapping
-vim.opt.spell = true                                     -- Enable spellchecking
+vim.opt.undofile = true -- enable persistent undo
+vim.opt.updatetime = 300 -- faster completion
+vim.opt.writebackup = false -- if a file is being edited by another program (or was written to file while editing with another program) it is not allowed to be edited
+vim.opt.expandtab = true -- Convert tabs to spaces
+vim.opt.shiftwidth = 2 -- When shifting, indent using n spaces
+vim.opt.tabstop = 2 -- Indent using n spaces
+vim.opt.cursorline = true -- Highlight the line currently under cursor
+vim.opt.cursorcolumn = true -- Highlight the screen column of the cursor
+vim.opt.number = true -- set numbered lines
+vim.opt.relativenumber = false -- set relative numbered lines
+vim.opt.numberwidth = 4 -- set number column width to 2 {default 4}
+vim.opt.signcolumn =
+"yes" -- always show the sign column otherwise it would shift the text each time
+vim.opt.wrap = true -- Enable line wrapping
+vim.opt.spell = true -- Enable spellchecking
 vim.opt.spelllang = "en"
-vim.opt.scrolloff = 1                                    -- The number of screen lines to keep above and below the cursor
-vim.opt.sidescrolloff = 5                                -- The number of screen columns to keep to the left and right of the cursor
-vim.opt.textwidth = 80                                   -- Wrap lines at n characters
-vim.opt.history = 1000                                   -- Increase the undo limit
-vim.opt.shell = "/bin/bash"                              -- The shell used to execute commands
-vim.opt.nocompatible = true                              -- Don't sacrifice functionality just to preserve backward compatibility with vi
+vim.opt.scrolloff = 1 -- The number of screen lines to keep above and below the cursor
+vim.opt.sidescrolloff = 5 -- The number of screen columns to keep to the left and right of the cursor
+vim.opt.textwidth = 80 -- Wrap lines at n characters
+vim.opt.history = 1000 -- Increase the undo limit
+vim.opt.shell = "/bin/bash" -- The shell used to execute commands
