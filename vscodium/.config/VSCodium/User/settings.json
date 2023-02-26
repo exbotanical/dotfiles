@@ -83,7 +83,19 @@
     "editor.tabSize": 4
   },
 
-  "[c]": {},
+  "clang-format.executable": "/usr/bin/clang-format",
+  "clang-format.style": "google",
+  "clang-format.language.c.enable": true,
+  "clang-format.language.c.style": "google",
+  "[c]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    "editor.defaultFormatter": "xaver.clang-format",
+    "editor.wordBasedSuggestions": false,
+    "editor.suggest.insertMode": "replace",
+    "editor.semanticHighlighting.enabled": true
+  },
 
   "C_Cpp.default.includePath": [
     "${workspaceFolder}/**",
@@ -174,7 +186,7 @@
   "npm.keybindingsChangedWarningShown": true,
   "editor.largeFileOptimizations": false,
   "vitest.enable": true,
-  "window.zoomLevel": 2,
+  "window.zoomLevel": 4,
   "workbench.activityBar.visible": false,
   "workbench.colorTheme": "night nord theme"
 }
