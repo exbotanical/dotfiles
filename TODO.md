@@ -11,6 +11,7 @@
 - [ ] chron task to cleanup music script images
 - [ ] add status bar news panel
 - [x] modularize and reuse eww widgets
+- [ ] automate setup
 
 # Deps
 
