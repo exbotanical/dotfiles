@@ -21,3 +21,11 @@ grm_all_but () {
   local branches_to_ignore="${raw// /|}"
   git branch | grep -vE "$branches_to_ignore" | xargs git branch -D
 }
+
+# git_colors prints all possible colors that can be used in gitconfig
+git_colors () {
+  for i in $(seq 255); do
+    echo $(git config --get-color "" "$i bold reverse") \
+      $i color test $(git config --get-color "" reset)
+  done
+}

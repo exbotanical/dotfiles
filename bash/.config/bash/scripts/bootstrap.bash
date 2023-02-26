@@ -3,13 +3,20 @@
 #author         :Matthew Zito
 #===============================================================================
 # shellcheck disable=SC2046,SC2048,SC2086
+IFS=$'\n'
+
+GITHUB_URL=https://github.com/exbotanical
+
+TS_NPM_REPO=$GITHUB_URL/ts-npm-boilerplate
+JS_NPM_REPO=$GITHUB_URL/js-npm-boilerplate
+GO_REPO=$GITHUB_URL/go-lib-boilerplate
+C_REPO=$GITHUB_URL/c-boilerplate
+DYNAMIC_CLIB_REPO=$GITHUB_URL/dynamic-clib-boilerplate
+STATIC_CLIB_REPO=$GITHUB_URL/static-clib-boilerplate
 
 clib_setup_files () {
   # the include header
-  local header=src/$proj.h
-
-  # source file
-  local source=src/$proj.c
+  local header=src/lib$proj.h
 
   # the include guard
   local incl_guard
@@ -20,7 +27,6 @@ clib_setup_files () {
   incl_header="#include \"${header:4:${#header}}\""
 
   # create the main header file and...
-  touch $source
   touch $header
 
   # ...add the include guards therein
@@ -28,11 +34,15 @@ clib_setup_files () {
 #ifndef $incl_guard
 #define $incl_guard
 
-#endif /* $incl_guard */
-END
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-  cat > $source <<END
-$incl_header
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* $incl_guard */
 END
 }
 
@@ -52,6 +62,7 @@ git_setup () {
 setup () {
   local env=$1
   local proj=$2
+  local flag=$3
 
   case $env in
     tsnpm )
@@ -77,12 +88,20 @@ setup () {
       designate $proj
       ;;
 
-    clib )
-      git clone $C_LIB_REPO .
-      designate $proj
-      clib_setup_files
+    clib)
+      case $flag in
+        --static)
+        git clone $STATIC_CLIB_REPO .
+        designate $proj
+        clib_setup_files
+        ;;
+        --dynamic | *)
+        git clone $DYNAMIC_CLIB_REPO .
+        designate $proj
+        clib_setup_files
+        ;;
+      esac
       ;;
-
     * )
       echo -e "[-] No template exists for $env\n"
       exit 1
@@ -95,25 +114,16 @@ setup () {
 main () {
   local env=$1
   local proj=$2
+  local flag=$3
   local dir_name
   dir_name=$(basename $(pwd))
 
   echo -e "[+] Initializing a new $env environment for $proj in $dir_name...\n"
 
-  setup $env $proj
+  setup $env $proj $flag
 
   echo -e "[+] Project setup complete\n"
 }
-
-IFS=$'\n'
-
-GITHUB_URL=https://github.com/exbotanical
-
-TS_NPM_REPO=$GITHUB_URL/ts-npm-boilerplate
-JS_NPM_REPO=$GITHUB_URL/js-npm-boilerplate
-GO_REPO=$GITHUB_URL/go-lib-boilerplate
-C_REPO=$GITHUB_URL/c-boilerplate
-C_LIB_REPO=$GITHUB_URL/clib-boilerplate
 
 # stop here if being sourced
 return 2>/dev/null

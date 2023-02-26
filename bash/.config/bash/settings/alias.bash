@@ -15,7 +15,7 @@ alias l='ls -CF'
 alias repos='cd ~/repositories'
 alias docs='cd ~/Documents'
 alias desktop='cd ~/Desktop'
-alias open='xdg-open'
+alias open='xdg-open' # TODO: fix on hypr
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -42,3 +42,9 @@ alias 777='chmod -R 777'
 
 # Initialization
 alias start_wayland='exec Hyprland'
+
+# Open dotfiles to edit
+alias dotfiles='code ~/dotfiles'
+
+# Time
+alias now='date +%r'
