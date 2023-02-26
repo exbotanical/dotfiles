@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+INTERVAL=3600
+
 main () {
   declare updates="$(yay -Qua)"
 
@@ -21,4 +23,7 @@ main () {
     '{ "total": $total, "warn": $warn, "color": $color, "version": $version }'
 }
 
-main
+while true; do
+  main
+  sleep $INTERVAL
+done
