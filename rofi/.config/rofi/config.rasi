@@ -3,7 +3,7 @@
 window {
   background-color: @background-color;
   transparency: "real";
-  border:1;
+  border: 0;
   border-radius: 6;
   border-color: @bordercolor;
   padding: 5;
