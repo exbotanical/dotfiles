@@ -16,7 +16,7 @@ STATIC_CLIB_REPO=$GITHUB_URL/static-clib-boilerplate
 
 clib_setup_files () {
   # the include header
-  local header=src/lib$proj.h
+  local header=include/lib$proj.h
 
   # the include guard
   local incl_guard
@@ -27,6 +27,7 @@ clib_setup_files () {
   incl_header="#include \"${header:4:${#header}}\""
 
   # create the main header file and...
+  mkdir include
   touch $header
 
   # ...add the include guards therein
