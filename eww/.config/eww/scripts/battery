@@ -42,6 +42,9 @@ color () {
 			echo "$GREEN"
 		fi
 	else
+		(( "$CAPACITY" <= 15 )) && {
+			notify-send "Battery low: $CAPACITY%"
+		}
 		if (( "$CAPACITY" <= 20 )); then
 			echo "$RED"
 		elif (( "$CAPACITY" <= 60 )); then
