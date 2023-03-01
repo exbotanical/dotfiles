@@ -29,5 +29,9 @@
     "key": "ctrl+b",
     "command": "workbench.action.toggleSidebarVisibility",
     "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "-workbench.action.quickOpen"
   }
 ]
