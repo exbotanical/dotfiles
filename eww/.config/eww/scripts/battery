@@ -4,6 +4,7 @@
 declare ICONS=('' '' '' '' '' '' '' '')
 NUM_ICONS=$(bc <<< "100 / ${#ICONS[@]}")
 INTERVAL=1
+LOW_BAT_NOTIFY_INTERVAL=30
 
 RED='#BF616A'
 GREEN='#A3BE8C'
@@ -43,7 +44,11 @@ color () {
 		fi
 	else
 		(( "$CAPACITY" <= 15 )) && {
-			notify-send "Battery low: $CAPACITY%"
+			local n_seconds=$(date +%S)
+			# Only notify once per LOW_BAT_NOTIFY_INTERVAL seconds
+			(( "$n_seconds" % "$LOW_BAT_NOTIFY_INTERVAL" == 0 )) && {
+				notify-send "Battery low: $CAPACITY%"
+			}
 		}
 		if (( "$CAPACITY" <= 20 )); then
 			echo "$RED"

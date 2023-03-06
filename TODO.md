@@ -12,6 +12,8 @@
 - [ ] add status bar news panel
 - [x] modularize and reuse eww widgets
 - [ ] automate setup
+- [ ] dark screen cover alarm
+- [x] fix battery script low battery notif (dedupe)
 
 # Deps
 
