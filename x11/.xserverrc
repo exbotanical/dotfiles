@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# tcp -nolisten local to prevent listening on an abstract socket i.e. security vuln
-exec /usr/bin/Xorg -nolisten tcp "$@" -nolisten local vt$XDG_VTNR
