@@ -48,7 +48,7 @@ init::export CDPATH .
 init::export HISTCONTROL erasedups:ignoreboth
 
 # Ignore short commands
-init::export HISTIGNORE '&:ls:[bf]g:exit:pwd:clear:history:ps[ \t]*'
+init::export HISTIGNORE '&:ls:[bf]g:exit:pwd:clear:history*'
 
 init::export HISTSIZE 10000
 init::export HISTFILESIZE $(bc<<<$HISTSIZE*2)
