@@ -1,17 +1,17 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
   "palette": {
-    "polar": "#4C566A",
-    "cyan": "#8FBCBB",
-    "orange": "#D08770",
-    "blue": "#8AADF4",
+    "polar": "#e67e80",
+    "cyan": "#7fbbb3",
+    "orange": "#dbbc7f",
+    "blue": "#7fbbb3",
     "text": "#3B4252",
-    "green": "#A3BE8C",
-    "pink": "#fac1dc",
-    "snow": "#D8DEE9",
-    "red": "#BF616A",
+    "green": "#83c092",
+    "pink": "#a7c080",
+    "snow": "#2d353b",
+    "red": "#e67e80",
     "purple": "#B48EAD",
-    "yellow": "#EBCB8B"
+    "yellow": "#a7c080"
   },
   "blocks": [
     {
@@ -20,7 +20,7 @@
       "segments": [
         {
           "background": "p:polar",
-          "foreground": "p:white",
+          "foreground": "p:text",
           "properties": {
             "arch": "\uf303",
             "linux": "\ue712",
@@ -80,7 +80,7 @@
       "segments": [
         {
           "background": "p:polar",
-          "foreground": "p:white",
+          "foreground": "p:text",
           "properties": {
             "style": "austin",
             "always_enabled": true

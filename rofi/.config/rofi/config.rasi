@@ -1,4 +1,4 @@
-@import "themes/pink-nord"
+@import "themes/serenade"
 
 window {
   background-color: @background-color;
