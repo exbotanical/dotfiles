@@ -189,9 +189,11 @@
   "npm.keybindingsChangedWarningShown": true,
   "editor.largeFileOptimizations": false,
   "vitest.enable": true,
-  "window.zoomLevel": 4,
+  "window.zoomLevel": 3,
   "workbench.activityBar.visible": false,
   "workbench.colorTheme": "Everforest Dark",
   "rust-analyzer.cargo.features": "all",
-  "cSpell.ignoreWords": ["goldmund"]
+  "cSpell.ignoreWords": ["goldmund"],
+  "doxdocgen.generic.dateFormat": "DD/MM/YYYY",
+  "doxdocgen.generic.briefTemplate": "{text}"
 }
