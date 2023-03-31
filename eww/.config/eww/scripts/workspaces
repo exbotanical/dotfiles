@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 
-#        red       peach     green     blue
-declare -a colors=('#f38ba8' '#fab387' '#a6e3a1' '#89b4fa')
-#        pink      yellow    teal      lavender
-declare -a dimmed=('#f5c2e7' '#f9e2af' '#94e2d5' '#b4befe')
-empty='#313244'
+if [[ "$SYSTEM_THEME" == 'everforest' ]]; then
+  #                   red       peach     green     blue
+  declare -a colors=('#e67e80' '#fab387' '#a6e3a1' '#89b4fa')
+  #                   pink      yellow    teal      lavender
+  declare -a dimmed=('#9aa79d' '#f9e2af' '#94e2d5' '#b4befe')
+  empty='#272e33'
+else
+  #                   red       peach     green     blue
+  declare -a colors=('#f38ba8' '#fab387' '#a6e3a1' '#89b4fa')
+  #                   pink      yellow    teal      lavender
+  declare -a dimmed=('#f5c2e7' '#f9e2af' '#94e2d5' '#b4befe')
+  empty='#313244'
+fi
+
 
 # get initial focused workspace
 focusedws=$(hyprctl -j monitors | jaq -r '.[] | select(.focused == true) | .activeWorkspace.id')

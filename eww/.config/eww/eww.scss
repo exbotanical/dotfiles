@@ -1,4 +1,4 @@
-@import 'css/colors';
+@import 'css/themes/everforest';
 
 $font-xs: 1rem;
 $font-sm: 1.25rem;
@@ -34,7 +34,7 @@ $font-xl: 3rem;
 @import 'css/volume';
 
 .bar {
-  background-color: rgba(46, 52, 64, 1);
+  background-color: $bar-bg;
   color: $fg;
 
   label {

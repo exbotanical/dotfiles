@@ -37,7 +37,7 @@
 [color "status"]
   header = normal
   added = 42
-  changed = 202
+  changed = 222
   untracked = 244
 
 [branch "master"]

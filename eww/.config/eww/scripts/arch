@@ -1,18 +1,28 @@
 #!/usr/bin/env bash
 
+if [[ "$SYSTEM_THEME" == 'everforest' ]]; then
+  WARN_COLOR='#e67e80'
+  INFO_COLOR='#dbbc7f'
+  OK_COLOR='#a7c080'
+else
+  WARN_COLOR='#BF616A'
+  INFO_COLOR='#EBCB8B'
+  OK_COLOR='#81A1C1'
+fi
+
 INTERVAL=3600
 
 main () {
   declare updates="$(yay -Qua)"
 
-  local color="#81A1C1"
+  local color="$OK_COLOR"
   local num_updates_total=$(echo -e "${updates[*]}" | grep -vc '\[ignored\]')
   local num_updates_warn=$(echo -e "${updates[*]}" | grep -c '\(linux\|linux-lts\|linux-zen\)')
 
   if (( "$num_updates_warn" > 0 )); then
-    color="#BF616A"
+    color="$WARN_COLOR"
   elif (( "$num_updates_total" > 0 )); then
-    color="#EBCB8B"
+    color="$INFO_COLOR"
   fi
 
   jaq --null-input -r -c \

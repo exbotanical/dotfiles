@@ -6,10 +6,17 @@ NUM_ICONS=$(bc <<< "100 / ${#ICONS[@]}")
 INTERVAL=1
 LOW_BAT_NOTIFY_INTERVAL=30
 
-RED='#BF616A'
-GREEN='#A3BE8C'
-YELLOW='#EBCB8B'
-BLUE='#B48EAD'
+if [[ "$SYSTEM_THEME" == 'everforest' ]]; then
+  RED='#e67e80'
+	GREEN='#a7c080'
+	YELLOW='#dbbc7f'
+	BLUE='#7fbbb3'
+else
+ 	RED='#BF616A'
+	GREEN='#A3BE8C'
+	YELLOW='#EBCB8B'
+	BLUE='#B48EAD'
+fi
 
 geticon () {
   local level=$(awk -v n="$CAPACITY" -v c="$NUM_ICONS" 'BEGIN{print int(n/c-1)}')
