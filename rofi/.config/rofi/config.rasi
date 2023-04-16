@@ -1,4 +1,4 @@
-@import "themes/serenade"
+@import "themes/everforest"
 
 window {
   background-color: @background-color;

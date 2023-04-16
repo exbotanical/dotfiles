@@ -11,8 +11,7 @@ TS_NPM_REPO=$GITHUB_URL/ts-npm-boilerplate
 JS_NPM_REPO=$GITHUB_URL/js-npm-boilerplate
 GO_REPO=$GITHUB_URL/go-lib-boilerplate
 C_REPO=$GITHUB_URL/c-boilerplate
-DYNAMIC_CLIB_REPO=$GITHUB_URL/dynamic-clib-boilerplate
-STATIC_CLIB_REPO=$GITHUB_URL/static-clib-boilerplate
+CLIB_REPO=$GITHUB_URL/clib
 
 clib_setup_files () {
   # the include header
@@ -63,7 +62,6 @@ git_setup () {
 setup () {
   local env=$1
   local proj=$2
-  local flag=$3
 
   case $env in
     tsnpm )
@@ -90,18 +88,7 @@ setup () {
       ;;
 
     clib)
-      case $flag in
-        --static)
-        git clone $STATIC_CLIB_REPO .
-        designate $proj
-        clib_setup_files
-        ;;
-        --dynamic | *)
-        git clone $DYNAMIC_CLIB_REPO .
-        designate $proj
-        clib_setup_files
-        ;;
-      esac
+      git clone $CLIB_REPO
       ;;
     * )
       echo -e "[-] No template exists for $env\n"
@@ -115,13 +102,13 @@ setup () {
 main () {
   local env=$1
   local proj=$2
-  local flag=$3
+
   local dir_name
   dir_name=$(basename $(pwd))
 
   echo -e "[+] Initializing a new $env environment for $proj in $dir_name...\n"
 
-  setup $env $proj $flag
+  setup $env $proj
 
   echo -e "[+] Project setup complete\n"
 }

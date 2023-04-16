@@ -48,3 +48,10 @@ alias dotfiles='code ~/dotfiles'
 
 # Time
 alias now='date +%r'
+
+# Systemd
+alias start='sudo systemctl start'
+alias restart='sudo systemctl restart'
+alias stop='sudo systemctl stop'
+alias enable='sudo systemctl enable'
+alias disable='sudo systemctl disable'
