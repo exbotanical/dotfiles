@@ -14,4 +14,4 @@
 
 # Ask for password now and get it over with
 # We'll probably want to upgrade the system soon
-sudo -v
+# sudo -v TODO: re-enable after fixing arch HD I/O errors
