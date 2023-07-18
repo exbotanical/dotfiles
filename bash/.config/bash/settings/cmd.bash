@@ -9,7 +9,7 @@ extract () {
       *.tar.bz2)  tar xjf "$file_name"      ;;
       *.tar.gz)   tar xzf "$file_name"      ;;
       *.bz2)      bunzip2 "$file_name"      ;;
-      *.rar)      rar x "$file_name"        ;;
+      *.rar)      unrar x "$file_name"      ;;
       *.gz)       gunzip "$file_name"       ;;
       *.tar)      tar xf "$file_name"       ;;
       *.tbz2)     tar xjf "$file_name"      ;;

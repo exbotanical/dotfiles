@@ -11,7 +11,7 @@ TS_NPM_REPO=$GITHUB_URL/ts-npm-boilerplate
 JS_NPM_REPO=$GITHUB_URL/js-npm-boilerplate
 GO_REPO=$GITHUB_URL/go-lib-boilerplate
 C_REPO=$GITHUB_URL/c-boilerplate
-CLIB_REPO=$GITHUB_URL/clib
+CLIB_REPO=$GITHUB_URL/clib-boilerplate
 
 clib_setup_files () {
   # the include header
@@ -88,7 +88,7 @@ setup () {
       ;;
 
     clib)
-      git clone $CLIB_REPO
+      git clone $CLIB_REPO .
       ;;
     * )
       echo -e "[-] No template exists for $env\n"

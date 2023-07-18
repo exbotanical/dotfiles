@@ -82,5 +82,7 @@ init::export GCC_COLORS 'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=
 # PS2 prompt
 init::export PS2 "\[$(tput setaf 3)\]continue--> "
 
+init::export EDITOR $(command -v vim 2>/dev/null || command -v vi)
+
 # File perms
 umask 022

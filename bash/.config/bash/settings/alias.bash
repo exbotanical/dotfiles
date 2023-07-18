@@ -55,3 +55,6 @@ alias restart='sudo systemctl restart'
 alias stop='sudo systemctl stop'
 alias enable='sudo systemctl enable'
 alias disable='sudo systemctl disable'
+
+# reload force-reloads all bash configurations
+alias reload='source ~/.config/bash/init.bash reload'
