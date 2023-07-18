@@ -112,10 +112,12 @@ scale trough {
   margin-right: .25rem;
 
   label {
+
+    margin-right: 33;
     color: $mantle;
-    font-size: 3rem;
+    font-size: 2rem;
     margin: -.8rem 1rem;
-    padding: 0;
+    // padding-right: 10px;
   }
 }
 

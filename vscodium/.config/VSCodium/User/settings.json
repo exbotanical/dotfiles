@@ -195,5 +195,6 @@
   "cSpell.ignoreWords": ["goldmund"],
   "doxdocgen.generic.dateFormat": "DD/MM/YYYY",
   "doxdocgen.generic.briefTemplate": "{text}",
-  "workbench.colorTheme": "Everforest Dark"
+  "workbench.colorTheme": "Everforest Dark",
+  "python.defaultInterpreterPath": "/usr/bin/python"
 }

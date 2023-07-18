@@ -33,5 +33,14 @@
   {
     "key": "ctrl+e",
     "command": "-workbench.action.quickOpen"
+  },
+  {
+    "key": "ctrl+shift+l",
+    "command": "dockerContainers.focus"
+  },
+  {
+    "key": "ctrl+shift+f",
+    "command": "-vue3snippets.format",
+    "when": "editorTextFocus && !editorReadonly && editorLangId == 'vue'"
   }
 ]

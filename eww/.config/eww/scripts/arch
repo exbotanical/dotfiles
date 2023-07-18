@@ -13,11 +13,9 @@ fi
 INTERVAL=3600
 
 main () {
-  declare updates="$(yay -Qua)"
-
   local color="$OK_COLOR"
-  local num_updates_total=$(echo -e "${updates[*]}" | grep -vc '\[ignored\]')
-  local num_updates_warn=$(echo -e "${updates[*]}" | grep -c '\(linux\|linux-lts\|linux-zen\)')
+  local num_updates_total=$(yay -Qua | wc -l)
+  local num_updates_warn=$(yay -Qua | grep -c '\(linux\|linux-lts\|linux-zen\)')
 
   if (( "$num_updates_warn" > 0 )); then
     color="$WARN_COLOR"
