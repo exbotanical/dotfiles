@@ -175,10 +175,12 @@
     "editor.suggest.insertMode": "replace"
   },
 
+  "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.diagnostics.disabled": ["unresolved-proc-macro"],
+
   /**
    * Misc / Extension Settings
    */
-
   "everforest.darkContrast": "hard",
   "everforest.darkCursor": "orange",
   "everforest.darkWorkbench": "high-contrast",
@@ -189,12 +191,11 @@
   "npm.keybindingsChangedWarningShown": true,
   "editor.largeFileOptimizations": false,
   "vitest.enable": true,
-  "window.zoomLevel": 3,
   "workbench.activityBar.visible": false,
-  "rust-analyzer.cargo.features": "all",
   "cSpell.ignoreWords": ["goldmund"],
   "doxdocgen.generic.dateFormat": "DD/MM/YYYY",
   "doxdocgen.generic.briefTemplate": "{text}",
   "workbench.colorTheme": "Everforest Dark",
-  "python.defaultInterpreterPath": "/usr/bin/python"
+  "python.defaultInterpreterPath": "/usr/bin/python",
+  "window.zoomLevel": 1
 }

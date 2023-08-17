@@ -40,9 +40,6 @@ alias 666='chmod -R 666'
 alias 755='chmod -R 755'
 alias 777='chmod -R 777'
 
-# Initialization
-alias start_wayland='exec Hyprland'
-
 # Open dotfiles to edit
 alias dotfiles='code ~/dotfiles'
 

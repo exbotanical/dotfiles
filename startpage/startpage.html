@@ -1,145 +1,152 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>goldmund's homepage</title>
+    <meta name="theme-color" />
 
-<head>
-  <title>goldmund's homepage</title>
-  <meta name="theme-color" content="#2E3440">
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
 
-  <style type="text/css">
-    @import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
+      :root {
+        /* --color-bg: #2e3440;
+        --color-bg-light: #3b4252;
+        --color-fg: #c0c0c0;
+        --color-secondary: #5e81ac; */
+        --color-bg: #272e33;
+        --color-bg-light: #2e383c;
+        --color-fg: #c0c0c0;
+        --color-secondary: #7fbbb3;
 
-    :root {
-      --color-bg: #2E3440;
-      --color-bg-light: #3B4252;
-      --color-fg: #C0C0C0;
-      --color-secondary: #5E81AC;
-      --font-lg: 1.5rem;
-      --font-md: 1.25rem;
-    }
+        --font-lg: 1.5rem;
+        --font-md: 1.25rem;
+      }
 
-    body {
-      background: var(--color-bg);
-      background-image: url('../../Pictures/wave.jpg');
-      color: var(--color-fg);
-      font-family: 'Fira Sans', sans-serif;
-      font-weight: normal;
-      margin: 1% 10%;
-    }
+      body {
+        background: var(--color-bg);
+        background-image: url('../../Pictures/wave.jpg');
+        color: var(--color-fg);
+        font-family: 'Fira Sans', sans-serif;
+        font-weight: normal;
+        margin: 1% 10%;
+      }
 
-    article {
-      display: flex;
-      flex-direction: row;
-      flex-flow: row wrap;
-      align-items: flex-start;
-    }
+      article {
+        display: flex;
+        flex-direction: row;
+        flex-flow: row wrap;
+        align-items: flex-start;
+      }
 
-    section {
-      background: -webkit-linear-gradient(top, var(--color-bg-light) 0%, var(--color-bg) 90%);
-      flex: 1 0 20%;
-      padding: 20px;
-      text-align: left;
-      margin: 25px;
-      border-radius: 20px;
-    }
+      section {
+        background: -webkit-linear-gradient(
+          top,
+          var(--color-bg-light) 0%,
+          var(--color-bg) 90%
+        );
+        flex: 1 0 20%;
+        padding: 20px;
+        text-align: left;
+        margin: 25px;
+        border-radius: 20px;
+      }
 
-    #search {
-      margin-bottom: 0px;
-    }
+      #search {
+        margin-bottom: 0px;
+      }
 
-    h1 {
-      color: var(--color-fg);
-      font-weight: normal;
-      font-size: var(--font-lg);
-      margin: 0 0 20px 0;
-      padding: 0;
-    }
+      h1 {
+        color: var(--color-fg);
+        font-weight: normal;
+        font-size: var(--font-lg);
+        margin: 0 0 20px 0;
+        padding: 0;
+      }
 
-    ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-    }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
 
-    li {
-      width: 100%;
-      background: var(--color-bg);
-      margin: 2px;
-      padding: 2px;
-    }
+      li {
+        width: 100%;
+        background: var(--color-bg);
+        margin: 2px;
+        padding: 2px;
+      }
 
-    li a {
-      color: var(--color-secondary);
-      display: block;
-      font-weight: normal;
-      margin: 0 0 0 2px;
-      text-decoration: none;
-      width: 100%;
-      font-size: var(--font-md);
-    }
+      li a {
+        color: var(--color-secondary);
+        display: block;
+        font-weight: normal;
+        margin: 0 0 0 2px;
+        text-decoration: none;
+        width: 100%;
+        font-size: var(--font-md);
+      }
 
-    li a:hover,
-    li a:focus {
-      background: var(--color-bg-light);
-      outline: none;
-    }
+      li a:hover,
+      li a:focus {
+        background: var(--color-bg-light);
+        outline: none;
+      }
 
-    li:hover,
-    li:focus {
-      background: var(--color-bg-light);
-    }
+      li:hover,
+      li:focus {
+        background: var(--color-bg-light);
+      }
 
-    input[type=text]:focus {
-      outline: none;
-      border: none;
-    }
+      input[type='text']:focus {
+        outline: none;
+        border: none;
+      }
 
-    input[type=text] {
-      outline: none;
-      border: none;
-      background: var(--color-bg);
-      color: var(--color-fg);
-      width: 99%;
-      height: 50px;
-      padding: 5px 0px 5px 15px;
-      font-size: var(--font-md);
-      text-align: left;
-      margin-bottom: 30px;
-      transition: all 0.30s ease-in-out;
-    }
+      input[type='text'] {
+        outline: none;
+        border: none;
+        background: var(--color-bg);
+        color: var(--color-fg);
+        width: 99%;
+        height: 50px;
+        padding: 5px 0px 5px 15px;
+        font-size: var(--font-md);
+        text-align: left;
+        margin-bottom: 30px;
+        transition: all 0.3s ease-in-out;
+      }
 
-    ::-webkit-scrollbar {
-      background: var(--color-bg);
-      border: 0;
-      border-radius: 0;
-    }
+      ::-webkit-scrollbar {
+        background: var(--color-bg);
+        border: 0;
+        border-radius: 0;
+      }
 
-    ::-webkit-scrollbar-track {
-      background: var(--color-bg);
-      border: 0;
-      border-radius: 0;
-    }
+      ::-webkit-scrollbar-track {
+        background: var(--color-bg);
+        border: 0;
+        border-radius: 0;
+      }
 
-    ::-webkit-scrollbar-thumb {
-      background: var(--color-bg-light);
-      border-radius: 0;
-    }
+      ::-webkit-scrollbar-thumb {
+        background: var(--color-bg-light);
+        border-radius: 0;
+      }
+    </style>
+  </head>
 
-  </style>
-</head>
+  <body>
+    <article>
+      <section id="search">
+        <form action="http://www.google.com/search" method="get" name="search">
+          <input type="text" id="find" name="q" autofocus autocomplete="off" />
+        </form>
+      </section>
+    </article>
+    <article id="main"></article>
 
-<body>
-  <article>
-    <section id="search">
-      <form action="http://www.google.com/search" method="get" name="search">
-        <input type="text" id="find" name="q" autofocus  autocomplete="off">
-      </form>
-    </section>
-  </article>
-  <article id="main"></article>
-
-  <script type="text/javascript">
-    const _ = [
+    <script type="text/javascript">
+      const _ = [
         {
           id: 'Recurring Reads',
           _: [
@@ -153,8 +160,7 @@
             },
             {
               url: 'https://distributedthoughts.com/',
-              label:
-                'Distributed Thoughts',
+              label: 'Distributed Thoughts',
             },
             {
               url: 'http://code.v.igoro.us/',
@@ -203,8 +209,7 @@
             },
             {
               url: 'https://exploringjs.com/impatient-js/ch_typed-arrays.html',
-              label:
-                'Typed Arrays: handling binary data',
+              label: 'Typed Arrays: handling binary data',
             },
             {
               url: 'https://dithering.fm/',
@@ -220,12 +225,11 @@
             },
             {
               url: 'https://beej.us/guide/bgipc/html/multi/index.html',
-              label: 'Beej\'s Guide to Unix IPC',
+              label: "Beej's Guide to Unix IPC",
             },
             {
               url: 'https://github.com/Lincheng1993/apue/blob/master/Advanced%20Programming%20in%20the%20UNIX%20Environment%203rd%20Edition.pdf',
-              label:
-                'Advanced Programming in the UNIX Environment',
+              label: 'Advanced Programming in the UNIX Environment',
             },
             {
               url: 'https://alex-robenko.gitbook.io/bare_metal_cpp/',
@@ -245,8 +249,7 @@
             },
             {
               url: 'https://github.com/markerikson/react-Rredux-links/blob/master/react-implementation.md',
-              label:
-                'React Implementation',
+              label: 'React Implementation',
             },
             {
               url: 'https://inclusive-components.design/',
@@ -290,8 +293,7 @@
             },
             {
               url: 'https://github.com/vicky002/Best-websites-a-programmer-should-visit',
-              label:
-                'Some useful websites for programmers.',
+              label: 'Some useful websites for programmers.',
             },
             {
               url: 'https://www.bennadel.com/blog',
@@ -307,8 +309,7 @@
             },
             {
               url: 'https://marcgrabanski.com/',
-              label:
-                'Marc Grabanski&#39;s Blog',
+              label: 'Marc Grabanski&#39;s Blog',
             },
             {
               url: 'https://reactroundup.com/',
@@ -357,8 +358,7 @@
             },
             {
               url: 'https://book.systemsapproach.org/index.html',
-              label:
-                'Computer Networks: A Systems Approach',
+              label: 'Computer Networks: A Systems Approach',
             },
             {
               url: 'https://go101.org/article/101.html',
@@ -382,8 +382,7 @@
             },
             {
               url: 'https://github.com/Developer-Y/cs-video-courses#database-systems',
-              label:
-                'Developer-Y',
+              label: 'Developer-Y',
             },
             {
               url: 'https://learnyousomeerlang.com/content',
@@ -417,139 +416,140 @@
               url: 'https://www.khanacademy.org/profile/me/courses',
               label: 'KhanAcademy',
             },
-          ]
-        }
+          ],
+        },
       ]
 
-    const searchCache = new Map()
-    const buildCache = new Map()
+      const searchCache = new Map()
+      const buildCache = new Map()
 
-    const $ = function $(selector, context = document) {
-      const elements = Array.from(context.querySelectorAll(selector))
+      const $ = function $(selector, context = document) {
+        const elements = Array.from(context.querySelectorAll(selector))
 
-      return {
-        elements,
+        return {
+          elements,
 
-        clear() {
-          this.elements.forEach(element => {
-            element.innerHTML = ''
-          })
+          clear() {
+            this.elements.forEach(element => {
+              element.innerHTML = ''
+            })
 
-          return this
-        },
+            return this
+          },
 
-        html(newHtml) {
-          this.elements.forEach(element => {
-            element.innerHTML += newHtml
-          })
+          html(newHtml) {
+            this.elements.forEach(element => {
+              element.innerHTML += newHtml
+            })
 
-          return this
-        },
+            return this
+          },
 
-        css(newCss) {
-          this.elements.forEach(element => {
-            Object.assign(element.style, newCss)
-          })
+          css(newCss) {
+            this.elements.forEach(element => {
+              Object.assign(element.style, newCss)
+            })
 
-          return this
-        },
+            return this
+          },
 
-        focus() {
-          context.querySelector(selector).focus()
+          focus() {
+            context.querySelector(selector).focus()
 
-          return this
-        },
+            return this
+          },
 
-        val() {
-          return context.querySelector(selector).value
-        },
+          val() {
+            return context.querySelector(selector).value
+          },
 
-        on(event, handler, options) {
-          this.elements.forEach(element => {
-            element.addEventListener(event, handler, options)
-          })
+          on(event, handler, options) {
+            this.elements.forEach(element => {
+              element.addEventListener(event, handler, options)
+            })
 
-          return this
-        },
-      }
-    }
-
-    function caseInsensitiveCmp(str, query) {
-      return str.toLowerCase().indexOf(query) !== -1
-    }
-
-    function search() {
-      const query = $("#find").val();
-      const results = [{
-        "id": "Filtered",
-        "_": []
-      }];
-
-      let found = false;
-
-      if (query.length === 0 || query.trim().length === 0) {
-        $("#main").clear();
-        build(_);
-
-        return false;
+            return this
+          },
+        }
       }
 
-      const normalizedQuery = query.toLowerCase()
-
-      if (searchCache.has(normalizedQuery)) {
-        $("#main").clear();
-        build(searchCache.get(normalizedQuery));
-
-        return true
+      function caseInsensitiveCmp(str, query) {
+        return str.toLowerCase().indexOf(query) !== -1
       }
 
-      _.filter((recordSet) => {
-        recordSet._.filter((record) => {
-          if (
-            caseInsensitiveCmp(record.label, normalizedQuery)
-            || caseInsensitiveCmp(record.url, normalizedQuery)
-          ) {
-            results[0]._.push(record);
-            found = true;
-          }
-        });
-      });
+      function search() {
+        const query = $('#find').val()
+        const results = [
+          {
+            id: 'Filtered',
+            _: [],
+          },
+        ]
 
-      if (found) {
-        searchCache.set(normalizedQuery, results)
-      }
+        let found = false
 
-      $("#main").clear();
-      build(found ? results : _);
-    }
+        if (query.length === 0 || query.trim().length === 0) {
+          $('#main').clear()
+          build(_)
 
-    function build(records) {
-      for (const { id, _ } of records) {
-        let node = `<section><h1>${id}</h1><ul>`;
-
-        for (const { url, label, hidden } of _) {
-          if (!hidden) {
-            if (buildCache.has(url)) {
-              node += buildCache.get(url)
-            } else {
-              const li = `<li><a href="${url}">${label}</a></li>`
-              node += li
-
-              buildCache.set(url, li)
-            }
-          }
+          return false
         }
 
-        node += `</ul></section>`;
-        $("#main").html(node);
+        const normalizedQuery = query.toLowerCase()
+
+        if (searchCache.has(normalizedQuery)) {
+          $('#main').clear()
+          build(searchCache.get(normalizedQuery))
+
+          return true
+        }
+
+        _.filter(recordSet => {
+          recordSet._.filter(record => {
+            if (
+              caseInsensitiveCmp(record.label, normalizedQuery) ||
+              caseInsensitiveCmp(record.url, normalizedQuery)
+            ) {
+              results[0]._.push(record)
+              found = true
+            }
+          })
+        })
+
+        if (found) {
+          searchCache.set(normalizedQuery, results)
+        }
+
+        $('#main').clear()
+        build(found ? results : _)
       }
-    }
 
-    (() => {
-      build(_);
-      $("#find").on('keyup', search).on('change', search).focus();
-    })();
-  </script>
-</body>
+      function build(records) {
+        for (const { id, _ } of records) {
+          let node = `<section><h1>${id}</h1><ul>`
 
+          for (const { url, label, hidden } of _) {
+            if (!hidden) {
+              if (buildCache.has(url)) {
+                node += buildCache.get(url)
+              } else {
+                const li = `<li><a href="${url}">${label}</a></li>`
+                node += li
+
+                buildCache.set(url, li)
+              }
+            }
+          }
+
+          node += `</ul></section>`
+          $('#main').html(node)
+        }
+      }
+
+      ;(() => {
+        build(_)
+        $('#find').on('keyup', search).on('change', search).focus()
+      })()
+    </script>
+  </body>
 </html>

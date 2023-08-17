@@ -16,7 +16,7 @@ fi
 
 
 # get initial focused workspace
-focusedws=$(hyprctl -j monitors | jaq -r '.[] | select(.focused == true) | .activeWorkspace.id')
+focusedws=$(swaymsg -t get_workspaces | jaq '.[] | select(.focused==true) | .id')
 
 declare -A o=([1]=0 [2]=0 [3]=0 [4]=0 [5]=0 [6]=0 [7]=0 [8]=0 [9]=0 [10]=0)
 declare -A monitormap
@@ -40,11 +40,11 @@ status() {
 # handle workspace create/destroy
 workspace_event() {
   o[$1]=$2
-  while read -r k v; do workspaces[$k]="$v"; done < <(hyprctl -j workspaces | gojq -r '.[]|"\(.id) \(.monitor)"')
+  while read -r k v; do workspaces[$k]="$v"; done < <(swaymsg -rt get_workspaces | gojq -r '.[]|"\(.id) \(.output)"')
 }
 # handle monitor (dis)connects
 monitor_event() {
-  while read -r k v; do monitormap["$k"]=$v; done < <(hyprctl -j monitors | gojq -r '.[]|"\(.name) \(.id) "')
+  while read -r k v; do monitormap["$k"]=$v; done < <(swaymsg -rt get_outputs | gojq -r '.[]|"\(.name) \(.id) "')
 }
 
 # get all apps titles in a workspace
@@ -72,7 +72,7 @@ generate() {
 monitor_event
 
 # add workspaces
-while read -r k v; do workspaces[$k]="$v"; done < <(hyprctl -j workspaces | gojq -r '.[]|"\(.id) \(.monitor)"')
+while read -r k v; do workspaces[$k]="$v"; done < <(swaymsg -rt get_workspaces | gojq -r '.[]|"\(.id) \(.output)"')
 
 # check occupied workspaces
 for num in "${!workspaces[@]}"; do
@@ -82,7 +82,7 @@ done
 generate
 
 # main loop
-socat -u UNIX-CONNECT:/tmp/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock - | while read -r line; do
+socat -u "UNIX-CONNECT:$SWAYSOCK" - | while read -r line; do
   case ${line%>>*} in
     "workspace")
       focusedws=${line#*>>}
