@@ -197,5 +197,9 @@
   "doxdocgen.generic.briefTemplate": "{text}",
   "workbench.colorTheme": "Everforest Dark",
   "python.defaultInterpreterPath": "/usr/bin/python",
-  "window.zoomLevel": 1
+  "window.zoomLevel": 3,
+
+  "workbench.colorCustomizations": {
+    "list.errorForeground": "#68a274"
+  }
 }
