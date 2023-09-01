@@ -13,7 +13,7 @@
       (button
         :class "module"
         :onclick "${EWW_CMD} open --toggle music"
-
+        
       {music.display_title})
       (revealer
         :transition "slideright"
