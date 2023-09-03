@@ -1,0 +1,6 @@
+{
+  "RustDebugPrintFmt": {
+    "prefix": "debug",
+    "body": ["println!(\"{:#?}\", $0);"]
+  }
+}
