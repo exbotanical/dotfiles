@@ -65,30 +65,30 @@ setup () {
 
   case $env in
     tsnpm )
-      git clone $TS_NPM_REPO .
+      git clone --depth 1 $TS_NPM_REPO .
       designate $proj
       pnpm install
       ;;
 
     jsnpm )
-      git clone $JS_NPM_REPO .
+      git clone --depth 1 $JS_NPM_REPO .
       designate $proj
       pnpm install
       ;;
 
     go )
-      git clone $GO_REPO .
+      git clone --depth 1 $GO_REPO .
       designate $proj
       go mod init $proj
       ;;
 
     c )
-      git clone $C_REPO .
+      git clone --depth 1 $C_REPO .
       designate $proj
       ;;
 
     clib)
-      git clone $CLIB_REPO .
+      git clone --depth 1 $CLIB_REPO .
       ;;
     * )
       echo -e "[-] No template exists for $env\n"

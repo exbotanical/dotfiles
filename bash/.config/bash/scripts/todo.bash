@@ -39,19 +39,22 @@ END
 }
 
 usage () {
+  local progpath=$(basename $0)
+  local progname=${progpath%.*}
   logo
 
   cat <<END
 Create or delete a TODO.
 
 Usage:
-  Add a TODO: $0 [--add] [-a] <TODO text>
-  Delete a TODO: $0 [--delete] [-d] <TODO lineno>
+  Add a TODO: $progname [--add] [-a] <TODO text>
+  Delete a TODO: $progname [--delete] [-d] <TODO lineno>
+  List TODOs [--list] [-l]
 
 Examples:
-  $0 -a download the new bjork record
-  $0 -d 1
-  $0 -d 5,10 # delete TODOs 5 - 10
+  $progname -a download the new bjork record
+  $progname -d 1
+  $progname -d 5,10 # delete TODOs 5 - 10
 
 END
   exit 0
@@ -70,7 +73,7 @@ delete_todo () {
   sed -e $todo_num'd' -i $TODO_FILE
 }
 
-show_todos () {
+list_todos () {
   logo
   nl -b a $TODO_FILE
 }
@@ -92,9 +95,9 @@ main () {
       delete_todo $1
       ;;
 
-    show | --show | -s )
+    list | --list | -l )
       check_todo_file
-      show_todos
+      list_todos
       ;;
 
     * ) usage ;;
@@ -105,6 +108,6 @@ IFS=$'\n'
 
 E_FILENOTFOUND=2
 E_ARGS=88
-TODO_FILE=/tmp/.todo
+TODO_FILE=~/.config/.todo
 
 main $*

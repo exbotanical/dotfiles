@@ -2,7 +2,7 @@
 
 if [[ "$SYSTEM_THEME" == 'everforest' ]]; then
   #                   red       peach     green     blue
-  declare -a colors=('#e67e80' '#fab387' '#a6e3a1' '#e864ba')
+  declare -a colors=('#ff9ddd' '#fab387' '#a6e3a1' '#e864ba')
   #                   pink      yellow    teal      lavender
   declare -a dimmed=('#9aa79d' '#f9e2af' '#94e2d5' '#94e2d5')
   empty='#272e33'

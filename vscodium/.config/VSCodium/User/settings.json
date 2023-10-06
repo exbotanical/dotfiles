@@ -34,6 +34,7 @@
     "*.ts": "typescript",
     "*.h": "c",
     "*.bash": "shellscript",
+    "*.asm": "gas",
     ".vimrc": "viml"
   },
 

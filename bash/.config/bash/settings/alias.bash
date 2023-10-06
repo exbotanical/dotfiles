@@ -40,9 +40,6 @@ alias 666='chmod -R 666'
 alias 755='chmod -R 755'
 alias 777='chmod -R 777'
 
-# Open dotfiles to edit
-alias dotfiles='code ~/dotfiles'
-
 # Time
 alias now='date +%r'
 
@@ -55,3 +52,9 @@ alias disable='sudo systemctl disable'
 
 # reload force-reloads all bash configurations
 alias reload='source ~/.config/bash/init.bash reload'
+
+# Open dotfiles to edit
+alias dotfiles='code ~/dotfiles'
+
+# Re-open Eww bar until I get around to figuring out why it periodically crashes and/or open an issue
+alias bar='eww open bar'

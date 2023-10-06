@@ -1,0 +1,34 @@
+straps:
+  - name: clib
+    context: ~/repositories
+    steps:
+      - name: clone repo
+        run: git clone --depth 1 https://github.com/exbotanical/clib-boilerplate .
+
+      - name: cleanup old git
+        run: rm -rf .git
+
+      - name: interpolate placeholders
+        run: |
+          find . -type f -exec sed -i "s/<project>/${{ STRAP_DIR }}/g" {} \;
+          sed -i "s/<year>/$(date +%Y)/" LICENSE
+
+      - name: setup git
+        run: git init
+
+  - name: go
+    context: ~/repositories
+    steps:
+      - name: clone repo
+        run: git clone --depth 1 https://github.com/exbotanical/go-lib-boilerplate .
+
+      - name: cleanup old git
+        run: rm -rf .git
+
+      - name: interpolate placeholders
+        run: |
+          find . -type f -exec sed -i "s/<project>/${{ STRAP_DIR }}/g" {} \;
+          sed -i "s/<year>/$(date +%Y)/" LICENSE
+
+      - name: setup git
+        run: git init

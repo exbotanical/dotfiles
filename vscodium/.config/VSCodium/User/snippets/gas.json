@@ -1,0 +1,50 @@
+{
+  "AsmMainFunction": {
+    "prefix": "setup",
+    "body": [
+      "\t.global main\n",
+      "\t.data\n",
+      "\t.text\n",
+      "main:",
+      "\tenter \\$$1, \\$0\n",
+      "\t$2\n",
+      "\tleave",
+      "\tret"
+    ]
+  },
+  "AsmMainFunctionWithComments": {
+    "prefix": "setup_commented",
+    "body": [
+      "\t.global main\n",
+      "\t.data\n",
+      "\t.text\n",
+      "main:",
+      "\t// Prologue:",
+      "\t// push callee-save (safe) registers",
+      "\tenter \\$$1, \\$0\n",
+      "\t/*",
+      "\t\tAlignment Invariant:",
+      "\t\t`8 * (#num of safe registers) + (bytes registered in enter) / 16 == 0\n",
+      "\t\tTemporary Registers (assume function calls will overwrite these)",
+      "\t\tIn order: %rdi, %rsi, %rdx, %rcx, %r8, %r9\n",
+      "\t\tSafe (won't get clobbered by function calls - we must save and restore the old value)",
+      "\t\t%rbx, %r12..%r15\n",
+      "\t\tStack",
+      "\t\tenter \\$32, \\$0\n",
+      "\t\tThis gives us 4 slots to store stuff: 0(%rsp), 8(%rsp), 16(%rsp), 24(%rsp)\n",
+      "\t\t24(%rsp) = -8(%rbp) where %rbp is the base pointer",
+      "\t\tElsewhere",
+      "\t\tUsually a global label",
+      "\t*/",
+      "\t$2\n",
+      "\tleave",
+      "\t// Epilogue:",
+      "\t// pop callee-save (safe) registers in reverse order",
+      "\tret"
+    ]
+  },
+  "AsmFunction": {
+    "prefix": "function",
+    "body": ["$1:", "\tenter \\$$2, \\$0\n", "\t$3\n", "\tleave", "\tret"]
+  }
+}
