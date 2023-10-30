@@ -37,6 +37,7 @@ output eDP-1 mode 2256x1504@60Hz scale 1
 output * bg /home/goldmund/dotfiles/assets/everforest.png fill
 
 exec eww daemon && eww open bar
+exec dunst -config /home/goldmund/.config/dunst/dunstrc
 ### End Initialization ### }}}
 
 ### Key-bindings {{{
