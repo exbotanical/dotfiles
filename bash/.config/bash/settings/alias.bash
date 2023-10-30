@@ -24,7 +24,7 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 
 # Purge bash history
-alias purgehist='cat /dev/null > ~/.bash_history'
+alias purgehist='cat /dev/null >| ~/.bash_history'
 # Search bash history
 alias hs='history | grep'
 
