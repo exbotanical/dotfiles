@@ -1,7 +1,7 @@
 (defwidget net-widget []
   (button
     :class "module icon"
-    :onclick "iwgtk &"
+    :onclick "nm-applet 2>&1 > /dev/null &"
     :tooltip {net.essid}
     :style "color: ${net.color};"
   {net.icon}))

@@ -25,7 +25,14 @@ main () {
       local level
       local color
 
-      declare icons=('' '' '' '' '')
+      declare icons=(
+        ''
+        ''
+        #''
+        ''
+        ''
+        ''
+      )
 
       if [[ "$status" == 'disconnected' ]]; then
         icon='\ue1da'

@@ -54,9 +54,7 @@ init::export HISTSIZE 10000
 init::export HISTFILESIZE $(bc<<<$HISTSIZE*2)
 
 # Use standard ISO 8601 timestamp
-# %F -> %Y-%m-%d
-# %T -> %H:%M:%S (24-hr fmt)
-init::export HISTTIMEFORMAT '[%F %T] '
+init::export HISTTIMEFORMAT '[%Y-%m-%dT%H:%M:%S] '
 
 # Colorful manpages - TODO: src colors
 init::export LESS_TERMCAP_mb $(printf '\e[01;31m') # enter blinking mode – red

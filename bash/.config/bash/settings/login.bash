@@ -15,3 +15,5 @@
 
 # Emscripten
 init::source? "/usr/src/emsdk/emsdk_env.sh"
+
+# [ -z $DISPLAY ] && [ $XDG_VTNR -eq 1 ] && exec startx

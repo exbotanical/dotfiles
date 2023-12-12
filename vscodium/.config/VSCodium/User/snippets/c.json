@@ -10,5 +10,9 @@
   "CMainFunction": {
     "prefix": "main",
     "body": ["int main(int argc, char **argv) {$0}"]
+  },
+  "CForLoop": {
+    "prefix": "foreach",
+    "body": ["for (unsigned int $1; $1 < $2; $1++) {\n$3}"]
   }
 }

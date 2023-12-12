@@ -14,7 +14,7 @@ $font-xl: 3rem;
 @mixin window {
   border: 1px solid $border;
   box-shadow: 0 2px 3px $shadow;
-  margin: 5px 5px 10px;
+  padding: 5px 5px 10px;
   @include rounding;
 }
 
@@ -24,6 +24,7 @@ $font-xl: 3rem;
   font-family: "", Roboto, sans-serif;
   font-size: $font-base;
 }
+
 
 @import 'css/arch';
 @import 'css/calendar';

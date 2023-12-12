@@ -45,12 +45,12 @@
   font-weight: bold;
 }
 
-.sys-icon-mem,
-.sys-icon-cpu {
+.sys-icon-cpu,
+.sys-icon-mem {
   font-size: $font-xl;
   margin: 1.5rem;
+  padding-right: 15px;
 }
-
 
 .system-info-box {
   @include rounding;

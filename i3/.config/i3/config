@@ -31,16 +31,15 @@ set $BRIGHTNESS_STEP 5
 ### End Base Variables ### }}}
 
 ### Initialization {{{
-exec gsettings set org.gnome.desktop.interface text-scaling-factor 1
-output eDP-1 mode 2256x1504@60Hz scale 1
+# output eDP-1 mode 2256x1504@60Hz scale 1
 
-output * bg /home/goldmund/dotfiles/assets/everforest.png fill
+exec --no-startup-id eww daemon && eww open bar
+exec --no-startup-id dunst -config /home/goldmund/.config/dunst/dunstrc
 
-exec eww daemon && eww open bar
-exec dunst -config /home/goldmund/.config/dunst/dunstrc
+# Wallpaper
+exec --no-startup-id feh --bg-scale $CONFIG_DIR/assets/pink-nord.jpg
 
-exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+# exec_always --no-startup-id picom --config $CONFIG_DIR/picom/picom.conf
 
 ### End Initialization ### }}}
 
@@ -77,13 +76,13 @@ bindsym $MOD+a            focus parent
 # Reload the configuration file
 bindsym $MOD+Shift+c      reload
 
-# Restart sway inplace (preserves your layout/session, can be used to upgrade sway)
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $MOD+Shift+r      restart
 
-# Exit sway (logs you out of your X session)
-bindsym $MOD+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your X session.' -B 'Yes, exit sway' 'i3-msg exit'"
+# Exit i3 (logs you out of your X session)
+bindsym $MOD+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-# Lock sway
+# Lock i3
 bindsym $MOD+Shift+x exec i3lock
 
 # Use Mouse+$MOD to drag floating windows to their wanted position
@@ -209,12 +208,7 @@ client.background       $BG
 for_window [class=".*"] border pixel 0
 ### End Base UI ### }}}
 
-input type:touchpad {
-  tap enabled
-  natural_scroll enabled
-}
-
 ### Miscellaneous ### {{{
 # ensure popups display e.g. Teams
-for_window [window_role="pop-up"] floating enable
+# for_window [window_role="pop-up"] floating enable
 ### End Miscellaneous ### }}}

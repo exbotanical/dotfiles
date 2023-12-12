@@ -46,11 +46,11 @@ main () {
 
       echo '{ "icon": "'"$icon"'", "battery": "'"$battery"'", "text": "'"$text"'", "color": "'"$color"'", "class": "'"$class"'" }'
 
-      sleep $INTERNAL
+      sleep $SLEEP_INTERVAL
     done
   fi
 }
 
-INTERNAL=3
+SLEEP_INTERVAL=3
 
 main $*

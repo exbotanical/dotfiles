@@ -14,6 +14,10 @@
 - [ ] automate setup
 - [ ] dark screen cover alarm
 - [x] fix battery script low battery notif (dedupe)
+- [ ] fix music/player script on X
+- [ ] fix eww popups on X
+- [ ] xdg settings
+- [ ] thunar settings
 
 # Deps
 
@@ -24,7 +28,7 @@
 - gojq
 - ripgrep
 - blueman (blueberry?)
-- wireplumber
+- ~~wireplumber~~
 - nmcli
-- pipewire-pulse (replace pulseaudio from X)
-- iwgtk
+- ~~pipewire-pulse (replace pulseaudio from X)~~
+- ~~iwgtk~~ nm-applet

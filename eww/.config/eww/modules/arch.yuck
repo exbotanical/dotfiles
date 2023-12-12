@@ -12,7 +12,8 @@
 
 (defwindow arch-info-window
   :stacking "fg"
-  :focusable false
+  :wm-ignore true
+  :windowtype "dialog"
   :monitor 0
   :geometry (geometry
     :x "0%"

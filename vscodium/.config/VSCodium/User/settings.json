@@ -34,7 +34,8 @@
     "*.ts": "typescript",
     "*.h": "c",
     "*.bash": "shellscript",
-    "*.asm": "gas",
+    "*.S": "gas",
+    "*.asm": "asm-intel-x86-generic",
     ".vimrc": "viml"
   },
 
@@ -79,21 +80,20 @@
   },
   "[go]": {
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     },
     "editor.tabSize": 4
   },
 
   "clang-format.executable": "/usr/bin/clang-format",
-  "clang-format.style": "google",
+  "clang-format.style": "file",
   "clang-format.language.c.enable": true,
-  "clang-format.language.c.style": "google",
   "[c]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll": true
+      "source.fixAll": "explicit"
     },
     "editor.defaultFormatter": "xaver.clang-format",
-    "editor.wordBasedSuggestions": false,
+    "editor.wordBasedSuggestions": "off",
     "editor.suggest.insertMode": "replace",
     "editor.semanticHighlighting.enabled": true
   },
@@ -192,15 +192,14 @@
   "npm.keybindingsChangedWarningShown": true,
   "editor.largeFileOptimizations": false,
   "vitest.enable": true,
-  "workbench.activityBar.visible": false,
   "cSpell.ignoreWords": ["goldmund"],
   "doxdocgen.generic.dateFormat": "DD/MM/YYYY",
   "doxdocgen.generic.briefTemplate": "{text}",
   "workbench.colorTheme": "Everforest Dark",
   "python.defaultInterpreterPath": "/usr/bin/python",
-  "window.zoomLevel": 3,
 
   "workbench.colorCustomizations": {
     "list.errorForeground": "#68a274"
-  }
+  },
+  "workbench.activityBar.location": "hidden"
 }
