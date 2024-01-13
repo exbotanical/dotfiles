@@ -10,7 +10,7 @@ straps:
 
       - name: interpolate placeholders
         run: |
-          find . -type f -exec sed -i "s/<project>/${{ STRAP_DIR }}/g" {} \;
+          find . -type f -exec sed -i "s/<project>/${{ STRAP_PROJECT_NAME }}/g" {} \;
           sed -i "s/<year>/$(date +%Y)/" LICENSE
 
       - name: setup git
@@ -27,7 +27,7 @@ straps:
 
       - name: interpolate placeholders
         run: |
-          find . -type f -exec sed -i "s/<project>/${{ STRAP_DIR }}/g" {} \;
+          find . -type f -exec sed -i "s/<project>/${{ STRAP_PROJECT_NAME }}/g" {} \;
           sed -i "s/<year>/$(date +%Y)/" LICENSE
 
       - name: setup git
@@ -44,7 +44,7 @@ straps:
 
       - name: interpolate placeholders
         run: |
-          find . -type f -exec sed -i "s/<project>/${{ STRAP_DIR }}/g" {} \;
+          find . -type f -exec sed -i "s/<project>/${{ STRAP_PROJECT_NAME }}/g" {} \;
           sed -i "s/<year>/$(date +%Y)/" LICENSE
 
       - name: setup git
