@@ -15,8 +15,8 @@ alias gfetchtrack='git branch -r | grep -v "\->" | while read remote; do git bra
 # Stage all changes and take them to a new branch
 alias gswitch='git add . && git switch -c'
 alias gc='git commit'
-# Amend commit
-alias gca='git commit --amend'
+# Amend commit with no message change
+alias gca='git commit --amend --no-edit'
 alias gbg="git bisect good"
 alias gbb="git bisect bad"
 # List all branches from least to most recent

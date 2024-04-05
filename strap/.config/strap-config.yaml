@@ -13,6 +13,33 @@ straps:
           find . -type f -exec sed -i "s/<project>/${{ STRAP_PROJECT_NAME }}/g" {} \;
           sed -i "s/<year>/$(date +%Y)/" LICENSE
 
+      - name: setup lib header
+        run: |
+          mv include/.gitkeep include/lib${{ STRAP_PROJECT_NAME }}.h
+
+      - name: setup dirs
+        run: mv _.github .github
+
+      - name: setup git
+        run: git init
+
+  - name: cbin
+    context: ~/repositories
+    steps:
+      - name: clone repo
+        run: git clone --depth 1 https://github.com/exbotanical/cbin-boilerplate .
+
+      - name: cleanup old git
+        run: rm -rf .git
+
+      - name: interpolate placeholders
+        run: |
+          find . -type f -exec sed -i "s/<project>/${{ STRAP_PROJECT_NAME }}/g" {} \;
+          sed -i "s/<year>/$(date +%Y)/" LICENSE
+
+      - name: setup dirs
+        run: mv _.github .github
+
       - name: setup git
         run: git init
 
@@ -49,3 +76,11 @@ straps:
 
       - name: setup git
         run: git init
+
+  - name: ocaml
+    context: ~/repositories
+    steps:
+      - name: create switch
+        run: opam switch create . && opam install ocaml-lsp-server ocamlformat
+      - name: init dune project
+        run: dune init proj ${{ STRAP_PROJECT_NAME }} .

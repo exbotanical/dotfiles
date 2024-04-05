@@ -171,6 +171,12 @@ bindsym $MOD+Shift+9  move container to workspace number $ws9
 bindsym $MOD+Shift+0  move container to workspace number $ws10
 ### End Workspaces ### }}}
 
+bindsym $MOD+Shift+s   layout splitv;\
+                       move left;\
+                       resize grow right 20 px or 20 ppt;\
+                       split v;\
+                       layout stacking
+
 ### Resize {{{
 mode "resize" {
   # These bindings trigger as soon as you enter the resize mode

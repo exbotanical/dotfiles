@@ -201,5 +201,6 @@
   "workbench.colorCustomizations": {
     "list.errorForeground": "#68a274"
   },
-  "workbench.activityBar.location": "hidden"
+  "workbench.activityBar.location": "hidden",
+  "window.zoomLevel": 1
 }

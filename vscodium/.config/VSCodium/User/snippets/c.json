@@ -7,6 +7,16 @@
       "\n#endif /* ${TM_FILENAME_BASE/(.*)$/${1:/upcase}/g}_H */"
     ]
   },
+  "CLibHeaderIncludeGuard": {
+    "prefix": "libguards",
+    "body": [
+      "#ifndef ${TM_FILENAME_BASE/(.*)$/${1:/upcase}/g}_H",
+      "#define ${TM_FILENAME_BASE/(.*)$/${1:/upcase}/g}_H",
+      "\n#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n",
+      "\n#ifdef __cplusplus\n}\n#endif\n",
+      "\n#endif /* ${TM_FILENAME_BASE/(.*)$/${1:/upcase}/g}_H */"
+    ]
+  },
   "CMainFunction": {
     "prefix": "main",
     "body": ["int main(int argc, char **argv) {$0}"]
@@ -14,5 +24,9 @@
   "CForLoop": {
     "prefix": "foreach",
     "body": ["for (unsigned int $1; $1 < $2; $1++) {\n$3}"]
+  },
+  "CCppGuard": {
+    "prefix": "cpp_guard",
+    "body": "#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n#ifdef __cplusplus\n}\n#endif"
   }
 }
