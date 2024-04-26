@@ -83,7 +83,7 @@ init::list_dir () { (
 init::debug () {
   ! (( INIT_DEBUG_MODE )) && return
 
-  echo -e "[$(date +"%T.%3N")] $1"
+  echo -e "[DEBUG: $(date +"%T.%3N")] $1"
 }
 
 # Toggle the debug flag
@@ -124,6 +124,12 @@ init::_order_by_dependencies () {
     echo $app
     satisfied[$app]=1
   done
+}
+
+init::feature_enabled () {
+  local feature_flag=$1
+
+  (( 1 == feature_flag ))
 }
 
 # Diff the pre-existing functions against the ones declared in this file

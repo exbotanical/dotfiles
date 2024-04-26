@@ -65,9 +65,6 @@ init::export LESS_TERMCAP_so $(printf '\e[01;33m') # enter standout mode – yel
 init::export LESS_TERMCAP_ue $(printf '\e[0m') # leave underline mode
 init::export LESS_TERMCAP_us $(printf '\e[04;36m') # enter underline mode – cyan
 
-# Remap caps -> super
-# setxkbmap -option caps:super 2>/dev/null
-
 # Reclaim ctrl-s, ctrl-q
 stty -ixon -ixoff
 
@@ -84,3 +81,9 @@ init::export EDITOR $(command -v vim 2>/dev/null || command -v vi)
 
 # File perms
 umask 022
+
+# Remap caps -> super
+init::feature_enabled REMAPCAPSTOSUPER && {
+  init::debug 'REMAPCAPSTOSUPER enabled; remapping caps lock key to super'
+  setxkbmap -option caps:super 2>/dev/null
+}

@@ -8,12 +8,18 @@ ExecDir="$HOME/.local/bin"
 # Set the force-reload flag
 [[ $1 == reload ]] && Reload=1 || Reload=0
 
-EphemeralVars=( Reload Root SettingsDir ExecDir ) # vars to cleanup
+# vars to cleanup
+EphemeralVars=( Reload Root SettingsDir ExecDir )
 
-source "$Root/lib/support.bash" # support functions - we leave these in the global namespace
-source "$Root/lib/initutil.bash" # init utilities - we unset these after init
+# support functions - we leave these in the global namespace
+source "$Root/lib/support.bash"
+# init utilities - we unset these after init
+source "$Root/lib/initutil.bash"
+# feature flags
+source "$SettingsDir/features.bash"
 
-# init::toggle_debug # TODO: flag opts
+init::feature_enabled DEBUGMODE && init::toggle_debug
+
 # Turn off expansion i.e. no need to quote vars from here onward, until we turn it back on
 support::splitspace off
 support::globbing off

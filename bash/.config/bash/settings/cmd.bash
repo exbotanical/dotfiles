@@ -62,15 +62,6 @@ cheat () {
   curl "cht.sh/$*"
 }
 
-# webcam links external webcam to default
-webcam () {
-  DEFAULT_WEBCAM='video0'
-  EXTERNAL_WEBCAM='video2'
-
-  sudo unlink /dev/$EXTERNAL_WEBCAM
-  sudo ln -s /dev/$DEFAULT_WEBCAM /dev/$EXTERNAL_WEBCAM
-}
-
 # lsuptime prints the system uptime
 lsuptime () {
   uptime | awk '{ print "Uptime:", $3, $4, $5 }' | sed 's/,//g'
