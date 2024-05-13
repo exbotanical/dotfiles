@@ -77,6 +77,9 @@ straps:
       - name: setup git
         run: git init
 
+      - name: install deps
+        run: npm i
+
   - name: ocaml
     context: ~/repositories
     steps:
