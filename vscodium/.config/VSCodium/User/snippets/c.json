@@ -28,5 +28,49 @@
   "CCppGuard": {
     "prefix": "cpp_guard",
     "body": "#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n#ifdef __cplusplus\n}\n#endif"
+  },
+  "CStdlibHeader": {
+    "prefix": "stdlib",
+    "body": "#include <stdlib.h>"
+  },
+  "CStdlibHeader": {
+    "prefix": "stdlib",
+    "body": "#include <stdlib.h>"
+  },
+  "CStdioHeader": {
+    "prefix": "stdio",
+    "body": "#include <stdio.h>"
+  },
+  "CUnistdHeader": {
+    "prefix": "unistd",
+    "body": "#include <unistd.h>"
+  },
+  "CPthreadHeader": {
+    "prefix": "pthread",
+    "body": "#include <pthread.h>"
+  },
+  "CStdintHeader": {
+    "prefix": "stdint",
+    "body": "#include <stdint.h>"
+  },
+  "CStringHeader": {
+    "prefix": "string",
+    "body": "#include <string.h>"
+  },
+  "CTimeHeader": {
+    "prefix": "time",
+    "body": "#include <time.h>"
+  },
+  "CFcntlHeader": {
+    "prefix": "fcntl",
+    "body": "#include <fcntl.h>"
+  },
+  "CErrnoHeader": {
+    "prefix": "errno",
+    "body": "#include <errno.h>"
+  },
+  "CStdargHeader": {
+    "prefix": "stdarg",
+    "body": "#include <stdarg.h>"
   }
 }

@@ -85,6 +85,10 @@
     "editor.tabSize": 4
   },
 
+  "[rust]": {
+    "editor.tabSize": 4
+  },
+
   "clang-format.executable": "/usr/bin/clang-format",
   "clang-format.style": "file",
   "clang-format.language.c.enable": true,
