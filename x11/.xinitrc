@@ -5,6 +5,8 @@ USER_MOD_MAP=$HOME/.Xmodmap
 SYS_RESOURCES=/etc/X11/xinit/.Xresources
 SYS_MOD_MAP=/etc/X11/xinit/.Xmodmap
 
+KEYBOARD_LAYOUT=dvorak
+
 # merge in defaults and keymaps
 merge_resources () {
   if [ -f $SYS_RESOURCES ]; then
@@ -33,6 +35,8 @@ init () {
 
     unset f
   fi
+
+  setxkbmap -variant $KEYBOARD_LAYOUT
 
   exec i3
 }

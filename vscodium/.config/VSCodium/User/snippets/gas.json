@@ -45,6 +45,36 @@
   },
   "AsmFunction": {
     "prefix": "function",
-    "body": ["$1:", "\tenter \\$$2, \\$0\n", "\t$3\n", "\tleave", "\tret"]
-  }
+    "body": [
+      "$1:",
+      "\tenter \\$$2, \\$0\n",
+      "\t$3\n",
+      "\tleave",
+      "\tret"
+    ]
+  },
+  "AsmRegisters": {
+    "prefix": "r",
+    "body": "${1|%rax,%rdi,%rsi,%rcx,%rsp|}\n"
+  },
+  "AsmRaxRegister": {
+    "prefix": "rax",
+    "body": "%rax"
+  },
+  "AsmRdiRegister": {
+    "prefix": "rdi",
+    "body": "%rdi"
+  },
+  "AsmRsiRegister": {
+    "prefix": "rsi",
+    "body": "%rsi"
+  },
+  "AsmR10Register": {
+    "prefix": "r10",
+    "body": "%r10"
+  },
+  "AsmAlRegister": {
+    "prefix": "al",
+    "body": "%al"
+  },
 }

@@ -2,5 +2,26 @@
   "RustDebugPrintFmt": {
     "prefix": "debug",
     "body": ["println!(\"{:#?}\", $0);"]
+  },
+  "RustUnitTests" : {
+    "prefix": "tests",
+    "body": [
+      "#[cfg(test)]",
+      "mod tests {",
+      "\t#[test]",
+      "\tfn test_$1() {}",
+      "}"
+    ]
+  },
+  "RustUnitTest": {
+    "prefix": "test",
+    "body": [
+      "#[test]",
+      "fn test_$1() {}",
+    ]
+  },
+  "RustDerive": {
+    "prefix": "derive",
+    "body": "#[derive($1)]",
   }
 }

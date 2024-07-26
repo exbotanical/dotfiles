@@ -85,6 +85,8 @@
     "editor.tabSize": 4
   },
 
+  "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.diagnostics.disabled": ["unresolved-proc-macro"],
   "[rust]": {
     "editor.tabSize": 4
   },
@@ -117,8 +119,8 @@
   "redhat.telemetry.enabled": false,
   "java.configuration.runtimes": [
     {
-      "name": "JavaSE-19",
-      "path": "/usr/lib/jvm/java-19-openjdk",
+      "name": "JavaSE-22",
+      "path": "/usr/lib/jvm/java-22-openjdk",
       "default": true
     }
   ],
@@ -180,9 +182,6 @@
     "editor.suggest.insertMode": "replace"
   },
 
-  "rust-analyzer.cargo.features": "all",
-  "rust-analyzer.diagnostics.disabled": ["unresolved-proc-macro"],
-
   /**
    * Misc / Extension Settings
    */
@@ -206,5 +205,6 @@
     "list.errorForeground": "#68a274"
   },
   "workbench.activityBar.location": "hidden",
-  "window.zoomLevel": 1
+  "window.zoomLevel": 1,
+  "prisma.showPrismaDataPlatformNotification": false
 }

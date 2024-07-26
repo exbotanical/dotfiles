@@ -58,3 +58,4 @@ alias dotfiles='code ~/dotfiles'
 
 # Re-open Eww bar until I get around to figuring out why it periodically crashes and/or open an issue
 alias bar='eww open bar'
+alias schedule='code ~/Documents/studies/schedule.md'
