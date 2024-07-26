@@ -119,3 +119,8 @@ support::file? () {
 support::dir? () {
   [[ -d $1 ]]
 }
+
+# macos? returns true if the host os is macos
+support::macos? () {
+  [[ "$OSTYPE" == "darwin"* ]]
+}

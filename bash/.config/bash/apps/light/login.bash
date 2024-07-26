@@ -1,0 +1,8 @@
+init::feature_enabled NIGHTMODE && (
+  init::debug 'NIGHTMODE enabled - checking backlight'
+
+  is_night=$(date +%H:%M)
+  if [[ $is_night > '20:00' ]] || [[ $is_night < '06:00' ]]; then
+    light -S 1
+  fi
+)

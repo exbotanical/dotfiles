@@ -47,6 +47,7 @@
   "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.tabs.showActiveTerminal": "always",
   "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.defaultProfile.osx": "bash",
   "terminal.integrated.fontFamily": "Inconsolata",
   "terminal.integrated.fontWeight": "700",
   "terminal.integrated.fontSize": 18,

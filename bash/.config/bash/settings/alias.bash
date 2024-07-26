@@ -15,7 +15,6 @@ alias l='ls -CF'
 alias repos='cd ~/repositories'
 alias docs='cd ~/Documents'
 alias desktop='cd ~/Desktop'
-alias open='xdg-open'
 
 alias ..='cd ..'
 alias ...='cd ../..'

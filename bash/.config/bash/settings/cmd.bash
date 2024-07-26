@@ -97,3 +97,9 @@ ssh_cache () {
   eval $(ssh-agent -s)
   ssh-add "$SSH_KPATH"
 }
+
+# for_each_dir runs the given command inside every directory immediately below the cwd
+for_each_dir () {
+  local cmd="$1"
+  for d in ./*/ ; do (cd "$d" && eval "$cmd"); done
+}
