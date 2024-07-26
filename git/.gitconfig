@@ -1,10 +1,3 @@
-[init]
-  defaultBranch = master
-
-[user]
-  email = exbotanical@protonmail.com
-  name = Matthew Zito
-  signingkey = 583F94EFB513DA5F
 
 [commit]
   gpgsign = true
@@ -48,5 +41,11 @@
 [github]
   user = exbotanical
 
-[gpg]
-  program = /usr/bin/gpg
+[includeIf "onbranch:mainline"]
+  path = .gitconfig.work
+
+[includeIf "hasconfig:remote.*.url:https://code.amazon.com/**"]
+  path = .gitconfig.work
+
+[includeIf "gitdir:~/"]
+  path = .gitconfig.personal

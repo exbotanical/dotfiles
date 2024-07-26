@@ -20,6 +20,11 @@ source "$SettingsDir/features.bash"
 
 init::feature_enabled DEBUGMODE && init::toggle_debug
 
+support::macos? && {
+  init::debug 'In macos env; adding homebrew bin to PATH'
+  init::append_path '/opt/homebrew/bin'
+}
+
 # Turn off expansion i.e. no need to quote vars from here onward, until we turn it back on
 support::splitspace off
 support::globbing off

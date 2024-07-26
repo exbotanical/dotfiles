@@ -1,1 +1,2 @@
-init::append_path /usr/local/go/bin
+init::export GOPATH $HOME/go
+init::append_path $GOPATH/bin

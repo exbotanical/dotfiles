@@ -1,46 +1,140 @@
 [
   {
     "key": "alt+right",
-    "command": "cursorLineEnd"
+    "command": "cursorLineEnd",
+    "when": "isLinux"
   },
   {
     "key": "shift+alt+right",
-    "command": "cursorLineEndSelect"
+    "command": "cursorLineEndSelect",
+    "when": "isLinux"
   },
   {
     "key": "alt+left",
-    "command": "cursorLineStart"
+    "command": "cursorLineStart",
+    "when": "isLinux"
   },
   {
     "key": "shift+alt+left",
-    "command": "cursorLineStartSelect"
+    "command": "cursorLineStartSelect",
+    "when": "isLinux"
   },
   {
     "key": "alt+left",
     "command": "workbench.action.terminal.focusPrevious",
-    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus"
+    "when": "isLinux && terminalFocus && terminalHasBeenCreated && !terminalEditorFocus"
   },
   {
     "key": "alt+right",
     "command": "workbench.action.terminal.focusNext",
-    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus"
+    "when": "isLinux && terminalFocus && terminalHasBeenCreated && !terminalEditorFocus"
   },
   {
     "key": "ctrl+b",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "editorTextFocus"
+    "when": "isLinux && editorTextFocus"
   },
   {
     "key": "ctrl+e",
-    "command": "-workbench.action.quickOpen"
+    "command": "isLinux && -workbench.action.quickOpen"
   },
   {
     "key": "ctrl+shift+d",
-    "command": "dockerContainers.focus"
+    "command": "isLinux && dockerContainers.focus"
   },
   {
     "key": "ctrl+shift+f",
     "command": "-vue3snippets.format",
-    "when": "editorTextFocus && !editorReadonly && editorLangId == 'vue'"
+    "when": "isLinux && editorTextFocus && !editorReadonly && editorLangId == 'vue'"
+  },
+  /* Jump word-for-word */
+  {
+    "key": "ctrl+left",
+    "command": "-cursorWordLeft",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+right",
+    "command": "-cursorWordRight",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+right",
+    "command": "cursorWordRight",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+shift+right",
+    "command": "cursorWordPartRightSelect",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+shift+alt+right",
+    "command": "-cursorWordPartRightSelect",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+shift+left",
+    "command": "cursorWordPartLeftSelect",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+shift+alt+left",
+    "command": "-cursorWordPartLeftSelect",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+right",
+    "command": "cursorWordPartRight",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+alt+right",
+    "command": "-cursorWordPartRight",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+left",
+    "command": "cursorWordPartLeft",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+alt+left",
+    "command": "-cursorWordPartLeft",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+cmd+right",
+    "command": "cursorWordEndRight",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "alt+right",
+    "command": "-cursorWordEndRight",
+    "when": "isMac && textInputFocus"
+  },
+  {
+    "key": "ctrl+cmd+left",
+    "command": "cursorWordEndLeft"
+  },
+  {
+    "key": "cmd+up",
+    "command": "editor.action.moveLinesUpAction",
+    "when": "isMac && editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "alt+up",
+    "command": "-editor.action.moveLinesUpAction",
+    "when": "isMac && editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "cmd+down",
+    "command": "editor.action.moveLinesDownAction",
+    "when": "isMac && editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "alt+down",
+    "command": "-editor.action.moveLinesDownAction",
+    "when": "isMac && editorTextFocus && !editorReadonly"
   }
 ]

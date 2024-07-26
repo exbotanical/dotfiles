@@ -2,8 +2,15 @@ INSTALL_DIR=./install
 
 .PHONY: install
 install:
+	mkdir -p $$HOME/.local/bin
 	stow --verbose 3 --target=$$HOME --restow */
 	$(foreach file, $(wildcard $(INSTALL_DIR)/*), ./$(file))
+
+.PHONY: install_osx
+install_osx:
+	$(MAKE) install
+	# UGH: https://savannah.gnu.org/bugs/?712
+	./install/osx.bash
 
 .PHONY: delete
 delete:
