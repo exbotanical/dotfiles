@@ -41,11 +41,11 @@
 [github]
   user = exbotanical
 
-[includeIf "onbranch:mainline"]
-  path = .gitconfig.work
+[includeIf "gitdir:~/"]
+  path = .gitconfig.personal
 
 [includeIf "hasconfig:remote.*.url:https://code.amazon.com/**"]
   path = .gitconfig.work
 
-[includeIf "gitdir:~/"]
-  path = .gitconfig.personal
+[includeIf "onbranch:mainline"]
+  path = .gitconfig.work
