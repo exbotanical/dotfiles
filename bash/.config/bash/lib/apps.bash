@@ -12,7 +12,11 @@ APP_LIST=$(
 for app in $APP_LIST; do
   init::debug "Loading configurations for $app"
 
-  { init::login? || [[ $1 == reload ]]; } && init::source? $app/env.bash
+  { init::login? || [[ $1 == reload ]]; } && {
+    init::debug "Loading env and login configs for $app if present"
+    init::source? $app/env.bash
+    init::source? $app/login.bash
+  }
 
   support::splitspace on
   support::globbing on
