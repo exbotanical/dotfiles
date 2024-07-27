@@ -5,7 +5,7 @@ This directory houses my configuration files. It's also home to probably the mos
 ## How it works
 Here's how it all works.
 
-First, I manage all dotfiles via [Gnu Stow](TODO: link). Stow allows one to manage all dotfiles from a single place, then symlink them to their respective locations. For example, all of my dotfiles are housed in a `dotfiles` directory under my home directory. Suppose I need my i3wm config file to reside at `~/.config/i3/config`. I would then structure this as `~/dotfiles/i3/.config/i3/config`. The top-level `i3` directory is simply nominal; everything therein specifies the filepath at which it will exist on the host system when I invoke `stow`.
+First, I manage all dotfiles via [Gnu Stow](https://www.gnu.org/software/stow/). Stow allows one to manage all dotfiles from a single place, then symlink them to their respective locations. For example, all of my dotfiles are housed in a `dotfiles` directory under my home directory. Suppose I need my i3wm config file to reside at `~/.config/i3/config`. I would then structure this as `~/dotfiles/i3/.config/i3/config`. The top-level `i3` directory is simply nominal; everything therein specifies the filepath at which it will exist on the host system when I invoke `stow`.
 
 I use a Makefile to do this: `make install` will invoke `stow`. `make test` will, shockingly, run the unit tests.
 
@@ -25,7 +25,7 @@ As of 7/26/2024 my primary setup consists of:
 
 I love Bash; it's a bizarre language that can do far more than it should. You may find my Bash config of interest. Instead of the usual rc file, I've written a bespoke Bash configurations framework that allows one to logically and functionally separate commands, aliases, runtime/interactive settings, one-time login settings, and application-specific configurations.
 
-I've taken and adapted a lot of ideas from various folks across the internet, but a noteworthy influence for this setup (and one that certainly deserves accreditation) has been Ted Lilley @binaryphile - some of the setup code has been taken directly from his work, which can be found here: <TODO: link>
+I've taken and adapted a lot of ideas from various folks across the internet, but a noteworthy influence for this setup (and one that certainly deserves accreditation) has been Ted Lilley @binaryphile - some of the setup code has been taken directly from his work, which can be found [here](https://github.com/binaryphile/init.bash).
 
 The entrypoint for my Bash config resides in [init.bash](bash/.config/bash/init.bash), where we load in a [utility library](bash/.config/bash/lib/support.bash) and all settings files. This means the utility library is accessible to all settings files; at the end of the init script, we remove all of the utility functions and temporary variables from the shell environment so as not to prevent pollution. The utilities allow us to easily append to the `PATH` (and prevent duplication therein, which is quite a common problem), toggle globbing, temporarily change `IFS`, etc.
 
