@@ -72,10 +72,10 @@ lscmd () {
   history | awk '{CMD[$4]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
 }
 
-# toggle_k toggles the keyboard layout between qwerty and dvorak
+# toggle_k toggles the keyboard layout between qwerty and colemak
 toggle_k () {
   local current_variant=$(setxkbmap -query | grep "variant")
-  [[ "$current_variant" == '' ]] && setxkbmap -variant dvorak || setxkbmap us
+  [[ "$current_variant" == '' ]] && setxkbmap -variant colemak || setxkbmap us
 }
 
 # cmd_out runs a command and pipes its stdout and stderr to respective files

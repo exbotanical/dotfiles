@@ -1,4 +1,3 @@
-# TODO: source lib/support.bash if not already
 PreexistingFunctions=$(compgen -A function | sort)
 
 # login? returns true if the global `ENV_SET` flag has not been set, indicating

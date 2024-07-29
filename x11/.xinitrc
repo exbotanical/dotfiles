@@ -5,7 +5,7 @@ USER_MOD_MAP=$HOME/.Xmodmap
 SYS_RESOURCES=/etc/X11/xinit/.Xresources
 SYS_MOD_MAP=/etc/X11/xinit/.Xmodmap
 
-KEYBOARD_LAYOUT=dvorak
+KEYBOARD_LAYOUT=colemak
 
 # merge in defaults and keymaps
 merge_resources () {
