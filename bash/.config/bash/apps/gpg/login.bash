@@ -1,3 +1,3 @@
 support::macos? && {
-  init::export GPG_TTY tty
+  init::export GPG_TTY "$(tty)"
 }
