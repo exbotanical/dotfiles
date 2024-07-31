@@ -18,7 +18,7 @@ source "$Root/lib/initutil.bash"
 # feature flags
 source "$SettingsDir/features.bash"
 
-init::feature_enabled DEBUGMODE && init::toggle_debug
+init::feature_enabled? DEBUGMODE && init::toggle_debug
 
 support::macos? && {
   init::debug 'In macos env; adding homebrew bin to PATH'

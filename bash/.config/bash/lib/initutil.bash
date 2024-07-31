@@ -125,10 +125,20 @@ init::_order_by_dependencies () {
   done
 }
 
-init::feature_enabled () {
+# feature_enabled? indicates whether the feature represented
+# by the supplied feature flag is enabled.
+init::feature_enabled? () {
   local feature_flag=$1
 
   (( 1 == feature_flag ))
+}
+
+# in_vscodium? indicates whether we're running in the VSCodium integrated terminal.
+# This is useful because the VSCodium integrated terminal doesn't behave like other
+# terminals; for instance, it does not truly reload the shell environment when opening
+# a new terminal.
+init::in_vscodium? () {
+ (( VSCODE_SHELL_INTEGRATION == 1 ))
 }
 
 # Diff the pre-existing functions against the ones declared in this file

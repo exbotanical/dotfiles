@@ -12,7 +12,7 @@
   done
 )
 
-init::feature_enabled WMONSTARTUP && {
+init::feature_enabled? WMONSTARTUP && {
   init::debug 'WMONSTARTUP enabled'
 
   [ -z $DISPLAY ] && (( XDG_VTNR == 1 )) && exec startx

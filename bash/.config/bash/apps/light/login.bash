@@ -1,4 +1,4 @@
-init::feature_enabled NIGHTMODE && (
+init::feature_enabled? NIGHTMODE && (
   init::debug 'NIGHTMODE enabled - checking backlight'
 
   is_night=$(date +%H:%M)
