@@ -1,0 +1,7 @@
+{
+    "NodeScript": {
+      "prefix": "script",
+      "body": ["#!/usr/bin/env node",
+    "", ";(async () => {\n\t$0\n})()"]
+    },
+}

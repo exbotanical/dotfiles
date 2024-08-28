@@ -26,6 +26,6 @@
     :orientation "v"
     :class "arch-menu-box"
     (label :xalign 0 :text "Kernel                       ${arch.version}")
-    (label :xalign 0 :text "Available updates                        ${arch.total}")
+    (label :xalign 0 :text "Available updates                       ${arch.total}")
     (label :xalign 0 :text "Core updates                               ${arch.warn}")
   ))

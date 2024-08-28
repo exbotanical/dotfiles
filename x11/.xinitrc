@@ -36,7 +36,7 @@ init () {
     unset f
   fi
 
-  setxkbmap -variant $KEYBOARD_LAYOUT
+  # setxkbmap -variant $KEYBOARD_LAYOUT
 
   exec i3
 }

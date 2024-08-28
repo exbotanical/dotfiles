@@ -28,11 +28,16 @@ set $VOLUME_STEP 5
 
 # Percentage amount to increase/decrease brightness
 set $BRIGHTNESS_STEP 5
+
+
+# Apps
+set $TERMINAL     alacritty
+set $PS           htop
+set $CALCULATOR   deepin-calculator
+set $FILE_BROWSER thunar
 ### End Base Variables ### }}}
 
 ### Initialization {{{
-# output eDP-1 mode 2256x1504@60Hz scale 1
-
 exec --no-startup-id eww daemon && eww open bar
 exec --no-startup-id dunst -config /home/goldmund/.config/dunst/dunstrc
 
@@ -112,7 +117,7 @@ bindsym XF86AudioPrev exec playerctl previous
 
 ### App Bindings {{{
 # Shell
-bindsym $MOD+Return exec alacritty
+bindsym $MOD+Return exec $TERMINAL
 
 # Screenshot
 bindsym $MOD+Print exec coreshot -w
@@ -121,7 +126,10 @@ bindsym $MOD+Print exec coreshot -w
 bindsym $MOD+Shift+Print exec coreshot -s
 
 # htop mod+h
-bindsym $MOD+h exec alacritty -e htop
+bindsym $MOD+h exec $TERMINAL -e $PS
+
+# calculator mod+h
+bindsym $MOD+c exec $CALCULATOR
 
 # rofi
 bindsym $MOD+d exec --no-startup-id rofi -show combi -run-command "i3-msg exec '{cmd}'" -show-icons
@@ -129,8 +137,8 @@ bindsym $MOD+d exec --no-startup-id rofi -show combi -run-command "i3-msg exec '
 # File search
 # bindsym $MOD+s exec --no-startup-id rofi -show file-browser-extended
 
-# thunar fs ui
-bindsym $MOD+slash exec "thunar"
+# fs ui
+bindsym $MOD+slash exec $FILE_BROWSER
 ### End App Bindings ### }}}
 
 ### Workspaces {{{
@@ -169,6 +177,10 @@ bindsym $MOD+Shift+7  move container to workspace number $ws7
 bindsym $MOD+Shift+8  move container to workspace number $ws8
 bindsym $MOD+Shift+9  move container to workspace number $ws9
 bindsym $MOD+Shift+0  move container to workspace number $ws10
+
+# Startup Workspaces
+exec --no-startup-id i3-msg 'workspace 1; exec /usr/bin/brave'
+
 ### End Workspaces ### }}}
 
 bindsym $MOD+Shift+s   layout splitv;\

@@ -53,13 +53,49 @@
       "\tret"
     ]
   },
-  "AsmRegisters": {
-    "prefix": "r",
-    "body": "${1|%rax,%rdi,%rsi,%rcx,%rsp|}\n"
+  "AsmSsSegmentRegister": {
+    "prefix": "ss",
+    "body": "%ss"
+  },
+  "AsmFsSegmentRegister": {
+    "prefix": "fs",
+    "body": "%fs"
+  },
+  "AsmDsSegmentRegister": {
+    "prefix": "ds",
+    "body": "%ds"
+  },
+  "AsmCsSegmentRegister": {
+    "prefix": "cs",
+    "body": "%cs"
+  },
+  "AsmGsSegmentRegister": {
+    "prefix": "gs",
+    "body": "%gs"
+  },
+  "AsmEsSegmentRegister": {
+    "prefix": "es",
+    "body": "%es"
   },
   "AsmRaxRegister": {
     "prefix": "rax",
     "body": "%rax"
+  },
+  "AsmRbxRegister": {
+    "prefix": "rbx",
+    "body": "%rbx"
+  },
+  "AsmRcxRegister": {
+    "prefix": "rcx",
+    "body": "%rcx"
+  },
+  "AsmRspRegister": {
+    "prefix": "rsp",
+    "body": "%rsp"
+  },
+  "AsmRbpRegister": {
+    "prefix": "rbp",
+    "body": "%rbp"
   },
   "AsmRdiRegister": {
     "prefix": "rdi",
@@ -69,12 +105,120 @@
     "prefix": "rsi",
     "body": "%rsi"
   },
-  "AsmR10Register": {
-    "prefix": "r10",
-    "body": "%r10"
+  "AsmRdxRegister": {
+    "prefix": "rdx",
+    "body": "%rdx"
+  },
+  "AsmEaxRegister": {
+    "prefix": "eax",
+    "body": "%eax"
+  },
+  "AsmEbxRegister": {
+    "prefix": "ebx",
+    "body": "%ebx"
+  },
+  "AsmEcxRegister": {
+    "prefix": "ecx",
+    "body": "%ecx"
+  },
+  "AsmEspRegister": {
+    "prefix": "esp",
+    "body": "%esp"
+  },
+  "AsmEbpRegister": {
+    "prefix": "ebp",
+    "body": "%ebp"
+  },
+  "AsmEdiRegister": {
+    "prefix": "edi",
+    "body": "%edi"
+  },
+  "AsmEsiRegister": {
+    "prefix": "esi",
+    "body": "%esi"
+  },
+  "AsmEdxRegister": {
+    "prefix": "edx",
+    "body": "%edx"
+  },
+  "AsmAxRegister": {
+    "prefix": "ax",
+    "body": "%ax"
+  },
+  "AsmBxRegister": {
+    "prefix": "bx",
+    "body": "%bx"
+  },
+  "AsmCxRegister": {
+    "prefix": "cx",
+    "body": "%cx"
+  },
+  "AsmSpRegister": {
+    "prefix": "sp",
+    "body": "%sp"
+  },
+  "AsmBpRegister": {
+    "prefix": "bp",
+    "body": "%bp"
+  },
+  "AsmDiRegister": {
+    "prefix": "di",
+    "body": "%di"
+  },
+  "AsmSiRegister": {
+    "prefix": "si",
+    "body": "%si"
+  },
+  "AsmDxRegister": {
+    "prefix": "dx",
+    "body": "%dx"
+  },
+  "AsmAhRegister": {
+    "prefix": "ah",
+    "body": "%ah"
   },
   "AsmAlRegister": {
     "prefix": "al",
     "body": "%al"
   },
+  "AsmBhRegister": {
+    "prefix": "bh",
+    "body": "%bh"
+  },
+  "AsmBlRegister": {
+    "prefix": "bl",
+    "body": "%bl"
+  },
+  "AsmChRegister": {
+    "prefix": "ch",
+    "body": "%ch"
+  },
+  "AsmClRegister": {
+    "prefix": "cl",
+    "body": "%cl"
+  },
+  "AsmSplRegister": {
+    "prefix": "spl",
+    "body": "%spl"
+  },
+  "AsmBplRegister": {
+    "prefix": "bpl",
+    "body": "%bpl"
+  },
+  "AsmDilRegister": {
+    "prefix": "dil",
+    "body": "%dil"
+  },
+  "AsmSilRegister": {
+    "prefix": "sil",
+    "body": "%sil"
+  },
+  "AsmDhRegister": {
+    "prefix": "dh",
+    "body": "%dh"
+  },
+  "AsmDlRegister": {
+    "prefix": "dl",
+    "body": "%dl"
+  }
 }

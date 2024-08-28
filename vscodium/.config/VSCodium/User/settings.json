@@ -2,7 +2,6 @@
   /**
    * VSC Settings
    */
-
   "editor.minimap.enabled": false,
   "editor.codeLens": false,
   "editor.cursorBlinking": "phase",
@@ -204,7 +203,6 @@
   "cSpell.ignoreWords": ["goldmund"],
   "doxdocgen.generic.dateFormat": "DD/MM/YYYY",
   "doxdocgen.generic.briefTemplate": "{text}",
-  "workbench.colorTheme": "Everforest Dark",
   "python.defaultInterpreterPath": "/usr/bin/python",
 
   "workbench.colorCustomizations": {
@@ -212,5 +210,6 @@
   },
   "workbench.activityBar.location": "hidden",
   "window.zoomLevel": 1,
-  "prisma.showPrismaDataPlatformNotification": false
+  "prisma.showPrismaDataPlatformNotification": false,
+  "workbench.colorTheme": "Owlet (Dracula)"
 }

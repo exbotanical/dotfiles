@@ -72,5 +72,10 @@
   "CStdargHeader": {
     "prefix": "stdarg",
     "body": "#include <stdarg.h>"
+  },
+  "CIncludeHeader": {
+    "prefix": "include",
+    // TODO: figure out how to insert tab stops in a choice
+    "body": "#include ${1|\"\",<>|}\n"
   }
 }

@@ -27,7 +27,7 @@ support::strict_mode () {
       set -o errtrace
       set -o nounset
       set -o pipefail
-      trap traceback ERR
+      trap 'support::traceback' ERR
       ;;
     off)
       set +o errexit

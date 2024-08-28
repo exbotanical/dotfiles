@@ -43,6 +43,41 @@
     "prefix": "source",
     "body": "source $(dirname \"$(readlink -f \"\\$BASH_SOURCE\")\")/${0:VAR}"
   },
+  "root_dir": {
+    "prefix": "ROOT",
+    "body": "ROOT_DIR=\"$(dirname \"$(readlink -f $BASH_SOURCE)\")\""
+  },
+  "dir?": {
+    "prefix": "define_dir?",
+    "body": [
+      "# dir? says whether a given directory path exists",
+      "dir? () {",
+      "  [[ -d \\$1 ]]",
+      "}"
+    ]
+  },
+  "file?": {
+    "prefix": "define_file?",
+    "body": [
+      "# file? says whether a given file path exists",
+      "file? () {",
+      "  [[ -r \\$1 ]]",
+      "}"
+    ]
+  },
+  "die": {
+    "prefix": "define_die",
+    "body": [
+    "# die prints a message to stderr and exits with either",
+    "# the given return code or 1 if none was provided",
+    "die() {",
+    "  local msg=\"\\$1\"",
+    "  local rc=\"\\${2:-1}\"",
+    "  >&2 echo \"\\$msg\"",
+    "  exit \"\\$rc\"",
+    "}"
+    ]
+  },
   "shpec_aliases": {
     "prefix": "shpec",
     "body": [
