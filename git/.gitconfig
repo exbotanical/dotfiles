@@ -44,7 +44,7 @@
 [includeIf "gitdir:~/"]
   path = .gitconfig.personal
 
-[includeIf "hasconfig:remote.*.url:https://code.amazon.com/**"]
+[includeIf "hasconfig:remote.*.url:ssh://git.amazon.com:**"]
   path = .gitconfig.work
 
 [includeIf "onbranch:mainline"]
