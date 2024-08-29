@@ -209,7 +209,8 @@
     "list.errorForeground": "#68a274"
   },
   "workbench.activityBar.location": "hidden",
-  "window.zoomLevel": 1,
+  "window.zoomLevel": 0,
   "prisma.showPrismaDataPlatformNotification": false,
-  "workbench.colorTheme": "Owlet (Dracula)"
+  "workbench.colorTheme": "Owlet (Dracula)",
+  "telemetry.telemetryLevel": "off"
 }

@@ -1,3 +1,4 @@
 support::macos? && {
-  init::export GPG_TTY "$(tty)"
+  # TODO: fix init::export
+  export GPG_TTY="$(tty)"
 }

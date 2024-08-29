@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-cp -R ./vscodium/.config/* $HOME/Library/Application\ Support/
+cp -R .$HOME/dotfiles/vscodium/.config/VSCodium/User/* $HOME/Library/Application\ Support/VSCodium/User/
