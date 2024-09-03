@@ -4,4 +4,4 @@ init::append_path $ExecDir
 
 init::export PATH
 
-init::export SYSTEM_THEME 'everforest' # 'nord'
+init::export SYSTEM_THEME 'dracula' # 'nord' | 'everforest'

@@ -2,6 +2,7 @@
 set $MOD                 Mod4
 
 set $FONT               "Fira Code"
+set $GTK_THEME          "Dracula"
 
 set $BG                 #282a36
 set $WHITE              #f8f8f2
@@ -39,12 +40,12 @@ set $FILE_BROWSER thunar
 
 ### Initialization {{{
 exec --no-startup-id eww daemon && eww open bar
-exec --no-startup-id dunst -config /home/goldmund/.config/dunst/dunstrc
+exec --no-startup-id dunst -config $CONFIG_DIR/dunst/dunstrc
 
 # Wallpaper
-exec --no-startup-id feh --bg-scale $CONFIG_DIR/assets/pink-nord.jpg
+exec --no-startup-id feh --bg-scale $CONFIG_DIR/assets/dracula.png
 
-# exec_always --no-startup-id picom --config $CONFIG_DIR/picom/picom.conf
+exec_always --no-startup-id picom --config $CONFIG_DIR/picom/picom.conf
 
 ### End Initialization ### }}}
 
@@ -88,7 +89,7 @@ bindsym $MOD+Shift+r      restart
 bindsym $MOD+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # Lock i3
-bindsym $MOD+Shift+x exec i3lock
+bindsym $MOD+Shift+x exec $CONFIG_DIR/i3/lock
 
 # Use Mouse+$MOD to drag floating windows to their wanted position
 floating_modifier $MOD
@@ -224,6 +225,11 @@ client.background       $BG
 
 # Remove borders
 for_window [class=".*"] border pixel 0
+
+exec --no-startup-id gsettings set org.gnome.desktop.interface gtk-theme $GTK_THEME
+exec --no-startup-id gsettings set org.gnome.desktop.wm.preferences theme $GTK_THEME
+exec --no-startup-id gsettings set org.gnome.desktop.interface icon-theme $GTK_THEME
+
 ### End Base UI ### }}}
 
 ### Miscellaneous ### {{{

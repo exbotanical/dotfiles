@@ -1,6 +1,5 @@
 .calendar-window {
   @include window;
-  background-color: $bg;
   border: 1px solid $border;
   color: $fg;
   padding: .5em;

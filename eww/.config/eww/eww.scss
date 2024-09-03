@@ -1,4 +1,4 @@
-@import 'css/themes/everforest';
+@import 'css/themes/_dracula';
 
 $font-xs: 1rem;
 $font-sm: 1.25rem;
@@ -12,10 +12,12 @@ $font-xl: 3rem;
 }
 
 @mixin window {
+  background-color: $bar-bg;
+  margin-top: 2.175rem;
   border: 1px solid $border;
   box-shadow: 0 2px 3px $shadow;
   padding: 5px 5px 10px;
-  @include rounding;
+  border-radius: 0 0 1rem 1rem;
 }
 
 * {

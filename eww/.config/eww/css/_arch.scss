@@ -1,8 +1,6 @@
 .arch-info-box {
-  @include rounding;
+  @include window;
   background-color: $surface0;
-  margin: .5rem 1rem;
-  padding: .5rem;
 }
 
 .arch-info-text {

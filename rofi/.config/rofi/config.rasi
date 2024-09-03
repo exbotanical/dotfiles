@@ -1,4 +1,4 @@
-@import "themes/everforest"
+@import "themes/dracula"
 
 window {
   background-color: @background-color;

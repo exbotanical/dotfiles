@@ -5,9 +5,9 @@ if [[ "$SYSTEM_THEME" == 'everforest' ]]; then
   INFO_COLOR='#dbbc7f'
   OK_COLOR='#a7c080'
 else
-  WARN_COLOR='#BF616A'
-  INFO_COLOR='#EBCB8B'
-  OK_COLOR='#81A1C1'
+  WARN_COLOR='#F1FA8C'
+  INFO_COLOR='#f4a2d1'
+  OK_COLOR='#FF79C6'
 fi
 
 INTERVAL=3600

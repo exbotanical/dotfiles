@@ -47,7 +47,8 @@ set wildignore+=*.pdf,*.pyc,*.exe,*.flv,*.img
 set wildignore+=*.xlsx,*.o,*.obj,*.exe,*.so
 set wildignore+=.svn,.git,*.class,*/node_modules/*
 set tabpagemax=50                             " Maximum number of tab pages that can be opened from the command line
-colorscheme serenade                          " Change color scheme
+colorscheme dracula                           " Change color scheme
+set termguicolors
 set cursorline                                " Highlight the line currently under cursor
 set cursorcolumn                              " Highlight the screen column of the cursor
 set mouse=a                                   " Enable mouse for scrolling and resizing

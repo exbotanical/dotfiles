@@ -196,7 +196,7 @@
         (button
           :halign "end"
           :class "icon"
-          :onclick "wlogout -p layer-shell &"
+          :onclick "echo TODO"
         "")))))
 
 (defwindow system-menu-window

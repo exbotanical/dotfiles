@@ -1,0 +1,57 @@
+#!/usr/bin/env sh
+
+ALPHA='dd'
+BACKGROUND='#282a36'
+SELECTION='#44475a'
+COMMENT='#6272a4'
+
+YELLOW='#f1fa8c'
+ORANGE='#ffb86c'
+RED='#ff5555'
+MAGENTA='#ff79c6'
+BLUE='#6272a4'
+CYAN='#8be9fd'
+GREEN='50fa7b'
+
+FONT='FiraCode Nerd Font Mono Light 22'
+
+i3lock \
+  --insidever-color=$SELECTION$ALPHA \
+  --insidewrong-color=$SELECTION$ALPHA \
+  --inside-color=$SELECTION$ALPHA \
+  --ringver-color=$GREEN$ALPHA \
+  --ringwrong-color=$RED$ALPHA \
+  --ringver-color=$GREEN$ALPHA \
+  --ringwrong-color=$RED$ALPHA \
+  --ring-color=$BLUE$ALPHA \
+  --line-uses-ring \
+  --keyhl-color=$MAGENTA$ALPHA \
+  --bshl-color=$ORANGE$ALPHA \
+  --separator-color=$SELECTION$ALPHA \
+  --verif-color=$GREEN \
+  --wrong-color=$RED \
+  --modif-color=$RED \
+  --layout-color=$BLUE \
+  --date-color=$BLUE \
+  --time-color=$BLUE \
+  --screen 1 \
+  --blur 1 \
+  --clock \
+  --indicator \
+  --time-str="%H:%M:%S" \
+  --date-str="%A %e %B %Y" \
+  --verif-text="Checking..." \
+  --wrong-text="Wrong pswd" \
+  --noinput="No Input" \
+  --lock-text="Locking..." \
+  --lockfailed="Lock Failed" \
+  --radius=120 \
+  --ring-width=10 \
+  --pass-media-keys \
+  --pass-screen-keys \
+  --pass-volume-keys \
+ --time-font="$FONT" \
+ --date-font="$FONT" \
+ --layout-font="$FONT" \
+ --verif-font="$FONT" \
+ --wrong-font="$FONT"

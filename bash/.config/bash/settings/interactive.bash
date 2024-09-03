@@ -57,13 +57,14 @@ init::export HISTFILESIZE $(bc<<<$HISTSIZE*2)
 init::export HISTTIMEFORMAT '[%Y-%m-%dT%H:%M:%S] '
 
 # Colorful manpages - TODO: src colors
-init::export LESS_TERMCAP_mb $(printf '\e[01;31m') # enter blinking mode – red
-init::export LESS_TERMCAP_md $(printf '\e[01;35m') # enter double-bright mode – bold, magenta
-init::export LESS_TERMCAP_me $(printf '\e[0m') # turn off all appearance modes (mb, md, so, us)
-init::export LESS_TERMCAP_se $(printf '\e[0m') # leave standout mode
-init::export LESS_TERMCAP_so $(printf '\e[01;33m') # enter standout mode – yellow
-init::export LESS_TERMCAP_ue $(printf '\e[0m') # leave underline mode
-init::export LESS_TERMCAP_us $(printf '\e[04;36m') # enter underline mode – cyan
+init::export LESS_TERMCAP_mb $'\e[1;31m'      # begin bold
+init::export LESS_TERMCAP_md $'\e[1;34m'      # begin blink
+init::export LESS_TERMCAP_so $'\e[01;45;37m'  # begin reverse video
+init::export LESS_TERMCAP_us $'\e[01;36m'     # begin underline
+init::export LESS_TERMCAP_me $'\e[0m'         # reset bold/blink
+init::export LESS_TERMCAP_se $'\e[0m'         # reset reverse video
+init::export LESS_TERMCAP_ue $'\e[0m'         # reset underline
+init::export MANPAGER '/usr/bin/less -s -M +Gg'
 
 # Reclaim ctrl-s, ctrl-q
 stty -ixon -ixoff

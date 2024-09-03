@@ -1,4 +1,4 @@
-import = ["~/.config/alacritty/themes/everforest.toml"]
+import = ["~/.config/alacritty/themes/dracula.toml"]
 
 [bell]
 animation = "EaseOutCubic"

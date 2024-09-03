@@ -1,17 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
   "palette": {
-    "polar": "#4C566A",
-    "cyan": "#8fbcbb",
-    "orange": "#fac1dc",
-    "blue": "#8AADF4",
-    "text": "#3B4252",
-    "green": "#A3BE8C",
+    "bg_base": "#44475A",
+    "orange": "#FFB86C",
+    "blue": "#7cd3e7",
+    "text": "#282A36",
+    "green": "#50FA7B",
     "pink": "#fac1dc",
-    "snow": "#D8DEE9",
-    "red": "#BF616A",
-    "purple": "#B48EAD",
-    "yellow": "#EBCB8B"
+    "red": "#FF5555",
+    "purple": "#6272A4",
+    "yellow": "#F1FA8C",
+    "white": "#F8F8F2"
   },
   "blocks": [
     {
@@ -19,7 +18,7 @@
       "newline": true,
       "segments": [
         {
-          "background": "p:polar",
+          "background": "p:bg_base",
           "foreground": "p:white",
           "properties": {
             "arch": "\uf303",
@@ -28,13 +27,11 @@
             "ubuntu": "\uf31c"
           },
           "style": "diamond",
-          "leading_diamond": "<p:pink>\u256d\u2500\ue0b2</>",
           "template": " {{ .Icon }} ",
           "type": "os"
         },
-
         {
-          "background": "p:cyan",
+          "background": "p:blue",
           "foreground": "p:text",
           "properties": {
             "max_depth": 3,
@@ -46,17 +43,16 @@
           "style": "powerline",
           "powerline_symbol": "\ue0b0",
           "template": " <p:text>\uf07b \uf553</> {{ .Path }} ",
-
           "type": "path"
         },
         {
           "background": "p:green",
           "foreground": "p:text",
           "background_templates": [
-            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:orange{{ end }}",
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:pink{{ end }}",
             "{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:red{{ end }}",
-            "{{ if gt .Ahead 0 }}p:purple{{ end }}",
-            "{{ if gt .Behind 0 }}p:purple{{ end }}"
+            "{{ if gt .Ahead 0 }}p:green{{ end }}",
+            "{{ if gt .Behind 0 }}p:green{{ end }}"
           ],
           "properties": {
             "branch_max_length": 25,
@@ -79,7 +75,7 @@
       "alignment": "right",
       "segments": [
         {
-          "background": "p:polar",
+          "background": "p:bg_base",
           "foreground": "p:white",
           "properties": {
             "style": "austin",
@@ -147,7 +143,7 @@
         {
           "foreground": "p:pink",
           "style": "plain",
-          "template": "\u2570\u2500 <b>{{ .UserName }}</b> <p:yellow>\u276f</><p:red>\u276f</><p:cyan>\u276f</>",
+          "template": "\u2570\u2500 <b>{{ .UserName }}</b> <p:yellow>\u276f</><p:red>\u276f</><p:blue>\u276f</>",
           "type": "text"
         }
       ],

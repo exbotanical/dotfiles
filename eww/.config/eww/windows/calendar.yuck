@@ -4,7 +4,9 @@
     (calendar)))
 
 (defwindow calendar-window
+  :stacking "fg"
   :monitor 0
+  :wm-ignore true
   :geometry (geometry
     :x "0%"
     :y "0%"

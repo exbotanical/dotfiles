@@ -32,3 +32,16 @@
 - nmcli
 - ~~pipewire-pulse (replace pulseaudio from X)~~
 - ~~iwgtk~~ nm-applet
+
+- themeing
+  - dircolors
+  - btop
+  - dunst
+  - eww
+  - hexchat
+  - htop
+  - i3
+  - vim
+  - rofi
+  - vscodium
+  - x11/gtk

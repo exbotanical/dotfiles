@@ -9,10 +9,10 @@
   "editor.codeActionsOnSave": {},
   "editor.suggestSelection": "first",
   "editor.accessibilitySupport": "off",
-  "editor.fontFamily": "Fira Code",
-  "editor.fontLigatures": true,
+  "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontSize": 16,
   "editor.fontWeight": "400",
+  "editor.fontLigatures": true,
   "editor.linkedEditing": true,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
@@ -52,10 +52,10 @@
       "path": "/opt/homebrew/bin/bash"
     }
   },
-  "terminal.integrated.fontFamily": "Inconsolata",
-  "terminal.integrated.fontWeight": "700",
-  "terminal.integrated.fontSize": 18,
-  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "terminal.integrated.fontFamily": "FiraCode Nerd Font",
+  "terminal.integrated.fontWeight": "600",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
 
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
 
@@ -211,6 +211,6 @@
   "workbench.activityBar.location": "hidden",
   "window.zoomLevel": 0,
   "prisma.showPrismaDataPlatformNotification": false,
-  "workbench.colorTheme": "Owlet (Dracula)",
+  "workbench.colorTheme": "Dracula Theme",
   "telemetry.telemetryLevel": "off"
 }

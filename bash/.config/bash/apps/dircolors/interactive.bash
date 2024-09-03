@@ -1,4 +1,4 @@
-DIR_COLORS_FILE='nord.dircolors'
+DIR_COLORS_FILE='dracula.dircolors'
 DIR_COLORS_DIR=$HOME/.dir_colors
 
 EphemeralVars+=( DIR_COLORS_FILE DIR_COLORS_DIR )

@@ -12,10 +12,10 @@ if [[ "$SYSTEM_THEME" == 'everforest' ]]; then
 	YELLOW='#dbbc7f'
 	BLUE='#7fbbb3'
 else
- 	RED='#BF616A'
-	GREEN='#A3BE8C'
-	YELLOW='#EBCB8B'
-	BLUE='#B48EAD'
+ 	RED='#FF5555'
+	GREEN='#50FA7B'
+	YELLOW='#F1FA8C'
+	BLUE='#8BE9FD'
 fi
 
 geticon () {
