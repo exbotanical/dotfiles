@@ -1,1 +1,1 @@
-[[ -z $XDG_SESSION_ID ]]
+[[ ! -z $XDG_SESSION_ID ]]
