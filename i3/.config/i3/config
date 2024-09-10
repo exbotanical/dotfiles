@@ -11,12 +11,10 @@ set $GREY               #44475a
 set $LIGHTGREY          #6272a4
 set $MEDIUMGREY         #6272a4
 set $CREME              #1d1F21
-set $brown              #6272a4
 set $YELLOW             #f1fa8c
-set $lightred           #ffb86c
 set $RED                #FF5555
 set $DARKRED            #c44068
-set $GREEN              #A3BE8C
+set $GREEN              #50fa7b
 set $BLUE               #8be9fd
 set $DARKBLUE           #c394b4
 set $BAR_BG             #161516
