@@ -76,6 +76,11 @@
   "CIncludeHeader": {
     "prefix": "include",
     // TODO: figure out how to insert tab stops in a choice
-    "body": "#include ${1|\"\",<>|}\n"
+    "body": "#include \"$1\""
+  },
+  "CDefine": {
+    "prefix": "define",
+    // TODO: figure out how to insert tab stops in a choice
+    "body": "#define $1 $2"
   }
 }
