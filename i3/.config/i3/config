@@ -33,7 +33,7 @@ set $BRIGHTNESS_STEP 5
 set $TERMINAL     alacritty
 set $PS           htop
 set $CALCULATOR   deepin-calculator
-set $FILE_BROWSER thunar
+set $FILE_BROWSER pcmanfm
 ### End Base Variables ### }}}
 
 ### Initialization {{{
