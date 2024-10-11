@@ -73,6 +73,10 @@
     "prefix": "stdarg",
     "body": "#include <stdarg.h>"
   },
+  "CMathHeader": {
+    "prefix": "math",
+    "body": "#include <math.h>"
+  },
   "CIncludeHeader": {
     "prefix": "include",
     // TODO: figure out how to insert tab stops in a choice
