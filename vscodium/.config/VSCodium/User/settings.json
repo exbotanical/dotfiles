@@ -69,7 +69,6 @@
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "workbench.startupEditor": "none",
-  "workbench.editor.enablePreview": false,
 
   /**
    * LSP Configurations
@@ -201,6 +200,7 @@
   "editor.largeFileOptimizations": false,
   "vitest.enable": true,
   "cSpell.ignoreWords": ["goldmund"],
+  "cSpell.diagnosticLevel": "Hint",
   "doxdocgen.generic.dateFormat": "DD/MM/YYYY",
   "doxdocgen.generic.briefTemplate": "{text}",
   "python.defaultInterpreterPath": "/usr/bin/python",
@@ -208,9 +208,35 @@
   "workbench.colorCustomizations": {
     "list.errorForeground": "#68a274"
   },
-  "workbench.activityBar.location": "hidden",
-  "window.zoomLevel": 0,
+  "window.zoomLevel": 3,
   "prisma.showPrismaDataPlatformNotification": false,
-  "workbench.colorTheme": "Dracula Theme",
-  "telemetry.telemetryLevel": "off"
+  "telemetry.telemetryLevel": "off",
+  "update.showReleaseNotes": false,
+  "workbench.editor.tabSizing": "fixed",
+  "window.density.editorTabHeight": "compact",
+  "cursor-column.showBorder": true,
+  "workbench.activityBar.location": "hidden",
+  "workbench.editor.enablePreview": false,
+  "workbench.colorTheme": "Palenight (Mild Contrast)",
+  "cSpell.userWords": [
+    "CSRCS",
+    "DEPSDIR",
+    "EFLAGS",
+    "ERRCODE",
+    "gdtr",
+    "Hubspot",
+    "lgdt",
+    "libtap",
+    "ljmp",
+    "moodle",
+    "movl",
+    "movw",
+    "multiboot",
+    "pagedir",
+    "popl",
+    "pushl",
+    "TESTDIR",
+    "TESTSRCS",
+    "vgaprintf"
+  ]
 }
