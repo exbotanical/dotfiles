@@ -1,8 +1,8 @@
 (deflisten airplane "scripts/airplane")
 
-(defwidget system-menu-widget []
+(defwidget control-panel-widget []
   (box
-    :class "system-menu-box"
+    :class "control-panel-box"
     :space-evenly false
     :orientation "v"
     (box
@@ -39,7 +39,7 @@
           :text "│")
           (button
             :class "wifi-arrow-btn"
-            :onclick "eww close system-menu-window && nm-connection-editor &"
+            :onclick "eww close control-panel-window && nm-connection-editor &"
           ""))
         (label
           :text {net.essid}
@@ -62,7 +62,7 @@
           :text "│")
           (button
             :class "bluetooth-arrow-btn"
-            :onclick "eww close system-menu-window && blueman-manager &"
+            :onclick "eww close control-panel-window && blueman-manager &"
           ""))
         (label
           :text {bluetooth.text}
@@ -100,7 +100,7 @@
         (scale
           :class "volume-bar"
           :value {volume.percent}
-          :tooltip "volume on ${volume.percent}%"
+          :tooltip "volume at ${volume.percent}%"
         :onchange "scripts/volume set_vol SINK {}"))
       (box
         :class "brightness-slider-box"
@@ -199,7 +199,7 @@
           :onclick "echo TODO"
         "")))))
 
-(defwindow system-menu-window
+(defwindow control-panel-window
   :stacking "fg"
   :monitor 0
   :wm-ignore true
@@ -209,4 +209,4 @@
     :width "0%"
     :height "0%"
   :anchor "right top")
-  (system-menu-widget))
+  (control-panel-widget))

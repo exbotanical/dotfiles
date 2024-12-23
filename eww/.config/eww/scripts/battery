@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # see: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/include/linux/power_supply.h?h=v6.0.11
-
+# TODO: theme all scripts
 declare ICONS=('' '' '' '' '' '' '' '')
 NUM_ICONS=$(bc <<< "100 / ${#ICONS[@]}")
 INTERVAL=1
@@ -73,8 +73,10 @@ wattage () {
 }
 
 gettime () {
-	local full=$(cat /sys/class/power_supply/BAT1/charge_full)
-	local now=$(cat /sys/class/power_supply/BAT1/charge_now)
+	# local full=$(cat /sys/class/power_supply/BAT1/charge_full)
+	local full=$(cat /sys/class/power_supply/BAT1/capacity)
+	# local now=$(cat /sys/class/power_supply/BAT1/charge_now)
+	local now=$(cat /sys/class/power_supply/BAT1/power_now)
 
 	if (( "$RATE" > 0 )); then
 		if [[ "$STATE" == "Discharging" ]]; then

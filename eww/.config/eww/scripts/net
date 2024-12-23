@@ -36,7 +36,7 @@ main () {
 
       if [[ "$status" == 'disconnected' ]]; then
         icon='\ue1da'
-        color='#988ba2'
+        color='#ff5555'
         class=''
       else
         level=$(awk -v n="$signal" 'BEGIN{print int((n-1)/20)}')
@@ -45,7 +45,7 @@ main () {
         fi
 
         icon=${icons[$level]}
-        color='#ECEFF4'
+        color='#f8f8f2'
         class='wifi-connected'
       fi
 

@@ -4,7 +4,7 @@
 (include "./modules/clock.yuck")
 (include "./modules/music.yuck")
 (include "./modules/net.yuck")
-(include "./modules/system-bar.yuck")
+(include "./modules/control-panel-tray.yuck")
 (include "./modules/volume.yuck")
 (include "./modules/workspaces.yuck")
 (include "./modules/arch.yuck")
@@ -12,7 +12,7 @@
 (include "./windows/calendar.yuck")
 (include "./windows/music.yuck")
 ; (include "./windows/osd.yuck")
-(include "./windows/system-menu.yuck")
+(include "./windows/control-panel.yuck")
 
 (defwidget left-widget []
   (box
@@ -29,7 +29,7 @@
     (volume-widget)
     (bluetooth-widget)
     (net-widget)
-    (system-bar-widget)
+    (control-panel-tray-widget)
     (clock-widget)
   ))
 
@@ -40,8 +40,9 @@
     (music-widget)))
 
 (defwidget bar-widget []
-  (centerbox
+  (systray
     :class "bar"
+    :space-evenly true
     (left-widget)
     (center-widget)
     (right-widget)))

@@ -23,17 +23,16 @@ $font-xl: 3rem;
 * {
   all: unset;
   transition: 200ms ease;
-  font-family: "", Roboto, sans-serif;
+  font-family: '', Roboto, sans-serif;
   font-size: $font-base;
 }
-
 
 @import 'css/arch';
 @import 'css/calendar';
 @import 'css/music';
 @import 'css/osd';
-@import 'css/system-menu';
-@import 'css/system-bar';
+@import 'css/control-panel';
+@import 'css/control-panel-tray';
 @import 'css/volume';
 
 .bar {
@@ -73,7 +72,7 @@ tooltip {
 }
 
 .minute {
-  padding-right: .7rem;
+  padding-right: 0.7rem;
 }
 
 .date {
@@ -107,26 +106,25 @@ scale trough {
 .news-box {
   @include rounding;
   background-color: $surface0;
-  margin: .5rem 1rem;
+  margin: 0.5rem 1rem;
   padding: 1.5rem;
 }
 
 .arch-logo {
-  margin-right: .25rem;
+  margin-right: 0.25rem;
 
   label {
-
     margin-right: 33px;
     color: $mantle;
     font-size: 2rem;
-    margin: -.8rem 1rem;
+    margin: -0.8rem 1rem;
   }
 }
 
 .workspaces {
   label {
     font-size: 1.75rem;
-    margin: -.1rem 0;
-    margin-bottom: .15rem;
+    margin: -0.1rem 0;
+    margin-bottom: 0.15rem;
   }
 }
