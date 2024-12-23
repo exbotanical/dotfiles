@@ -1,3 +1,4 @@
+[general]
 import = ["~/.config/alacritty/themes/dracula.toml"]
 
 [bell]
@@ -27,6 +28,6 @@ opacity = 0.95
 x = 6
 y = 6
 
-[shell]
+[terminal.shell]
 args = ["--login"]
 program = "bash"
