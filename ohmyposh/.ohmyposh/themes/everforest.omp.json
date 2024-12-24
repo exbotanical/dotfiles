@@ -2,13 +2,11 @@
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
   "palette": {
     "polar": "#e67e80",
-    "cyan": "#7fbbb3",
-    "orange": "#dbbc7f",
     "blue": "#7fbbb3",
+    "orange": "#dbbc7f",
     "text": "#3B4252",
     "green": "#83c092",
     "pink": "#a7c080",
-    "snow": "#2d353b",
     "red": "#e67e80",
     "purple": "#a78fa2",
     "yellow": "#a7c080"
@@ -34,7 +32,7 @@
         },
 
         {
-          "background": "p:cyan",
+          "background": "p:blue",
           "foreground": "p:text",
           "properties": {
             "max_depth": 3,
@@ -147,7 +145,7 @@
         {
           "foreground": "p:pink",
           "style": "plain",
-          "template": "\u2570\u2500 <b>{{ .UserName }}</b> <p:yellow>\u276f</><p:red>\u276f</><p:cyan>\u276f</>",
+          "template": "\u2570\u2500 <b>{{ .UserName }}</b> <p:yellow>\u276f</><p:red>\u276f</><p:blue>\u276f</>",
           "type": "text"
         }
       ],

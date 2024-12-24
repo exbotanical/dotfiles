@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-XDG_CACHE_HOME="/home/goldmund/.cache" # TODO: setenv
-COVERS_DIR="$XDG_CACHE_HOME/eww_covers"
+COVERS_DIR="${XDG_CACHE_DIR:-$HOME/.cache}/eww_covers"
 
 get_status () {
 	local s=$1

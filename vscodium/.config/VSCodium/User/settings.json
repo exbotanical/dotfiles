@@ -221,7 +221,7 @@
   "cursor-column.showBorder": true,
   "workbench.activityBar.location": "hidden",
   "workbench.editor.enablePreview": false,
-  "workbench.colorTheme": "Palenight (Mild Contrast)",
+  "workbench.colorTheme": "Dracula Theme",
   "cSpell.userWords": [
     "CSRCS",
     "DEPSDIR",
