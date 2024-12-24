@@ -200,12 +200,12 @@
         "")))))
 
 (defwindow control-panel-window
-  :stacking "fg"
+  :stacking "bg"
   :monitor 0
   :wm-ignore true
   :geometry (geometry
     :x "0"
-    :y "0"
+    :y "2"
     :width "0%"
     :height "0%"
   :anchor "right top")

@@ -8,8 +8,8 @@
   :monitor 0
   :wm-ignore true
   :geometry (geometry
-    :x "0%"
-    :y "0%"
+    :x "0"
+    :y "43"
     :anchor "top right"
     :width "0px"
   :height "0px")
