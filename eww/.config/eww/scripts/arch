@@ -13,9 +13,10 @@ fi
 INTERVAL=3600
 
 main () {
+  local updates=$(yay -Qua)
   local color="$OK_COLOR"
-  local num_updates_total=$(yay -Qua | wc -l)
-  local num_updates_warn=$(yay -Qua | grep -c '\(linux\|linux-lts\|linux-zen\)')
+  local num_updates_total=$(echo $updates | wc -l)
+  local num_updates_warn=$(echo $updates | grep -c '\(linux\|linux-lts\|linux-zen\)')
 
   if (( "$num_updates_warn" > 0 )); then
     color="$WARN_COLOR"

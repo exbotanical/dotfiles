@@ -2,20 +2,9 @@
 
 INTERVAL=3
 
-toggle () {
-  local status=$(rfkill -J | jaq -r '.rfkilldevices[] | select(.type == "wlan") | .soft' | head -1)
-  status='unblocked'
-
-  if [[ "$status" == 'unblocked' ]]; then
-    rfkill block wlan
-  else
-    rfkill unblock wlan
-  fi
-}
-
 main () {
   if [[ "$1" == "toggle" ]]; then
-    toggle
+    rfkill toggle wlan
   else
     while true; do
       local status=$(nmcli g | tail -n 1 | awk '{print $1}')

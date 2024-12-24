@@ -12,7 +12,7 @@ $font-xl: 3rem;
 }
 
 @mixin window {
-  background-color: $bar-bg;
+  background-color: $bg;
   margin-top: 2.175rem;
   border: 1px solid $border;
   box-shadow: 0 2px 3px $shadow;
@@ -27,7 +27,6 @@ $font-xl: 3rem;
   font-size: $font-base;
 }
 
-@import 'css/arch';
 @import 'css/calendar';
 @import 'css/music';
 @import 'css/osd';

@@ -7,7 +7,6 @@
 (include "./widgets/control-panel-tray.yuck")
 (include "./widgets/volume.yuck")
 (include "./widgets/workspaces.yuck")
-(include "./widgets/arch.yuck")
 
 (include "./windows/calendar.yuck")
 (include "./windows/control-panel.yuck")
@@ -18,7 +17,6 @@
   (box
     :space-evenly false
     :halign "start"
-    (arch-widget)
     (workspaces-widget)))
 
 (defwidget right-widget []

@@ -2,8 +2,10 @@
 # see: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/include/linux/power_supply.h?h=v6.0.11
 # TODO: theme all scripts
 
-declare ICONS=('' '' '' '' '' '' '' '')
-NUM_ICONS=$(bc <<< "100 / ${#ICONS[@]}")
+declare ICONS=('' '' '' '' '\uf240')
+RANGE_SIZE=25
+
+MICRO_WATTS=1000000
 
 LOW_BAT_NOTIFY_INTERVAL=30
 INTERVAL=1
@@ -16,39 +18,36 @@ if [[ "$SYSTEM_THEME" == 'everforest' ]]; then
 	BLUE='#7fbbb3'
 else
  	RED='#FF5555'
-	GREEN='#50FA7B'
+	GREEN='#83f59f'
 	YELLOW='#F1FA8C'
 	BLUE='#8BE9FD'
 fi
 
 icon () {
-  local level=$(awk -v n="$CAPACITY" -v c="$NUM_ICONS" 'BEGIN{print int(n/c-1)}')
-	(( "$level" < 0 )) && {
-		level=0
-	}
-	echo "${ICONS[$level]}"
+	if [[ "$STATE" == "Charging" ]]; then
+		echo ${ICONS[4]}
+	else
+		local level=$(awk -v n="$CAPACITY" -v c="$RANGE_SIZE" 'BEGIN{print int((n - 1) / c)}')
+		echo "${ICONS[$level]}"
+	fi
 }
 
 status () {
 	if [[ "$STATE" == "Charging" ]]; then
-		echo -n "charging"
-
 		if (( "$RATE" > 0 )); then
-			echo ", $(gettime) left"
-			echo "TODO:"
+			echo "$(gettime) left"
 		else
 			echo ""
 		fi
 	elif [[ "$STATE" == "Discharging" ]]; then
 		echo "$(gettime)h left"
-		echo "TODO:"
 	else
-		echo "fully charged"
+		echo "full"
 	fi
 }
 
 color () {
-	if [[ $(status) == charging* ]]; then
+	if [[ "$STATE" == "Charging" ]]; then
 		if (($ALTERNATOR % 2 == 0)); then
 			echo "$BLUE"
 		else
@@ -73,32 +72,37 @@ color () {
 }
 
 wattage () {
-	local microwatts=1000000
-	echo "$(bc -l <<< "scale=1; $RATE / $microwatts") W"
+	echo "$(bc -l <<< "scale=1; $RATE / $MICRO_WATTS")w"
 }
 
-gettime () {
-	# local full=$(cat /sys/class/power_supply/BAT1/charge_full)
-	local full=$(cat /sys/class/power_supply/BAT1/capacity)
-	# local now=$(cat /sys/class/power_supply/BAT1/charge_now)
-	local now=$(cat /sys/class/power_supply/BAT1/power_now)
+gettime() {
+	# Maximum capacity
+	local full=$(cat /sys/class/power_supply/BAT1/energy_full)
+	# Current energy
+	local now=$(cat /sys/class/power_supply/BAT1/energy_now)
+	# Current power draw or charge rate
+	local rate=$(cat /sys/class/power_supply/BAT1/power_now)
+	# Charging or Discharging
+	local state=$(cat /sys/class/power_supply/BAT1/status)
 
-	if (( "$RATE" > 0 )); then
-		if [[ "$STATE" == "Discharging" ]]; then
-			EX="$now / $RATE"
+	if (( rate > 0 )); then
+		local ex
+		if [[ "$state" == "Discharging" ]]; then
+				ex="$now / $rate"
 		else
-			EX="($full - $now) / $RATE"
+				ex="($full - $now) / $rate"
 		fi
-		date -u -d@"$(bc -l <<< "$EX * 3600")" +%H:%M
+		# Calculate time remaining in seconds and convert to HH:MM format
+		date -u -d@"$(bc -l <<< "$ex * 3600")" +%H:%M
 	fi
 }
 
 while true; do
-	RATE=$(cat /sys/class/power_supply/BAT1/current_now)
+	RATE=$(cat /sys/class/power_supply/BAT1/voltage_now)
 	CAPACITY=$(cat /sys/class/power_supply/BAT1/capacity)
 	STATE=$(cat /sys/class/power_supply/BAT1/status)
 
-	echo '{ "icon": "'"$(icon)"'", "percentage": '"$CAPACITY"', "wattage": "'"$(wattage)"'", "status": "'"$(status)"'", "color": "'"$(color)"'" }'
+	echo '{ "icon": "'"$(icon)"'", "percentage": '"$CAPACITY"', "wattage": "'"$(wattage)"'", "status": "'"($(status))"'", "color": "'"$(color)"'" }'
 	sleep $INTERVAL
 	((ALTERNATOR++))
 done

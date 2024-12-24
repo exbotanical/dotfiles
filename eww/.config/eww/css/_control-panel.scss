@@ -1,7 +1,5 @@
-@mixin on-hover {
-  &:hover {
-    cursor: pointer;
-  }
+@mixin element-bg {
+  background-color: $surface0;
 }
 
 .control-panel {
@@ -48,7 +46,7 @@
 
     .box {
       @include rounding;
-      background-color: $surface0;
+      @include element-bg;
       margin: 0.5rem;
       min-height: 2rem;
       min-width: 10rem;
@@ -100,7 +98,7 @@
 
   .sliders-row {
     @include rounding;
-    background-color: $surface0;
+    @include element-bg;
     margin: 0.5rem 1rem;
     padding: 0.75rem 1.5rem;
 
@@ -138,38 +136,6 @@
     }
   }
 
-  .bottom-row {
-    margin: 0.5rem 1rem;
-
-    .battery-icon {
-      font-size: $font-md;
-      padding: 0 1.15rem 0 1.25rem;
-    }
-
-    .battery-wattage {
-      color: $mauve;
-    }
-
-    .battery-status {
-      color: $subtext0;
-      margin: 0 0.5rem;
-    }
-
-    button {
-      background-color: $surface0;
-      border-radius: 50%;
-      padding: 0.75rem;
-
-      label {
-        font-size: $font-lg;
-      }
-
-      &:hover {
-        background-color: $overlay0;
-      }
-    }
-  }
-
   .sys-text-sub {
     color: $text;
   }
@@ -182,16 +148,31 @@
 
   .sys-icon-cpu,
   .sys-icon-mem {
-    font-size: $font-xl;
-    margin: 1.5rem;
-    padding-right: 15px;
+    font-size: $font-lg;
+    margin: 1.25rem;
+  }
+
+  .sys-icon-cpu {
+    padding-right: 16px;
+  }
+
+  .sys-icon-mem {
+    padding-right: 10px;
   }
 
   .system-info-box {
     @include rounding;
-    background-color: $surface0;
+    @include element-bg;
     margin: 0.5rem 1rem;
     padding: 0.5rem;
+
+    box {
+      margin-bottom: -10;
+    }
+  }
+
+  .sys-bottom-box {
+    margin-top: 1rem;
   }
 
   .system-info-text {
@@ -214,7 +195,7 @@
   .sys-icon-cpu,
   .sys-text-cpu,
   .sys-cpu {
-    color: $blue;
+    color: $sapphire;
   }
 
   .sys-box {
@@ -223,5 +204,18 @@
     box {
       margin-left: 1rem;
     }
+  }
+
+  .battery-icon {
+    font-size: $font-md;
+  }
+
+  .battery-wattage {
+    color: $mauve;
+  }
+
+  .battery-status {
+    color: $subtext0;
+    margin: 0 0.5rem;
   }
 }

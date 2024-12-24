@@ -108,84 +108,65 @@
     
     (box
       :class "system-info-box"
-      
-      ; cpu
+      :orientation "v"
       (box
-        :class "sys-box"
-        :space-evenly false
-        :halign "start"
-        (circular-progress
-          :value "${EWW_CPU.avg}"
-          :class "sys-cpu"
-          :thickness {sys_circle_thickness}
-          (label
-            :text ""
-          :class "sys-icon-cpu icon"))
+        ; cpu
         (box
-          :orientation "v"
-          :vexpand false
-          :class "system-info-text"
-          (label
-            :text "cpu"
-            :halign "start"
-          :class "sys-text-cpu")
-          (label
-            :text "${round(EWW_CPU.avg,2)}%"
-            :halign "start"
-          :class "sys-text-sub")
-          (label
-            :text "${EWW_CPU.cores[0].freq} MHz"
-            :halign "start"
-          :class "sys-text-sub")))
-      
-      ; memory
-      (box
-        :class "sys-box"
-        :space-evenly false
-        :halign "end"
-        (circular-progress
-          :value {memory.percentage}
-          :class "sys-mem"
-          :thickness {sys_circle_thickness}
-          (label
-            :text ""
-          :class "sys-icon-mem icon"))
+          :class "sys-box"
+          :space-evenly false
+          :halign "start"
+          (circular-progress
+            :value "${EWW_CPU.avg}"
+            :class "sys-cpu"
+            :thickness {sys_circle_thickness}
+            (label
+              :text ""
+            :class "sys-icon-cpu icon"))
+          (box
+            :orientation "v"
+            :vexpand false
+            :class "system-info-text"
+            (label
+              :text "cpu"
+              :halign "start"
+            :class "sys-text-cpu")
+            (label
+              :text "${round(EWW_CPU.avg,2)}%"
+              :halign "start"
+            :class "sys-text-sub")))
+        
+        ; memory
         (box
-          :orientation "v"
-          :class "system-info-text"
-          
-          (label
-            :text "memory"
-            :halign "start"
-          :class "sys-text-mem")
-          (label
-            :text "${memory.used} | ${memory.total}"
-            :halign "start"
-          :class "sys-text-sub"))))
-    
-    (centerbox
-      :class "bottom-row"
+          :class "sys-box"
+          :space-evenly false
+          :halign "end"
+          (circular-progress
+            :value {memory.percentage}
+            :class "sys-mem"
+            :thickness {sys_circle_thickness}
+            (label
+              :text ""
+            :class "sys-icon-mem icon"))
+          (box
+            :orientation "v"
+            :class "system-info-text"
+            (label
+              :text "memory"
+              :halign "start"
+            :class "sys-text-mem")
+            (label
+              :text "${memory.used} | ${memory.total}"
+              :halign "start"
+            :class "sys-text-sub"))))
       (box
-        :space-evenly false
-        :halign "start"
-        (label
-          :class "battery-icon icon"
-          :style "color: ${battery.color}"
-        :text {battery.icon})
-        (label
-          :class "battery-percentage"
-        :text "${EWW_BATTERY["BAT1"].capacity}%")
-        (label
-          :class "battery-status"
-        :text {battery.status})
-        (label
-          :class "battery-wattage"
-        :text {battery.wattage}))
-      (label)
-      (box
-        :space-evenly false
-        :halign "end"
-      ))))
+        :class "sys-bottom-box"
+        (box :halign "start"
+          (label :class "battery-icon icon" :style "color: ${battery.color}" :text {battery.icon})
+          (label :text "${EWW_BATTERY["BAT1"].capacity}%")
+          (label :class "battery-status" :text {battery.status}))
+        (box
+          (label :text "󰣇  ${arch.version}")
+          (label :halign "start" :class "battery-status" :text "(${arch.total})"))))))
 
 (defwindow control-panel-window
   :stacking "bg"

@@ -2,11 +2,11 @@
 
 # TODO: config from file?
 declare -a colors=(
-  '#47a1e1'
-  '#3eace2'
-  '#35b8e2'
+  '#01d9fa'
+  '#f5db69'
+  '#2d9abe'
   '#2bc7e3'
-  '#22d7e4'
+  '#a8ff4b'
   '#19e4e0'
   '#17dec9'
   '#14d8b3'
@@ -14,7 +14,7 @@ declare -a colors=(
   '#0fcc87'
 )
 empty='#313244'
-focused='#50fa7b'
+focused='#ffa7f6'
 
 
 # get initial focused workspace
