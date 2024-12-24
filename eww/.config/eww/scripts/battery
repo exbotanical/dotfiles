@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 # see: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/include/linux/power_supply.h?h=v6.0.11
 # TODO: theme all scripts
+
 declare ICONS=('' '' '' '' '' '' '' '')
 NUM_ICONS=$(bc <<< "100 / ${#ICONS[@]}")
-INTERVAL=1
+
 LOW_BAT_NOTIFY_INTERVAL=30
+INTERVAL=1
+ALTERNATOR=1
 
 if [[ "$SYSTEM_THEME" == 'everforest' ]]; then
   RED='#e67e80'
@@ -18,7 +21,7 @@ else
 	BLUE='#8BE9FD'
 fi
 
-geticon () {
+icon () {
   local level=$(awk -v n="$CAPACITY" -v c="$NUM_ICONS" 'BEGIN{print int(n/c-1)}')
 	(( "$level" < 0 )) && {
 		level=0
@@ -32,11 +35,13 @@ status () {
 
 		if (( "$RATE" > 0 )); then
 			echo ", $(gettime) left"
+			echo "TODO:"
 		else
 			echo ""
 		fi
 	elif [[ "$STATE" == "Discharging" ]]; then
 		echo "$(gettime)h left"
+		echo "TODO:"
 	else
 		echo "fully charged"
 	fi
@@ -88,13 +93,12 @@ gettime () {
 	fi
 }
 
-ALTERNATOR=1
 while true; do
 	RATE=$(cat /sys/class/power_supply/BAT1/current_now)
 	CAPACITY=$(cat /sys/class/power_supply/BAT1/capacity)
 	STATE=$(cat /sys/class/power_supply/BAT1/status)
 
-	echo '{ "icon": "'"$(geticon)"'", "percentage": '"$CAPACITY"', "wattage": "'"$(wattage)"'", "status": "'"$(status)"'", "color": "'"$(color)"'" }'
+	echo '{ "icon": "'"$(icon)"'", "percentage": '"$CAPACITY"', "wattage": "'"$(wattage)"'", "status": "'"$(status)"'", "color": "'"$(color)"'" }'
 	sleep $INTERVAL
 	((ALTERNATOR++))
 done

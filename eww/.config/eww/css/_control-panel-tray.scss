@@ -18,74 +18,7 @@
   margin: 0 .2rem;
 }
 
-.iconmem {
-  color: $peach;
-}
-
-.iconcpu {
-  color: $blue;
-}
-
-.battery-icon {
-  margin-right: 1rem;
-}
-
 .icon-text {
   font-size: $font-base;
   padding: .75rem;
-}
-
-.sys-text-sub {
-  color: $text;
-}
-
-.sys-text-mem,
-.sys-text-cpu {
-  font-size: $font-sm;
-  font-weight: bold;
-}
-
-.sys-icon-cpu,
-.sys-icon-mem {
-  font-size: $font-xl;
-  margin: 1.5rem;
-  padding-right: 15px;
-}
-
-.system-info-box {
-  @include rounding;
-  background-color: $surface0;
-  margin: .5rem 1rem;
-  padding: .5rem;
-}
-
-.system-info-text {
-  label {
-    font-size: $font-sm;
-  }
-}
-
-.sys-mem,
-.sys-cpu {
-  background-color: $bg;
-}
-
-.sys-icon-mem,
-.sys-text-mem,
-.sys-mem {
-  color: $peach;
-}
-
-.sys-icon-cpu,
-.sys-text-cpu,
-.sys-cpu {
-  color: $blue;
-}
-
-.sys-box {
-  margin: .3em;
-
-  box {
-    margin-left: 1rem;
-  }
 }

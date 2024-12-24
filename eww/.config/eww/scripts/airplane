@@ -3,15 +3,24 @@
 INTERVAL=3
 
 icon () {
-  if [[ $STATUS == "no" ]]; then
+  if [[ "$1" == "no" ]]; then
     echo ""
   else
     echo ""
   fi
 }
 
+class () {
+  if [[ "$1" == "no" ]]; then
+    echo ""
+  else
+    echo "airplane-connected"
+  fi
+
+}
+
 toggle () {
-  if [[ $STATUS == "no" ]]; then
+  if [[ "$1" == "no" ]]; then
     rfkill block all
     notify-send --urgency=normal -i airplane-mode-symbolic 'Airplane Mode' 'Airplane mode has been turned on'
   else
@@ -21,12 +30,12 @@ toggle () {
 }
 
 main () {
-  if [[ $1 == "toggle" ]]; then
-    toggle
+  local status="$(rfkill list | sed -n 2p | awk '{print $3}')"
+  if [[ "$1" == "toggle" ]]; then
+    toggle $status
   else
     while true; do
-      STATUS="$(rfkill list | sed -n 2p | awk '{print $3}')"
-      icon
+      echo '{"'"icon"'":"'"$(icon $status)"'","'"class"'":"'"$(class $status)"'"}'
       sleep $INTERVAL;
     done
   fi

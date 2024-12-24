@@ -1,9 +1,9 @@
-(defvar date_reveal false)
+(defvar date-reveal false)
 
 (defwidget clock-widget []
   (eventbox
-    :onhover "${EWW_CMD} update date_reveal=true"
-    :onhoverlost "${EWW_CMD} update date_reveal=false"
+    :onhover "${EWW_CMD} update date-reveal=true"
+    :onhoverlost "${EWW_CMD} update date-reveal=false"
     (overlay
       :class "module"
       (box
@@ -18,7 +18,7 @@
           :text {time.minute}
         :class "minute"))
       (revealer
-        :reveal date_reveal
+        :reveal date-reveal
         (button
           :class "date"
           :onclick "${EWW_CMD} open --toggle calendar-window"

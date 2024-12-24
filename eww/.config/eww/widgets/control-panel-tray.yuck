@@ -1,0 +1,32 @@
+(defwidget control-panel-tray-widget []
+  (eventbox
+    :class "module"
+    :space-evenly false
+    :spacing 5
+    :onclick "${EWW_CMD} open --toggle control-panel-window"
+    (box
+      (circular-progress
+        :value "${EWW_CPU.avg}"
+        :class "circular-progress cpubar"
+        :thickness {bar_circle_thickness}
+        (box
+          :tooltip "using ${round(EWW_CPU.avg,0)}% cpu"
+          (label :class "icon-text" :text "")))
+      
+      (circular-progress
+        :value {memory.percentage}
+        :class "circular-progress membar"
+        :thickness {bar_circle_thickness}
+        (box
+          :tooltip "using ${round(memory.percentage,0)}% ram"
+          (label :class "icon-text" :text "")))
+      
+      (circular-progress
+        :value "${EWW_BATTERY["BAT1"].capacity}"
+        :class "circular-progress batbar"
+        :style "color: ${battery.color};"
+        :thickness {bar_circle_thickness}
+        (box
+          :tooltip "battery at ${EWW_BATTERY["BAT1"].capacity}%"
+          (label :class "icon-text" :text "")))))
+)

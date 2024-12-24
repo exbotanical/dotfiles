@@ -1,9 +1,9 @@
-(defvar music_reveal false)
+(defvar music-reveal false)
 
 (defwidget music-widget []
   (eventbox
-    :onhover "${EWW_CMD} update music_reveal=true"
-    :onhoverlost "${EWW_CMD} update music_reveal=false"
+    :onhover "${EWW_CMD} update music-reveal=true"
+    :onhoverlost "${EWW_CMD} update music-reveal=false"
     (box
       :class "module"
       :space-evenly false
@@ -17,7 +17,7 @@
       {music.display_title})
       (revealer
         :transition "slideright"
-        :reveal music_reveal
+        :reveal music-reveal
         :duration "350ms"
         (box
           :class "icon"

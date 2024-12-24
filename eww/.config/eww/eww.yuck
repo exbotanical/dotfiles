@@ -1,24 +1,24 @@
-(include "./modules/variables.yuck")
-(include "./modules/bluetooth.yuck")
-(include "./modules/brightness.yuck")
-(include "./modules/clock.yuck")
-(include "./modules/music.yuck")
-(include "./modules/net.yuck")
-(include "./modules/control-panel-tray.yuck")
-(include "./modules/volume.yuck")
-(include "./modules/workspaces.yuck")
-(include "./modules/arch.yuck")
+(include "./variables.yuck")
+(include "./widgets/bluetooth.yuck")
+(include "./widgets/brightness.yuck")
+(include "./widgets/clock.yuck")
+(include "./widgets/music.yuck")
+(include "./widgets/net.yuck")
+(include "./widgets/control-panel-tray.yuck")
+(include "./widgets/volume.yuck")
+(include "./widgets/workspaces.yuck")
+(include "./widgets/arch.yuck")
 
 (include "./windows/calendar.yuck")
+(include "./windows/control-panel.yuck")
 (include "./windows/music.yuck")
 ; (include "./windows/osd.yuck")
-(include "./windows/control-panel.yuck")
 
 (defwidget left-widget []
   (box
     :space-evenly false
     :halign "start"
-    (arch-info-widget)
+    (arch-widget)
     (workspaces-widget)))
 
 (defwidget right-widget []

@@ -1,5 +1,7 @@
 (defpoll time :interval "5s" `date +'{"date": "%m/%d", "hour": "%I", "minute": "%M", "day": "%A"}'`)
 
+(deflisten arch "scripts/arch")
+(deflisten airplane "scripts/airplane")
 (deflisten battery "scripts/battery")
 (deflisten bluetooth "scripts/bluetooth")
 (deflisten brightness "scripts/brightness")

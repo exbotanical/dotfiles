@@ -1,6 +1,4 @@
-(deflisten arch "scripts/arch")
-
-(defwidget arch-info-widget []
+(defwidget arch-widget []
   (box
     :class "arch-logo"
     :style "background-color: ${arch.color}"

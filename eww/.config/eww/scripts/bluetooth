@@ -1,26 +1,22 @@
 #!/usr/bin/env bash
-
-connect () {
-  local mac='28:F0:33:D0:61:14';
-  local connected="$(bluetoothctl info $mac | grep "Connected" | awk '{ print $2 }')"
-
-  [[ "$connected" == 'no' ]] && {
-    bluetoothctl connect "$mac"
-  }
-}
+SLEEP_INTERVAL=3
 
 main () {
-  if [[ "$1" == "connect" ]]; then
-    connect
+  local powered
+  local status
+  local name
+  local battery
+
+  if [[ "$1" == "toggle" ]]; then
+    rfkill toggle bluetooth
   else
     while true; do
       powered=$(bluetoothctl show | rg Powered | cut -f 2- -d ' ')
       status=$(bluetoothctl info)
       name=$(echo "$status" | rg Name | cut -f 2- -d ' ')
-      mac=$(echo "$status" | head -1 | awk '{print $2}' | tr ':' '_')
 
       if [[ "$(echo "$status" | rg Percentage)" != "" ]]; then
-        battery="$(upower -i /org/freedesktop/UPower/devices/headset_dev_"$mac" | rg percentage | awk '{print $2}' | cut -f 1 -d '%')%"
+        battery="$(bluetoothctl info | grep Battery | sed -n 's/.*(\([0-9]*\)).*/\1/p')%"
       else
         battery=""
       fi
@@ -51,7 +47,5 @@ main () {
     done
   fi
 }
-
-SLEEP_INTERVAL=3
 
 main $*

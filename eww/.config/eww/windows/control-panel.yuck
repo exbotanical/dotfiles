@@ -1,8 +1,6 @@
-(deflisten airplane "scripts/airplane")
-
 (defwidget control-panel-widget []
   (box
-    :class "control-panel-box"
+    :class "control-panel container"
     :space-evenly false
     :orientation "v"
     (box
@@ -28,18 +26,16 @@
         :space-evenly false
         :orientation "v"
         (box
-          :class "element icon ${net.class}"
+          :class "box icon ${net.class}"
           :space-evenly false
           (button
-            :class "wifi-button"
             :onclick "scripts/net toggle"
           {net.icon})
           (label
-            :class "separator"
+            :class "control-panel separator"
           :text "│")
           (button
-            :class "wifi-arrow-btn"
-            :onclick "eww close control-panel-window && nm-connection-editor &"
+            :onclick "${EWW_CMD} close control-panel-window && nm-connection-editor &"
           ""))
         (label
           :text {net.essid}
@@ -51,18 +47,16 @@
         :space-evenly false
         :orientation "v"
         (box
-          :class "element icon ${bluetooth.class}"
+          :class "box icon ${bluetooth.class}"
           :space-evenly false
           (button
-            :class "bluetooth-button"
             :onclick "scripts/bluetooth toggle"
           {bluetooth.icon})
           (label
-            :class "separator"
+            :class "control-panel separator"
           :text "│")
           (button
-            :class "bluetooth-arrow-btn"
-            :onclick "eww close control-panel-window && blueman-manager &"
+            :onclick "${EWW_CMD} close control-panel-window && blueman-manager &"
           ""))
         (label
           :text {bluetooth.text}
@@ -76,11 +70,10 @@
         :space-evenly false
         :orientation "v"
         (box
-          :class "element"
+          :class "box icon ${airplane.class}"
           (button
-            :class "airplane-button"
             :onclick "scripts/airplane toggle"
-          airplane))
+          {airplane.icon}))
         (label
           :text "Airplane Mode"
           :xalign 0.5
@@ -88,7 +81,7 @@
     )
     
     (box
-      :class "sliders"
+      :class "sliders-row"
       :orientation "v"
       (box
         :class "volume-slider-box"
@@ -98,7 +91,7 @@
           :onclick "scripts/volume mute SINK"
         {volume.icon})
         (scale
-          :class "volume-bar"
+          :class "slider"
           :value {volume.percent}
           :tooltip "volume at ${volume.percent}%"
         :onchange "scripts/volume set_vol SINK {}"))
@@ -106,10 +99,9 @@
         :class "brightness-slider-box"
         :space-evenly false
         (button
-          :class "brightness-slider-icon icon"
+          :class "icon"
         {brightness.icon})
         (scale
-          :class "brightness-slider"
           :value {brightness.level}
           :marks true
         :onchange "light -S {}")))
@@ -193,11 +185,7 @@
       (box
         :space-evenly false
         :halign "end"
-        (button
-          :halign "end"
-          :class "icon"
-          :onclick "echo TODO"
-        "")))))
+      ))))
 
 (defwindow control-panel-window
   :stacking "bg"
