@@ -13,7 +13,7 @@ main () {
   udevadm monitor | rg --line-buffered 'backlight' | while read -r _; do
     icon="${icons[$(get_level)]}"
 
-    echo '{ "level": '"$(light)"', "icon": "'"$icon"'" }'
+    echo '{"level":'"$(light)"',"icon":"'"$icon"'"}'
   done
 }
 

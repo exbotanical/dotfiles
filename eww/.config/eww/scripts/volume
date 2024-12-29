@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-declare vol_icons=("" "" "")
-SOURCE="SOURCE"
-SINK="SINK"
+declare VOL_ICONS=('' '' '')
+SOURCE='SOURCE'
+SINK='SINK'
 
 get_vol () {
   local device="$1"
@@ -69,23 +69,22 @@ main () {
     local lvl=$(awk -v n="$(get_vol "$SINK")" 'BEGIN{print int(n/34)}')
 
     if [[ "$(is_muted "$SINK")" == 1 ]]; then
-      icon="${vol_icons[$lvl]}"
+      icon="${VOL_ICONS[$lvl]}"
     else
       icon=""
     fi
     echo '{ "icon": "'"$icon"'", "percent": "'"$(get_vol "$SINK")"'", "microphone": "'"$(get_vol "$SOURCE")"'" }'
 
-    # event loop
     pactl subscribe | rg --line-buffered "change" | while read -r _; do
       lvl=$(awk -v n="$(get_vol "$SINK")" 'BEGIN{print int(n/34)}')
 
       if [[ "$(is_muted "$SINK")" == 1 ]]; then
-        icon="${vol_icons[$lvl]}"
+        icon="${VOL_ICONS[$lvl]}"
       else
         icon=""
       fi
 
-      echo '{ "icon": "'"$icon"'", "percent": "'"$(get_vol "$SINK")"'", "microphone": "'"$(get_vol "$SOURCE")"'" }'
+      echo '{"icon":"'"$icon"'","percent":"'"$(get_vol "$SINK")"'","microphone":"'"$(get_vol "$SOURCE")"'"}'
     done
   fi
 }

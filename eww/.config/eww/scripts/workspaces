@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # TODO: config from file?
-declare -a colors=(
+declare -a COLORS=(
   '#01d9fa'
   '#f5db69'
   '#2d9abe'
@@ -13,9 +13,8 @@ declare -a colors=(
   '#11d29d'
   '#0fcc87'
 )
-empty='#313244'
-focused='#ffa7f6'
-
+EMPTY='#313244'
+FOCUSED='#ffa7f6'
 
 # get initial focused workspace
 focusedws=$(i3-msg -t get_workspaces | gojq -r '.[] | select(.focused==true) | .name')
@@ -28,12 +27,12 @@ status () {
   local ws_id="$1"
   if (( "${occupied_workspaces[$ws_id]}" == 1 )); then
     if (( "$focusedws" == "$ws_id" )); then
-      echo -n "$focused"
+      echo -n "$FOCUSED"
     else
-      echo -n "${colors[$ws_id]}"
+      echo -n "${COLORS[$ws_id]}"
     fi
   else
-    echo -n "$empty"
+    echo -n "$EMPTY"
   fi
 }
 
@@ -77,7 +76,6 @@ for num in "${!workspaces[@]}"; do
 done
 # generate initial widget
 generate
-
 
 # main loop
 # TODO: multi-monitor support

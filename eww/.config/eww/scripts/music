@@ -3,10 +3,10 @@ COVERS_DIR="${XDG_CACHE_DIR:-$HOME/.cache}/eww_covers"
 
 get_status () {
 	local s=$1
-	if [[ "$s" == "Playing" ]]; then
-		echo ""
+	if [[ "$s" == 'Playing' ]]; then
+		echo ''
 	else
-		echo ""
+		echo ''
 	fi
 }
 
@@ -25,7 +25,7 @@ get_length_time () {
 		len=$(bc <<< "$len / 1000000 + 1")
 		date -d@"$len" +%M:%S
 	else
-		echo ""
+		echo ''
 	fi
 }
 
@@ -45,7 +45,7 @@ get_position_time () {
 	if [[ -n "$pos" ]]; then
 		date -d@"$(bc <<< "$pos / 1000000")" +%M:%S
 	else
-		echo ""
+		echo ''
 	fi
 }
 
@@ -55,8 +55,8 @@ is_webp () {
 }
 
 get_cover () {
-	mkdir -p "$COVERS_DIR"
-	cd "$COVERS_DIR" || exit
+	# mkdir -p "$COVERS_DIR"
+	# cd "$COVERS_DIR" || exit
 
 	local img_path="$COVERS_DIR/cover_art.png"
 	local cover_url="$1"
@@ -75,7 +75,6 @@ get_cover () {
 				# Just replace the downloaded file with a converted version
 				mv "$file_path.jpg" "$file_path"
 			}
-
 		fi
 
 		# symlink it to the default cover image path
@@ -85,8 +84,8 @@ get_cover () {
 
 		echo "$img_path"
 	# No cover image :(
-	elif [[ "$cover_url" == "" ]]; then
-		echo ""
+	elif [[ "$cover_url" == '' ]]; then
+		echo ''
 	# Return it as-is
 	else
 		echo "$cover_url"
@@ -103,16 +102,18 @@ truncate () {
 	echo $str | awk -v len=$max_len '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
 }
 
-
 main () {
+	mkdir -p "$COVERS_DIR"
+	cd "$COVERS_DIR" || exit
+
 	local prev_id=''
 
 	playerctl -F metadata -f '{{title}}\{{artist}}\{{status}}\{{position}}\{{mpris:length}}\{{mpris:artUrl}}\{{xesam:url}}' 2>/dev/null | while IFS="$(printf '\')" read -r title artist status position len cover id; do
 		# For YouTube, which sometimes emits events w/out `artUrl` or `url`
 		# TODO: test w/ spotify
-		if [[ "$id" != "" ]] && [[ "$id" != "$prev_id" ]]; then
+		if [[ "$id" != '' ]] && [[ "$id" != "$prev_id" ]]; then
 			cover_path=$(get_cover "$cover")
-			if [[ "$cover_path" != "" ]]; then
+			if [[ "$cover_path" != '' ]]; then
 				cols=$(convert "$cover_path" -colors 2 -format "%c" histogram:info: | awk '{print $3}')
 				color_1=$(echo "$cols" | head -1)
 				color_2=$(echo "$cols" | tail -1)

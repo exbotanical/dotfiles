@@ -219,7 +219,6 @@
   "workbench.editor.tabSizing": "fixed",
   "window.density.editorTabHeight": "compact",
   "cursor-column.showBorder": true,
-  "workbench.activityBar.location": "hidden",
   "workbench.editor.enablePreview": false,
   "workbench.colorTheme": "Dracula Theme",
   "cSpell.userWords": [
@@ -242,5 +241,6 @@
     "TESTDIR",
     "TESTSRCS",
     "vgaprintf"
-  ]
+  ],
+  "workbench.activityBar.location": "hidden"
 }

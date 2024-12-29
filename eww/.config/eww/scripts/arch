@@ -1,35 +1,12 @@
 #!/usr/bin/env bash
-
-if [[ "$SYSTEM_THEME" == 'everforest' ]]; then
-  WARN_COLOR='#e67e80'
-  INFO_COLOR='#dbbc7f'
-  OK_COLOR='#a7c080'
-else
-  WARN_COLOR='#F1FA8C'
-  INFO_COLOR='#f4a2d1'
-  OK_COLOR='#FF79C6'
-fi
-
 INTERVAL=3600
 
 main () {
   local updates=$(yay -Qua)
-  local color="$OK_COLOR"
   local num_updates_total=$(echo $updates | wc -l)
   local num_updates_warn=$(echo $updates | grep -c '\(linux\|linux-lts\|linux-zen\)')
 
-  if (( "$num_updates_warn" > 0 )); then
-    color="$WARN_COLOR"
-  elif (( "$num_updates_total" > 0 )); then
-    color="$INFO_COLOR"
-  fi
-
-  jaq --null-input -r -c \
-    --arg total "$num_updates_total" \
-    --arg warn "$num_updates_warn" \
-    --arg color "$color" \
-    --arg version "$(uname -r)" \
-    '{ "total": $total, "warn": $warn, "color": $color, "version": $version }'
+  echo '{"'"total"'":"'"$num_updates_total"'","'"warn"'":"'"$num_updates_warn"'","'"version"'":"'"$(uname -r)"'"}'
 }
 
 while true; do

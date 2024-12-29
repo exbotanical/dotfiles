@@ -9,7 +9,6 @@
       (for ws in workspace
         (button
           :onclick "i3-msg workspace ${ws.number}"
-          :class "ws icon"
           :style "color: ${ws.color};"
           :tooltip {ws.tooltip}
         "●")))))

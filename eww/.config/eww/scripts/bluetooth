@@ -41,7 +41,7 @@ main () {
         class=""
       fi
 
-      echo '{ "icon": "'"$icon"'", "battery": "'"$battery"'", "text": "'"$text"'", "color": "'"$color"'", "class": "'"$class"'" }'
+      echo '{"icon":"'"$icon"'","battery":"'"$battery"'","text":"'"$text"'","color":"'"$color"'","class":"'"$class"'"}'
 
       sleep $SLEEP_INTERVAL
     done

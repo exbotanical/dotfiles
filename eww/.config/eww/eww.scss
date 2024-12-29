@@ -53,11 +53,6 @@ tooltip {
   }
 }
 
-.icon,
-.icon label {
-  font-family: Material Symbols Outlined;
-}
-
 .module {
   margin: 0 20px;
 }
@@ -100,24 +95,6 @@ scale trough {
 
 .workspaces {
   margin-left: 10px;
-}
-
-.news-box {
-  @include rounding;
-  background-color: $surface0;
-  margin: 0.5rem 1rem;
-  padding: 1.5rem;
-}
-
-.arch-logo {
-  margin-right: 0.25rem;
-
-  label {
-    margin-right: 33px;
-    color: $mantle;
-    font-size: 2rem;
-    margin: -0.8rem 1rem;
-  }
 }
 
 .workspaces {

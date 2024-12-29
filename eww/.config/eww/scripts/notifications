@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # TODO: fix (for some reason eww cannot parse the returned JSON array)
-tmp=/tmp/dunst-history.json
+TMP=/tmp/dunst-history.json
 
 notif() {
   declare -i ids=($(dunstctl history | gojq '.data[] | .[].id.data'))
@@ -8,7 +8,7 @@ notif() {
   declare notifications=()
 
   for id in "${ids[@]}"; do
-    mapfile -t notification < <(gojq -r ".data[] | .[] | select(.id.data == $id) | .appname.data, .icon_path.data, .summary.data, .body.data" "$tmp" | sed -r '/^\s*$/d' | sed -e 's/\%/ percent/g')
+    mapfile -t notification < <(gojq -r ".data[] | .[] | select(.id.data == $id) | .appname.data, .icon_path.data, .summary.data, .body.data" "$TMP" | sed -r '/^\s*$/d' | sed -e 's/\%/ percent/g')
     # notifications[$i]="{\"application\":\"${notification[0]}\",\"title\":\"${notification[1]}\",\"body\":\"${notification[2]}\"}"
     notifications[$i]="${notification[*]}"
     ((i++))

@@ -1,6 +1,6 @@
 (defwidget volume-widget []
   (box
-    :class "module icon"
+    :class "module"
     (eventbox
       :onscroll "echo {} | sed -e 's/up/+/g' -e 's/down/-/g' | xargs -I% wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.005%"
       :onclick "pavucontrol &"

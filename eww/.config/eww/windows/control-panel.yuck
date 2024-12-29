@@ -3,6 +3,8 @@
     :class "control-panel container"
     :space-evenly false
     :orientation "v"
+    
+    ; Datetime
     (box
       :class "top-row"
       :space-evenly false
@@ -19,6 +21,7 @@
           :class "day"
         :text {time.day})))
     
+    ; Wireless Conn
     (centerbox
       :class "system-row"
       (box
@@ -26,7 +29,7 @@
         :space-evenly false
         :orientation "v"
         (box
-          :class "box icon ${net.class}"
+          :class "box ${net.class}"
           :space-evenly false
           (button
             :onclick "scripts/net toggle"
@@ -42,12 +45,13 @@
           :xalign 0.5
         :limit-width 15))
       
+      ; Bluetooth
       (box
         :class "bluetooth-box"
         :space-evenly false
         :orientation "v"
         (box
-          :class "box icon ${bluetooth.class}"
+          :class "box ${bluetooth.class}"
           :space-evenly false
           (button
             :onclick "scripts/bluetooth toggle"
@@ -65,12 +69,13 @@
         :limit-width 15)
       )
       
+      ; Airplane Mode
       (box
         :class "airplane-box"
         :space-evenly false
         :orientation "v"
         (box
-          :class "box icon ${airplane.class}"
+          :class "box ${airplane.class}"
           (button
             :onclick "scripts/airplane toggle"
           {airplane.icon}))
@@ -80,6 +85,7 @@
         :limit-width 16))
     )
     
+    ; Volume and Brightness Controls
     (box
       :class "sliders-row"
       :orientation "v"
@@ -87,7 +93,7 @@
         :class "volume-slider-box"
         :space-evenly false
         (button
-          :class "volume-icon icon"
+          :class "volume-icon"
           :onclick "scripts/volume mute SINK"
         {volume.icon})
         (scale
@@ -99,7 +105,6 @@
         :class "brightness-slider-box"
         :space-evenly false
         (button
-          :class "icon"
         {brightness.icon})
         (scale
           :value {brightness.level}
@@ -110,7 +115,7 @@
       :class "system-info-box"
       :orientation "v"
       (box
-        ; cpu
+        ; CPU Usage
         (box
           :class "sys-box"
           :space-evenly false
@@ -135,7 +140,7 @@
               :halign "start"
             :class "sys-text-sub")))
         
-        ; memory
+        ; Memory Usage
         (box
           :class "sys-box"
           :space-evenly false
@@ -158,15 +163,16 @@
               :text "${memory.used} | ${memory.total}"
               :halign "start"
             :class "sys-text-sub"))))
+      ; Battery and System Updates
       (box
         :class "sys-bottom-box"
-        (box :halign "start"
-          (label :class "battery-icon icon" :style "color: ${battery.color}" :text {battery.icon})
-          (label :text "${EWW_BATTERY["BAT1"].capacity}%")
-          (label :class "battery-status" :text {battery.status}))
         (box
-          (label :text "󰣇  ${arch.version}")
-          (label :halign "start" :class "battery-status" :text "(${arch.total})"))))))
+          (label :class "battery-icon" :style "color: ${battery.color}" :text {battery.icon})
+          (label :class "battery-text" :text "${EWW_BATTERY["BAT1"].capacity}%")
+          (label :class "battery-status" :text {battery.status})
+        )
+        (box
+          (label :text "󰣇  ${arch.version} (${arch.total})"))))))
 
 (defwindow control-panel-window
   :stacking "bg"

@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
 INTERVAL=3
+declare ICONS=(
+  ''
+  ''
+  #''
+  ''
+  ''
+  ''
+)
 
 main () {
   if [[ "$1" == "toggle" ]]; then
@@ -14,15 +22,6 @@ main () {
       local level
       local color
 
-      declare icons=(
-        ''
-        ''
-        #''
-        ''
-        ''
-        ''
-      )
-
       if [[ "$status" == 'disconnected' ]]; then
         icon='\ue1da'
         color='#ff5555'
@@ -33,12 +32,12 @@ main () {
           level=4
         fi
 
-        icon=${icons[$level]}
+        icon=${ICONS[$level]}
         color='#f8f8f2'
         class='wifi-connected'
       fi
 
-      echo '{ "essid": "'"$essid"'", "icon": "'"$icon"'", "color": "'"$color"'", "class": "'"$class"'" }'
+      echo '{"essid":"'"$essid"'","icon":"'"$icon"'","color":"'"$color"'","class":"'"$class"'"}'
 
       sleep $INTERVAL
     done

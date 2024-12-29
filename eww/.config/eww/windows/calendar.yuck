@@ -1,3 +1,4 @@
+; TODO: Open calendar app
 (defwidget calendar-widget []
   (box
     :class "calendar-window"
