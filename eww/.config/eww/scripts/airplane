@@ -3,24 +3,24 @@
 INTERVAL=3
 
 icon () {
-  if [[ "$1" == "no" ]]; then
-    echo ""
+  if [[ "$1" == 'no' ]]; then
+    echo ''
   else
-    echo ""
+    echo ''
   fi
 }
 
 class () {
-  if [[ "$1" == "no" ]]; then
-    echo ""
+  if [[ "$1" == 'no' ]]; then
+    echo ''
   else
-    echo "airplane-connected"
+    echo 'airplane-connected'
   fi
 
 }
 
 toggle () {
-  if [[ "$1" == "no" ]]; then
+  if [[ "$1" == 'no' ]]; then
     rfkill block all
     notify-send --urgency=normal -i airplane-mode-symbolic 'Airplane Mode' 'Airplane mode has been turned on'
   else

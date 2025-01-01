@@ -25,7 +25,7 @@
     (centerbox
       :class "system-row"
       (box
-        :class "wifi-box"
+        :class "box-container"
         :space-evenly false
         :orientation "v"
         (box
@@ -47,7 +47,7 @@
       
       ; Bluetooth
       (box
-        :class "bluetooth-box"
+        :class "box-container"
         :space-evenly false
         :orientation "v"
         (box
@@ -71,7 +71,7 @@
       
       ; Airplane Mode
       (box
-        :class "airplane-box"
+        :class "box-container"
         :space-evenly false
         :orientation "v"
         (box

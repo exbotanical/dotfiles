@@ -48,12 +48,12 @@
       @include rounding;
       @include element-bg;
       margin: 0.5rem;
-      min-height: 2rem;
       min-width: 10rem;
 
       button {
         @include rounding;
         padding: 1rem;
+        min-height: 2.75rem;
 
         label {
           font-size: $font-md;
@@ -70,10 +70,10 @@
     }
 
     .airplane-connected {
-      background-color: $blue;
+      background-color: $red;
 
       button:hover {
-        background-color: $blue-dark;
+        background-color: $red-dark;
       }
     }
 
