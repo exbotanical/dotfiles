@@ -1,7 +1,56 @@
 #!/usr/bin/env bash
 
-# TODO:
-EXTENSIONS=($(vscodium --list-extensions --show-versions))
+# vscodium --list-extensions --show-versions
+EXTENSIONS=(
+  '13xforever.language-x86-64-assembly'
+  'antfu.vite'
+  'basdp.language-gas-x86'
+  'bradlc.vscode-tailwindcss'
+  'bungcip.better-toml'
+  'cschlosser.doxdocgen'
+  'dannyconnell.split-html-attributes'
+  'donjayamanne.githistory'
+  'donjayamanne.python-environment-manager'
+  'dracula-theme.theme-dracula'
+  'editorconfig.editorconfig'
+  'edwinkofler.vscode-assorted-languages'
+  'esbenp.prettier-vscode'
+  'eww-yuck.yuck'
+  'fttx.language-forth'
+  'fwcd.kotlin'
+  'golang.go'
+  'hiukky.flate'
+  'iuriibarlukov.cursor-column-highlight'
+  'llvm-vs-code-extensions.vscode-clangd'
+  'mads-hartmann.bash-ide-vscode'
+  'mikestead.dotenv'
+  'ms-azuretools.vscode-docker'
+  'ms-python.isort'
+  'ms-python.python'
+  'ms-vscode.cpptools'
+  'njpwerner.autodocstring'
+  'ocamllabs.ocaml-platform'
+  'pierre-payen.gdb-syntax'
+  'pinage404.rust-extension-pack'
+  'pkief.material-icon-theme'
+  'prisma.prisma'
+  'redhat.java'
+  'rust-lang.rust-analyzer'
+  'sainnhe.everforest'
+  'serayuzgur.crates'
+  'streetsidesoftware.code-spell-checker'
+  'syler.sass-indented'
+  'tamasfe.even-better-toml'
+  'timonwong.shellcheck'
+  'vue.volar'
+  'wayou.vscode-todo-highlight'
+  'whizkydee.material-palenight-theme'
+  'wscats.vue'
+  'xadillax.viml'
+  'xaver.clang-format'
+  'yzhang.markdown-all-in-one'
+  'zixuanwang.linkerscript'
+)
 
 for extension in "${EXTENSIONS[@]}";do
   vscodium --install-extension "$extension"

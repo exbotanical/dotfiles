@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# TODO: cronjob to clean
+# TODO: bandcamp, spotify, rumble, cineworld, netflix
 COVERS_DIR="${XDG_CACHE_DIR:-$HOME/.cache}/eww_covers"
 
 get_status () {
@@ -110,7 +112,6 @@ main () {
 
 	playerctl -F metadata -f '{{title}}\{{artist}}\{{status}}\{{position}}\{{mpris:length}}\{{mpris:artUrl}}\{{xesam:url}}' 2>/dev/null | while IFS="$(printf '\')" read -r title artist status position len cover id; do
 		# For YouTube, which sometimes emits events w/out `artUrl` or `url`
-		# TODO: test w/ spotify
 		if [[ "$id" != '' ]] && [[ "$id" != "$prev_id" ]]; then
 			cover_path=$(get_cover "$cover")
 			if [[ "$cover_path" != '' ]]; then

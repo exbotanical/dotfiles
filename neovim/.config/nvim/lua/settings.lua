@@ -5,7 +5,6 @@ function M.setup()
   vim.g.maplocalleader = ','
   vim.opt.termguicolors = true
 
-  -- TODO: do this in lua
   vim.cmd [[
     " Indentation
     set expandtab                                 " Convert tabs to spaces

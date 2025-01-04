@@ -4,7 +4,7 @@
    */
   "editor.minimap.enabled": false,
   "editor.codeLens": false,
-  "editor.cursorBlinking": "phase",
+  "editor.cursorBlinking": "expand",
   "editor.cursorStyle": "line",
   "editor.codeActionsOnSave": {},
   "editor.suggestSelection": "first",
