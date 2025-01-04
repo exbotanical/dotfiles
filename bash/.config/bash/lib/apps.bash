@@ -1,4 +1,4 @@
-pushd $Root/apps >/dev/null
+pushd $RootDir/apps >/dev/null
 
 APP_LIST=$(
   init::list_dir . |

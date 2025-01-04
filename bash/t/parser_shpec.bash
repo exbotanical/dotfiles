@@ -1,7 +1,7 @@
-ROOT_DIR="$(dirname "$(readlink -f $BASH_SOURCE)")"
+RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
-source "$ROOT_DIR/shpec_util.bash"
-source "$ROOT_DIR/../.config/bash/lib/parser.bash"
+source "$RootDir/shpec_util.bash"
+source "$RootDir/../.config/bash/lib/parser.bash"
 
 
 describe 'parseopts'

@@ -84,7 +84,7 @@ init::export EDITOR $(command -v vim 2>/dev/null || command -v vi)
 umask 022
 
 # Remap caps -> super
-init::feature_enabled? REMAPCAPSTOSUPER && {
-  init::debug 'REMAPCAPSTOSUPER enabled; remapping caps lock key to super'
+init::feature_enabled? RemapCapslockToSuper && {
+  init::debug 'RemapCapslockToSuper enabled; remapping caps lock key to super'
   setxkbmap -option caps:super 2>/dev/null
 }

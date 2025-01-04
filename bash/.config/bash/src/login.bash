@@ -3,7 +3,7 @@
   init::debug 'Loading scripts'
   support::globbing on
 
-  for file in $Root/scripts/*; do
+  for file in $RootDir/scripts/*; do
     init::debug "Loading script $file"
 
     chmod u+x $file
@@ -12,11 +12,14 @@
   done
 )
 
-init::feature_enabled? WMONSTARTUP && {
-  init::debug 'WMONSTARTUP enabled'
+init::feature_enabled? WMOnStartup && {
+  init::debug 'WMOnStartup enabled'
 
   [ -z $DISPLAY ] && (( XDG_VTNR == 1 )) && exec startx
 }
 
-# Emscripten
-# init::source? "/usr/src/emsdk/emsdk_env.sh"
+init::feature_enabled? EnableEmscriptenEnv && {
+  init::debug 'EnableEmscriptenEnv enabled'
+  # Emscripten
+  init::source? "/usr/src/emsdk/emsdk_env.sh"
+}

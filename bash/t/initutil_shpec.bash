@@ -1,8 +1,8 @@
-ROOT_DIR="$(dirname "$(readlink -f $BASH_SOURCE)")"
+RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
-source "$ROOT_DIR/shpec_util.bash"
+source "$RootDir/shpec_util.bash"
 
-initutil_lib="$ROOT_DIR/../.config/bash/lib/initutil.bash"
+initutil_lib="$RootDir/../.config/bash/lib/initutil.bash"
 
 describe 'initutil'
   describe 'globals'

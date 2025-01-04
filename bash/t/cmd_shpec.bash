@@ -1,9 +1,9 @@
-ROOT_DIR="$(dirname "$(readlink -f $BASH_SOURCE)")"
+RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
-echo $ROOT_DIR
-source "$ROOT_DIR/shpec_util.bash"
+echo $RootDir
+source "$RootDir/shpec_util.bash"
 
-source "$ROOT_DIR/../.config/bash/settings/cmd.bash"
+source "$RootDir/../.config/bash/src/cmd.bash"
 
 describe 'cmd'
   describe 'bak'

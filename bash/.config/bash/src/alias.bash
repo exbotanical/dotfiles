@@ -1,15 +1,33 @@
 # Colorization
+if ( init::feature_enabled? UseRipgrep ); then
+  init::debug 'UseRipgrep enabled'
+  Grep='rg'
+  GrepRegExpr='rg -e'
+  GrepFileExpr='rg -f'
+else
+  Grep='grep'
+  GrepRegExpr='grep -E'
+  GrepFileExpr='grep -F'
+fi
+
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+alias grep="$Grep --color=auto"
+alias fgrep="$GrepFileExpr --color=auto"
+alias egrep="$GrepRegExpr --color=auto"
 
 # ls
-alias ls='ls --color=auto'
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+if ( init::feature_enabled? UseLsd ); then
+  init::debug 'UseLsd enabled'
+  LsCommand=lsd
+else
+  LsCommand=ls
+fi
+
+alias ls="$LsCommand --color=auto"
+alias ll="$LsCommand -alF"
+alias la="$LsCommand -A"
+alias l="$LsCommand"
 
 # Navigation
 alias repos='cd ~/repositories'
@@ -50,7 +68,7 @@ alias enable='sudo systemctl enable'
 alias disable='sudo systemctl disable'
 
 # reload force-reloads all bash configurations
-alias reload='source ~/.config/bash/init.bash reload'
+alias reload="source $RootDir/init.bash reload"
 
 # Open dotfiles to edit
 alias dotfiles='code ~/dotfiles'
@@ -58,3 +76,13 @@ alias dotfiles='code ~/dotfiles'
 # Re-open Eww bar until I get around to figuring out why it periodically crashes and/or open an issue
 alias bar='eww open bar'
 alias schedule='code ~/Documents/studies/schedule.md'
+
+# Quick way to reboot network daemon
+alias netreboot='sudo systemctl restart NetworkManager'
+
+EphemeralVars+=(
+  Grep
+  GrepRegExpr
+  GrepFileExpr
+  LsCommand
+)

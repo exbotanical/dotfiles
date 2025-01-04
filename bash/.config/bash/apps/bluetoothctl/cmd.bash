@@ -1,4 +1,4 @@
-DEFAULT_HEADPHONES_MACADDR='28:F0:33:D0:61:14'
+DEFAULT_HEADPHONES_MACADDR='98:47:44:C0:63:F8'
 
 # blue_conn connects a bluetooth device by its MAC address
 blue_conn () {

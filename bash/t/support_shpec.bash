@@ -1,8 +1,8 @@
-ROOT_DIR="$(dirname "$(readlink -f $BASH_SOURCE)")"
+RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
-source "$ROOT_DIR/shpec_util.bash"
+source "$RootDir/shpec_util.bash"
 
-support_lib="$ROOT_DIR/../.config/bash/lib/support.bash"
+support_lib="$RootDir/../.config/bash/lib/support.bash"
 
 source "$support_lib"
 

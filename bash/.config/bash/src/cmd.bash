@@ -104,7 +104,6 @@ for_each_dir () {
   for d in ./*/ ; do (cd "$d" && eval "$cmd"); done
 }
 
-
 # SYNOPSIS
 #   manopt command opt
 #
@@ -118,7 +117,7 @@ for_each_dir () {
 #
 #   Matching is exact by default; to turn on prefix matching for long options,
 #   quote the prefix and append '.*', e.g.: `manopt find '-exec.*'` finds
-#   both '-exec' and 'execdir'.
+#   both '-exec' and 'ExecDir'.
 #
 # EXAMPLES
 #   manopt ls l           # same as: manopt ls -l

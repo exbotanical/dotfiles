@@ -1,7 +1,9 @@
-# Root is this location, normalized for symlinks
-Root=$(cd "$(dirname "$BASH_SOURCE")"; cd -P "$(dirname "$(readlink "$BASH_SOURCE" || echo .)")"; pwd)
+# RootDir is this location, normalized for symlinks
+RootDir=$(cd "$(dirname "$BASH_SOURCE")"; cd -P "$(dirname "$(readlink "$BASH_SOURCE" || echo .)")"; pwd)
 # SettingsDir is the location of my Bash settings
-SettingsDir="$Root/settings"
+SettingsDir="$RootDir/src"
+# ConfigDir is the location of my Bash setup config
+ConfigDir="$RootDir/config"
 # ExecDir is the locaton of my userspace executables
 ExecDir="$HOME/.local/bin"
 
@@ -9,16 +11,16 @@ ExecDir="$HOME/.local/bin"
 [[ $1 == reload ]] && Reload=1 || Reload=0
 
 # vars to cleanup
-EphemeralVars=( Reload Root SettingsDir ExecDir )
+EphemeralVars=( Reload RootDir SettingsDir ConfigDir ExecDir )
 
 # support functions - we leave these in the global namespace
-source "$Root/lib/support.bash"
+source "$RootDir/lib/support.bash"
 # init utilities - we unset these after init
-source "$Root/lib/initutil.bash"
+source "$RootDir/lib/initutil.bash"
 # feature flags
-source "$SettingsDir/features.bash"
+source "$ConfigDir/features.bash"
 
-init::feature_enabled? DEBUGMODE && init::toggle_debug
+init::feature_enabled? DebugMode && init::toggle_debug
 
 support::macos? && {
   init::debug 'In macos env; adding homebrew bin to PATH'
@@ -32,7 +34,7 @@ support::globbing off
 # Only source env vars if this is the first login or a force-reload
 { init::login? || (( Reload )); } && source $SettingsDir/env.bash
 
-source $Root/lib/apps.bash $1 # app-specific environment and commands
+source $RootDir/lib/apps.bash $1 # app-specific environment and commands
 
 init::debug 'Loading primary aliases'
 source $SettingsDir/alias.bash # aliases

@@ -30,15 +30,17 @@ I've taken and adapted a lot of ideas from various folks across the internet, bu
 The entrypoint for my Bash config resides in [init.bash](bash/.config/bash/init.bash), where we load in a [utility library](bash/.config/bash/lib/support.bash) and all settings files. This means the utility library is accessible to all settings files; at the end of the init script, we remove all of the utility functions and temporary variables from the shell environment so as not to prevent pollution. The utilities allow us to easily append to the `PATH` (and prevent duplication therein, which is quite a common problem), toggle globbing, temporarily change `IFS`, etc.
 
 We load several files:
-* [`alias.bash`](bash/.config/bash/settings/alias.bash) - global aliases that are non-program specific
-* [`cmd.bash`](bash/.config/bash/settings/cmd.bash) - global commands
-* [`env.bash`](bash/.config/bash/settings/env.bash) - global environment settings
-* [`interative.bash`](bash/.config/bash/settings/interative.bash) - interactive mode settings. These are loaded every time a new shell is spawned.
-* [`login.bash`](bash/.config/bash/settings/login.bash) - login settings. These are loaded once, when first initializing the machine.
+* [`alias.bash`](bash/.config/bash/src/alias.bash) - global aliases that are non-program specific
+* [`cmd.bash`](bash/.config/bash/src/cmd.bash) - global commands
+* [`env.bash`](bash/.config/bash/src/env.bash) - global environment settings
+* [`interative.bash`](bash/.config/bash/src/interative.bash) - interactive mode settings. These are loaded every time a new shell is spawned.
+* [`login.bash`](bash/.config/bash/src/login.bash) - login settings. These are loaded once, when first initializing the machine.
 
 There's also a directory called [`apps`](bash/.config/bash/apps). This houses the same 5 configuration files seen above but in the context of a specific application. For example, `git` houses configurations that explicitly pertain to and rely on `git`. In `init.bash`, there's logic that determines whether each program in the `apps` directory actually exists on the machine. If it does, it loads the configuration files; if it doesn't, nothing happens. There's an escape hatch here - `detect.bash`, which can override the app loader and tell it to explicitly load or not load the configurations based on the return code in the file.
 
 Thus, `:` inside `detect.bash` (e.g. [here](bash/.config/bash/apps/rust/detect.bash)) means we will *always* load that app's configurations. In other cases, we may check the host OS or [specific files](bash/.config/bash/apps/go/detect.bash) and figure it out from there.
+
+Last, the [config](bash/.config/bash/config) directory houses config for the Bash setup logic - things like feature flags.
 
 ### Testing
 
