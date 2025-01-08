@@ -57,9 +57,6 @@ is_webp () {
 }
 
 get_cover () {
-	# mkdir -p "$COVERS_DIR"
-	# cd "$COVERS_DIR" || exit
-
 	local img_path="$COVERS_DIR/cover_art.png"
 	local cover_url="$1"
 
@@ -112,8 +109,8 @@ main () {
 
 	playerctl -F metadata -f '{{title}}\{{artist}}\{{status}}\{{position}}\{{mpris:length}}\{{mpris:artUrl}}\{{xesam:url}}' 2>/dev/null | while IFS="$(printf '\')" read -r title artist status position len cover id; do
 		# For YouTube, which sometimes emits events w/out `artUrl` or `url`
+		cover_path=$(get_cover "$cover")
 		if [[ "$id" != '' ]] && [[ "$id" != "$prev_id" ]]; then
-			cover_path=$(get_cover "$cover")
 			if [[ "$cover_path" != '' ]]; then
 				cols=$(convert "$cover_path" -colors 2 -format "%c" histogram:info: | awk '{print $3}')
 				color_1=$(echo "$cols" | head -1)

@@ -1,8 +1,10 @@
-; TODO: Open calendar app
 (defwidget calendar-widget []
   (box
     :class "calendar-window"
-    (calendar)))
+    (
+      calendar
+      :onclick "${EWW_CMD} close calendar-window && gnome-calendar --date $(({1} + 1 ))/{0}/{2} &"
+    )))
 
 (defwindow calendar-window
   :stacking "fg"
