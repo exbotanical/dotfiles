@@ -4,3 +4,4 @@ hexchat/**/scrollback
 .DS_Store
 vim/.vim/autoload
 vim/.vim/plugged
+gtk/.icons/default/cursors

@@ -7,7 +7,7 @@ main () {
   local name
   local battery
 
-  if [[ "$1" == "toggle" ]]; then
+  if [[ "$1" == 'toggle' ]]; then
     rfkill toggle bluetooth
   else
     while true; do
@@ -15,30 +15,29 @@ main () {
       status=$(bluetoothctl info)
       name=$(echo "$status" | rg Name | cut -f 2- -d ' ')
 
-      if [[ "$(echo "$status" | rg Percentage)" != "" ]]; then
+      if [[ "$(echo "$status" | rg Percentage)" != '' ]]; then
         battery="$(bluetoothctl info | grep Battery | sed -n 's/.*(\([0-9]*\)).*/\1/p')%"
       else
-        battery=""
+        battery=''
       fi
 
-      if [[ "$powered" == "yes" ]]; then
-      # TODO: headphones connected color/icon
-        if [[ "$status" != "Missing device address argument" ]]; then
+      if [[ "$powered" == 'yes' ]]; then
+        if [[ "$status" != 'Missing device address argument' ]]; then
           text="$name"
-          icon=""
-          color="#f8f8f2"
-          class="bt-connected"
+          icon=''
+          color='#8BE9FD'
+          class='bt-connected'
         else
-          icon=""
-          text="Disconnected"
-          color="#ff5555"
-          class=""
+          icon=''
+          text='Disconnected'
+          color='#ff5555'
+          class=''
         fi
       else
-        icon=""
-        text="Bluetooth off"
-        color="#ffb86c"
-        class=""
+        icon=''
+        text='Bluetooth off'
+        color='#ffb86c'
+        class=''
       fi
 
       echo '{"icon":"'"$icon"'","battery":"'"$battery"'","text":"'"$text"'","color":"'"$color"'","class":"'"$class"'"}'
