@@ -91,6 +91,11 @@ init::toggle_debug () {
   export INIT_DEBUG_MODE
 }
 
+# Turn on debug mode
+init::enable_debug () {
+  export INIT_DEBUG_MODE=1
+}
+
 # Wrapper; order app by dependencies
 init::order_by_dependencies () {
   local -A satisfied=()

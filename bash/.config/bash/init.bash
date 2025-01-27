@@ -20,7 +20,7 @@ source "$RootDir/lib/initutil.bash"
 # feature flags
 source "$ConfigDir/features.bash"
 
-init::feature_enabled? DebugMode && init::toggle_debug
+init::feature_enabled? DebugMode && init::enable_debug
 
 support::macos? && {
   init::debug 'In macos env; adding homebrew bin to PATH'
