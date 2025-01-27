@@ -1,0 +1,38 @@
+[
+  {
+    "url": "https://antiwar.com/",
+    "label": "AntiWar"
+  },
+  {
+    "url": "https://mises.org/wire",
+    "label": "Mises Institute"
+  },
+  {
+    "url": "https://github.com",
+    "label": "GitHub"
+  },
+  {
+    "url": "https://www.mathtutordvd.com/members",
+    "label": "STEM Lessons"
+  },
+  {
+    "url": "https://chatgpt.com",
+    "label": "ChatGPT"
+  },
+  {
+    "url": "https://cineworld.theavp.in",
+    "label": "CineWorld"
+  },
+  {
+    "url": "https://leetcode.com/problemset/all/",
+    "label": "LeetCode"
+  },
+  {
+    "url": "https://www.khanacademy.org/profile/me/courses",
+    "label": "KhanAcademy"
+  },
+  {
+    "url": "https://www.youtube.com",
+    "label": "YouTube"
+  }
+]

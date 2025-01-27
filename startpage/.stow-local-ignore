@@ -1,0 +1,4 @@
+.*.ts
+.build
+.*.tsbuildinfo
+.*.json

@@ -5,3 +5,6 @@ hexchat/**/scrollback
 vim/.vim/autoload
 vim/.vim/plugged
 gtk/.icons/default/cursors
+.build
+*.tsbuildinfo
+startpage/startpage.js

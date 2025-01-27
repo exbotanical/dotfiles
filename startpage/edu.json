@@ -1,0 +1,18 @@
+[
+  {
+    "url": "https://www.cs.hunter.cuny.edu/~sweiss/course_materials/csci360/csci360_f14.php",
+    "label": "Computer Architecture III"
+  },
+  {
+    "url": "https://www.cs.hunter.cuny.edu/~sweiss/course_materials/csci493.65/csci493.65_spr24.php",
+    "label": "Parallel Computing"
+  },
+  {
+    "url": "https://cvw.cac.cornell.edu/gpu-architecture",
+    "label": "GPU Architecture"
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=MXaNNVp-3Mg&list=PLfdNh0aH8F1c46lxMrpum24KIGIHBoziE",
+    "label": "The Creature of Jekyl Island Audiobook"
+  }
+]
