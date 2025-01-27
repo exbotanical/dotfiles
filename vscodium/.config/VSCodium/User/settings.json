@@ -208,11 +208,10 @@
   "doxdocgen.generic.dateFormat": "DD/MM/YYYY",
   "doxdocgen.generic.briefTemplate": "{text}",
   "python.defaultInterpreterPath": "/usr/bin/python",
-
   "workbench.colorCustomizations": {
     "list.errorForeground": "#68a274"
   },
-  "window.zoomLevel": 3,
+  "window.zoomLevel": 1,
   "prisma.showPrismaDataPlatformNotification": false,
   "telemetry.telemetryLevel": "off",
   "update.showReleaseNotes": false,
