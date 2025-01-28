@@ -1,4 +1,4 @@
-.PHONY: install install_osx install_al2 delete simulate test
+.PHONY: install install_osx install_al2 delete simulate test startpage
 
 INSTALL_DIR  =./install
 ROOT_DIR  =root
@@ -6,7 +6,7 @@ INCLUDE_DIRS =$(filter-out $(ROOT_DIR)/, $(wildcard */))
 AL2_HOME     =/local/home/$$USER
 
 
-install:
+install: startpage
 	mkdir -p $$HOME/.local/bin
 	stow --verbose 3 --target=$$HOME --restow $(INCLUDE_DIRS)
 	$(foreach file, $(wildcard $(INSTALL_DIR)/*), ./$(file))
@@ -14,7 +14,7 @@ install:
 install_root:
 	stow --verbose 3 --target=/ --restow $(ROOT_DIR)
 
-install_osx:
+install_osx: node_modules
 	$(MAKE) install
 # UGH: https://savannah.gnu.org/bugs/?712
 	./install/osx.bash
@@ -32,3 +32,6 @@ simulate:
 
 test:
 	find . -path ./.git -prune -o -type f -print | bash -c "shpec $1"
+
+startpage:
+	$(MAKE) -C startpage

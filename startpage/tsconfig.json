@@ -1,10 +1,8 @@
 {
-  "include": ["*.ts", "*.json"],
+  "include": ["*.ts", "*.json", "src/index.ts"],
   "compilerOptions": {
     "rootDir": ".",
     "declaration": false,
-    "module": "AMD",
-    "outFile": "startpage.js",
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",
     "strict": true,

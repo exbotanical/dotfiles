@@ -8,3 +8,5 @@ gtk/.icons/default/cursors
 .build
 *.tsbuildinfo
 startpage/startpage.js
+node_modules
+bundle.js

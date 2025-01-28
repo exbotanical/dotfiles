@@ -1,4 +1,8 @@
+.*.js
 .*.ts
 .build
 .*.tsbuildinfo
 .*.json
+Makefile
+node_modules
+package*.json
