@@ -1,12 +1,11 @@
-.PHONY: install install_osx install_al2 delete simulate test startpage
+.PHONY: install install_osx install_al2 delete simulate test deps
 
 INSTALL_DIR  =./install
 ROOT_DIR  =root
 INCLUDE_DIRS =$(filter-out $(ROOT_DIR)/, $(wildcard */))
 AL2_HOME     =/local/home/$$USER
 
-
-install: startpage
+install: deps
 	mkdir -p $$HOME/.local/bin
 	stow --verbose 3 --target=$$HOME --restow $(INCLUDE_DIRS)
 	$(foreach file, $(wildcard $(INSTALL_DIR)/*), ./$(file))
@@ -33,5 +32,9 @@ simulate:
 test:
 	find . -path ./.git -prune -o -type f -print | bash -c "shpec $1"
 
-startpage:
-	$(MAKE) -C startpage
+deps:
+	@for dir in $(wildcard */); do \
+		if [ -f "$$dir/Makefile" ]; then \
+			$(MAKE) -C $$dir; \
+		fi \
+	done
