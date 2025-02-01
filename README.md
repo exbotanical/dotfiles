@@ -27,7 +27,7 @@ I love Bash; it's a bizarre language that can do far more than it should. You ma
 
 I've taken and adapted a lot of ideas from various folks across the internet, but a noteworthy influence for this setup (and one that certainly deserves accreditation) has been Ted Lilley @binaryphile - some of the setup code has been taken directly from his work, which can be found [here](https://github.com/binaryphile/init.bash).
 
-The entrypoint for my Bash config resides in [init.bash](bash/.config/bash/init.bash), where we load in a [utility library](bash/.config/bash/lib/support.bash) and all settings files. This means the utility library is accessible to all settings files; at the end of the init script, we remove all of the utility functions and temporary variables from the shell environment so as not to prevent pollution. The utilities allow us to easily append to the `PATH` (and prevent duplication therein, which is quite a common problem), toggle globbing, temporarily change `IFS`, etc.
+The entrypoint for my Bash config resides in [init.bash](bash/.config/bash/init.bash), where we load in a [utility library](bash/.config/bash/lib/utils.bash) and all settings files. This means the utility library is accessible to all settings files; at the end of the init script, we remove all of the utility functions and temporary variables from the shell environment so as not to prevent pollution. The utilities allow us to easily append to the `PATH` (and prevent duplication therein, which is quite a common problem), toggle globbing, temporarily change `IFS`, etc.
 
 We load several files:
 * [`alias.bash`](bash/.config/bash/src/alias.bash) - global aliases that are non-program specific

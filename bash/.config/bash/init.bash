@@ -13,23 +13,23 @@ ExecDir="$HOME/.local/bin"
 # vars to cleanup
 EphemeralVars=( Reload RootDir SettingsDir ConfigDir ExecDir )
 
-# support functions - we leave these in the global namespace
-source "$RootDir/lib/support.bash"
+# util functions - we leave these in the global namespace
+source "$RootDir/lib/utils.bash"
 # init utilities - we unset these after init
-source "$RootDir/lib/initutil.bash"
+source "$RootDir/lib/init_utils.bash"
 # feature flags
 source "$ConfigDir/features.bash"
 
 init::feature_enabled? DebugMode && init::enable_debug
 
-support::macos? && {
+utils::macos? && {
   init::debug 'In macos env; adding homebrew bin to PATH'
   init::append_path '/opt/homebrew/bin'
 }
 
 # Turn off expansion i.e. no need to quote vars from here onward, until we turn it back on
-support::splitspace off
-support::globbing off
+utils::splitspace off
+utils::globbing off
 
 # Only source env vars if this is the first login or a force-reload
 { init::login? || (( Reload )); } && source $SettingsDir/env.bash
@@ -40,20 +40,18 @@ init::debug 'Loading primary aliases'
 source $SettingsDir/alias.bash # aliases
 
 init::debug 'Loading primary commands'
-# commands - contents must be quoted as they'll run in
-# other envs where globbing/splitspace may be on
+# commands - contents therein must be quoted as they'll run in other envs where globbing/splitspace may be on
 source $SettingsDir/cmd.bash
 
 # Source interactive settings only if we're in an interactive shell
-support::interactive? && {
+utils::interactive? && {
   init::debug 'Loading primary interactive'
   source $SettingsDir/interactive.bash
 }
 
-# Source login settings only if we're logging in for the first time
-# and in an interactive shell
+# Source login settings only if we're logging in for the first time and in an interactive shell
 {
-  (support::interactive? && init::login?) || (( Reload ));
+  (utils::interactive? && init::login?) || (( Reload ));
 } && {
   init::debug 'Loading primary login'
   source $SettingsDir/login.bash
@@ -63,7 +61,7 @@ support::interactive? && {
 init::set_login
 
 # Cleanup
-support::splitspace on
-support::globbing on
+utils::splitspace on
+utils::globbing on
 unset -f "${EphemeralFunctions[@]}" # Remove functions declared in init:: namespace
 unset -v "${EphemeralVars[@]}" # Remove ephemeral vars

@@ -51,7 +51,7 @@ init::export_builtin () {
 
 # source? sources the provided argument if it is a file
 init::source? () {
-  support::file? $1 && source $1
+  utils::file? $1 && source $1
 }
 
 init::load_app? () {
@@ -59,7 +59,7 @@ init::load_app? () {
   local detect_file=$dir/detect.bash
 
   # If it has a detect file, invoke it
-  support::file? $detect_file && {
+  utils::file? $detect_file && {
     source $detect_file
     return
   }
@@ -73,7 +73,7 @@ init::list_dir () { (
   local items=()
 
   cd $1
-  support::globbing on
+  utils::globbing on
   items=( * )
   echo "${items[*]}"
 ) }
@@ -113,7 +113,7 @@ init::_order_by_dependencies () {
     (( ${satisfied[$app]} )) && continue
 
     # If the deps file exists for this app...
-    ! support::file? $app/deps && {
+    ! utils::file? $app/deps && {
         echo $app
         satisfied[$app]=1
         continue

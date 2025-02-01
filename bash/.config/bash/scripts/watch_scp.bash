@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-source "$(dirname "$(readlink -f "$BASH_SOURCE")")/../lib/support.bash"
+source "$(dirname "$(readlink -f "$BASH_SOURCE")")/../lib/utils.bash"
 source "$(dirname "$(readlink -f "$BASH_SOURCE")")/../lib/parser.bash"
 
-support::globbing off
-support::splitspace off
+utils::globbing off
+utils::splitspace off
 
 PROG=$0
 
@@ -157,7 +157,7 @@ main () {
   start_monitor
 }
 
-support::sourced? && return
+utils::sourced? && return
 
 option_defs=(
   -p,PERIOD
@@ -185,7 +185,7 @@ REMOTE=$3
 SECONDS=0
 for (( retries = 0; retries < 10; retries++ )); do
   (
-    support::strict_mode on
+    utils::strict_mode on
     main
   )
 

@@ -2,29 +2,29 @@ RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
 source "$RootDir/shpec_util.bash"
 
-initutil_lib="$RootDir/../.config/bash/lib/initutil.bash"
+init_utils_lib="$RootDir/../.config/bash/lib/init_utils.bash"
 
-describe 'initutil'
+describe 'init_utils'
   describe 'globals'
     it 'sets a global variable to cache all defined functions for cleanup'
       # sanity check
       [[ -v EphemeralFunctions ]]
       assert equal 1 $?
-      source "$initutil_lib"
+      source "$init_utils_lib"
       [[ -v EphemeralFunctions ]]
       assert equal 0 $?
     ti
 
     it 'updates the global EphemeralVars variable to cache any defined variables for cleanup'
       EphemeralVars=( 1 )
-      source "$initutil_lib"
+      source "$init_utils_lib"
       # assert not unset
       [[ -v EphemeralVars ]]
       assert equal 0 $?
       assert equal 3 ${#EphemeralVars[@]}
     ti
 
-    alias setup='source $initutil_lib'
+    alias setup='source $init_utils_lib'
 
     it 'unsets the PreexistingFunctions list'
       [[ -v PreexistingFunctions ]]
@@ -41,7 +41,7 @@ describe 'initutil'
   describe 'login?'
     it 'state is not manipulated by /etc/profile or system var'
       ret=$(env -i bash <<END
-      source "$initutil_lib"
+      source "$init_utils_lib"
       init::login? && echo 1
 END
   )
@@ -50,7 +50,7 @@ END
 
     it 'state is persistent'
       export ENV_SET=0
-      source "$initutil_lib"
+      source "$init_utils_lib"
       init::login?
       assert equal 0 $?
       init::set_login
@@ -67,7 +67,7 @@ END
 
       export TestVariable
 
-      source "$initutil_lib"
+      source "$init_utils_lib"
       init::export TestVariable 2
       assert equal 1 "$TestVariable"
 
@@ -76,14 +76,14 @@ END
     ti
 
     it 'exports the new value if not already exported'
-      source "$initutil_lib"
+      source "$init_utils_lib"
       init::export TestVariable 2
       assert equal 2 "$TestVariable"
     ti
   end_describe
 
   describe 'contains?'
-    alias setup='source $initutil_lib'
+    alias setup='source $init_utils_lib'
 
     it 'returns true if the first value contains the second'
       init::contains? "h:ell:o" "ell"
@@ -103,7 +103,7 @@ END
       [[ $PATH == *"$test_val" ]];
       assert equal 1 $?
 
-      source "$initutil_lib"
+      source "$init_utils_lib"
       init::append_path "$test_val"
 
       [[ $PATH == *"$test_val" ]];
@@ -113,7 +113,7 @@ END
     it 'ignores the append value if already extant in the PATH'
       test_val='TESTVALUE'
 
-      source "$initutil_lib"
+      source "$init_utils_lib"
 
       init::append_path "$test_val"
       init::append_path "$test_val"
@@ -128,7 +128,7 @@ END
       [[ $PATH == "$test_val"* ]];
       assert equal 1 $?
 
-      source "$initutil_lib"
+      source "$init_utils_lib"
       init::prepend_path "$test_val"
 
       [[ $PATH == "$test_val"* ]];
@@ -138,7 +138,7 @@ END
     it 'ignores the prepend value if already extant in the PATH'
       test_val='TESTVALUE'
 
-      source "$initutil_lib"
+      source "$init_utils_lib"
 
       init::prepend_path "$test_val"
       init::prepend_path "$test_val"
@@ -149,7 +149,7 @@ END
   end_describe
 
   describe 'export_builtin'
-    alias setup='source $initutil_lib'
+    alias setup='source $init_utils_lib'
 
     it 'exports the first viable builtin command value'
       builtin_path=$(type -p ls)
@@ -165,7 +165,7 @@ END
   end_describe
 
   describe 'source?'
-    alias setup='source $initutil_lib'
+    alias setup='source $init_utils_lib'
 
     it 'sources a the provided argument only if it is a file'
       file=$(mktemp)
@@ -183,7 +183,7 @@ END
   end_describe
 
   describe 'list_dir'
-    alias setup='source $initutil_lib'
+    alias setup='source $init_utils_lib'
 
     it 'enumerates the directory contents as a single line'
       dir=$(mktemp -d)
@@ -197,11 +197,11 @@ END
   end_describe
 
   describe 'order_by_dependencies'
-    alias setup='source $initutil_lib'
+    alias setup='source $init_utils_lib'
 
     it 'orders apps by dependencies'
-      support::splitspace off
-      support::globbing off
+      utils::splitspace off
+      utils::globbing off
 
       dir=$(mktemp -d)
       pushd "$dir"

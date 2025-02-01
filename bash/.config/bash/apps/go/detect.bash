@@ -1,6 +1,6 @@
 # shellcheck disable=SC2157,SC2203
-if [[ support::macos? ]]; then
-  support::file? /opt/homebrew/bin/go
+if [[ utils::macos? ]]; then
+  utils::file? /opt/homebrew/bin/go
 else
-  support::file? /usr/local/go/bin/go
+  utils::file? /usr/local/go/bin/go
 fi

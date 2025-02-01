@@ -1,7 +1,7 @@
 # Copy scripts to user-local executables dir
 (
   init::debug 'Loading scripts'
-  support::globbing on
+  utils::globbing on
 
   for file in $RootDir/scripts/*; do
     init::debug "Loading script $file"

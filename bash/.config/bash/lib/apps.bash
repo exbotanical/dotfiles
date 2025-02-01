@@ -2,8 +2,8 @@ pushd $RootDir/apps >/dev/null
 
 APP_LIST=$(
   init::list_dir . |
-  support::filter support::dir? |
-  support::filter init::load_app? |
+  utils::filter utils::dir? |
+  utils::filter init::load_app? |
   init::order_by_dependencies
 )
 
@@ -18,12 +18,12 @@ for app in $APP_LIST; do
     init::source? $app/login.bash
   }
 
-  support::splitspace on
-  support::globbing on
+  utils::splitspace on
+  utils::globbing on
   init::source? "$app"/init.bash
 
-  support::splitspace off
-  support::globbing off
+  utils::splitspace off
+  utils::globbing off
 
   init::source? $app/interactive.bash
   init::source? $app/alias.bash

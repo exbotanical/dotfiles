@@ -1,33 +1,33 @@
 # Many of these from Ted Lilley's "Bash Like a Developer" series
 # See: https://www.binaryphile.com/bash/2018/07/26/approach-bash-like-a-developer-part-1-intro.html
-support::interactive? () {
+utils::interactive? () {
   [[ $- == *i* ]]
 }
 
 # sourced? returns true if the current file is being sourced
-support::sourced? () {
+utils::sourced? () {
   [[ ${FUNCNAME[1]} == source ]]
 }
 
 # defined? returns true if the argument is defined
-support::defined? () {
+utils::defined? () {
   [[ -v "$1" ]]
 }
 
 # extant? returns true if the argument is an available command
-support::extant? () {
+utils::extant? () {
   type $1 &>/dev/null
 }
 
 # strict_mode toggles strict mode
-support::strict_mode () {
+utils::strict_mode () {
   case "$1" in
     on)
       set -o errexit
       set -o errtrace
       set -o nounset
       set -o pipefail
-      trap 'support::traceback' ERR
+      trap 'utils::traceback' ERR
       ;;
     off)
       set +o errexit
@@ -43,7 +43,7 @@ support::strict_mode () {
 }
 
 # debug_mode toggles debug mode (xtrace)
-support::debug_mode () {
+utils::debug_mode () {
   case "$1" in
     on) set -x  ;;
     off) set +x ;;
@@ -52,7 +52,7 @@ support::debug_mode () {
 }
 
 # globbing toggles globbing
-support::globbing () {
+utils::globbing () {
   case $1 in
     on  ) set +o noglob;;
     off ) set -o noglob;;
@@ -60,7 +60,7 @@ support::globbing () {
 }
 
 # splitspace toggles splitting on spaces
-support::splitspace () {
+utils::splitspace () {
   case $1 in
     on  ) IFS=$' \t\n';;
     off ) IFS=$'\n'   ;;
@@ -68,7 +68,7 @@ support::splitspace () {
 }
 
 # aliases toggles shell aliases
-support::aliases () {
+utils::aliases () {
   case $1 in
     on  ) shopt -s expand_aliases;;
     off ) shopt -u expand_aliases;;
@@ -76,7 +76,7 @@ support::aliases () {
 }
 
 # traceback adds stack traces to bash ops
-support::traceback () {
+utils::traceback () {
   local -i rc=$?
   set +o xtrace
   local -i frame=0
@@ -102,7 +102,7 @@ support::traceback () {
 
 # filter applies a unary function on a stream of values,
 # returning only those values for which the function evaluates to true
-support::filter () {
+utils::filter () {
   local item
 
   while read -r item; do
@@ -111,16 +111,16 @@ support::filter () {
 }
 
 # file? returns true if the provided argument is a file
-support::file? () {
+utils::file? () {
   [[ -r $1 ]]
 }
 
 # dir? returns true if the provided argument is a directory
-support::dir? () {
+utils::dir? () {
   [[ -d $1 ]]
 }
 
 # macos? returns true if the host os is macos
-support::macos? () {
+utils::macos? () {
   [[ "$OSTYPE" == "darwin"* ]]
 }
