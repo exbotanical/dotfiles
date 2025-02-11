@@ -17,6 +17,10 @@ straps:
         run: |
           mv include/.gitkeep include/lib${{ STRAP_PROJECT_NAME }}.h
 
+      - name: setup manpage
+        run: |
+          touch lib${{ STRAP_PROJECT_NAME }}.3
+
       - name: setup dirs
         run: mv _.github .github
 
@@ -36,6 +40,10 @@ straps:
         run: |
           find . -type f -exec sed -i "s/<project>/${{ STRAP_PROJECT_NAME }}/g" {} \;
           sed -i "s/<year>/$(date +%Y)/" LICENSE
+
+      - name: setup manpage
+        run: |
+          touch ${{ STRAP_PROJECT_NAME }}.1
 
       - name: setup dirs
         run: mv _.github .github
