@@ -81,8 +81,13 @@ tooltip {
   color: $polar;
 }
 
-.module-bluetooth {
+.module-bluetooth,
+.module-docker {
   font-size: $font-base;
+}
+
+.module-docker {
+  margin-right: 40px;
 }
 
 scale trough {

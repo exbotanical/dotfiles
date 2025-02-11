@@ -1,0 +1,7 @@
+(defwidget docker-widget []
+  (button
+    :class "module-docker module ${docker.class}"
+    ; :onclick ""
+    ; :onrightclick "scripts/bluetooth connect"
+    :tooltip "${docker.text}"
+  {docker.icon}))

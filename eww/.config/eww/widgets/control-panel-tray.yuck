@@ -1,8 +1,6 @@
 (defwidget control-panel-tray-widget []
   (eventbox
     :class "module"
-    :space-evenly false
-    :spacing 5
     :onclick "${EWW_CMD} open --toggle control-panel-window"
     (box
       (circular-progress

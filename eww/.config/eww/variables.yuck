@@ -5,6 +5,7 @@
 (deflisten battery "scripts/battery")
 (deflisten bluetooth "scripts/bluetooth")
 (deflisten brightness "scripts/brightness")
+(deflisten docker "scripts/docker")
 (deflisten memory "scripts/memory")
 (deflisten music "scripts/music")
 (deflisten net "scripts/net")
