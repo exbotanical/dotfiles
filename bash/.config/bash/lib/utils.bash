@@ -124,3 +124,8 @@ utils::dir? () {
 utils::macos? () {
   [[ "$OSTYPE" == "darwin"* ]]
 }
+
+# vscodium? returns true if the current shell is being emulated inside of vscodium's terminal
+utils::vscodium? () {
+  [[ "$TERM_PROGRAM" == 'vscode' ]]
+}

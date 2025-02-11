@@ -3,6 +3,8 @@ init::feature_enabled? NightMode && (
 
   is_night=$(date +%H:%M)
   if [[ $is_night > '20:00' ]] || [[ $is_night < '06:00' ]]; then
-    light -S 1
+    if ! utils::vscodium?; then
+      light -S 1
+    fi
   fi
 )

@@ -29,6 +29,9 @@ alias ll="$LsCommand -alF"
 alias la="$LsCommand -A"
 alias l="$LsCommand"
 
+# Safe move
+alias mvs='mv -vn'
+
 # Navigation
 alias repos='cd ~/repositories'
 alias docs='cd ~/Documents'
