@@ -22,25 +22,22 @@ main () {
       fi
 
       if [[ "$powered" == 'yes' ]]; then
-        if [[ "$status" != 'Missing device address argument' ]]; then
+        if [[ "$status" != 'Missing device address argument'* ]]; then
           text="$name"
           icon=''
-          color='#8BE9FD'
-          class='bt-connected'
+          class='active bt-connected'
         else
           icon=''
           text='Disconnected'
-          color='#ff5555'
-          class=''
+          class='inactive'
         fi
       else
         icon=''
         text='Bluetooth off'
-        color='#ffb86c'
-        class=''
+        class='disabled'
       fi
 
-      echo '{"icon":"'"$icon"'","battery":"'"$battery"'","text":"'"$text"'","color":"'"$color"'","class":"'"$class"'"}'
+      echo '{"icon":"'"$icon"'","battery":"'"$battery"'","text":"'"$text"'","class":"'"$class"'"}'
 
       sleep $SLEEP_INTERVAL
     done

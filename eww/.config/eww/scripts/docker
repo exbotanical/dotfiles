@@ -1,35 +1,29 @@
 #!/usr/bin/env bash
-SLEEP_INTERVAL=3
+SLEEP_INTERVAL=5
 
 main () {
-  local status
-  local name
+  while true; do
+    if ! systemctl is-active --quiet docker; then
+        text='Docker not active'
+        class='disabled'
+    else
+      local running="$(docker ps -q | wc -l)"
+      local stopped="$(docker ps -q -f 'status=exited' | wc -l)"
+      local created="$(docker ps -q -f 'status=created' | wc -l)"
 
-  if [[ "$1" == 'toggle' ]]; then
-    rfkill toggle bluetooth
-  else
-    while true; do
-      status=$(bluetoothctl info)
-      name=$(echo "$status" | rg Name | cut -f 2- -d ' ')
+      text="$running running, $stopped stopped, $created created"
 
-      if ! systemctl is-active --quiet docker; then
-          text='Docker not active'
-          class='docker-disabled'
+      if [[ $running -gt 0 ]]; then
+        class='active'
       else
-        if [[ $(docker ps -q) ]]; then
-          text="$name"
-          class='docker-connected'
-        else
-          text='No running containers'
-          class='docker-disconnected'
-        fi
+        class='inactive'
       fi
+    fi
 
-      echo '{"icon":"'""'","text":"'"$text"'","class":"'"$class"'"}'
+    echo '{"icon":"'""'","text":"'"$text"'","class":"'"$class"'"}'
 
-      sleep $SLEEP_INTERVAL
-    done
-  fi
+    sleep $SLEEP_INTERVAL
+  done
 }
 
 main $*

@@ -22,16 +22,3 @@
   font-size: $font-base;
   padding: 0.75rem;
 }
-
-.docker-connected {
-  background-color: $blue;
-  color: $crust;
-}
-
-.docker-disconnected {
-  color: $overlay2;
-}
-
-.docker-disabled {
-  background-color: $flamingo;
-}

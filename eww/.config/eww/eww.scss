@@ -32,7 +32,7 @@ $font-xl: 3rem;
 @import 'css/osd';
 @import 'css/control-panel';
 @import 'css/control-panel-tray';
-@import 'css/volume';
+@import 'css/modules';
 
 .bar {
   background-color: $bar-bg;
@@ -53,10 +53,6 @@ tooltip {
   }
 }
 
-.module {
-  margin: 0 20px;
-}
-
 .hour {
   padding-left: 1rem;
 }
@@ -75,19 +71,6 @@ tooltip {
   label {
     font-size: $font-base;
   }
-}
-
-.brightness-icon {
-  color: $polar;
-}
-
-.module-bluetooth,
-.module-docker {
-  font-size: $font-base;
-}
-
-.module-docker {
-  margin-right: 40px;
 }
 
 scale trough {

@@ -1,9 +1,9 @@
 (defwidget brightness-widget []
   (box
-    :class "module"
+    :class "module active"
     (eventbox
       :onscroll "echo {} | sed -e 's/down/-U 1/g' -e 's/up/-A 1/g' | xargs light"
       (label
         :text {brightness.icon}
-        :class "brightness-icon icon"
-        :tooltip "brightness ${round(brightness.level, 0)}%"))))
+        :tooltip "brightness ${round(brightness.level, 0)}%"
+      ))))

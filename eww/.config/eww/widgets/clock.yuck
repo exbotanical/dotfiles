@@ -5,7 +5,6 @@
     :onhover "${EWW_CMD} update date-reveal=true"
     :onhoverlost "${EWW_CMD} update date-reveal=false"
     (overlay
-      :class "module"
       (box
         :space-evenly false
         (label

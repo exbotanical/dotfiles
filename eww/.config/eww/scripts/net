@@ -20,12 +20,11 @@ main () {
       local essid=$(nmcli -t -f NAME connection show --active | head -n1 | sed 's/\"/\\"/g')
       local icon
       local level
-      local color
+      local class
 
       if [[ "$status" == 'disconnected' ]]; then
         icon='\ue1da'
-        color='#ff5555'
-        class=''
+        class='inactive'
       else
         level=$(awk -v n="$signal" 'BEGIN{print int((n-1)/20)}')
         if (( "$level" > 4 )); then
@@ -33,11 +32,10 @@ main () {
         fi
 
         icon=${ICONS[$level]}
-        color='#f8f8f2'
-        class='wifi-connected'
+        class='active wifi-connected'
       fi
 
-      echo '{"essid":"'"$essid"'","icon":"'"$icon"'","color":"'"$color"'","class":"'"$class"'"}'
+      echo '{"essid":"'"$essid"'","icon":"'"$icon"'","class":"'"$class"'"}'
 
       sleep $INTERVAL
     done

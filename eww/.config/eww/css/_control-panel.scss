@@ -210,6 +210,7 @@
   .battery-icon {
     font-size: $font-md;
     margin-top: 0.125rem;
+    margin-right: 1rem;
   }
 
   .battery-wattage {
@@ -217,7 +218,7 @@
   }
 
   .battery-status {
-    margin-left: -4rem;
+    margin-left: -3.5rem;
     color: $subtext0;
   }
 

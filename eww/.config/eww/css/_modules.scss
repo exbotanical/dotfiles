@@ -1,0 +1,16 @@
+.module {
+  margin: 0 20px;
+  font-size: $font-base;
+
+  &.inactive {
+    color: $overlay2;
+  }
+
+  &.disabled {
+    color: $flamingo;
+  }
+}
+
+.module-docker {
+  margin-right: 40px;
+}

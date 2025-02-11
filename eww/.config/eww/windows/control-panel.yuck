@@ -93,7 +93,6 @@
         :class "volume-slider-box"
         :space-evenly false
         (button
-          :class "volume-icon"
           :onclick "scripts/volume mute SINK"
         {volume.icon})
         (scale
