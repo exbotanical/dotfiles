@@ -1,9 +1,9 @@
 .PHONY: install install_osx install_al2 delete simulate test deps
 
-INSTALL_DIR  =./install
-ROOT_DIR  =root
-INCLUDE_DIRS =$(filter-out $(ROOT_DIR)/, $(wildcard */))
-AL2_HOME     =/local/home/$$USER
+INSTALL_DIR  := install
+ROOT_DIR     := root
+INCLUDE_DIRS := $(filter-out $(ROOT_DIR)/, $(wildcard */))
+AL2_HOME     := /local/home/$$USER
 
 install: deps
 	mkdir -p $$HOME/.local/bin
