@@ -159,10 +159,9 @@
 
   "[shellscript]": {},
 
-  "haskell.manageHLS": "PATH",
+  "haskell.manageHLS": "GHCup",
   "[haskell]": {
-    "editor.formatOnPaste": false,
-    "editor.formatOnSave": false
+    "editor.formatOnSave": true
   },
 
   "[css]": {
@@ -241,5 +240,6 @@
     "TESTSRCS",
     "vgaprintf"
   ],
-  "workbench.activityBar.location": "hidden"
+  "workbench.activityBar.location": "hidden",
+  "git.openRepositoryInParentFolders": "never"
 }

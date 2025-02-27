@@ -1,0 +1,48 @@
+:q
+:type escape 
+clearBit 33 0
+shiftL 32 1
+import Data.Bits 
+render (html_ "<title>" (p_ "<body>"))
+:load Html.hs 
+escape "<html>"
+:}
+   in concatMap escapeChar
+          _ -> [c]
+          '\'' -> "&#39;"
+          '"' -> "&quot;"
+          '&' -> "&amp;"
+          '>' -> "&gt;"
+          '<' -> "&lt;"
+        case c of
+  let escapeChar c =
+escape =
+escape :: String -> String
+:{
+escape c = \
+escape c = \
+escape :: String -> String
+   in concatMap escapeChar
+          _ -> [c]
+          '\'' -> "&#39;"
+          '"' -> "&quot;"
+          '&' -> "&amp;"
+          '>' -> "&gt;"
+          '<' -> "&lt;"
+        case c of
+  let escapeChar c =
+escape =
+escape :: String -> String
+map not [False, True]
+map True [True, False, False]
+1 : 2 : 3 : 4 : []
+1 : []
+putStrLn ("Hello, everybody!" ++ "fuuuuckkk")
+putStrLn "Hello, everybody!" ++ "fuuuuckkk"
+putStrLn "Hello, everybody!"
+take 100 (filter odd [1..200])
+take 100 (filter even [1..200])
+take 100 filter even [1..200]
+take 100 [1..200]
+take 2 (filter even [43..])
+take 10 (filter even [43..])
