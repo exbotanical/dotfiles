@@ -186,6 +186,7 @@ END
     alias setup='source $init_utils_lib'
 
     it 'enumerates the directory contents as a single line'
+      IFS=' '
       dir=$(mktemp -d)
       pushd "$dir"
       touch {a..z}

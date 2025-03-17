@@ -1,0 +1,8 @@
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get install -y git make vim bash curl socat jq stow
+
+RUN sh -c "`curl -L https://raw.githubusercontent.com/rylnd/shpec/master/install.sh`"
+
+WORKDIR /usr/app
+COPY . .

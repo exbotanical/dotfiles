@@ -1,4 +1,4 @@
-.PHONY: install install_osx install_al2 delete simulate test deps
+.PHONY: install install_osx install_al2 delete simulate unit_test deps
 
 INSTALL_DIR  := install
 ROOT_DIR     := root
@@ -20,7 +20,7 @@ install_osx: node_modules
 
 install_al2:
 	mkdir -p $(AL2_HOME)/.local/bin
-	stow --verbose 3 --target=$(AL2_HOME) --restow */
+	stow --verbose 3 --target=$(AL2_HOME) --restow $(INCLUDE_DIRS)
 	$(foreach file, $(wildcard $(INSTALL_DIR)/*), ./$(file))
 
 delete:
@@ -29,7 +29,7 @@ delete:
 simulate:
 	stow --verbose 3 --target=$$HOME --simulate */
 
-test:
+unit_test:
 	find . -path ./.git -prune -o -type f -print | bash -c "shpec $1"
 
 deps:

@@ -71,7 +71,6 @@ init::load_app? () {
 # list_dir lists the directory's contents without newlines
 init::list_dir () { (
   local items=()
-
   cd $1
   utils::globbing on
   items=( * )
