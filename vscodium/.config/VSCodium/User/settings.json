@@ -169,7 +169,8 @@
   },
 
   "[markdown]": {
-    "editor.wordWrap": "on"
+    "editor.wordWrap": "on",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "[html]": {
@@ -224,6 +225,7 @@
     "DEPSDIR",
     "EFLAGS",
     "ERRCODE",
+    "exbotanical",
     "gdtr",
     "Hubspot",
     "lgdt",
