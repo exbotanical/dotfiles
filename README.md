@@ -3,6 +3,7 @@
 This directory houses my configuration files. It's also home to probably the most intense bash setup ever.
 
 ## How it works
+
 Here's how it all works.
 
 First, I manage all dotfiles via [Gnu Stow](https://www.gnu.org/software/stow/). Stow allows one to manage all dotfiles from a single place, then symlink them to their respective locations. For example, all of my dotfiles are housed in a `dotfiles` directory under my home directory. Suppose I need my i3wm config file to reside at `~/.config/i3/config`. I would then structure this as `~/dotfiles/i3/.config/i3/config`. The top-level `i3` directory is simply nominal; everything therein specifies the filepath at which it will exist on the host system when I invoke `stow`.
@@ -10,16 +11,18 @@ First, I manage all dotfiles via [Gnu Stow](https://www.gnu.org/software/stow/).
 I use a Makefile to do this: `make install` will invoke `stow`. `make test` will, shockingly, run the unit tests.
 
 Other examples follow. As an exercise to the reader, try looking through the dotfiles directory for each of the following:
-* VSCodium config files must reside in `~/.config/VSCodium/User/*`.
-* X11 configurations reside in the home directory itself.
+
+- VSCodium config files must reside in `~/.config/VSCodium/User/*`.
+- X11 configurations reside in the home directory itself.
 
 As of 7/26/2024 my primary setup consists of:
-* desktop env: x11
-* window manager: i3wm
-* notifications daemon: dunst
-* toolbar: eww
-* shell: bash
-* terminal: alacritty
+
+- desktop env: x11
+- window manager: i3wm
+- notifications daemon: dunst
+- toolbar: eww
+- shell: bash
+- terminal: alacritty
 
 ## Bash Config Framework
 
@@ -30,21 +33,22 @@ I've taken and adapted a lot of ideas from various folks across the internet, bu
 The entrypoint for my Bash config resides in [init.bash](bash/.config/bash/init.bash), where we load in a [utility library](bash/.config/bash/lib/utils.bash) and all settings files. This means the utility library is accessible to all settings files; at the end of the init script, we remove all of the utility functions and temporary variables from the shell environment so as not to prevent pollution. The utilities allow us to easily append to the `PATH` (and prevent duplication therein, which is quite a common problem), toggle globbing, temporarily change `IFS`, etc.
 
 We load several files:
-* [`alias.bash`](bash/.config/bash/src/alias.bash) - global aliases that are non-program specific
-* [`cmd.bash`](bash/.config/bash/src/cmd.bash) - global commands
-* [`env.bash`](bash/.config/bash/src/env.bash) - global environment settings
-* [`interative.bash`](bash/.config/bash/src/interative.bash) - interactive mode settings. These are loaded every time a new shell is spawned.
-* [`login.bash`](bash/.config/bash/src/login.bash) - login settings. These are loaded once, when first initializing the machine.
+
+- [`alias.bash`](bash/.config/bash/src/alias.bash) - global aliases that are non-program specific
+- [`cmd.bash`](bash/.config/bash/src/cmd.bash) - global commands
+- [`env.bash`](bash/.config/bash/src/env.bash) - global environment settings
+- [`interative.bash`](bash/.config/bash/src/interactive.bash) - interactive mode settings. These are loaded every time a new shell is spawned.
+- [`login.bash`](bash/.config/bash/src/login.bash) - login settings. These are loaded once, when first initializing the machine.
 
 There's also a directory called [`apps`](bash/.config/bash/apps). This houses the same 5 configuration files seen above but in the context of a specific application. For example, `git` houses configurations that explicitly pertain to and rely on `git`. In `init.bash`, there's logic that determines whether each program in the `apps` directory actually exists on the machine. If it does, it loads the configuration files; if it doesn't, nothing happens. There's an escape hatch here - `detect.bash`, which can override the app loader and tell it to explicitly load or not load the configurations based on the return code in the file.
 
-Thus, `:` inside `detect.bash` (e.g. [here](bash/.config/bash/apps/rust/detect.bash)) means we will *always* load that app's configurations. In other cases, we may check the host OS or [specific files](bash/.config/bash/apps/go/detect.bash) and figure it out from there.
+Thus, `:` inside `detect.bash` (e.g. [here](bash/.config/bash/apps/rust/detect.bash)) means we will _always_ load that app's configurations. In other cases, we may check the host OS or [specific files](bash/.config/bash/apps/go/detect.bash) and figure it out from there.
 
 Last, the [config](bash/.config/bash/config) directory houses config for the Bash setup logic - things like feature flags.
 
 ### Testing
 
-The Bash config loader is fully unit-tested using `shpec`. One can find the tests [here](bash/t).
+The Bash config loader is fully unit-tested using `shpec`. One can find the tests [here](bash/t). The tests are also run as part of a CI workflow in this GitHub repository.
 
 ### Scripts
 
