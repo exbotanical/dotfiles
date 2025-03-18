@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #desc           :Install brew and necessary formulae and casks
-#author         :Matthew Zito (mtzito@)
+#author         :Matthew Zito (@mtzito)
 #===============================================================================
 
 install_brew () {
@@ -95,7 +95,7 @@ BREW_CASKS=(
   'alacritty'
   'intellij-idea-ce'
   'font-fira-code'
-  'vscodium',
+  'vscodium'
   'font-hack-nerd-font'
   'aws/tap'
 )
