@@ -36,26 +36,28 @@
   },
   {
     "key": "ctrl+e",
-    "command": "isLinux && -workbench.action.quickOpen"
+    "command": "workbench.action.quickOpen",
+    "when": "isLinux"
   },
   {
     "key": "ctrl+shift+d",
-    "command": "isLinux && dockerContainers.focus"
+    "command": "dockerContainers.focus",
+    "when": "isLinux"
   },
   {
     "key": "ctrl+shift+f",
-    "command": "-vue3snippets.format",
+    "command": "vue3snippets.format",
     "when": "isLinux && editorTextFocus && !editorReadonly && editorLangId == 'vue'"
   },
   /* Jump word-for-word */
   {
     "key": "ctrl+left",
-    "command": "-cursorWordLeft",
+    "command": "cursorWordLeft",
     "when": "isMac && textInputFocus"
   },
   {
     "key": "ctrl+right",
-    "command": "-cursorWordRight",
+    "command": "cursorWordRight",
     "when": "isMac && textInputFocus"
   },
   {
@@ -70,7 +72,7 @@
   },
   {
     "key": "ctrl+shift+alt+right",
-    "command": "-cursorWordPartRightSelect",
+    "command": "cursorWordPartRightSelect",
     "when": "isMac && textInputFocus"
   },
   {
@@ -80,7 +82,7 @@
   },
   {
     "key": "ctrl+shift+alt+left",
-    "command": "-cursorWordPartLeftSelect",
+    "command": "cursorWordPartLeftSelect",
     "when": "isMac && textInputFocus"
   },
   {
@@ -90,7 +92,7 @@
   },
   {
     "key": "ctrl+alt+right",
-    "command": "-cursorWordPartRight",
+    "command": "cursorWordPartRight",
     "when": "isMac && textInputFocus"
   },
   {
@@ -100,7 +102,7 @@
   },
   {
     "key": "ctrl+alt+left",
-    "command": "-cursorWordPartLeft",
+    "command": "cursorWordPartLeft",
     "when": "isMac && textInputFocus"
   },
   {
@@ -110,7 +112,7 @@
   },
   {
     "key": "alt+right",
-    "command": "-cursorWordEndRight",
+    "command": "cursorWordEndRight",
     "when": "isMac && textInputFocus"
   },
   {
@@ -124,7 +126,7 @@
   },
   {
     "key": "alt+up",
-    "command": "-editor.action.moveLinesUpAction",
+    "command": "editor.action.moveLinesUpAction",
     "when": "isMac && editorTextFocus && !editorReadonly"
   },
   {
@@ -134,7 +136,7 @@
   },
   {
     "key": "alt+down",
-    "command": "-editor.action.moveLinesDownAction",
+    "command": "editor.action.moveLinesDownAction",
     "when": "isMac && editorTextFocus && !editorReadonly"
   },
   {
@@ -148,5 +150,9 @@
   {
     "key": "ctrl+shift+m",
     "command": "workbench.action.toggleMaximizedPanel"
+  },
+  {
+    "key": "ctrl+shift+r",
+    "command": "workbench.files.action.collapseExplorerFolders"
   }
 ]

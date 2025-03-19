@@ -230,4 +230,7 @@ for app in 'Activity Monitor' \
 	killall "${app}" &> /dev/null
 done
 
+# Needed for Vim backup files - else will need to use `wq!` when writing git commit messages, etc
+mkdir -p $HOME/.cache/vim
+
 echo 'Done bootstrapping osx env.'

@@ -4,6 +4,7 @@
   "type": "module",
   "dependencies": {
     "@exbotanical/prettier-config": "^1.0.1",
+    "prettier": "^3.5.3",
     "prettier-plugin-nginx": "^1.0.3",
     "prettier-plugin-properties": "^0.3.0",
     "prettier-plugin-solidity": "^1.4.2",

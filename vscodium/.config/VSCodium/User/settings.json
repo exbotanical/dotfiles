@@ -108,10 +108,7 @@
     "editor.semanticHighlighting.enabled": true
   },
 
-  "C_Cpp.default.includePath": [
-    "${workspaceFolder}/**",
-    "${workspaceFolder}/deps"
-  ],
+  "C_Cpp.default.includePath": ["${workspaceFolder}/**", "${workspaceFolder}/deps"],
   "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google }",
   "[cpp]": {},
 
@@ -208,9 +205,7 @@
   "doxdocgen.generic.dateFormat": "DD/MM/YYYY",
   "doxdocgen.generic.briefTemplate": "{text}",
   "python.defaultInterpreterPath": "/usr/bin/python",
-  "workbench.colorCustomizations": {
-    "list.errorForeground": "#68a274"
-  },
+
   "window.zoomLevel": 1,
   "prisma.showPrismaDataPlatformNotification": false,
   "telemetry.telemetryLevel": "off",

@@ -1,28 +1,17 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
   "palette": {
-    // "bg_base": "#44475A",
-    // "orange": "#FFB86C",
-    // "blue": "#7cd3e7",
-    // "text": "#282A36",
-    // "green": "#50FA7B",
-    // "pink": "#fac1dc",
-    // "red": "#FF5555",
-    // "purple": "#6272A4",
-    // "yellow": "#F1FA8C",
-    // "white": "#F8F8F2"
-
-    "bg_base": "#e67e80",
+    "bg_base": "#eca5a5",
     "cyan": "#7fbbb3",
-    "orange": "#dbbc7f",
-    "blue": "#7fbbb3",
+    "bg_modified": "#fddf9f",
+    "bg_filepath": "#b7cdd0",
     "text": "#3B4252",
-    "green": "#83c092",
-    "pink": "#a7c080",
-    "snow": "#2d353b",
-    "red": "#e67e80",
-    "purple": "#a78fa2",
-    "yellow": "#a7c080"
+    "bg_stable": "#a3f9b8",
+    "bg_unstable": "#e67e80",
+    "arrow_1": "#b6fe42",
+
+    "arrow_2": "#ff7f81",
+    "arrow_3": "#88ecf9"
   },
   "blocks": [
     {
@@ -43,7 +32,7 @@
           "type": "os"
         },
         {
-          "background": "p:blue",
+          "background": "p:bg_filepath",
           "foreground": "p:text",
           "properties": {
             "max_depth": 3,
@@ -58,13 +47,13 @@
           "type": "path"
         },
         {
-          "background": "p:green",
+          "background": "p:bg_stable",
           "foreground": "p:text",
           "background_templates": [
-            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:orange{{ end }}",
-            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:red{{ end }}",
-            "{{ if gt .Ahead 0 }}p:green{{ end }}",
-            "{{ if gt .Behind 0 }}p:green{{ end }}"
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:bg_modified{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:bg_unstable{{ end }}",
+            "{{ if gt .Ahead 0 }}p:bg_stable{{ end }}",
+            "{{ if gt .Behind 0 }}p:bg_stable{{ end }}"
           ],
           "properties": {
             "branch_max_length": 25,
@@ -96,7 +85,7 @@
           "invert_powerline": true,
           "style": "powerline",
           "powerline_symbol": "\ue0b2",
-          "background_templates": ["{{ if gt .Code 0 }}p:red{{ end }}"],
+          "background_templates": ["{{ if gt .Code 0 }}p:bg_unstable{{ end }}"],
           "template": "<p:text></> \uf469 ",
           "type": "exit"
         },
@@ -153,9 +142,9 @@
       "newline": true,
       "segments": [
         {
-          "foreground": "p:pink",
+          "foreground": "p:bg_base",
           "style": "plain",
-          "template": "\u2570\u2500 <b>{{ .UserName }}</b> <p:yellow>\u276f</><p:red>\u276f</><p:blue>\u276f</>",
+          "template": "\u2570\u2500 <b>{{ .UserName }}</b> <p:arrow_1>\u276f</><p:arrow_2>\u276f</><p:arrow_3>\u276f</>",
           "type": "text"
         }
       ],
