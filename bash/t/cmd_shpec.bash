@@ -1,6 +1,5 @@
 RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
-echo $RootDir
 source "$RootDir/shpec_util.bash"
 
 source "$RootDir/../.config/bash/src/cmd.bash"

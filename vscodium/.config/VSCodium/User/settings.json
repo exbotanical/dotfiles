@@ -35,7 +35,9 @@
     "*.bash": "shellscript",
     "*.S": "gas",
     "*.asm": "asm-intel-x86-generic",
-    ".vimrc": "viml"
+    ".vimrc": "viml",
+    "*.rasi": "rasi",
+    "**/i3/config": "i3"
   },
 
   "liveServer.settings.donotShowInfoMsg": true,

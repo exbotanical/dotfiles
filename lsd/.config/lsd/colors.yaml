@@ -1,9 +1,3 @@
-#  Dracula
-#  ┬  ┌─┐┌┬┐
-#  │  └─┐ ││
-#  ┴─┘└─┘─┴┘
-# urrick hunt
-
 user: 159 # cyan
 group: 231 # foreground
 permission:

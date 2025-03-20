@@ -1,8 +1,8 @@
-@import "themes/dracula"
+@import 'themes/ghost';
 
 window {
   background-color: @background-color;
-  transparency: "real";
+  transparency: 'real';
   border: 0;
   border-radius: 6;
   border-color: @bordercolor;
@@ -126,22 +126,22 @@ prompt {
 }
 
 inputbar {
-  children:  [
-    prompt,
+  children:
+    [ prompt,
     textbox-prompt-colon,
     entry,
-    case-indicator
-  ];
+    case-indicator];
 }
 
 textbox-prompt-colon {
   expand: false;
-  str:  " >";
+  str: ' >';
   margin: 0px 0.3em 0em 0em;
   text-color: @foreground;
 }
 
-element-text, element-icon {
+element-text,
+element-icon {
   background-color: inherit;
   text-color: inherit;
 }
