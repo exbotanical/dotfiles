@@ -1,4 +1,4 @@
-@import 'themes/ghost';
+@import 'themes/ghost'
 
 window {
   background-color: @background-color;

@@ -35,11 +35,6 @@
     "when": "isLinux && editorTextFocus"
   },
   {
-    "key": "ctrl+e",
-    "command": "workbench.action.quickOpen",
-    "when": "isLinux"
-  },
-  {
     "key": "ctrl+shift+d",
     "command": "dockerContainers.focus",
     "when": "isLinux"
@@ -154,5 +149,9 @@
   {
     "key": "ctrl+shift+r",
     "command": "workbench.files.action.collapseExplorerFolders"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "-workbench.action.quickOpen"
   }
 ]

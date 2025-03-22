@@ -20,7 +20,7 @@
       "segments": [
         {
           "background": "p:bg_base",
-          "foreground": "p:white",
+          "foreground": "p:text",
           "properties": {
             "arch": "\uf303",
             "linux": "\ue712",
@@ -77,7 +77,7 @@
       "segments": [
         {
           "background": "p:bg_base",
-          "foreground": "p:white",
+          "foreground": "p:text",
           "properties": {
             "style": "austin",
             "always_enabled": true
