@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y git make bash curl stow
+          sudo apt-get install -y git make bash curl stow i3
           sh -c "`curl -L https://raw.githubusercontent.com/rylnd/shpec/master/install.sh`"
 
       - name: Unit Tests

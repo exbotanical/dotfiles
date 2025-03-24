@@ -1,6 +1,6 @@
 RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
-source "$RootDir/shpec_util.bash"
+source "$RootDir/../../.test/shpec_util.bash"
 
 init_utils_lib="$RootDir/../.config/bash/lib/init_utils.bash"
 

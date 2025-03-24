@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-APP_NAME='dotfiles'
+RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
+AppName='dotfiles'
 
-docker container ls -a | grep $APP_NAME | awk '{ print $1 }' | xargs docker rm
-docker image ls | grep $APP_NAME | awk '{ print $3 }' | xargs docker rmi
-docker build -f Dockerfile.dev -t $APP_NAME .
-docker run -it --entrypoint /bin/bash -v $(pwd):/usr/app $APP_NAME
+docker container ls -a | grep $AppName | awk '{ print $1 }' | xargs docker rm
+docker image ls | grep $AppName | awk '{ print $3 }' | xargs docker rmi
+docker build -f $RootDir/Dockerfile.dev -t $AppName .
+docker run -it --entrypoint /bin/bash -v $(pwd):/usr/app $AppName

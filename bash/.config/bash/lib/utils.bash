@@ -125,6 +125,11 @@ utils::macos? () {
   [[ "$OSTYPE" == "darwin"* ]]
 }
 
+# linux? returns true if the host os is linux
+utils::linux? () {
+  [[ "$OSTYPE" == 'linux-gnu' ]]
+}
+
 # vscodium? returns true if the current shell is being emulated inside of vscodium's terminal
 utils::vscodium? () {
   [[ "$TERM_PROGRAM" == 'vscode' ]]

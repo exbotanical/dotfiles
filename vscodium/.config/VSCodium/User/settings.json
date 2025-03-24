@@ -156,7 +156,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
-  "[shellscript]": {},
+  "[shellscript]": {
+    // "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
 
   "haskell.manageHLS": "GHCup",
   "[haskell]": {

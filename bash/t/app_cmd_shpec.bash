@@ -1,7 +1,7 @@
 RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 APP_DIR="$RootDir/../.config/bash/apps"
 
-source "$RootDir/shpec_util.bash"
+source "$RootDir/../../.test/shpec_util.bash"
 
 describe 'cmd'
   describe 'base64'
