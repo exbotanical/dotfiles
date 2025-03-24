@@ -153,5 +153,15 @@
   {
     "key": "ctrl+e",
     "command": "-workbench.action.quickOpen"
+  },
+  {
+    "key": "cmd+left",
+    "command": "workbench.action.terminal.focusPrevious",
+    "when": "isMac && terminalFocus && terminalHasBeenCreated && !terminalEditorFocus"
+  },
+  {
+    "key": "cmd+right",
+    "command": "workbench.action.terminal.focusNext",
+    "when": "isMac && terminalFocus && terminalHasBeenCreated && !terminalEditorFocus"
   }
 ]

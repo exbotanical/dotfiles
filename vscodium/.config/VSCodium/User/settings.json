@@ -241,6 +241,5 @@
     "TESTSRCS",
     "vgaprintf"
   ],
-  "workbench.activityBar.location": "hidden",
-  "git.openRepositoryInParentFolders": "never"
+  "workbench.activityBar.location": "hidden"
 }
