@@ -132,3 +132,8 @@ manopt () {
   [[ $opt == -* ]] || { (( ${#opt} == 1 )) && opt="-$opt" || opt="--$opt"; }
   man --warnings=\!w "$cmd" | col -b | awk -v opt="$opt" -v RS= '$0 ~ "(^|,)[[:blank:]]+" opt "([[:punct:][:space:]]|$)"'
 }
+
+# to_snake_case converts a given string to lower and snake case
+to_snake_case() {
+  echo "$1" | tr '[:upper:]' '[:lower:]' | tr ' ' '_'
+}
