@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 IFS=$'\n'
 set -o noglob
 
