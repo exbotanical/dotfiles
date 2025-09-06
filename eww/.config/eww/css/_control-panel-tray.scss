@@ -12,10 +12,10 @@
 
 .circular-progress {
   background-color: $bg1;
-  margin: 0 0.3rem;
-  padding: 2px;
+  // Space between circles in tray
+  margin: 0 0.5rem;
 }
 
 .tray-circle {
-  font-size: $font-base;
+  font-size: $font-lg;
 }

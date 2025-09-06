@@ -22,11 +22,6 @@ source "$ConfigDir/features.bash"
 
 init::feature_enabled? DebugMode && init::enable_debug
 
-utils::macos? && {
-  init::debug 'In macos env; adding homebrew bin to PATH'
-  init::append_path '/opt/homebrew/bin'
-}
-
 # Turn off expansion i.e. no need to quote vars from here onward, until we turn it back on
 utils::splitspace off
 utils::globbing off

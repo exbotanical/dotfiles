@@ -4,7 +4,7 @@ $font-xs: 1rem;
 $font-sm: 1.25rem;
 $font-base: 1.5rem;
 $font-md: 2rem;
-$font-lg: 2.5rem;
+$font-lg: 2.25rem;
 $font-xl: 3rem;
 
 @mixin rounding {
@@ -13,7 +13,7 @@ $font-xl: 3rem;
 
 @mixin window {
   background-color: $bg;
-  margin-top: 2.175rem;
+  margin-top: 2rem;
   border: 1px solid $border;
   box-shadow: 0 2px 3px $shadow;
   border-radius: 0 0 1rem 1rem;
@@ -23,7 +23,7 @@ $font-xl: 3rem;
   all: unset;
   transition: 200ms ease;
   font-family: Roboto, sans-serif;
-  font-size: $font-base;
+  font-size: $font-lg;
 }
 
 @import 'css/calendar';
@@ -38,7 +38,7 @@ $font-xl: 3rem;
   color: $fg;
 
   label {
-    font-size: $font-base;
+    font-size: $font-md;
   }
 }
 
@@ -48,13 +48,14 @@ tooltip {
   border-radius: 8px;
 
   label {
-    font-size: $font-xs;
+    margin: 0 1rem;
+    font-size: $font-base;
   }
 }
 
 .time {
   label {
-    font-size: $font-md;
+    font-size: $font-lg;
   }
 }
 
@@ -74,7 +75,7 @@ tooltip {
   background: $bg;
 
   label {
-    font-size: $font-md;
+    font-size: $font-lg;
   }
 }
 
@@ -92,8 +93,10 @@ scale trough {
 
 .workspaces {
   label {
-    font-size: 1.75rem;
-    margin: -0.1rem 0;
+    // Workspace dot size
+    font-size: $font-lg;
+    // Space between workspace dots
+    margin: -0.1rem 0.1rem;
     margin-bottom: 0.15rem;
   }
 }

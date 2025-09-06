@@ -11,7 +11,7 @@
   }
 
   .separator {
-    font-size: $font-xs;
+    font-size: $font-lg;
   }
 
   .top-row {
@@ -19,7 +19,7 @@
     margin: 1.2rem 1.2rem 0rem 1.2rem;
 
     .time {
-      font-size: $font-xl;
+      font-size: 4rem;
       font-weight: bold;
     }
 
@@ -27,7 +27,7 @@
       margin: 1rem;
 
       label {
-        font-size: $font-base;
+        font-size: $font-md;
       }
 
       .date {
@@ -46,24 +46,24 @@
     margin: 0.8rem 0.6rem;
 
     label {
-      font-size: $font-sm;
+      font-size: $font-base;
     }
 
     .box {
       @include rounding;
       @include element-bg;
-      margin: 0.4rem;
-      min-width: 9rem;
+      margin: 0.6rem;
+      min-width: 11rem;
       border: 1px solid transparent;
       transition: all 200ms ease;
 
       button {
         @include rounding;
         padding: 0.8rem;
-        min-height: 2.5rem;
+        min-height: 4rem;
 
         label {
-          font-size: $font-md;
+          font-size: $font-lg;
         }
 
         &:hover {
@@ -74,7 +74,7 @@
 
     .box + label {
       margin: 0 0.8rem;
-      font-size: $font-xs;
+      font-size: $font-sm;
     }
 
     .airplane-connected {
@@ -111,14 +111,13 @@
     @include rounding;
     @include element-bg;
     margin: 0rem 1rem;
-    padding: 1rem 1.5rem;
+    padding: 1rem 1rem;
     border: 1px solid $overlay0;
 
     scale {
-      min-width: 24rem;
+      min-width: 32rem;
 
       trough {
-        margin-right: 0;
         border-radius: 8px;
       }
     }
@@ -156,12 +155,6 @@
     color: $text;
   }
 
-  .sys-text-mem,
-  .sys-text-cpu {
-    font-size: $font-sm;
-    font-weight: bold;
-  }
-
   .sys-icon-cpu,
   .sys-icon-mem {
     font-size: $font-xl;
@@ -170,15 +163,22 @@
 
   .system-info-text {
     label {
-      font-size: $font-sm;
+      font-size: $font-xl;
     }
   }
 
   .sys-mem,
   .sys-cpu {
     background-color: $bg;
-    min-width: 80px;
-    min-height: 80px;
+  }
+  .sys-icon-mem,
+  .sys-text-mem,
+  .sys-mem,
+  .sys-icon-cpu,
+  .sys-text-cpu,
+  .sys-cpu {
+    // RAM/CPU circle size
+    min-width: 1rem;
   }
 
   .sys-icon-mem,
@@ -211,36 +211,9 @@
       margin-top: 0.3rem;
 
       label {
-        font-size: $font-sm;
+        // RAM/CPU font size
+        font-size: $font-base;
       }
     }
-  }
-
-  .battery-icon {
-    font-size: $font-md;
-    margin-top: 0.125rem;
-    margin-right: 0.8rem;
-  }
-
-  .battery-wattage {
-    color: $mauve;
-  }
-
-  .battery-status {
-    margin-left: 0.5rem;
-    color: $subtext0;
-  }
-
-  .battery-text {
-    margin-left: 0.3rem;
-    font-weight: 500;
-  }
-
-  .arch-icon {
-    margin-top: 0.125rem;
-  }
-
-  .arch-status {
-    margin-left: 0.5rem;
   }
 }

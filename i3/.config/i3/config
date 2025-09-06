@@ -86,7 +86,7 @@ bindsym $MOD+Shift+r      restart
 bindsym $MOD+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # Lock i3
-bindsym $MOD+Shift+x exec $CONFIG_DIR/i3/lock
+bindsym $MOD+Shift+l exec $CONFIG_DIR/i3/lock
 
 # Use Mouse+$MOD to drag floating windows to their wanted position
 floating_modifier $MOD
@@ -183,12 +183,6 @@ exec --no-startup-id i3-msg 'workspace $ws1; exec /usr/bin/brave'
 
 ### End Workspaces ### }}}
 
-bindsym $MOD+Shift+s   layout splitv;\
-                       move left;\
-                       resize grow right 20 px or 20 ppt;\
-                       split v;\
-                       layout stacking
-
 ### Resize {{{
 mode "resize" {
   # These bindings trigger as soon as you enter the resize mode
@@ -213,7 +207,7 @@ bindsym $MOD+r mode "resize"
 
 ### Base UI {{{
 # base font
-font pango:$FONT Medium 11
+font pango:$FONT Medium 12
 
 # class                 border      backgr.     text        split
 client.focused          $GREEN     $GREEN       $BLACK      $RED

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-declare VOL_ICONS=('' '' '')
+declare VOL_ICONS=('󰸈' '󰖀' '󰕾')
 SOURCE='SOURCE'
 SINK='SINK'
 
@@ -71,7 +71,7 @@ main () {
     if [[ "$(is_muted "$SINK")" == 1 ]]; then
       icon="${VOL_ICONS[$lvl]}"
     else
-      icon=""
+      icon=${VOL_ICONS[0]}
     fi
     echo '{ "icon": "'"$icon"'", "percent": "'"$(get_vol "$SINK")"'", "microphone": "'"$(get_vol "$SOURCE")"'" }'
 
@@ -81,7 +81,7 @@ main () {
       if [[ "$(is_muted "$SINK")" == 1 ]]; then
         icon="${VOL_ICONS[$lvl]}"
       else
-        icon=""
+        icon=${VOL_ICONS[0]}
       fi
 
       echo '{"icon":"'"$icon"'","percent":"'"$(get_vol "$SINK")"'","microphone":"'"$(get_vol "$SOURCE")"'"}'

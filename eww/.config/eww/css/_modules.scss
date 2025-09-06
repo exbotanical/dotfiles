@@ -1,11 +1,13 @@
 .module {
   margin: 0 8px;
-  padding: 4px 6px;
+  padding: 4px 12px;
   font-size: $font-base;
   min-height: 26px;
 
   label {
-    padding: 2px 4px;
+    // Space between tray icons
+    padding: 2px 18px;
+    // Tray circle size
     min-width: 20px;
     min-height: 20px;
   }
@@ -20,7 +22,8 @@
 }
 
 .module-docker {
-  margin-right: 20px;
+  // Space between tray circles and other icons
+  margin-right: 40px;
 }
 
 .right-section {

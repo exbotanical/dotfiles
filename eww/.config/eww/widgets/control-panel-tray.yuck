@@ -7,10 +7,11 @@
         :value "${EWW_CPU.avg}"
         :class "circular-progress cpubar"
         :thickness {bar_circle_thickness}
+        
         (box
           :tooltip "using ${round(EWW_CPU.avg,0)}% cpu"
           (label :class "tray-circle" :text "")
-))
+        ))
       
       (circular-progress
         :value {memory.percentage}
@@ -19,15 +20,15 @@
         (box
           :tooltip "using ${round(memory.percentage,0)}% ram"
           (label :class "tray-circle" :text "")
-))
+        ))
       
       (circular-progress
-        :value "${EWW_BATTERY["BAT0"].capacity}"
+        :value "${EWW_BATTERY["BAT1"].capacity}"
         :class "circular-progress batbar"
         :style "color: ${battery.color};"
         :thickness {bar_circle_thickness}
         (box
-          :tooltip "battery at ${EWW_BATTERY["BAT0"].capacity}%"
+          :tooltip "battery at ${EWW_BATTERY["BAT1"].capacity}%"
           (label :class "tray-circle" :text "")
-))))
+        ))))
 )

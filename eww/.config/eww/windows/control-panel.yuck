@@ -181,7 +181,7 @@
   :wm-ignore true
   :geometry (geometry
     :x "0"
-    :y "10"
+    :y "32"
     :width "0%"
     :height "0%"
   :anchor "right top")
