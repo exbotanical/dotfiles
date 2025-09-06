@@ -2,12 +2,11 @@
 
 INTERVAL=3
 declare ICONS=(
-  ''
-  ''
-  #''
-  ''
-  ''
-  ''
+  '󰤮'
+  '󰤟'
+  '󰤢'
+  '󰤥'
+  '󰤨'
 )
 
 main () {
@@ -23,7 +22,7 @@ main () {
       local class
 
       if [[ "$status" == 'disconnected' ]]; then
-        icon='\ue1da'
+        icon=${ICONS[0]}
         class='inactive'
       else
         level=$(awk -v n="$signal" 'BEGIN{print int((n-1)/20)}')
