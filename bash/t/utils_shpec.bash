@@ -1,12 +1,12 @@
 RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
-source "$RootDir/../../.test/shpec_util.bash"
+source "$RootDir/../../.test/shpec_utils.bash"
 
-support_lib="$RootDir/../.config/bash/lib/utils.bash"
+UtilsLib="$RootDir/../.config/bash/lib/utils.bash"
 
-source "$support_lib"
+source "$UtilsLib"
 
-describe 'support'
+describe 'utils'
   describe 'interactive?'
     it 'returns false because these tests are not in an interactive shell'
       utils::interactive?
@@ -17,7 +17,7 @@ describe 'support'
 
   describe 'sourced?'
     # shellcheck disable=SC2154
-    alias setup='file=$(mktemp) || return; printf '\''source "%s"\nutils::sourced?'\'' "$support_lib" > "$file"'
+    alias setup='file=$(mktemp) || return; printf '\''source "%s"\nutils::sourced?'\'' "$UtilsLib" > "$file"'
     alias teardown='rm "$file"'
 
     it 'returns true when in a file being sourced'
@@ -203,7 +203,7 @@ describe 'support'
       set -- $3
       echo "$1"
       # TODO: fix, where indentation changes by loc
-      assert equal 'support_shpec.bash' "$(basename $1)"
+      assert equal 'utils_shpec.bash' "$(basename $1)"
     ti
 
     it "prints the line number"
@@ -282,6 +282,41 @@ describe 'support'
       file=$(mktemp)
       utils::dir? $file
       assert unequal 0 $?
+    ti
+  end_describe
+
+  describe 'rmdir_exists'
+    it 'removes a directory that exists and returns success'
+      test_dir=$(mktemp -d)
+      utils::rmdir_exists "$test_dir"
+      assert equal 0 $?
+      [[ ! -d "$test_dir" ]]
+      assert equal 0 $?
+    ti
+
+    it 'returns failure when directory does not exist'
+      nonexistent_dir="/tmp/nonexistent_$(date +%s)"
+      utils::rmdir_exists "$nonexistent_dir"
+      assert equal 1 $?
+    ti
+
+    it 'returns failure for a file (only works on directories)'
+      test_file=$(mktemp)
+      utils::rmdir_exists "$test_file"
+      assert equal 1 $?
+      [[ -f "$test_file" ]]
+      assert equal 0 $?
+      rm "$test_file"
+    ti
+
+    it 'returns failure for empty argument'
+      utils::rmdir_exists ""
+      assert equal 1 $?
+    ti
+
+    it 'returns failure for no argument'
+      utils::rmdir_exists
+      assert equal 1 $?
     ti
   end_describe
 end_describe

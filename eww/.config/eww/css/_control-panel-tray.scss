@@ -12,13 +12,10 @@
 
 .circular-progress {
   background-color: $bg1;
+  margin: 0 0.3rem;
+  padding: 2px;
 }
 
-.circular-progress {
-  margin: 0 0.2rem;
-}
-
-.icon-text {
+.tray-circle {
   font-size: $font-base;
-  padding: 0.75rem;
 }

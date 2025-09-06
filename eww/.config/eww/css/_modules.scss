@@ -1,6 +1,14 @@
 .module {
-  margin: 0 20px;
+  margin: 0 8px;
+  padding: 4px 6px;
   font-size: $font-base;
+  min-height: 26px;
+
+  label {
+    padding: 2px 4px;
+    min-width: 20px;
+    min-height: 20px;
+  }
 
   &.inactive {
     color: $overlay2;
@@ -12,5 +20,14 @@
 }
 
 .module-docker {
-  margin-right: 40px;
+  margin-right: 20px;
+}
+
+.right-section {
+  padding-right: 8px;
+}
+
+.system-tray {
+  margin-right: 8px;
+  padding: 0 4px;
 }

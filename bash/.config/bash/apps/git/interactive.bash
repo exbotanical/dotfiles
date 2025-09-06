@@ -1,4 +1,4 @@
-GIT_COMPLETIONS_FILE="$HOME/.git-completion.bash"
+GIT_COMPLETIONS_FILE='/usr/share/bash-completion/completions/git'
 
 EphemeralVars+=( GIT_COMPLETIONS_FILE )
 [[ -f "$GIT_COMPLETIONS_FILE" ]] && {

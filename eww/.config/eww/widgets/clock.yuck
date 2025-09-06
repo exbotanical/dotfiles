@@ -7,6 +7,7 @@
     (overlay
       (box
         :space-evenly false
+        :class "time"
         (label
           :text {time.hour}
         :class "hour")
@@ -15,10 +16,12 @@
         :text "")
         (label
           :text {time.minute}
-        :class "minute"))
+        :class "minute")
+)
       (revealer
         :reveal date-reveal
         (button
           :class "date"
           :onclick "${EWW_CMD} open --toggle calendar-window"
-        {time.date})))))
+        {time.date})
+))))

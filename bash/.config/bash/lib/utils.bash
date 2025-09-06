@@ -120,11 +120,6 @@ utils::dir? () {
   [[ -d $1 ]]
 }
 
-# macos? returns true if the host os is macos
-utils::macos? () {
-  [[ "$OSTYPE" == "darwin"* ]]
-}
-
 # linux? returns true if the host os is linux
 utils::linux? () {
   [[ "$OSTYPE" == 'linux-gnu' ]]
@@ -133,4 +128,8 @@ utils::linux? () {
 # vscodium? returns true if the current shell is being emulated inside of vscodium's terminal
 utils::vscodium? () {
   [[ "$TERM_PROGRAM" == 'vscode' ]]
+}
+
+utils::rmdir_exists () {
+  utils::dir? $1 && rm -rf $1
 }

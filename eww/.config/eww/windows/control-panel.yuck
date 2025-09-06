@@ -19,7 +19,9 @@
         :text {time.date})
         (label
           :class "day"
-        :text {time.day})))
+        :text {time.day})
+      )
+    )
     
     ; Wireless Conn
     (centerbox
@@ -39,11 +41,13 @@
           :text "│")
           (button
             :onclick "${EWW_CMD} close control-panel-window && nm-connection-editor &"
-          ""))
+          "󰒓")
+        )
         (label
           :text {net.essid}
           :xalign 0.5
-        :limit-width 15))
+        :limit-width 15)
+      )
       
       ; Bluetooth
       (box
@@ -61,7 +65,8 @@
           :text "│")
           (button
             :onclick "${EWW_CMD} close control-panel-window && blueman-manager &"
-          ""))
+          "󰒓")
+        )
         (label
           :text {bluetooth.text}
           :xalign 0.5
@@ -78,11 +83,13 @@
           :class "box ${airplane.class}"
           (button
             :onclick "scripts/airplane toggle"
-          {airplane.icon}))
+          {airplane.icon})
+        )
         (label
           :text "Airplane Mode"
           :xalign 0.5
-        :limit-width 16))
+        :limit-width 16)
+      )
     )
     
     ; Volume and Brightness Controls
@@ -99,7 +106,8 @@
           :class "slider"
           :value {volume.percent}
           :tooltip "volume at ${volume.percent}%"
-        :onchange "scripts/volume set_vol SINK {}"))
+        :onchange "scripts/volume set_vol SINK {}")
+      )
       (box
         :class "brightness-slider-box"
         :space-evenly false
@@ -108,70 +116,64 @@
         (scale
           :value {brightness.level}
           :marks true
-        :onchange "light -S {}")))
+        :onchange "light -S {}")
+      )
+    )
     
+    ; CPU and Memory Cards - Side by Side
     (box
-      :class "system-info-box"
-      :orientation "v"
+      :class "system-cards-row"
+      :space-evenly true
+      ; CPU Card
       (box
-        ; CPU Usage
-        (box
-          :class "sys-box"
-          :space-evenly false
-          :halign "start"
-          (circular-progress
-            :value "${EWW_CPU.avg}"
-            :class "sys-cpu"
-            :thickness {sys_circle_thickness}
-            (label
-              :text ""
-            :class "sys-icon-cpu icon"))
-          (box
-            :orientation "v"
-            :vexpand false
-            :class "system-info-text"
-            (label
-              :text "cpu"
-              :halign "start"
-            :class "sys-text-cpu")
-            (label
-              :text "${round(EWW_CPU.avg,2)}%"
-              :halign "start"
-            :class "sys-text-sub")))
-        
-        ; Memory Usage
-        (box
-          :class "sys-box"
-          :space-evenly false
-          :halign "end"
-          (circular-progress
-            :value {memory.percentage}
-            :class "sys-mem"
-            :thickness {sys_circle_thickness}
-            (label
-              :text ""
-            :class "sys-icon-mem icon"))
-          (box
-            :orientation "v"
-            :class "system-info-text"
-            (label
-              :text "memory"
-              :halign "start"
-            :class "sys-text-mem")
-            (label
-              :text "${memory.used} | ${memory.total}"
-              :halign "start"
-            :class "sys-text-sub"))))
-      ; Battery and System Updates
-      (box
-        :class "sys-bottom-box"
-        (box
-          (label :class "battery-icon" :style "color: ${battery.color}" :text {battery.icon})
-          (label :class "battery-text" :text "${EWW_BATTERY["BAT1"].capacity}%")
-          (label :class "battery-status" :text {battery.status})
+        :class "cpu-card"
+        :orientation "v"
+        :space-evenly false
+        (circular-progress
+          :value "${EWW_CPU.avg}"
+          :class "sys-cpu"
+          :thickness {sys_circle_thickness}
+          (label
+            :text ""
+          :class "sys-icon-cpu icon")
         )
         (box
-          (label :text "󰣇  ${arch.version} (${arch.total})"))))))
+          :orientation "v"
+          :class "system-info-text"
+          
+          (label
+            :text "${round(EWW_CPU.avg,2)}%"
+            :halign "center"
+          :class "sys-text-sub")
+        )
+      )
+      
+      ; Memory Card
+      (box
+        :class "memory-card"
+        :orientation "v"
+        :space-evenly false
+        (circular-progress
+          :value {memory.percentage}
+          :class "sys-mem"
+          :thickness {sys_circle_thickness}
+          (label
+            :text ""
+          :class "sys-icon-mem icon")
+        )
+        (box
+          :orientation "v"
+          :class "system-info-text"
+          
+          (label
+            :text "${memory.used} | ${memory.total}"
+            :halign "center"
+          :class "sys-text-sub")
+        )
+      )
+    )
+  )
+)
 
 (defwindow control-panel-window
   :stacking "bg"
@@ -179,8 +181,9 @@
   :wm-ignore true
   :geometry (geometry
     :x "0"
-    :y "2"
+    :y "10"
     :width "0%"
     :height "0%"
   :anchor "right top")
-  (control-panel-widget))
+  (control-panel-widget)
+)

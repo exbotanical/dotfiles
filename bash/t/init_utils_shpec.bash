@@ -1,8 +1,9 @@
 RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 
-source "$RootDir/../../.test/shpec_util.bash"
+source "$RootDir/../../.test/shpec_utils.bash"
+source "$RootDir/../.config/bash/lib/utils.bash"
 
-init_utils_lib="$RootDir/../.config/bash/lib/init_utils.bash"
+InitUtilsLib="$RootDir/../.config/bash/lib/init_utils.bash"
 
 describe 'init_utils'
   describe 'globals'
@@ -10,21 +11,21 @@ describe 'init_utils'
       # sanity check
       [[ -v EphemeralFunctions ]]
       assert equal 1 $?
-      source "$init_utils_lib"
+      source "$InitUtilsLib"
       [[ -v EphemeralFunctions ]]
       assert equal 0 $?
     ti
 
     it 'updates the global EphemeralVars variable to cache any defined variables for cleanup'
       EphemeralVars=( 1 )
-      source "$init_utils_lib"
+      source "$InitUtilsLib"
       # assert not unset
       [[ -v EphemeralVars ]]
       assert equal 0 $?
       assert equal 3 ${#EphemeralVars[@]}
     ti
 
-    alias setup='source $init_utils_lib'
+    alias setup='source $InitUtilsLib'
 
     it 'unsets the PreexistingFunctions list'
       [[ -v PreexistingFunctions ]]
@@ -41,7 +42,7 @@ describe 'init_utils'
   describe 'login?'
     it 'state is not manipulated by /etc/profile or system var'
       ret=$(env -i bash <<END
-      source "$init_utils_lib"
+      source "$InitUtilsLib"
       init::login? && echo 1
 END
   )
@@ -50,7 +51,7 @@ END
 
     it 'state is persistent'
       export ENV_SET=0
-      source "$init_utils_lib"
+      source "$InitUtilsLib"
       init::login?
       assert equal 0 $?
       init::set_login
@@ -67,7 +68,7 @@ END
 
       export TestVariable
 
-      source "$init_utils_lib"
+      source "$InitUtilsLib"
       init::export TestVariable 2
       assert equal 1 "$TestVariable"
 
@@ -76,14 +77,14 @@ END
     ti
 
     it 'exports the new value if not already exported'
-      source "$init_utils_lib"
+      source "$InitUtilsLib"
       init::export TestVariable 2
       assert equal 2 "$TestVariable"
     ti
   end_describe
 
   describe 'contains?'
-    alias setup='source $init_utils_lib'
+    alias setup='source $InitUtilsLib'
 
     it 'returns true if the first value contains the second'
       init::contains? "h:ell:o" "ell"
@@ -103,7 +104,7 @@ END
       [[ $PATH == *"$test_val" ]];
       assert equal 1 $?
 
-      source "$init_utils_lib"
+      source "$InitUtilsLib"
       init::append_path "$test_val"
 
       [[ $PATH == *"$test_val" ]];
@@ -113,7 +114,7 @@ END
     it 'ignores the append value if already extant in the PATH'
       test_val='TESTVALUE'
 
-      source "$init_utils_lib"
+      source "$InitUtilsLib"
 
       init::append_path "$test_val"
       init::append_path "$test_val"
@@ -128,7 +129,7 @@ END
       [[ $PATH == "$test_val"* ]];
       assert equal 1 $?
 
-      source "$init_utils_lib"
+      source "$InitUtilsLib"
       init::prepend_path "$test_val"
 
       [[ $PATH == "$test_val"* ]];
@@ -138,7 +139,7 @@ END
     it 'ignores the prepend value if already extant in the PATH'
       test_val='TESTVALUE'
 
-      source "$init_utils_lib"
+      source "$InitUtilsLib"
 
       init::prepend_path "$test_val"
       init::prepend_path "$test_val"
@@ -149,7 +150,7 @@ END
   end_describe
 
   describe 'export_builtin'
-    alias setup='source $init_utils_lib'
+    alias setup='source $InitUtilsLib'
 
     it 'exports the first viable builtin command value'
       builtin_path=$(type -p ls)
@@ -165,7 +166,7 @@ END
   end_describe
 
   describe 'source?'
-    alias setup='source $init_utils_lib'
+    alias setup='source $InitUtilsLib'
 
     it 'sources a the provided argument only if it is a file'
       file=$(mktemp)
@@ -183,7 +184,7 @@ END
   end_describe
 
   describe 'list_dir'
-    alias setup='source $init_utils_lib'
+    alias setup='source $InitUtilsLib'
 
     it 'enumerates the directory contents as a single line'
       IFS=' '
@@ -198,7 +199,7 @@ END
   end_describe
 
   describe 'order_by_dependencies'
-    alias setup='source $init_utils_lib'
+    alias setup='source $InitUtilsLib'
 
     it 'orders apps by dependencies'
       utils::splitspace off

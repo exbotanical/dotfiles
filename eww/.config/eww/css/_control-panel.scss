@@ -15,14 +15,16 @@
   }
 
   .top-row {
-    margin: 1rem 1rem 0;
+    border-bottom: 1px solid $overlay0;
+    margin: 1.2rem 1.2rem 0rem 1.2rem;
 
     .time {
       font-size: $font-xl;
+      font-weight: bold;
     }
 
     .date-box {
-      margin: 0 1rem 1rem 1rem;
+      margin: 1rem;
 
       label {
         font-size: $font-base;
@@ -31,29 +33,34 @@
       .date {
         background: unset;
         margin: 0 0.5rem 0 0;
-        padding: 0;
+        font-weight: 500;
+      }
+
+      .day {
+        color: $subtext1;
       }
     }
   }
 
   .system-row {
-    margin: 0.5rem 0.7rem;
+    margin: 0.8rem 0.6rem;
 
     label {
       font-size: $font-sm;
-      margin: 0 0.1rem;
     }
 
     .box {
       @include rounding;
       @include element-bg;
-      margin: 0.5rem;
-      min-width: 10rem;
+      margin: 0.4rem;
+      min-width: 9rem;
+      border: 1px solid transparent;
+      transition: all 200ms ease;
 
       button {
         @include rounding;
-        padding: 1rem;
-        min-height: 2.75rem;
+        padding: 0.8rem;
+        min-height: 2.5rem;
 
         label {
           font-size: $font-md;
@@ -66,11 +73,13 @@
     }
 
     .box + label {
-      margin: 0 1rem;
+      margin: 0 0.8rem;
+      font-size: $font-xs;
     }
 
     .airplane-connected {
       background-color: $red;
+      border-color: $red;
 
       button:hover {
         background-color: $red-dark;
@@ -80,6 +89,7 @@
     .bt-connected {
       background-color: $blue;
       color: $crust;
+      border-color: $blue;
 
       button:hover {
         background-color: $blue-dark;
@@ -89,6 +99,7 @@
     .wifi-connected {
       background-color: $mauve;
       color: $crust;
+      border-color: $mauve;
 
       button:hover {
         background-color: $mauve-dark;
@@ -99,29 +110,34 @@
   .sliders-row {
     @include rounding;
     @include element-bg;
-    margin: 0.5rem 1rem;
-    padding: 0.75rem 1.5rem;
+    margin: 0rem 1rem;
+    padding: 1rem 1.5rem;
+    border: 1px solid $overlay0;
 
     scale {
-      min-width: 26.5rem;
+      min-width: 24rem;
 
       trough {
-        margin-right: -20;
+        margin-right: 0;
+        border-radius: 8px;
       }
     }
 
     box {
-      margin: 0.5rem 0;
+      margin: 0.6rem 0;
     }
 
     label {
       font-size: $font-md;
+      margin-right: 0.8rem;
+      min-width: 2rem;
     }
 
     .volume-slider-box,
     .brightness-slider-box {
       trough {
         background-color: $base;
+        border: 1px solid $overlay0;
       }
     }
 
@@ -148,32 +164,8 @@
 
   .sys-icon-cpu,
   .sys-icon-mem {
-    font-size: $font-lg;
-    margin: 1.25rem;
-  }
-
-  .sys-icon-cpu {
-    padding-right: 16px;
-  }
-
-  .sys-icon-mem {
-    padding-right: 10px;
-  }
-
-  .system-info-box {
-    @include rounding;
-    @include element-bg;
-    margin: 0.5rem 1rem;
-    padding: 0.5rem;
-
-    box {
-      margin-bottom: -10;
-    }
-  }
-
-  .sys-bottom-box {
-    margin-top: 1rem;
-    margin-left: -1rem;
+    font-size: $font-xl;
+    margin: 3rem;
   }
 
   .system-info-text {
@@ -185,6 +177,8 @@
   .sys-mem,
   .sys-cpu {
     background-color: $bg;
+    min-width: 80px;
+    min-height: 80px;
   }
 
   .sys-icon-mem,
@@ -199,18 +193,33 @@
     color: $sapphire;
   }
 
-  .sys-box {
-    margin: 0.3em;
+  .system-cards-row {
+    margin: 0.2rem 0.7rem;
+    padding: 0.5rem 0;
+  }
 
-    box {
-      margin-left: 1rem;
+  .cpu-card,
+  .memory-card {
+    @include rounding;
+    @include element-bg;
+    margin: 0.4rem;
+    padding: 0.6rem;
+    border: 1px solid $overlay0;
+    min-width: 0;
+
+    .system-info-text {
+      margin-top: 0.3rem;
+
+      label {
+        font-size: $font-sm;
+      }
     }
   }
 
   .battery-icon {
     font-size: $font-md;
     margin-top: 0.125rem;
-    margin-right: 1rem;
+    margin-right: 0.8rem;
   }
 
   .battery-wattage {
@@ -218,12 +227,13 @@
   }
 
   .battery-status {
-    margin-left: -3.5rem;
+    margin-left: 0.5rem;
     color: $subtext0;
   }
 
   .battery-text {
-    margin-left: -4rem;
+    margin-left: 0.3rem;
+    font-weight: 500;
   }
 
   .arch-icon {
@@ -231,6 +241,6 @@
   }
 
   .arch-status {
-    margin-left: -4rem;
+    margin-left: 0.5rem;
   }
 }

@@ -88,3 +88,10 @@ init::feature_enabled? RemapCapslockToSuper && {
   init::debug 'RemapCapslockToSuper enabled; remapping caps lock key to super'
   setxkbmap -option caps:super 2>/dev/null
 }
+
+BASH_COMPLETIONS_PATH='/usr/share/bash-completion/bash_completion'
+utils::file? "$BASH_COMPLETIONS_PATH" && {
+  init::debug 'Enabling completions helper'
+  . "$BASH_COMPLETIONS_PATH"
+}
+EphemeralVars+=(BASH_COMPLETIONS_PATH)

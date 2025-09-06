@@ -12,4 +12,4 @@
 (deflisten volume "scripts/volume")
 
 (defvar bar_circle_thickness 3)
-(defvar sys_circle_thickness 6)
+(defvar sys_circle_thickness 12)

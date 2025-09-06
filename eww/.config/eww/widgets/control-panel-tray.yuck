@@ -9,7 +9,8 @@
         :thickness {bar_circle_thickness}
         (box
           :tooltip "using ${round(EWW_CPU.avg,0)}% cpu"
-          (label :class "icon-text" :text "")))
+          (label :class "tray-circle" :text "")
+))
       
       (circular-progress
         :value {memory.percentage}
@@ -17,14 +18,16 @@
         :thickness {bar_circle_thickness}
         (box
           :tooltip "using ${round(memory.percentage,0)}% ram"
-          (label :class "icon-text" :text "")))
+          (label :class "tray-circle" :text "")
+))
       
       (circular-progress
-        :value "${EWW_BATTERY["BAT1"].capacity}"
+        :value "${EWW_BATTERY["BAT0"].capacity}"
         :class "circular-progress batbar"
         :style "color: ${battery.color};"
         :thickness {bar_circle_thickness}
         (box
-          :tooltip "battery at ${EWW_BATTERY["BAT1"].capacity}%"
-          (label :class "icon-text" :text "")))))
+          :tooltip "battery at ${EWW_BATTERY["BAT0"].capacity}%"
+          (label :class "tray-circle" :text "")
+))))
 )

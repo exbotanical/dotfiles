@@ -16,14 +16,13 @@ $font-xl: 3rem;
   margin-top: 2.175rem;
   border: 1px solid $border;
   box-shadow: 0 2px 3px $shadow;
-  padding: 5px 5px 10px;
   border-radius: 0 0 1rem 1rem;
 }
 
 * {
   all: unset;
   transition: 200ms ease;
-  font-family: '', Roboto, sans-serif;
+  font-family: Roboto, sans-serif;
   font-size: $font-base;
 }
 
@@ -53,6 +52,12 @@ tooltip {
   }
 }
 
+.time {
+  label {
+    font-size: $font-md;
+  }
+}
+
 .hour {
   padding-left: 1rem;
 }
@@ -69,7 +74,7 @@ tooltip {
   background: $bg;
 
   label {
-    font-size: $font-base;
+    font-size: $font-md;
   }
 }
 
