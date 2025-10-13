@@ -1,3 +1,5 @@
-Xft.dpi: 150
-Xcursor.size: 36
-Xcursor.theme: GoogleDot-Blue
+! Main Xresources configuration
+! This file includes base settings and the current theme
+
+! Include base configuration (DPI, fonts, cursor, etc.)
+#include ".Xresources.d/base.xresources"

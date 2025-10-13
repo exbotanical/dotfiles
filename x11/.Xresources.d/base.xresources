@@ -1,0 +1,17 @@
+! Base X11 configuration (non-theme settings)
+! These settings are independent of color themes
+
+! DPI and font rendering
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.rgba: rgb
+
+! Cursor configuration
+Xcursor.size: 20
+Xcursor.theme: GoogleDot-Blue
+
+! Font defaults
+*.font: FiraCode Nerd Font:size=12
+*.boldFont: FiraCode Nerd Font:style=Bold:size=12
