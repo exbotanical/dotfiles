@@ -1,8 +1,13 @@
-@import 'themes/ghost'
+@import "themes/ghost"
+
+configuration {
+  modes: "drun,run,ssh,combi,cmd:~/.config/rofi/scripts/command-runner.bash";
+  combi-modes: "drun,run,cmd";
+}
 
 window {
   background-color: @background-color;
-  transparency: 'real';
+  transparency: "real";
   border: 0;
   border-radius: 6;
   border-color: @bordercolor;
@@ -135,7 +140,7 @@ inputbar {
 
 textbox-prompt-colon {
   expand: false;
-  str: ' >';
+  str: " >";
   margin: 0px 0.3em 0em 0em;
   text-color: @foreground;
 }
