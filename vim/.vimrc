@@ -62,7 +62,6 @@ set clipboard+=unnamed                        " Yanks go on clipboard instead
 
 " Editing
 set foldnestmax=3                             " Only fold up to n nested levels
-set ai                                        " Auto-indent
 
 " Miscellaneous Options
 set backspace=indent,eol,start                " Allow backspacing over indention, line breaks and insertion start
@@ -76,6 +75,83 @@ set nrformats-=octal                          " Interpret octal as decimal when 
 set shell=/bin/bash                           " The shell used to execute commands
 set spell                                     " Enable spellchecking
 set nocompatible                              " Don't sacrifice functionality just to preserve backward compatibility with vi
+
+" Enhanced LSP Configuration
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_diagnostics_signs_enabled = 1
+let g:lsp_diagnostics_virtual_text_enabled = 1
+let g:lsp_text_edit_enabled = 1
+let g:lsp_preview_float = 1
+let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_hover_conceal = 0
+let g:lsp_preview_keep_focus = 0
+let g:lsp_fold_enabled = 0
+let g:lsp_signature_help_enabled = 1
+let g:lsp_completion_resolve_timeout = 60
+let g:lsp_async_completion = 1
+
+" Asyncomplete configuration
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_auto_completeopt = 0
+let g:asyncomplete_popup_delay = 200
+let g:asyncomplete_close_preview_on_insert = 1
+
+" Auto-formatting configuration
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
+
+" LSP key mappings
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+
+    " Navigation
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gD <plug>(lsp-declaration)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+
+    " Formatting
+    nmap <buffer> <leader>f <plug>(lsp-document-format)
+    vmap <buffer> <leader>f <plug>(lsp-document-range-format)
+
+    " Code actions
+    nmap <buffer> <leader>ca <plug>(lsp-code-action)
+
+    " Workspace management
+    nmap <buffer> <leader>wa <plug>(lsp-workspace-folders-add)
+    nmap <buffer> <leader>wr <plug>(lsp-workspace-folders-remove)
+    nmap <buffer> <leader>wl <plug>(lsp-workspace-folders-list)
+
+    " Enable inlay hints if supported
+    if exists('*lsp#get_server_capabilities')
+        let l:capabilities = lsp#get_server_capabilities(lsp#get_server_names()[0])
+        if has_key(l:capabilities, 'inlayHintProvider')
+            call lsp#enable_inlay_hints()
+        endif
+    endif
+endfunction
+
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+" Diagnostic signs
+let g:lsp_diagnostics_signs_error = {'text': '✗'}
+let g:lsp_diagnostics_signs_warning = {'text': '⚠'}
+let g:lsp_diagnostics_signs_information = {'text': 'ℹ'}
+let g:lsp_diagnostics_signs_hint = {'text': '💡'}
 
 " Formatting Configurations
 :autocmd BufWritePre * :%s/\s\+$//e           " Strip trailing whitespace when a file is saved
