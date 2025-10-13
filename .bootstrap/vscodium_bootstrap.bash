@@ -56,5 +56,5 @@ EXTENSIONS=(
 )
 
 for extension in "${EXTENSIONS[@]}";do
-  vscodium --install-extension "$extension"
+  codium --install-extension "$extension"
 done
