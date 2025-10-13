@@ -8,8 +8,8 @@
     // Space between tray icons
     padding: 2px 18px;
     // Tray circle size
-    min-width: 20px;
-    min-height: 20px;
+    min-width: 15px;
+    min-height: 15px;
   }
 
   &.inactive {
@@ -23,7 +23,7 @@
 
 .module-docker {
   // Space between tray circles and other icons
-  margin-right: 40px;
+  margin-right: 30px;
 }
 
 .right-section {

@@ -46,11 +46,11 @@ set $CALCULATOR   deepin-calculator
 set $FILE_BROWSER pcmanfm
 
 # Workspace Names
-set $WS_EMAIL   "1"
-set $WS_SLACK   "2"
-set $WS_BROWSER "3"
-set $WS_CODE    "4"
-set $WS_CODE_2  "5"
+set $WS_BROWSER "1"
+set $WS_CODE    "2"
+set $WS_CODE_2  "3"
+set $WS_CODE_3  "4"
+set $WS_5       "5"
 set $WS_6       "6"
 set $WS_7       "7"
 set $WS_8       "8"

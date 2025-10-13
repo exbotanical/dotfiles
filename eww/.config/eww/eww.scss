@@ -3,8 +3,8 @@
 $font-xs: 1rem;
 $font-sm: 1.25rem;
 $font-base: 1.5rem;
-$font-md: 2rem;
-$font-lg: 2.25rem;
+$font-md: 1.75rem;
+$font-lg: 2rem;
 $font-xl: 3rem;
 
 @mixin rounding {
@@ -23,7 +23,7 @@ $font-xl: 3rem;
   all: unset;
   transition: 200ms ease;
   font-family: Roboto, sans-serif;
-  font-size: $font-lg;
+  font-size: $font-md;
 }
 
 @import 'css/calendar';
