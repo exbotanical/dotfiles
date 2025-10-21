@@ -28,7 +28,7 @@ alias gwrm='git worktree remove worktree && git worktree prune'
 ### Metadata and Informational
 alias gauthors='git shortlog --summary --numbered --email'
 # Prettify log
-alias gl='git log --pretty=format:"%C(magenta)%h%Cgreen%d %Creset%s%C(cyan) [%cn]" --decorate'
+alias gl='git log --pretty=format:"%C(yellow)%h%Creset%C(green)%d%Creset %s %C(cyan)(%cr) %C(bold magenta)<%cn - %ce>%Creset"'
 alias gl1='gl -n1'
 alias gl2='gl -n2'
 alias gl3='gl -n3'
