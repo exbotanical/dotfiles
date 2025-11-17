@@ -1,4 +1,5 @@
+# This file is written by LXAppearance. Do not edit.
 [Icon Theme]
-Name=GoogleDot-Blue
-Comment=Blue cursor theme inspired on Google
-Inherits="hicolor"
+Name=Default
+Comment=Default Cursor Theme
+Inherits=phinger-cursors-dark

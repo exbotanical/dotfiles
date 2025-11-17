@@ -7,6 +7,8 @@ set $MOD                 Mod4
 
 # Typography
 set $FONT               "Fira Code"
+set $CURSOR_SIZE_PX     36
+set $FONT_SIZE_PX       20
 
 # Theme and Colors (Dracula theme)
 set $GTK_THEME          "Dracula-pink-accent-slim"
@@ -56,6 +58,8 @@ set $WS_7       "7"
 set $WS_8       "8"
 set $WS_9       "9"
 set $WS_10     "10"
+
+set $GNOME_SCHEMA org.gnome.desktop.interface
 
 #########################
 ###    Main Config    ###
