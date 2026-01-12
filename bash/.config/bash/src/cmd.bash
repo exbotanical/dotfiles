@@ -137,3 +137,11 @@ manopt () {
 to_snake_case() {
   echo "$1" | tr '[:upper:]' '[:lower:]' | tr ' ' '_'
 }
+
+# poll polls a command ($1) every $2 seconds until it returns a success (0 rc)
+poll () {
+  local cmd="$1"
+  local interval="$2"
+
+  while ! eval $cmd; do sleep $interval; done
+}
