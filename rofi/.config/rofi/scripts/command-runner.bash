@@ -11,28 +11,35 @@ CACHE_DIR="$HOME/.cache/rofi"
 HISTORY_FILE="$CACHE_DIR/command-history"
 MAX_HISTORY=20
 MAX_OUTPUT_LENGTH=200
+REFRESH_TTL_IN_MINUTES=5
+
+# Spin up a login shell that sources config and dumps aliases/functions
+refresh_cache() {
+  mkdir -p "$CACHE_DIR"
+
+  bash --login -i -c '
+    source "$HOME/.config/bash/init.bash" 2>/dev/null
+    shopt -s expand_aliases
+
+    echo "# Aliases"
+    alias | sed "s/^alias //" | sed "s/=.*//"
+
+    echo ""
+    echo "# Functions"
+    declare -F | awk "{print \$3}"
+  ' 2>/dev/null > "$CACHE_DIR/aliases-cache"
+}
 
 # Retrieves cached aliases and functions
 get_available_commands() {
   local aliases_cache="$CACHE_DIR/aliases-cache"
-  local functions_cache="$CACHE_DIR/functions-cache"
 
-  # Use cached files if they exist, otherwise show fallback message
-  if [[ -f "$aliases_cache" ]]; then
-    cat "$aliases_cache"
-    echo ""
-  else
-    echo "# Aliases"
-    echo "# (Cache not found - run 'reload' to refresh)"
-    echo ""
+  # Regenerate if missing or older than 5 minutes
+  if [[ ! -f "$aliases_cache" ]] || [[ $(find "$CACHE_DIR" -name aliases-cache -mmin +$REFRESH_TTL_IN_MINUTES | wc -l) -gt 0 ]]; then
+    refresh_cache
   fi
 
-  if [[ -f "$functions_cache" ]]; then
-    cat "$functions_cache"
-  else
-    echo "# Functions"
-    echo "# (Cache not found - run 'reload' to refresh)"
-  fi
+  cat "$aliases_cache"
 }
 
 # Retrieves command history
