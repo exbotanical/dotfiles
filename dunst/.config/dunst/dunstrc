@@ -182,8 +182,4 @@
     history_ignore = yes
 
 [fullscreen_delay_everything]
-    fullscreen = delay
-
-[fullscreen_show_critical]
-    msg_urgency = critical
     fullscreen = show
