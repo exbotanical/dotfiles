@@ -9,8 +9,8 @@ Xft.hintstyle: hintslight
 Xft.rgba: rgb
 
 ! Cursor configuration
-Xcursor.size: 36
-Xcursor.theme: GoogleDot-Blue
+Xcursor.size: 42
+Xcursor.theme: GoogleDot-Red
 
 ! Font defaults
 *.font: FiraCode Nerd Font:size=20
