@@ -50,7 +50,7 @@ panic() {
   exit 1
 }
 
-blank?() {
+blank? () {
   [[ -z ${1:-} ]]
 }
 
@@ -75,7 +75,7 @@ newitems() {
   comm -13 <(echo "$1") <(echo "$2")
 }
 
-busy?() {
+busy? () {
   fuser $DIR/$1 &> /dev/null
 }
 
@@ -88,7 +88,7 @@ not_busy() {
   :
 }
 
-lockfile?() {
+lockfile? () {
   ! (
     set -o noclobber
     write_file $LOCKFILE <<< $$
@@ -111,7 +111,7 @@ transfer() {
   : # Prevent errexit trigger (read returns false)
 }
 
-transferred?() { (
+transferred? () { (
   cd $DIR
   grep -q $(md5sum $1) $PROCESSED_FILE
 ); }
@@ -133,11 +133,11 @@ append_file() {
   cat >> $1
 }
 
-running?() {
+running? () {
   [[ -e $LOCKFILE ]] && ps -p $(< $LOCKFILE) > /dev/null
 }
 
-singleton?() {
+singleton? () {
   ! running? || return
   # rm $LOCKFILE || return
   ! lockfile? && trap "rm $LOCKFILE;"' echo "stopped at $(date)"' EXIT

@@ -1,21 +1,21 @@
 # Many of these from Ted Lilley's "Bash Like a Developer" series
 # See: https://www.binaryphile.com/bash/2018/07/26/approach-bash-like-a-developer-part-1-intro.html
-utils::interactive?() {
+utils::interactive? () {
   [[ $- == *i* ]]
 }
 
 # sourced? returns true if the current file is being sourced
-utils::sourced?() {
+utils::sourced? () {
   [[ ${FUNCNAME[1]} == source ]]
 }
 
 # defined? returns true if the argument is defined
-utils::defined?() {
+utils::defined? () {
   [[ -v "$1" ]]
 }
 
 # extant? returns true if the argument is an available command
-utils::extant?() {
+utils::extant? () {
   type $1 &> /dev/null
 }
 
@@ -111,22 +111,22 @@ utils::filter() {
 }
 
 # file? returns true if the provided argument is a file
-utils::file?() {
+utils::file? () {
   [[ -r $1 ]]
 }
 
 # dir? returns true if the provided argument is a directory
-utils::dir?() {
+utils::dir? () {
   [[ -d $1 ]]
 }
 
 # linux? returns true if the host os is linux
-utils::linux?() {
+utils::linux? () {
   [[ "$OSTYPE" == 'linux-gnu' ]]
 }
 
 # vscodium? returns true if the current shell is being emulated inside of vscodium's terminal
-utils::vscodium?() {
+utils::vscodium? () {
   [[ "$TERM_PROGRAM" == 'vscode' ]]
 }
 

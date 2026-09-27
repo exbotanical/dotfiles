@@ -2,7 +2,7 @@ PreexistingFunctions=$(compgen -A function | sort)
 
 # login? returns true if the global `ENV_SET` flag has not been set, indicating
 # this is the first shell login
-init::login?() {
+init::login? () {
   ! ((ENV_SET))
 }
 
@@ -12,7 +12,7 @@ init::set_login() {
 }
 
 # contains? returns true if $1 contains $2
-init::contains?() { (
+init::contains? () { (
   IFS=:
   [[ "$IFS$1$IFS" == *"$IFS$2$IFS"* ]]
 ); }
@@ -51,11 +51,11 @@ init::export_builtin() {
 }
 
 # source? sources the provided argument if it is a file
-init::source?() {
+init::source? () {
   utils::file? $1 && source $1
 }
 
-init::load_app?() {
+init::load_app? () {
   local dir=$1
   local detect_file=$dir/detect.bash
 
@@ -133,7 +133,7 @@ init::_order_by_dependencies() {
 
 # feature_enabled? indicates whether the feature represented
 # by the supplied feature flag is enabled.
-init::feature_enabled?() {
+init::feature_enabled? () {
   local feature_flag=$1
 
   ((1 == feature_flag))
@@ -143,7 +143,7 @@ init::feature_enabled?() {
 # This is useful because the VSCodium integrated terminal doesn't behave like other
 # terminals; for instance, it does not truly reload the shell environment when opening
 # a new terminal.
-init::in_vscodium?() {
+init::in_vscodium? () {
   ((VSCODE_SHELL_INTEGRATION == 1))
 }
 

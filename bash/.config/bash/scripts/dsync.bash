@@ -72,7 +72,7 @@ Examples:
 END
 }
 
-sourced?() {
+sourced? () {
   [[ ${FUNCNAME[1]:-} == source ]]
 }
 
