@@ -68,14 +68,14 @@
   "die": {
     "prefix": "define_die",
     "body": [
-    "# die prints a message to stderr and exits with either",
-    "# the given return code or 1 if none was provided",
-    "die() {",
-    "  local msg=\"\\$1\"",
-    "  local rc=\"\\${2:-1}\"",
-    "  >&2 echo \"\\$msg\"",
-    "  exit \"\\$rc\"",
-    "}"
+      "# die prints a message to stderr and exits with either",
+      "# the given return code or 1 if none was provided",
+      "die() {",
+      "  local msg=\"\\$1\"",
+      "  local rc=\"\\${2:-1}\"",
+      "  >&2 echo \"\\$msg\"",
+      "  exit \"\\$rc\"",
+      "}"
     ]
   },
   "shpec_aliases": {

@@ -55,6 +55,6 @@ EXTENSIONS=(
   'zixuanwang.linkerscript@1.0.4'
 )
 
-for extension in "${EXTENSIONS[@]}";do
+for extension in "${EXTENSIONS[@]}"; do
   codium --install-extension "$extension"
 done

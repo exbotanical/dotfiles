@@ -38,8 +38,8 @@ readonly SSH_FLAGS=(
 
 readonly IGNORE_FILE_NAME=.dsyncignore
 
-usage () {
-  cat <<END
+usage() {
+  cat << END
 Sync a directory with its counterpart on a remote host, via rsync over SSH.
 
 Usage:
@@ -72,18 +72,18 @@ Examples:
 END
 }
 
-sourced? () {
+sourced?() {
   [[ ${FUNCNAME[1]:-} == source ]]
 }
 
-panic () {
+panic() {
   printf '[-] %s\n' "$*" >&2
   exit 1
 }
 
 # remote_dir_for resolves the remote counterpart of a local directory, mapping
 # it to ROOT/<basename> whenever an explicit remote directory is not given.
-remote_dir_for () {
+remote_dir_for() {
   local local_dir=${1%/}
   local explicit=${2:-}
   local root=${3:-}
@@ -100,7 +100,7 @@ remote_dir_for () {
 
 # rsh_command prints the rsync --rsh value, joining the ssh flags on spaces
 # regardless of the caller's IFS.
-rsh_command () {
+rsh_command() {
   local IFS=' '
 
   printf 'ssh %s\n' "${SSH_FLAGS[*]}"
@@ -108,22 +108,22 @@ rsh_command () {
 
 # endpoints_for prints the rsync source then destination for a direction, with
 # the trailing slashes that make rsync sync contents rather than the dir itself.
-endpoints_for () {
+endpoints_for() {
   local direction=$1
   local host=$2
   local local_dir=${3%/}
   local remote_dir=${4%/}
 
   case $direction in
-    push ) printf '%s\n' "$local_dir/" "$host:$remote_dir/" ;;
-    pull ) printf '%s\n' "$host:$remote_dir/" "$local_dir/"  ;;
-    *    ) panic "unknown direction: $direction"             ;;
+    push) printf '%s\n' "$local_dir/" "$host:$remote_dir/" ;;
+    pull) printf '%s\n' "$host:$remote_dir/" "$local_dir/" ;;
+    *) panic "unknown direction: $direction" ;;
   esac
 }
 
 # exclude_flags prints an rsync --exclude flag per default pattern and per
 # non-empty, non-comment line of the ignore file, when one exists.
-exclude_flags () {
+exclude_flags() {
   local ignore_file=${1:-}
   local pattern
 
@@ -136,34 +136,34 @@ exclude_flags () {
   while read -r pattern; do
     [[ -z $pattern || $pattern == '#'* ]] && continue
     printf -- '--exclude=%s\n' "$pattern"
-  done <"$ignore_file"
+  done < "$ignore_file"
 }
 
-make_dest_dir () {
+make_dest_dir() {
   local direction=$1
   local host=$2
   local local_dir=$3
   local remote_dir=$4
 
   case $direction in
-    push ) ssh "${SSH_FLAGS[@]}" "$host" mkdir -p "'$remote_dir'" ;;
-    pull ) mkdir -p "$local_dir"                                 ;;
+    push) ssh "${SSH_FLAGS[@]}" "$host" mkdir -p "'$remote_dir'" ;;
+    pull) mkdir -p "$local_dir" ;;
   esac
 }
 
 # confirm_deletions prompts before a --delete run, listing the entries the
 # destination would lose. Refuses to guess when stdin is not a terminal.
-confirm_deletions () {
+confirm_deletions() {
   local preview
   local deletions
   local reply
 
   preview=$("$@" --dry-run)
-  deletions=$(grep '^\*deleting' <<<"$preview" || true)
+  deletions=$(grep '^\*deleting' <<< "$preview" || true)
 
   [[ -n $deletions ]] || return 0
 
-  printf '[*] %s will be removed from the destination:\n%s\n' "$(wc -l <<<"$deletions")" "$deletions"
+  printf '[*] %s will be removed from the destination:\n%s\n' "$(wc -l <<< "$deletions")" "$deletions"
 
   [[ -t 0 ]] || panic 'refusing to delete without a terminal to confirm on; re-run with -y'
 
@@ -171,7 +171,7 @@ confirm_deletions () {
   [[ $reply == [yY]* ]] || panic 'aborted'
 }
 
-main () {
+main() {
   local direction=$1
   local local_dir=${2%/}
   local remote_dir_arg=${3:-}
@@ -199,18 +199,18 @@ main () {
     "${excludes[@]}"
   )
 
-  (( DELETE_FLAG )) && cmd+=( --delete )
+  ((DELETE_FLAG)) && cmd+=(--delete)
 
-  cmd+=( "${endpoints[@]}" )
+  cmd+=("${endpoints[@]}")
 
   printf '[*] %s: %s -> %s\n' "$direction" "${endpoints[0]}" "${endpoints[1]}"
 
-  (( DRY_RUN_FLAG )) && {
+  ((DRY_RUN_FLAG)) && {
     "${cmd[@]}" --dry-run
     return
   }
 
-  (( DELETE_FLAG && !YES_FLAG )) && confirm_deletions "${cmd[@]}"
+  ((DELETE_FLAG && !YES_FLAG)) && confirm_deletions "${cmd[@]}"
 
   make_dest_dir "$direction" "$host" "$local_dir" "$remote_dir"
   "${cmd[@]}"
@@ -226,21 +226,51 @@ YES_FLAG=0
 
 while [[ ${1:-} == -* ]]; do
   case $1 in
-    -H       ) HOST_FLAG=${2:-};   shift 2 ;;
-    -R       ) ROOT_FLAG=${2:-};   shift 2 ;;
-    -i       ) IGNORE_FLAG=${2:-}; shift 2 ;;
-    -n       ) DRY_RUN_FLAG=1;     shift   ;;
-    -y       ) YES_FLAG=1;         shift   ;;
-    --delete ) DELETE_FLAG=1;      shift   ;;
-    --help   ) usage; exit 0                ;;
-    --version) printf '%s version %s\n' "$PROG" "$VERSION"; exit 0 ;;
-    *        ) usage >&2; panic "unknown option: $1" ;;
+    -H)
+      HOST_FLAG=${2:-}
+      shift 2
+      ;;
+    -R)
+      ROOT_FLAG=${2:-}
+      shift 2
+      ;;
+    -i)
+      IGNORE_FLAG=${2:-}
+      shift 2
+      ;;
+    -n)
+      DRY_RUN_FLAG=1
+      shift
+      ;;
+    -y)
+      YES_FLAG=1
+      shift
+      ;;
+    --delete)
+      DELETE_FLAG=1
+      shift
+      ;;
+    --help)
+      usage
+      exit 0
+      ;;
+    --version)
+      printf '%s version %s\n' "$PROG" "$VERSION"
+      exit 0
+      ;;
+    *)
+      usage >&2
+      panic "unknown option: $1"
+      ;;
   esac
 done
 
 case $# in
-  2|3 ) ;;
-  *   ) usage >&2; exit 1 ;;
+  2 | 3) ;;
+  *)
+    usage >&2
+    exit 1
+    ;;
 esac
 
 main "$@"

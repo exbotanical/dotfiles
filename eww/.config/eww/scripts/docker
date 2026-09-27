@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 SLEEP_INTERVAL=5
 
-main () {
+main() {
   while true; do
     if ! systemctl is-active --quiet docker; then
-        text='Docker not active'
-        class='disabled'
+      text='Docker not active'
+      class='disabled'
     else
       local running="$(docker ps -q | wc -l)"
       local stopped="$(docker ps -q -f 'status=exited' | wc -l)"

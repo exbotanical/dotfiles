@@ -2,11 +2,11 @@
 
 declare icons=('' '' '')
 
-get_level () {
+get_level() {
   awk -v n="$(light)" 'BEGIN{print int(n/34)}'
 }
 
-main () {
+main() {
   local icon=${icons[$(get_level)]}
   echo '{ "level": '"$(light)"', "icon": "'"$icon"'" }'
 

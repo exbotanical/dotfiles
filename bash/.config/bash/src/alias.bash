@@ -1,5 +1,5 @@
 # Colorization
-if ( init::feature_enabled? UseRipgrep ); then
+if (init::feature_enabled? UseRipgrep); then
   init::debug 'UseRipgrep enabled'
   Grep='rg'
   GrepRegExpr='rg -e'
@@ -17,7 +17,7 @@ alias fgrep="$GrepFileExpr --color=auto"
 alias egrep="$GrepRegExpr --color=auto"
 
 # ls
-if ( init::feature_enabled? UseLsd ); then
+if (init::feature_enabled? UseLsd); then
   init::debug 'UseLsd enabled'
   LsCommand=lsd
 else

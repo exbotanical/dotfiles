@@ -3,14 +3,14 @@
 #author         :Matthew Zito
 #===============================================================================
 
-main () {
+main() {
   read -pr "[*] Warning: this script will modify your IP Tables configurations. Continue? (y/n) " answer
 
   case $answer in
-    y )
+    y)
       [[ ! -x $TABLES_F ]] && {
-        echo "[-] \"${TABLES_F}\" not found.";
-        exit "$E_FILENOTFOUND";
+        echo "[-] \"${TABLES_F}\" not found."
+        exit "$E_FILENOTFOUND"
       }
 
       echo "[+] Updating rules..."
@@ -23,10 +23,10 @@ main () {
       iptables -P FORWARD_ACCEPT
       echo "[+] Port forwarding enabled."
       ;;
-    n )
+    n)
       exit 0
       ;;
-    * )
+    *)
       main
       ;;
   esac
@@ -39,13 +39,13 @@ E_NOTROOT=87
 TABLES_F="/sbin/iptables"
 
 # stop here if being sourced
-return 2>/dev/null
+return 2> /dev/null
 
 set -o errexit
 
 [[ $EUID -ne $ROOT_UID ]] && {
-  echo "[-] This script should be run as root.";
-  exit $E_NOTROOT;
+  echo "[-] This script should be run as root."
+  exit $E_NOTROOT
 }
 
 main

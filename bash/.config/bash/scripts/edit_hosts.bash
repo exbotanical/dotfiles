@@ -4,19 +4,20 @@
 #===============================================================================
 # shellcheck disable=SC2086,SC2048
 
-current_time () {
+current_time() {
   date +'%Y-%m-%dT%H:%M:%S%z'
 }
 
-panic () {
-  local exit_status=$1; shift
+panic() {
+  local exit_status=$1
+  shift
 
   echo "[-] ERROR ($(current_time)): $*" >&2
   exit $exit_status
 }
 
-usage () {
-  cat <<EOF
+usage() {
+  cat << EOF
 Add or remove a given line from /etc/hosts. Must be run as root.
 
 Usage:
@@ -32,23 +33,23 @@ Examples:
 EOF
 }
 
-validate_hosts_file () {
+validate_hosts_file() {
   [[ ! -e $HOSTS_FILE ]] && {
     panic $E_FILENOTFOUND "Hosts file not found"
   }
 }
 
-validate_root_user () {
+validate_root_user() {
   [[ ! $UID -eq $ROOT_UID ]] && {
     panic $E_NOTROOT "Must execute as root"
   }
 }
 
-validate_args () {
+validate_args() {
   local n_expected_args=$1
   local n_args=$2
 
-  (( n_args < n_expected_args )) && {
+  ((n_args < n_expected_args)) && {
     panic $E_ARGS "Insufficient arguments"
   }
 }
@@ -67,25 +68,25 @@ IP=${3:-$DEFAULT_IP}
 validate_args 1 $#
 
 case "$1" in
-  add )
+  add)
     validate_args 2 $#
     validate_hosts_file
     validate_root_user
 
     echo -e "$IP\t$2" >> $HOSTS_FILE
     ;;
-  rm )
+  rm)
     validate_args 2 $#
     validate_hosts_file
     validate_root_user
 
     sed -ie "\|^$IP $2\$|d" $HOSTS_FILE
     ;;
-  help | --help )
+  help | --help)
     usage
     exit 0
     ;;
-  * )
+  *)
     echo "Unknown argument $1"
     exit $E_ARGS
     ;;

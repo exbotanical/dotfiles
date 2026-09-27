@@ -24,6 +24,7 @@
 ## Wayland
 
 ### Eww
+
 - jaq
 - gojq
 - ripgrep

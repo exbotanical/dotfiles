@@ -1,69 +1,67 @@
-
 [commit]
-  gpgsign = true
+gpgsign = true
 
 [merge]
-  conflictstyle = zdiff3
+conflictstyle = zdiff3
 
 [diff]
-  algorithm = histogram
+algorithm = histogram
 
 [credential]
-  helper = cache
+helper = cache
 
 [core]
-  editor = vim
-  # Ignore chmod changes by default
-  fileMode = false
-  pager = delta
+editor = vim
+# Ignore chmod changes by default
+fileMode = false
+pager = delta
 
 [delta]
-  syntax-theme = Dracula
+syntax-theme = Dracula
 
 [color]
-  ui = auto
+ui = auto
 
 [color "branch"]
-  current = 225 reverse
-  local = 110
-  remote = 244
-  upstream = blue
-  plain = 110
+current = 225 reverse
+local = 110
+remote = 244
+upstream = blue
+plain = 110
 
 [color "diff"]
-  context = black
-  meta = normal
-  frag = blue
-  old = red
-  new = green
-  commit = cyan
-  whitespace = yellow red
+context = black
+meta = normal
+frag = blue
+old = red
+new = green
+commit = cyan
+whitespace = yellow red
 
 [color "status"]
-  header = normal
-  added = 42
-  changed = 222
-  untracked = 244
+header = normal
+added = 42
+changed = 222
+untracked = 244
 
 [branch "master"]
-  remote = origin
+remote = origin
 
 [github]
-  user = exbotanical
+user = exbotanical
 
 [gpg]
-  program = /usr/bin/gpg
-
+program = /usr/bin/gpg
 
 [includeIf "gitdir:~/"]
-  path = .gitconfig.personal
+path = .gitconfig.personal
 
 [includeIf "hasconfig:remote.*.url:ssh://git.amazon.com:*/**"]
-  path = .gitconfig.work
+path = .gitconfig.work
 
 [includeIf "onbranch:mainline"]
-  path = .gitconfig.work
+path = .gitconfig.work
 
 # Per-host overrides, untracked, not stowed. Last include wins.
 [include]
-  path = ~/.gitconfig.local
+path = ~/.gitconfig.local

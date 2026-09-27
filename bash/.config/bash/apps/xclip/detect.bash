@@ -1,1 +1,1 @@
-type xclip &>/dev/null && [[ -n $DISPLAY ]]
+type xclip &> /dev/null && [[ -n $DISPLAY ]]

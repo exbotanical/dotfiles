@@ -1,6 +1,6 @@
 {
-	"phony_target": {
-		"prefix": "phony",
-		"body": [".PHONY: $1", "$1:", "\t$2"]
-	}
+  "phony_target": {
+    "prefix": "phony",
+    "body": [".PHONY: $1", "$1:", "\t$2"]
+  }
 }

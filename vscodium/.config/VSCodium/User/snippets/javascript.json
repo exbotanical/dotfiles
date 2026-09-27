@@ -1,11 +1,7 @@
 {
   "NodeScript": {
     "prefix": "script",
-    "body": [
-      "#!/usr/bin/env node",
-      "",
-      ";(async () => {\n\t$0\n})()"
-    ]
+    "body": ["#!/usr/bin/env node", "", ";(async () => {\n\t$0\n})()"]
   },
   "LeetCodeTest": {
     "prefix": "leetcode_test",

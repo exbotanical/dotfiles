@@ -1,5 +1,5 @@
-import recurring from './recurring.json'
 import edu from './edu.json'
+import recurring from './recurring.json'
 
 interface LinkRecord {
   url: string
@@ -27,31 +27,31 @@ const SEARCH_CACHE = new Map()
 const BUILD_CACHE = new Map()
 
 const $ = function $(selector: string, context = document) {
-  const elements: HTMLElement[] = Array.from(context.querySelectorAll(selector))
+  const elements: HTMLElement[] = [...context.querySelectorAll(selector)]
 
   return {
     elements,
 
     clear() {
-      this.elements.forEach(element => {
+      for (const element of this.elements) {
         element.innerHTML = ''
-      })
+      }
 
       return this
     },
 
     html(newHtml: string) {
-      this.elements.forEach(element => {
+      for (const element of this.elements) {
         element.innerHTML += newHtml
-      })
+      }
 
       return this
     },
 
     css(newCss: string) {
-      this.elements.forEach(element => {
+      for (const element of this.elements) {
         Object.assign(element.style, newCss)
-      })
+      }
 
       return this
     },
@@ -71,9 +71,9 @@ const $ = function $(selector: string, context = document) {
       handler: EventListenerOrEventListenerObject,
       options?: AddEventListenerOptions,
     ) {
-      this.elements.forEach(element => {
+      for (const element of this.elements) {
         element.addEventListener(event, handler, options)
-      })
+      }
 
       return this
     },
@@ -81,7 +81,7 @@ const $ = function $(selector: string, context = document) {
 }
 
 function caseInsensitiveCmp(str: string, query: string) {
-  return str.toLowerCase().indexOf(query) !== -1
+  return str.toLowerCase().includes(query)
 }
 
 function search() {
@@ -111,8 +111,8 @@ function search() {
     return
   }
 
-  _.forEach(recordSet => {
-    recordSet._.forEach(record => {
+  for (const recordSet of _) {
+    for (const record of recordSet._) {
       if (
         caseInsensitiveCmp(record.label, normalizedQuery) ||
         caseInsensitiveCmp(record.url, normalizedQuery)
@@ -120,8 +120,8 @@ function search() {
         results[0]._.push(record)
         found = true
       }
-    })
-  })
+    }
+  }
 
   if (found) {
     SEARCH_CACHE.set(normalizedQuery, results)

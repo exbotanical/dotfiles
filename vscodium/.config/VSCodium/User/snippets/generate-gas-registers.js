@@ -39,15 +39,14 @@ const registers = [
   'dl',
 ]
 
-const config = registers.reduce(
-  (acc, r) => ({
-    ...acc,
-    [`Asm${r.charAt(0).toUpperCase()}${r.slice(1)}Register`]: {
+const config = Object.fromEntries(
+  registers.map(r => [
+    `Asm${r.charAt(0).toUpperCase()}${r.slice(1)}Register`,
+    {
       prefix: r,
       body: `%${r}`,
     },
-  }),
-  {},
+  ]),
 )
 
 // eslint-disable-next-line no-console -- CLI generator; stdout is the snippet JSON it produces

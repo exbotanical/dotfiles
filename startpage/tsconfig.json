@@ -1,16 +1,16 @@
 {
-  "include": ["*.ts", "*.json", "src/index.ts"],
   "compilerOptions": {
-    "rootDir": ".",
-    "declaration": false,
-    "lib": ["ESNext", "DOM"],
     "target": "ESNext",
-    "strict": true,
+    "lib": ["ESNext", "DOM"],
+    "rootDir": ".",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "strict": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true
-  }
+    "declaration": false,
+    "esModuleInterop": true
+  },
+  "include": ["*.ts", "*.json", "src/index.ts"]
 }

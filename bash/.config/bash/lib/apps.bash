@@ -1,10 +1,10 @@
-pushd $RootDir/apps >/dev/null
+pushd $RootDir/apps > /dev/null
 
 APP_LIST=$(
-  init::list_dir . |
-  utils::filter utils::dir? |
-  utils::filter init::load_app? |
-  init::order_by_dependencies
+  init::list_dir . \
+    | utils::filter utils::dir? \
+    | utils::filter init::load_app? \
+    | init::order_by_dependencies
 )
 
 # Load app-specific configurations, only if that app exists
@@ -31,4 +31,4 @@ for app in $APP_LIST; do
 done
 
 unset -v APP_LIST app
-popd >/dev/null
+popd > /dev/null

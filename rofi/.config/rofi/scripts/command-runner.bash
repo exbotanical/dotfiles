@@ -27,7 +27,7 @@ refresh_cache() {
     echo ""
     echo "# Functions"
     declare -F | awk "{print \$3}"
-  ' 2>/dev/null > "$CACHE_DIR/aliases-cache"
+  ' 2> /dev/null > "$CACHE_DIR/aliases-cache"
 }
 
 # Retrieves cached aliases and functions

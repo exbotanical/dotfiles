@@ -4,49 +4,50 @@ declare VOL_ICONS=('󰸈' '󰖀' '󰕾')
 SOURCE='SOURCE'
 SINK='SINK'
 
-get_vol () {
+get_vol() {
   local device="$1"
   local vol="$(wpctl get-volume @DEFAULT_AUDIO_$device@ | awk '{print int($2*100)}')"
 
-  if (( "$vol" > 100 )); then
+  if (("$vol" > 100)); then
     echo 100
   else
     echo "$vol"
   fi
 }
 
-is_muted () {
+is_muted() {
   local device="$1"
   wpctl get-volume "@DEFAULT_AUDIO_$device"@ | rg -i muted
   echo $?
 }
 
-set_vol () {
+set_vol() {
   local device="$1"
   local volume="$2"
   wpctl set-volume "@DEFAULT_AUDIO_$device"@ "$(awk -v n="$volume" 'BEGIN{print (n / 100)}')"
 }
 
-set_mute () {
+set_mute() {
   local device="$1"
   wpctl set-mute "@DEFAULT_AUDIO_$device"@ toggle
 }
 
-is_invalid_src () {
+is_invalid_src() {
   local src="$1"
   [[ "$src" != "$SOURCE" ]] && [[ "$src" != "$SINK" ]] && {
     echo 1
   }
 }
 
-panic () {
-  local ec=$1; shift
+panic() {
+  local ec=$1
+  shift
 
   echo "[-] ERROR ($(current_time)): $*" >&2
   exit $ec
 }
 
-main () {
+main() {
   local command="$1"
   local src="$2"
   local volume="$3"
@@ -60,7 +61,7 @@ main () {
   elif [[ "$command" = "set_vol" ]]; then
     if [[ $(is_invalid_src "$src") ]]; then
       panic 1 "Can only set volume for $SINK or $SOURCE"
-    elif (( "$volume" < 1 )) || (( "$volume" > 100 )); then
+    elif (("$volume" < 1)) || (("$volume" > 100)); then
       panic 1 "Volume must be between 1 and 100"
     fi
 

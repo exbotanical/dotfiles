@@ -45,13 +45,7 @@
   },
   "AsmFunction": {
     "prefix": "function",
-    "body": [
-      "$1:",
-      "\tenter \\$$2, \\$0\n",
-      "\t$3\n",
-      "\tleave",
-      "\tret"
-    ]
+    "body": ["$1:", "\tenter \\$$2, \\$0\n", "\t$3\n", "\tleave", "\tret"]
   },
   "AsmSsSegmentRegister": {
     "prefix": "ss",

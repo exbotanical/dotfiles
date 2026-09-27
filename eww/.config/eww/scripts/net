@@ -9,7 +9,7 @@ declare ICONS=(
   '󰤨'
 )
 
-main () {
+main() {
   if [[ "$1" == "toggle" ]]; then
     rfkill toggle wlan
   else
@@ -26,7 +26,7 @@ main () {
         class='inactive'
       else
         level=$(awk -v n="$signal" 'BEGIN{print int((n-1)/20)}')
-        if (( "$level" > 4 )); then
+        if (("$level" > 4)); then
           level=4
         fi
 

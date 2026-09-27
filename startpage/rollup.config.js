@@ -1,7 +1,8 @@
-import { terser } from 'rollup-plugin-terser'
-import typescript from '@rollup/plugin-typescript'
+import fs from 'node:fs'
+
 import json from '@rollup/plugin-json'
-import fs from 'fs'
+import typescript from '@rollup/plugin-typescript'
+import { terser } from 'rollup-plugin-terser'
 
 export default {
   input: 'src/index.ts',
@@ -12,9 +13,7 @@ export default {
     {
       name: 'inline-html',
       writeBundle(_options, bundle) {
-        const jsFileName = Object.keys(bundle).find(name =>
-          name.endsWith('.js'),
-        )
+        const jsFileName = Object.keys(bundle).find(name => name.endsWith('.js'))
         const jsCode = bundle[jsFileName].code
 
         const htmlTemplate = fs.readFileSync('src/index.html', 'utf8')

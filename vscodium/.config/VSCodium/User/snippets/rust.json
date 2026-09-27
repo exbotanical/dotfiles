@@ -3,25 +3,16 @@
     "prefix": "debug",
     "body": ["println!(\"{:#?}\", $0);"]
   },
-  "RustUnitTests" : {
+  "RustUnitTests": {
     "prefix": "tests",
-    "body": [
-      "#[cfg(test)]",
-      "mod tests {",
-      "\t#[test]",
-      "\tfn test_$1() {}",
-      "}"
-    ]
+    "body": ["#[cfg(test)]", "mod tests {", "\t#[test]", "\tfn test_$1() {}", "}"]
   },
   "RustUnitTest": {
     "prefix": "test",
-    "body": [
-      "#[test]",
-      "fn test_$1() {}",
-    ]
+    "body": ["#[test]", "fn test_$1() {}"]
   },
   "RustDerive": {
     "prefix": "derive",
-    "body": "#[derive($1)]",
+    "body": "#[derive($1)]"
   }
 }

@@ -60,13 +60,13 @@ init::export HISTFILESIZE -1
 init::export HISTTIMEFORMAT '[%Y-%m-%dT%H:%M:%S] '
 
 # Colorful manpages - TODO: src colors
-init::export LESS_TERMCAP_mb $'\e[1;31m'      # begin bold
-init::export LESS_TERMCAP_md $'\e[1;34m'      # begin blink
-init::export LESS_TERMCAP_so $'\e[01;45;37m'  # begin reverse video
-init::export LESS_TERMCAP_us $'\e[01;36m'     # begin underline
-init::export LESS_TERMCAP_me $'\e[0m'         # reset bold/blink
-init::export LESS_TERMCAP_se $'\e[0m'         # reset reverse video
-init::export LESS_TERMCAP_ue $'\e[0m'         # reset underline
+init::export LESS_TERMCAP_mb $'\e[1;31m'     # begin bold
+init::export LESS_TERMCAP_md $'\e[1;34m'     # begin blink
+init::export LESS_TERMCAP_so $'\e[01;45;37m' # begin reverse video
+init::export LESS_TERMCAP_us $'\e[01;36m'    # begin underline
+init::export LESS_TERMCAP_me $'\e[0m'        # reset bold/blink
+init::export LESS_TERMCAP_se $'\e[0m'        # reset reverse video
+init::export LESS_TERMCAP_ue $'\e[0m'        # reset underline
 init::export MANPAGER '/usr/bin/less -s -M +Gg'
 
 # Reclaim ctrl-s, ctrl-q
@@ -81,7 +81,7 @@ init::export GCC_COLORS 'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=
 # PS2 prompt
 init::export PS2 "\[$(tput setaf 3)\]continue--> "
 
-init::export EDITOR $(command -v vim 2>/dev/null || command -v vi)
+init::export EDITOR $(command -v vim 2> /dev/null || command -v vi)
 
 # File perms
 umask 022
@@ -89,7 +89,7 @@ umask 022
 # Remap caps -> super
 init::feature_enabled? RemapCapslockToSuper && {
   init::debug 'RemapCapslockToSuper enabled; remapping caps lock key to super'
-  setxkbmap -option caps:super 2>/dev/null
+  setxkbmap -option caps:super 2> /dev/null
 }
 
 BASH_COMPLETIONS_PATH='/usr/share/bash-completion/bash_completion'

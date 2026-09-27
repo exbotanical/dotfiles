@@ -1,12 +1,12 @@
 # base64 encodes to and decodes from base64
-base64 () {
+base64() {
   while getopts ":d:e:" opt; do
     case $opt in
       d)
         echo $OPTARG | openssl enc -d -base64
         ;;
       e)
-        openssl base64<<<"$OPTARG"
+        openssl base64 <<< "$OPTARG"
         ;;
       \?)
         echo "[-] Invalid option: -$OPTARG" >&2

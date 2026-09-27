@@ -3,7 +3,7 @@
 #author         :Matthew Zito
 #===============================================================================
 
-flush () {
+flush() {
   # Avoid ssh lock by accepting all traffic
   iptables -P INPUT ACCEPT
   iptables -P FORWARD ACCEPT
@@ -23,22 +23,22 @@ flush () {
   iptables -t raw -X
 }
 
-main () {
+main() {
   read -p "[*] Warning: this script will modify your IP Tables configurations. Continue? (y/n) " answer
 
   case $answer in
-    y )
+    y)
       [[ ! -x $TABLES_DIR ]] && {
-        echo "[-] \"${TABLES_DIR}\" not found.";
-        exit "$E_FILENOTFOUND";
+        echo "[-] \"${TABLES_DIR}\" not found."
+        exit "$E_FILENOTFOUND"
       }
 
       echo "[+] Flushing IP Tables..."
       flush
       echo "[+] Flush completed."
       ;;
-    n ) exit 0 ;;
-    * ) main   ;;
+    n) exit 0 ;;
+    *) main ;;
   esac
 }
 
@@ -49,13 +49,13 @@ E_NOTROOT=87
 TABLES_DIR='/sbin/iptables'
 
 # stop here if being sourced
-return 2>/dev/null
+return 2> /dev/null
 
 set -o errexit
 
 [[ $EUID -ne $ROOT_UID ]] && {
-  echo "[-] This script should be run as root.";
-  exit $E_NOTROOT;
+  echo "[-] This script should be run as root."
+  exit $E_NOTROOT
 }
 
 main

@@ -15,7 +15,7 @@
 init::feature_enabled? WMOnStartup && {
   init::debug 'WMOnStartup enabled'
 
-  [ -z $DISPLAY ] && (( XDG_VTNR == 1 )) && exec startx
+  [ -z $DISPLAY ] && ((XDG_VTNR == 1)) && exec startx
 }
 
 init::feature_enabled? EnableEmscriptenEnv && {

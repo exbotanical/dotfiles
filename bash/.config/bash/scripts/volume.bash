@@ -7,15 +7,15 @@ set -euo pipefail
 
 VOLUME_STEP="${2:-5}"
 
-get_volume () {
+get_volume() {
   pactl get-sink-volume @DEFAULT_SINK@ | head -n 1 | awk '{print $5}' | sed 's/[^0-9]*//g'
 }
 
-is_muted () {
+is_muted() {
   pactl get-sink-mute @DEFAULT_SINK@ | grep -q 'yes'
 }
 
-notify_volume () {
+notify_volume() {
   local volume
   volume=$(get_volume)
 

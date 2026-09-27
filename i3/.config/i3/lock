@@ -50,8 +50,8 @@ i3lock-color \
   --pass-media-keys \
   --pass-screen-keys \
   --pass-volume-keys \
- --time-font="$FONT" \
- --date-font="$FONT" \
- --layout-font="$FONT" \
- --verif-font="$FONT" \
- --wrong-font="$FONT"
+  --time-font="$FONT" \
+  --date-font="$FONT" \
+  --layout-font="$FONT" \
+  --verif-font="$FONT" \
+  --wrong-font="$FONT"

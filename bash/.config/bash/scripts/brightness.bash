@@ -7,11 +7,11 @@ set -euo pipefail
 
 BRIGHTNESS_STEP="${2:-5}"
 
-get_brightness () {
+get_brightness() {
   light -G | cut -d'.' -f1
 }
 
-notify_brightness () {
+notify_brightness() {
   local brightness
   brightness=$(get_brightness)
   dunstify -a "brightness" -u low -r 9991 -h int:value:"$brightness" -i "display-brightness-symbolic" "Brightness: ${brightness}%"

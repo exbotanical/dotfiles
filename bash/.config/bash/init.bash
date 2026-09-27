@@ -1,5 +1,9 @@
 # RootDir is this location, normalized for symlinks
-RootDir=$(cd "$(dirname "$BASH_SOURCE")"; cd -P "$(dirname "$(readlink "$BASH_SOURCE" || echo .)")"; pwd)
+RootDir=$(
+  cd "$(dirname "$BASH_SOURCE")"
+  cd -P "$(dirname "$(readlink "$BASH_SOURCE" || echo .)")"
+  pwd
+)
 # SettingsDir is the location of my Bash settings
 SettingsDir="$RootDir/src"
 # ConfigDir is the location of my Bash setup config
@@ -11,7 +15,7 @@ ExecDir="$HOME/.local/bin"
 [[ $1 == reload ]] && Reload=1 || Reload=0
 
 # vars to cleanup
-EphemeralVars=( Reload RootDir SettingsDir ConfigDir ExecDir )
+EphemeralVars=(Reload RootDir SettingsDir ConfigDir ExecDir)
 
 # util functions - we leave these in the global namespace
 source "$RootDir/lib/utils.bash"
@@ -27,7 +31,7 @@ utils::splitspace off
 utils::globbing off
 
 # Only source env vars if this is the first login or a force-reload
-{ init::login? || (( Reload )); } && source $SettingsDir/env.bash
+{ init::login? || ((Reload)); } && source $SettingsDir/env.bash
 
 source $RootDir/lib/apps.bash $1 # app-specific environment and commands
 
@@ -46,7 +50,7 @@ utils::interactive? && {
 
 # Source login settings only if we're logging in for the first time and in an interactive shell
 {
-  (utils::interactive? && init::login?) || (( Reload ));
+  (utils::interactive? && init::login?) || ((Reload))
 } && {
   init::debug 'Loading primary login'
   source $SettingsDir/login.bash
@@ -59,4 +63,4 @@ init::set_login
 utils::splitspace on
 utils::globbing on
 unset -f "${EphemeralFunctions[@]}" # Remove functions declared in init:: namespace
-unset -v "${EphemeralVars[@]}" # Remove ephemeral vars
+unset -v "${EphemeralVars[@]}"      # Remove ephemeral vars

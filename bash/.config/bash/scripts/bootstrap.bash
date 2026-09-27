@@ -13,7 +13,7 @@ GO_REPO=$GITHUB_URL/go-lib-boilerplate
 C_REPO=$GITHUB_URL/c-boilerplate
 CLIB_REPO=$GITHUB_URL/clib-boilerplate
 
-clib_setup_files () {
+clib_setup_files() {
   # the include header
   local header=include/lib$proj.h
 
@@ -30,7 +30,7 @@ clib_setup_files () {
   touch $header
 
   # ...add the include guards therein
-  cat > $header <<END
+  cat > $header << END
 #ifndef $incl_guard
 #define $incl_guard
 
@@ -46,43 +46,43 @@ extern "C" {
 END
 }
 
-designate () {
+designate() {
   local proj=$1
 
   find . -type f -exec sed -i "s/<project>/$proj/g" {} \;
   sed -i "s/<year>/$(date +%Y)/" LICENSE
 }
 
-git_setup () {
+git_setup() {
   # Remove existing git dir
   rm -rf .git
   git init
 }
 
-setup () {
+setup() {
   local env=$1
   local proj=$2
 
   case $env in
-    tsnpm )
+    tsnpm)
       git clone --depth 1 $TS_NPM_REPO .
       designate $proj
       pnpm install
       ;;
 
-    jsnpm )
+    jsnpm)
       git clone --depth 1 $JS_NPM_REPO .
       designate $proj
       pnpm install
       ;;
 
-    go )
+    go)
       git clone --depth 1 $GO_REPO .
       designate $proj
       go mod init $proj
       ;;
 
-    c )
+    c)
       git clone --depth 1 $C_REPO .
       designate $proj
       ;;
@@ -90,7 +90,7 @@ setup () {
     clib)
       git clone --depth 1 $CLIB_REPO .
       ;;
-    * )
+    *)
       echo -e "[-] No template exists for $env\n"
       exit 1
       ;;
@@ -99,7 +99,7 @@ setup () {
   git_setup
 }
 
-main () {
+main() {
   local env=$1
   local proj=$2
 
@@ -114,7 +114,7 @@ main () {
 }
 
 # stop here if being sourced
-return 2>/dev/null
+return 2> /dev/null
 
 set -o errexit
 set -o nounset

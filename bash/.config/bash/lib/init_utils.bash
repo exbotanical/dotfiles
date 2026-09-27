@@ -2,59 +2,60 @@ PreexistingFunctions=$(compgen -A function | sort)
 
 # login? returns true if the global `ENV_SET` flag has not been set, indicating
 # this is the first shell login
-init::login? () {
-  ! (( ENV_SET ))
+init::login?() {
+  ! ((ENV_SET))
 }
 
 # Set the `ENV_SET` flag to indicate we've logged in
-init::set_login () {
+init::set_login() {
   export ENV_SET=1
 }
 
 # contains? returns true if $1 contains $2
-init::contains? () { (
+init::contains?() { (
   IFS=:
   [[ "$IFS$1$IFS" == *"$IFS$2$IFS"* ]]
-) }
+); }
 
 # append_path appends the given argument to the PATH
-init::append_path () {
+init::append_path() {
   init::contains? "$PATH" $1 && return
   declare -g PATH=$PATH:$1
 }
 
 # prepend_path prepends the given argument to the PATH
-init::prepend_path () {
+init::prepend_path() {
   init::contains? "$PATH" $1 && return
   declare -g PATH=$1:${PATH}
 }
 
 # export exports the key value pair, only using the value $2 if the
 # export key is not already set.
-init::export () {
+init::export() {
   export $1=${!1:-$2}
 }
 
 # export_builtin sets the variable $1 to the first verified builtin
 # $2.. are variadic args that may or may not be builtin commands. export_builtin
 # exports the first valid builtin and returns.
-init::export_builtin () {
-  local ref=$1; shift
+init::export_builtin() {
+  local ref=$1
+  shift
   local builtin_cmd
 
-  for builtin_cmd; {
-    ! type -p $builtin_cmd &>/dev/null && continue
+  for builtin_cmd; do
+    ! type -p $builtin_cmd &> /dev/null && continue
     export $ref=$(type -p $builtin_cmd)
     return
-  }
+  done
 }
 
 # source? sources the provided argument if it is a file
-init::source? () {
+init::source?() {
   utils::file? $1 && source $1
 }
 
-init::load_app? () {
+init::load_app?() {
   local dir=$1
   local detect_file=$dir/detect.bash
 
@@ -65,38 +66,39 @@ init::load_app? () {
   }
 
   # Ensure the directory name matches that of an actual executable
-  type $dir &>/dev/null
+  type $dir &> /dev/null
 }
 
 # list_dir lists the directory's contents without newlines
-init::list_dir () { (
+init::list_dir() { (
   local items=()
   cd $1
   utils::globbing on
-  items=( * )
+  items=(*)
   echo "${items[*]}"
-) }
+); }
 
 # Write arguments to stdout only if the debug flag is set
-init::debug () {
-  ! (( INIT_DEBUG_MODE )) && return
+init::debug() {
+  ! ((INIT_DEBUG_MODE)) && return
 
   echo -e "[DEBUG: $(date +"%T.%3N")] $1"
 }
 
 # Toggle the debug flag
-init::toggle_debug () {
-  (( INIT_DEBUG_MODE ^= 1));:
+init::toggle_debug() {
+  ((INIT_DEBUG_MODE ^= 1))
+  :
   export INIT_DEBUG_MODE
 }
 
 # Turn on debug mode
-init::enable_debug () {
+init::enable_debug() {
   export INIT_DEBUG_MODE=1
 }
 
 # Wrapper; order app by dependencies
-init::order_by_dependencies () {
+init::order_by_dependencies() {
   local -A satisfied=()
 
   init::_order_by_dependencies
@@ -104,22 +106,22 @@ init::order_by_dependencies () {
 
 # order_by_dependencies recurses a stream of apps
 # and orders them by dependencies declared in app/deps
-init::_order_by_dependencies () {
+init::_order_by_dependencies() {
   local app
   local dep
 
   while read -r app; do
-    (( ${satisfied[$app]} )) && continue
+    ((${satisfied[$app]})) && continue
 
     # If the deps file exists for this app...
     ! utils::file? $app/deps && {
-        echo $app
-        satisfied[$app]=1
-        continue
+      echo $app
+      satisfied[$app]=1
+      continue
     }
 
-    for dep in $(init::_order_by_dependencies <$app/deps); do
-      (( ${satisfied[$dep]} )) && continue
+    for dep in $(init::_order_by_dependencies < $app/deps); do
+      ((${satisfied[$dep]})) && continue
       echo $dep
       satisfied[$dep]=1
     done
@@ -131,24 +133,24 @@ init::_order_by_dependencies () {
 
 # feature_enabled? indicates whether the feature represented
 # by the supplied feature flag is enabled.
-init::feature_enabled? () {
+init::feature_enabled?() {
   local feature_flag=$1
 
-  (( 1 == feature_flag ))
+  ((1 == feature_flag))
 }
 
 # in_vscodium? indicates whether we're running in the VSCodium integrated terminal.
 # This is useful because the VSCodium integrated terminal doesn't behave like other
 # terminals; for instance, it does not truly reload the shell environment when opening
 # a new terminal.
-init::in_vscodium? () {
- (( VSCODE_SHELL_INTEGRATION == 1 ))
+init::in_vscodium?() {
+  ((VSCODE_SHELL_INTEGRATION == 1))
 }
 
 # Diff the pre-existing functions against the ones declared in this file
 # shellcheck disable=SC2034
-EphemeralFunctions=( $(comm -13 <(echo "$PreexistingFunctions") <(compgen -A function | sort)) )
+EphemeralFunctions=($(comm -13 <(echo "$PreexistingFunctions") <(compgen -A function | sort)))
 # Add the functions declared in this file to EphemeralVars for subsequent cleanup
-EphemeralVars+=( EphemeralVars EphemeralFunctions )
+EphemeralVars+=(EphemeralVars EphemeralFunctions)
 # Cleanup
 unset -v PreexistingFunctions
