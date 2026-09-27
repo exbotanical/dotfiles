@@ -12,6 +12,7 @@ export default exbotanical(
     jsonc: { sortKeys: ['ohmyposh/**/*.json', 'startpage/src/*.json'] },
     yaml: { sortKeys: ['lsd/.config/lsd/*.yaml'] },
     jsonSchema: true,
+    githubAction: true,
   },
   includeIgnoreFile(gitignore),
   includeIgnoreFile(prettierignore),
