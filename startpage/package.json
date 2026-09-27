@@ -1,11 +1,10 @@
 {
   "name": "startpage",
-  "type": "commonjs",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
+  "private": true,
+  "description": "Browser start page built into a single HTML file",
   "license": "ISC",
-  "keywords": [],
+  "type": "commonjs",
   "main": "startpage.js",
   "scripts": {
     "gen": "rollup -c"

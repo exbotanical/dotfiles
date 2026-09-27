@@ -13,6 +13,7 @@ export default exbotanical(
     yaml: { sortKeys: ['lsd/.config/lsd/*.yaml'] },
     jsonSchema: true,
     githubAction: true,
+    packageJson: true,
   },
   includeIgnoreFile(gitignore),
   includeIgnoreFile(prettierignore),
