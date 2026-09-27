@@ -1,25 +1,25 @@
-import = ["~/.config/alacritty/themes/ghost.toml"]
+import = ['~/.config/alacritty/themes/ghost.toml']
 
 [bell]
-animation = "EaseOutCubic"
-color = "#282e3a"
+animation = 'EaseOutCubic'
+color = '#282e3a'
 duration = 1
 
 [cursor]
 blink_interval = 750
 
 [cursor.style]
-blinking = "Always"
-shape = "Beam"
+blinking = 'Always'
+shape = 'Beam'
 
 [env]
-TERM = "xterm-256color"
+TERM = 'xterm-256color'
 
 [font]
 size = 10.0
 
 [font.normal]
-family = "FiraCode Nerd Font"
+family = 'FiraCode Nerd Font'
 
 [window]
 opacity = 0.95
@@ -29,5 +29,5 @@ x = 6
 y = 6
 
 [shell]
-program = "bash"
-args = ["--login"]
+program = 'bash'
+args = ['--login']

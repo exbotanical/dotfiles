@@ -8,7 +8,7 @@ SYS_MOD_MAP=/etc/X11/xinit/.Xmodmap
 KEYBOARD_LAYOUT=colemak
 
 # merge in defaults and keymaps
-merge_resources () {
+merge_resources() {
   if [ -f $SYS_RESOURCES ]; then
     xrdb -merge $SYS_RESOURCES
   fi
@@ -27,9 +27,9 @@ merge_resources () {
 }
 
 # Initialize programs
-init () {
-  if [ -d /etc/X11/xinit/xinitrc.d ] ; then
-    for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+init() {
+  if [ -d /etc/X11/xinit/xinitrc.d ]; then
+    for f in /etc/X11/xinit/xinitrc.d/?*.sh; do
       [ -x "$f" ] && . "$f"
     done
 
