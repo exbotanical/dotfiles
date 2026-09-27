@@ -19,5 +19,10 @@ export default {
       files: ['**/.shellcheckrc'],
       options: { iniSpaceAroundEquals: false },
     },
+    // Code blocks in Markdown are documentation examples, including intentional BAD examples.
+    {
+      files: ['**/*.md'],
+      options: { embeddedLanguageFormatting: 'off' },
+    },
   ],
 }
