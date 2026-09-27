@@ -2,7 +2,7 @@
 
 INSTALL_DIR  := .install
 ROOT_DIR     := root
-INCLUDE_DIRS := $(filter-out $(ROOT_DIR)/, $(wildcard */))
+INCLUDE_DIRS := $(filter-out $(ROOT_DIR)/ node_modules/, $(wildcard */))
 AL2_HOME     := /local/home/$$USER
 
 postinstall:
@@ -23,10 +23,10 @@ install_al2:
 	$(MAKE) postinstall
 
 delete:
-	stow --verbose --target=$$HOME --delete */
+	stow --verbose --target=$$HOME --delete $(INCLUDE_DIRS)
 
 simulate:
-	stow --verbose 3 --target=$$HOME --simulate */
+	stow --verbose 3 --target=$$HOME --simulate $(INCLUDE_DIRS)
 
 unit_test:
 	find . -path ./.git -prune -o -type f -print | bash -c "shpec $1"
