@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly COMMITLINT=node_modules/.bin/commitlint
+
+if [[ ! -x $COMMITLINT ]]; then
+  printf 'commit-msg: %s is missing; run `npm ci` first\n' "$COMMITLINT" >&2
+  exit 1
+fi
+
+"$COMMITLINT" --edit "$1"

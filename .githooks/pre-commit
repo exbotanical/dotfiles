@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly LINT_STAGED=node_modules/.bin/lint-staged
+
+if [[ ! -x $LINT_STAGED ]]; then
+  printf 'pre-commit: %s is missing; run `npm ci` first\n' "$LINT_STAGED" >&2
+  exit 1
+fi
+
+"$LINT_STAGED"
