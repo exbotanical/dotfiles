@@ -17,13 +17,6 @@ export default exbotanical(
   },
   includeIgnoreFile(gitignore),
   includeIgnoreFile(prettierignore),
-  // @exbotanical/eslint-config enables this rule on TOML files, and its fix conflicts with
-  // prettier-plugin-toml's output.
-  {
-    name: 'dotfiles/toml-prettier-conflicts',
-    files: ['**/*.toml'],
-    rules: { 'toml/array-bracket-spacing': 'off' },
-  },
   // The node/hashbang rule treats only package.json `bin` entries as executables; this script
   // is run directly and needs its shebang.
   {
