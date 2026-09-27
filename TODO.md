@@ -19,11 +19,11 @@
 - [ ] xdg settings
 - [ ] thunar settings
 
-# Deps
+## Deps
 
-## Wayland
+### Wayland
 
-### Eww
+#### Eww
 
 - jaq
 - gojq
