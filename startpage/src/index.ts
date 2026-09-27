@@ -27,7 +27,7 @@ const SEARCH_CACHE = new Map()
 const BUILD_CACHE = new Map()
 
 const $ = function $(selector: string, context = document) {
-  const elements: HTMLElement[] = [...context.querySelectorAll(selector)]
+  const elements: HTMLElement[] = [...context.querySelectorAll<HTMLElement>(selector)]
 
   return {
     elements,
