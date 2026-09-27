@@ -15,5 +15,9 @@ export default {
       files: ['git/.gitconfig.*'],
       options: { parser: 'ini' },
     },
+    {
+      files: ['**/.shellcheckrc'],
+      options: { iniSpaceAroundEquals: false },
+    },
   ],
 }
