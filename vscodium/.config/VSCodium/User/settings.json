@@ -59,6 +59,11 @@
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.enableMultiLinePasteWarning": "never",
 
+  "terminal.integrated.automationProfile.linux": {
+    "path": "bash",
+    "args": ["-l"]
+  },
+
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
 
   "window.openFoldersInNewWindow": "on",
@@ -131,15 +136,14 @@
   "java.format.settings.url": "~/.vscode/java-google-style.xml",
   "java.maven.downloadSources": true,
   "[java]": {
+    "editor.formatOnSave": false,
     "editor.defaultFormatter": "redhat.java"
   },
 
-  "javascript.updateImportsOnFileMove.enabled": "always",
+  "js/ts.updateImportsOnFileMove.enabled": "always",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-
-  "typescript.updateImportsOnFileMove.enabled": "always",
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -157,7 +161,7 @@
   },
 
   "[shellscript]": {
-    // "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "haskell.manageHLS": "GHCup",
@@ -209,7 +213,6 @@
   "doxdocgen.generic.dateFormat": "DD/MM/YYYY",
   "doxdocgen.generic.briefTemplate": "{text}",
   "python.defaultInterpreterPath": "/usr/bin/python",
-
   "window.zoomLevel": 1,
   "prisma.showPrismaDataPlatformNotification": false,
   "telemetry.telemetryLevel": "off",
@@ -241,5 +244,15 @@
     "TESTSRCS",
     "vgaprintf"
   ],
-  "workbench.activityBar.location": "hidden"
+  "telemetry.feedback.enabled": false,
+  "telemetry.editStats.enabled": false,
+  "telemetry.performance.inputLatencySamplingProbability": 0,
+  "chat.disableAIFeatures": true,
+  "terminal.integrated.stickyScroll.enabled": false,
+  "workbench.activityBar.location": "hidden",
+  "markyMarkdown.statsShowReadingTime": false,
+  "markyMarkdown.statsShowWords": true,
+  "markyMarkdown.statsShowLines": false,
+  "markyMarkdown.statsShowCharacters": false,
+  "task.allowAutomaticTasks": "on"
 }
