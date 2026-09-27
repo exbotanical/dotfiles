@@ -1,3 +1,14 @@
+# clip copies stdin to the system clipboard via an OSC 52 escape sequence.
+# This works over SSH and on hosts with no X server. When xclip is usable
+# (installed and $DISPLAY set), apps/xclip/alias.bash defines a clip alias that
+# shadows this function in interactive shells, since aliases resolve before
+# functions regardless of definition order.
+function clip () {
+  local data
+  data="$(cat)"
+  printf '\033]52;c;%s\007' "$(printf '%s' "$data" | base64 | tr -d '\n')"
+}
+
 # extract unarchives the file based on the archive type
 extract () {
   local file_name="$1"
@@ -144,4 +155,48 @@ poll () {
   local interval="$2"
 
   while ! eval $cmd; do sleep $interval; done
+}
+
+# history_prune deletes bash history entries from before a given date
+# Usage: history_prune 2024-01-01
+history_prune () {
+  local cutoff="$1"
+  if [[ -z "$cutoff" ]]; then
+    echo "Usage: history_prune YYYY-MM-DD"
+    return 1
+  fi
+
+  local cutoff_epoch
+  cutoff_epoch=$(date -d "$cutoff" +%s 2>/dev/null) || {
+    echo "Invalid date: $cutoff"
+    return 1
+  }
+
+  local histfile="${HISTFILE:-$HOME/.bash_history}"
+  if [[ ! -f "$histfile" ]]; then
+    echo "History file not found: $histfile"
+    return 1
+  fi
+
+  local tmpfile
+  tmpfile=$(mktemp) || return 1
+
+  local kept=0 dropped=0 ts=0
+  while IFS= read -r line; do
+    if [[ "$line" == \#* ]]; then
+      ts="${line#\#}"
+    fi
+    if (( ts >= cutoff_epoch )); then
+      echo "$line" >> "$tmpfile"
+      (( kept++ ))
+    else
+      (( dropped++ ))
+    fi
+  done < "$histfile"
+
+  cp "$histfile" "${histfile}.bak"
+  mv "$tmpfile" "$histfile"
+  history -c
+  history -r
+  echo "Pruned $dropped lines before $cutoff ($kept kept). Backup: ${histfile}.bak"
 }
