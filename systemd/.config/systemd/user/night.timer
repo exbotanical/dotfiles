@@ -1,0 +1,12 @@
+[Unit]
+Description=Night mode - re-apply the screen color temperature every two minutes
+
+[Timer]
+OnCalendar=*:0/2
+# Run a catch-up pass if the window elapsed while suspended or powered off
+Persistent=true
+# Lets systemd coalesce this wakeup with others
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

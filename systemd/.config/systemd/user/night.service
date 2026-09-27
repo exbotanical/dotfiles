@@ -1,0 +1,14 @@
+[Unit]
+Description=Night mode - apply the scheduled screen color temperature
+Documentation=man:redshift(1)
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/night apply
+
+# A tick every two minutes is not worth a journal entry each
+LogLevelMax=warning
+
+# Hardening
+SystemCallArchitectures=native
+NoNewPrivileges=true

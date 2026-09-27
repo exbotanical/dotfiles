@@ -1,12 +1,13 @@
-get_flag () {
+get_flag() {
   local bin="$1"
-  echo $(( $(type $bin &>/dev/null; echo $?) == 0 ? 1 : 0 ))
+  echo $(($(
+    type $bin &> /dev/null
+    echo $?
+  ) == 0 ? 1 : 0))
 }
 
 # Print debug statements
 DebugMode=$DEBUG
-# Lower screen brightness after hours
-NightMode=1
 # Launch window manager on startup
 WMOnStartup=1
 # Remap the capslock key to super
@@ -20,7 +21,6 @@ EnableEmscriptenEnv=0
 
 EphemeralVars+=(
   DebugMode
-  NightMode
   WMOnStartup
   RemapCapslockToSuper
   UseLsd
