@@ -2,7 +2,7 @@ import = ["~/.config/alacritty/themes/ghost.toml"]
 
 [bell]
 animation = "EaseOutCubic"
-color = "#282E3A"
+color = "#282e3a"
 duration = 1
 
 [cursor]

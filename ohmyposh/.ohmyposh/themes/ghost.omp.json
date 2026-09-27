@@ -77,7 +77,7 @@
           },
           "style": "powerline",
           "template": "<p:text></> \uf469 ",
-          "type": "exit"
+          "type": "status"
         },
         {
           "background": "p:green",

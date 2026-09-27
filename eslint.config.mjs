@@ -11,6 +11,7 @@ export default exbotanical(
     // Sorts keys only in files whose key order carries no meaning for the program that reads them.
     jsonc: { sortKeys: ['ohmyposh/**/*.json', 'startpage/src/*.json'] },
     yaml: { sortKeys: ['lsd/.config/lsd/*.yaml'] },
+    jsonSchema: true,
   },
   includeIgnoreFile(gitignore),
   includeIgnoreFile(prettierignore),
