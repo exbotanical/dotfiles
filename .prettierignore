@@ -11,6 +11,16 @@ vscodium/.config/VSCodium/User/keybindings.json
 # Rewritten by LXAppearance
 gtk/.gtkrc-2.0
 
+# prettier-plugin-sh claims these file types, but they are not shell: it collapses spaces
+# inside gitignore patterns and fails on tmux `{ }` blocks
+.*ignore
+.gitattributes
+.tmux.conf
+tmux.conf
+*.tmux
+.env
+*.env
+
 # prettier-plugin-sh cannot parse unquoted `name=value` array elements
 bash/.config/bash/lib/parser.bash
 
