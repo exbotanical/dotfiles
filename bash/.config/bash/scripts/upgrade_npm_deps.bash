@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-install () {
+PROGRAM=${PROGRAM:-npm}
+
+install() {
   local key='dependencies'
   local dep_type="${1:-whatever}"
   local install_cmd='install'
@@ -12,30 +14,24 @@ install () {
 
   echo "Checking $key..."
 
-  declare deps=($(jq -r ".$key | keys[]" package.json | grep "$pattern" ||:))
+  declare deps=($(jq -r ".$key | keys[]" package.json))
   if [ -z "${deps[*]}" ]; then
-    echo "No $key matching '$pattern' found."
+    echo "No deps found under $key."
   fi
 
   local did_anything=0
   for dep in "${deps[@]}"; do
     echo "Updating $dep to latest version..."
-    npm $install_cmd "$dep@latest"
+    $PROGRAM $install_cmd "$dep@latest"
     did_anything=1
   done
 
   return $did_anything
 }
 
-main () {
+main() {
   local did_anything=0
-  local pattern="$1"
   declare deps
-
-  if [ -z "$pattern" ]; then
-    echo "Usage: $0 <pattern>"
-    exit 1
-  fi
 
   install
   [[ $? -eq 1 ]] && did_anything=1
@@ -48,7 +44,7 @@ main () {
   fi
 }
 
-return 2>/dev/null
+return 2> /dev/null
 
 set -o errexit
 set -o nounset
