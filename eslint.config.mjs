@@ -10,16 +10,27 @@ export default exbotanical(
   {},
   includeIgnoreFile(gitignore),
   includeIgnoreFile(prettierignore),
-  // @exbotanical/eslint-config 1.1.2 enables these rules on files that Prettier formats,
-  // and their fixes conflict with Prettier's output.
-  {
-    name: 'dotfiles/yaml-prettier-conflicts',
-    files: ['**/*.y?(a)ml'],
-    rules: { 'capitalized-comments': 'off' },
-  },
+  // @exbotanical/eslint-config enables this rule on TOML files, and its fix conflicts with
+  // prettier-plugin-toml's output.
   {
     name: 'dotfiles/toml-prettier-conflicts',
     files: ['**/*.toml'],
     rules: { 'toml/array-bracket-spacing': 'off' },
+  },
+  // The node/hashbang rule treats only package.json `bin` entries as executables; this script
+  // is run directly and needs its shebang.
+  {
+    name: 'dotfiles/executable-scripts',
+    files: ['**/*.?([cm])js'],
+    rules: {
+      'node/hashbang': [
+        'error',
+        {
+          additionalExecutables: [
+            'vscodium/.config/VSCodium/User/snippets/generate-gas-registers.js',
+          ],
+        },
+      ],
+    },
   },
 )

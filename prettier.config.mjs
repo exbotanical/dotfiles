@@ -1,16 +1,14 @@
 import exbotanical from '@exbotanical/prettier-config'
 
-const base = exbotanical({
-  plugins: {
-    shell: true,
-    toml: true,
-    xml: true,
-  },
-})
-
 export default {
-  ...base,
-  plugins: [...base.plugins, 'prettier-plugin-ini'],
+  ...exbotanical({
+    plugins: {
+      ini: true,
+      shell: true,
+      toml: true,
+      xml: true,
+    },
+  }),
   iniSpaceAroundEquals: true,
   overrides: [
     {
