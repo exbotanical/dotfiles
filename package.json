@@ -3,8 +3,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "fmt": "prettier --config prettier.config.mjs --write .",
-    "fmt:check": "prettier --config prettier.config.mjs --check .",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prepare": "git config core.hooksPath .githooks"
@@ -22,7 +22,7 @@
   },
   "lint-staged": {
     "*": [
-      "prettier --config prettier.config.mjs --check --ignore-unknown",
+      "prettier --check --ignore-unknown",
       "eslint --no-warn-ignored --max-warnings 0"
     ]
   }
