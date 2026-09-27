@@ -50,4 +50,5 @@ const config = registers.reduce(
   {},
 )
 
+// eslint-disable-next-line no-console -- CLI generator; stdout is the snippet JSON it produces
 console.log(JSON.stringify(config))

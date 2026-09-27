@@ -1,4 +1,3 @@
-import html from 'rollup-plugin-html'
 import { terser } from 'rollup-plugin-terser'
 import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
@@ -12,7 +11,7 @@ export default {
     terser(),
     {
       name: 'inline-html',
-      writeBundle(options, bundle) {
+      writeBundle(_options, bundle) {
         const jsFileName = Object.keys(bundle).find(name =>
           name.endsWith('.js'),
         )
