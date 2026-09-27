@@ -51,6 +51,10 @@
 [github]
   user = exbotanical
 
+[gpg]
+  program = /usr/bin/gpg
+
+
 [includeIf "gitdir:~/"]
   path = .gitconfig.personal
 
@@ -59,3 +63,7 @@
 
 [includeIf "onbranch:mainline"]
   path = .gitconfig.work
+
+# Per-host overrides, untracked, not stowed. Last include wins.
+[include]
+  path = ~/.gitconfig.local
