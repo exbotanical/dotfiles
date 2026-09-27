@@ -1,4 +1,4 @@
-.PHONY: install install_al2 delete simulate unit_test deps postinstall
+.PHONY: install install_al2 delete simulate unit_test deps postinstall fmt fmt_check lint lint_fix
 
 INSTALL_DIR  := .install
 ROOT_DIR     := root
@@ -37,3 +37,15 @@ deps:
 			$(MAKE) -C $$dir; \
 		fi \
 	done
+
+fmt:
+	npm run fmt
+
+fmt_check:
+	npm run fmt:check
+
+lint:
+	npm run lint
+
+lint_fix:
+	npm run lint:fix
