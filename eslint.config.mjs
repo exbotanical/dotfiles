@@ -7,7 +7,11 @@ const gitignore = fileURLToPath(new URL('.gitignore', import.meta.url))
 const prettierignore = fileURLToPath(new URL('.prettierignore', import.meta.url))
 
 export default exbotanical(
-  {},
+  {
+    // Sorts keys only in files whose key order carries no meaning for the program that reads them.
+    jsonc: { sortKeys: ['ohmyposh/**/*.json', 'startpage/src/*.json'] },
+    yaml: { sortKeys: ['lsd/.config/lsd/*.yaml'] },
+  },
   includeIgnoreFile(gitignore),
   includeIgnoreFile(prettierignore),
   // @exbotanical/eslint-config enables this rule on TOML files, and its fix conflicts with

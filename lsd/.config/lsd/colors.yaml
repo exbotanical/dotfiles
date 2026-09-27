@@ -1,24 +1,24 @@
-user: 159 # cyan
+date:
+  day-old: 103 # comment
+  hour-old: 146 # comment 20% lighter
+  older: 60 # current line
 group: 231 # foreground
+inode:
+  invalid: 210 # red
+  valid: 231 # foreground
+links:
+  invalid: 210 # red
+  valid: 159 # cyan
 permission:
-  read: 183 # blue
-  write: 212 # magenta
   exec: 159 # cyan
   exec-sticky: 159 # cyan
   no-access: 210 # red
-date:
-  hour-old: 146 # comment 20% lighter
-  day-old: 103 # comment
-  older: 60 # current line
+  read: 183 # blue
+  write: 212 # magenta
 size:
+  large: 210 # red
+  medium: 215 # orange
   none: 60 # current line
   small: 120 # green
-  medium: 215 # orange
-  large: 210 # red
-inode:
-  valid: 231 # foreground
-  invalid: 210 # red
-links:
-  valid: 159 # cyan
-  invalid: 210 # red
 tree-edge: 183 # blue
+user: 159 # cyan

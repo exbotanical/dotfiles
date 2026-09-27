@@ -1,42 +1,42 @@
 [
   {
-    "url": "https://antiwar.com/",
-    "label": "AntiWar"
+    "label": "AntiWar",
+    "url": "https://antiwar.com/"
   },
   {
-    "url": "https://mises.org/wire",
-    "label": "Mises Institute"
+    "label": "Mises Institute",
+    "url": "https://mises.org/wire"
   },
   {
-    "url": "https://github.com",
-    "label": "GitHub"
+    "label": "GitHub",
+    "url": "https://github.com"
   },
   {
-    "url": "https://www.mathtutordvd.com/members",
-    "label": "STEM Lessons"
+    "label": "STEM Lessons",
+    "url": "https://www.mathtutordvd.com/members"
   },
   {
-    "url": "https://chatgpt.com",
-    "label": "ChatGPT"
+    "label": "ChatGPT",
+    "url": "https://chatgpt.com"
   },
   {
-    "url": "https://cineworld.theavp.in",
-    "label": "CineWorld"
+    "label": "CineWorld",
+    "url": "https://cineworld.theavp.in"
   },
   {
-    "url": "https://leetcode.com/problemset/all/",
-    "label": "LeetCode"
+    "label": "LeetCode",
+    "url": "https://leetcode.com/problemset/all/"
   },
   {
-    "url": "https://www.khanacademy.org/profile/me/courses",
-    "label": "KhanAcademy"
+    "label": "KhanAcademy",
+    "url": "https://www.khanacademy.org/profile/me/courses"
   },
   {
-    "url": "https://www.youtube.com",
-    "label": "YouTube"
+    "label": "YouTube",
+    "url": "https://www.youtube.com"
   },
   {
-    "url": "https://ground.news/",
-    "label": "Ground News"
+    "label": "Ground News",
+    "url": "https://ground.news/"
   }
 ]
