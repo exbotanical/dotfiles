@@ -26,9 +26,6 @@ shopt -s cdspell 2> /dev/null
 # Correct spelling errors during tab-completion
 shopt -s dirspell 2> /dev/null
 
-# Allow vars to be used with cd
-shopt -s cdable_vars
-
 # Append to hist; don't overwrite
 shopt -s histappend
 
@@ -44,14 +41,20 @@ bind 'set show-all-if-ambiguous on'
 # Where cd looks for targets
 init::export CDPATH .
 
+# Which terminal pinentry should draw on. Without it, a host whose only pinentry
+# is the curses one cannot prompt for a passphrase, and signing dies with
+# "Inappropriate ioctl for device". Guarded: an interactive shell without a
+# terminal would otherwise export the literal string "not a tty".
+tty -s && init::export GPG_TTY "$(tty)"
+
 # Prevent duplicate lines; lines space-prepended in hist
 init::export HISTCONTROL erasedups:ignoreboth
 
 # Ignore short commands
 init::export HISTIGNORE '&:ls:[bf]g:exit:pwd:clear:history*'
 
-init::export HISTSIZE 10000
-init::export HISTFILESIZE $(bc<<<$HISTSIZE*2)
+init::export HISTSIZE -1
+init::export HISTFILESIZE -1
 
 # Use standard ISO 8601 timestamp
 init::export HISTTIMEFORMAT '[%Y-%m-%dT%H:%M:%S] '
@@ -95,3 +98,11 @@ utils::file? "$BASH_COMPLETIONS_PATH" && {
   . "$BASH_COMPLETIONS_PATH"
 }
 EphemeralVars+=(BASH_COMPLETIONS_PATH)
+
+# Allow vars to be used with cd (cd VARNAME changes into $VARNAME).
+# This MUST stay after bash-completion is sourced above. bash-completion checks
+# cdable_vars when it registers cd/pushd completion: if it is on at that point,
+# it adds the -v action, which makes TAB list every shell variable name and
+# buries the actual directories. Enabling cdable_vars afterward keeps the
+# runtime cd VARNAME behavior while leaving the completion as directories only.
+shopt -s cdable_vars
