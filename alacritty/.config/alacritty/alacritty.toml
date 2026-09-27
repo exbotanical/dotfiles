@@ -1,4 +1,3 @@
-[general]
 import = ["~/.config/alacritty/themes/ghost.toml"]
 
 [bell]
@@ -16,7 +15,7 @@ shape = "Beam"
 TERM = "xterm-256color"
 
 [font]
-size = 20.0
+size = 10.0
 
 [font.normal]
 family = "FiraCode Nerd Font"
@@ -28,6 +27,6 @@ opacity = 0.95
 x = 6
 y = 6
 
-[terminal.shell]
-args = ["--login"]
+[shell]
 program = "bash"
+args = ["--login"]
