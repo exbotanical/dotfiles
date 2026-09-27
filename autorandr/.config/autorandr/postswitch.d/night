@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Re-assert the color temperature after autorandr switches profiles: the modeset
+# resets the CRTC gamma ramp, and the night.timer tick is up to two minutes away.
+
+set -euo pipefail
+
+"$HOME/.local/bin/night" apply
