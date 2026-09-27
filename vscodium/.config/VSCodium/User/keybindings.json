@@ -44,95 +44,9 @@
     "command": "vue3snippets.format",
     "when": "isLinux && editorTextFocus && !editorReadonly && editorLangId == 'vue'"
   },
-  /* Jump word-for-word */
-  {
-    "key": "ctrl+left",
-    "command": "cursorWordLeft",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+right",
-    "command": "cursorWordRight",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+right",
-    "command": "cursorWordRight",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+shift+right",
-    "command": "cursorWordPartRightSelect",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+shift+alt+right",
-    "command": "cursorWordPartRightSelect",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+shift+left",
-    "command": "cursorWordPartLeftSelect",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+shift+alt+left",
-    "command": "cursorWordPartLeftSelect",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+right",
-    "command": "cursorWordPartRight",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+alt+right",
-    "command": "cursorWordPartRight",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+left",
-    "command": "cursorWordPartLeft",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+alt+left",
-    "command": "cursorWordPartLeft",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "ctrl+cmd+right",
-    "command": "cursorWordEndRight",
-    "when": "isMac && textInputFocus"
-  },
-  {
-    "key": "alt+right",
-    "command": "cursorWordEndRight",
-    "when": "isMac && textInputFocus"
-  },
   {
     "key": "ctrl+cmd+left",
     "command": "cursorWordEndLeft"
-  },
-  {
-    "key": "cmd+up",
-    "command": "editor.action.moveLinesUpAction",
-    "when": "isMac && editorTextFocus && !editorReadonly"
-  },
-  {
-    "key": "alt+up",
-    "command": "editor.action.moveLinesUpAction",
-    "when": "isMac && editorTextFocus && !editorReadonly"
-  },
-  {
-    "key": "cmd+down",
-    "command": "editor.action.moveLinesDownAction",
-    "when": "isMac && editorTextFocus && !editorReadonly"
-  },
-  {
-    "key": "alt+down",
-    "command": "editor.action.moveLinesDownAction",
-    "when": "isMac && editorTextFocus && !editorReadonly"
   },
   {
     "key": "ctrl+tab",
@@ -155,13 +69,13 @@
     "command": "-workbench.action.quickOpen"
   },
   {
-    "key": "cmd+left",
-    "command": "workbench.action.terminal.focusPrevious",
-    "when": "isMac && terminalFocus && terminalHasBeenCreated && !terminalEditorFocus"
+    "key": "ctrl+shift+v",
+    "command": "markdown.extension.closePreview",
+    "when": "!terminalFocus && activeWebviewPanelId == 'markdown.preview'"
   },
   {
-    "key": "cmd+right",
-    "command": "workbench.action.terminal.focusNext",
-    "when": "isMac && terminalFocus && terminalHasBeenCreated && !terminalEditorFocus"
+    "key": "ctrl+shift+v",
+    "command": "-markdown.extension.closePreview",
+    "when": "activeWebviewPanelId == 'markdown.preview'"
   }
 ]
