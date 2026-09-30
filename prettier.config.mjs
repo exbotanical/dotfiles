@@ -1,16 +1,17 @@
 import exbotanical from '@exbotanical/prettier-config'
 
+const base = await exbotanical({
+  docker: true,
+  ini: { iniSpaceAroundEquals: true },
+  shell: true,
+  toml: true,
+  xml: true,
+})
+
 export default {
-  ...exbotanical({
-    plugins: {
-      ini: true,
-      shell: true,
-      toml: true,
-      xml: true,
-    },
-  }),
-  iniSpaceAroundEquals: true,
+  ...base,
   overrides: [
+    ...(base.overrides ?? []),
     {
       files: ['git/.gitconfig.*'],
       options: { parser: 'ini' },

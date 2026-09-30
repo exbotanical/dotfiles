@@ -11,29 +11,8 @@ vscodium/.config/VSCodium/User/keybindings.json
 # Rewritten by LXAppearance
 gtk/.gtkrc-2.0
 
-# prettier-plugin-sh claims these file types, but they are not shell: it collapses spaces
-# inside gitignore patterns and fails on tmux `{ }` blocks
-.*ignore
-.gitattributes
-.tmux.conf
-tmux.conf
-*.tmux
-.env
-*.env
-
 # prettier-plugin-sh cannot parse unquoted `name=value` array elements
 bash/.config/bash/lib/parser.bash
 
-# prettier-plugin-ini cannot parse systemd line continuations
-systemd
-root/etc/systemd
-
 # prettier-plugin-sh does not know shpec's describe/it/end blocks and removes their indentation
 **/*_shpec.bash
-
-# Function names ending in `?` need a space before `()`; with extglob on, bash parses `name?()`
-# as an extended glob. prettier-plugin-sh removes that space.
-bash/.config/bash/lib/init_utils.bash
-bash/.config/bash/lib/utils.bash
-bash/.config/bash/scripts/dsync.bash
-bash/.config/bash/scripts/watch_scp.bash

@@ -33,10 +33,4 @@ export default exbotanical(
       ],
     },
   },
-  // Code blocks in Markdown are documentation examples, including intentional BAD examples,
-  // and autofix rewrites them. Markdown documents themselves are still linted.
-  {
-    name: 'dotfiles/ignore-markdown-code-blocks',
-    ignores: ['**/*.md/**'],
-  },
 )
