@@ -1,5 +1,5 @@
 # Select the distro with --build-arg DISTRO=ubuntu|arch
-# and the image with --target integ (.dev/integ-test.bash).
+# and the image with --target integ (.dev/integ-test.bash) or --target dev (.dev/boot-dev.bash).
 ARG DISTRO=ubuntu
 
 FROM ubuntu:24.04 AS base-ubuntu
@@ -32,3 +32,6 @@ RUN git init --quiet \
   && git -c user.name=integ -c user.email=integ@localhost commit --quiet --message 'integ test snapshot'
 
 ENTRYPOINT ["bash", ".dev/integ-test.bash"]
+
+FROM common AS dev
+ENTRYPOINT ["bash"]
