@@ -36,7 +36,7 @@ unit_test:
 deps:
 	@for dir in $(wildcard */); do \
 		if [ -f "$$dir/Makefile" ]; then \
-			$(MAKE) -C $$dir; \
+			$(MAKE) -C $$dir || exit 1; \
 		fi \
 	done
 
