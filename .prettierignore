@@ -16,3 +16,7 @@ bash/.config/bash/lib/parser.bash
 
 # prettier-plugin-sh does not know shpec's describe/it/end blocks and removes their indentation
 **/*_shpec.bash
+
+# The docker plugin's `**/Dockerfile.*` glob matches Docker ignore files, and dockerfmt
+# prints them as empty files
+**/*.dockerignore

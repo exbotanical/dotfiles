@@ -1,4 +1,4 @@
-.PHONY: install install_al2 delete simulate unit_test deps postinstall fmt fmt_check lint lint_fix hooks
+.PHONY: install install_al2 delete simulate unit_test integ_test deps postinstall fmt fmt_check lint lint_fix hooks
 
 INSTALL_DIR  := .install
 ROOT_DIR     := root
@@ -32,6 +32,9 @@ simulate:
 
 unit_test:
 	find . -path ./.git -prune -o -type f -print | bash -c "shpec $1"
+
+integ_test:
+	./.dev/run-integ.bash
 
 deps:
 	@for dir in $(wildcard */); do \
