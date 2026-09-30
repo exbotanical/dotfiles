@@ -20,6 +20,11 @@ export default {
       files: ['**/.shellcheckrc'],
       options: { iniSpaceAroundEquals: false },
     },
+    // Prettier detects shebangs only in file names without a dot, so this dotfile needs a glob.
+    {
+      files: ['x11/.xserverrc'],
+      options: { parser: 'sh' },
+    },
     // Code blocks in Markdown are documentation examples, including intentional BAD examples.
     {
       files: ['**/*.md'],
