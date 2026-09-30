@@ -1,4 +1,4 @@
 # rmd renders a markdown file
-rmd() {
+rmd () {
   pandoc "$1" | lynx -stdin
 }

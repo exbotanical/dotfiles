@@ -9,7 +9,7 @@ declare ICONS=(
   '󰤨'
 )
 
-main() {
+main () {
   if [[ "$1" == "toggle" ]]; then
     rfkill toggle wlan
   else

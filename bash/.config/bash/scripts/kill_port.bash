@@ -4,11 +4,11 @@
 #===============================================================================
 # shellcheck disable=SC2086,SC2048
 
-current_time() {
+current_time () {
   date +'%Y-%m-%dT%H:%M:%S%z'
 }
 
-panic() {
+panic () {
   local exit_status=$1
   shift
 
@@ -16,13 +16,13 @@ panic() {
   exit $exit_status
 }
 
-get_pid() {
+get_pid () {
   local target_port=$1
 
   lsof -ni :$target_port 2> /dev/null | grep LISTEN | awk '{ print $2 }'
 }
 
-main() {
+main () {
   local port=$1
 
   [[ ${#port} -lt 4 || ${#port} -gt 5 ]] && {

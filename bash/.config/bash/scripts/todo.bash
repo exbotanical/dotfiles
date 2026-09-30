@@ -4,7 +4,7 @@
 #===============================================================================
 # shellcheck disable=SC2086,SC2048
 
-panic() {
+panic () {
   local exit_status=$1
 
   shift
@@ -13,19 +13,19 @@ panic() {
   exit $exit_status
 }
 
-verify_args() {
+verify_args () {
   (($# < 1)) && {
     panic $E_ARGS 'Insufficient arguments'
   }
 }
 
-check_todo_file() {
+check_todo_file () {
   [[ ! -e $TODO_FILE ]] && {
     panic $E_FILENOTFOUND "File $TODO_FILE does not exist. Add a TODO to create one."
   }
 }
 
-logo() {
+logo () {
   cat << END
    ██                 ██
   ░██                ░██
@@ -38,7 +38,7 @@ logo() {
 END
 }
 
-usage() {
+usage () {
   local progpath=$(basename $0)
   local progname=${progpath%.*}
   logo
@@ -60,25 +60,25 @@ END
   exit 0
 }
 
-add_todo() {
+add_todo () {
   local todo=$*
 
   echo - $todo >> $TODO_FILE
   echo [+] Added TODO: \"$todo\"
 }
 
-delete_todo() {
+delete_todo () {
   local todo_num=$1
 
   sed -e $todo_num'd' -i $TODO_FILE
 }
 
-list_todos() {
+list_todos () {
   logo
   nl -b a $TODO_FILE
 }
 
-main() {
+main () {
   local cmd=$1
 
   shift # remove cmd so we can pass along variadic args

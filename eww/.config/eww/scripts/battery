@@ -23,7 +23,7 @@ else
   BLUE='#8BE9FD'
 fi
 
-icon() {
+icon () {
   if [[ "$STATE" == "Charging" ]]; then
     echo ${ICONS[4]}
   else
@@ -32,7 +32,7 @@ icon() {
   fi
 }
 
-status() {
+status () {
   if [[ "$STATE" == "Charging" ]]; then
     if (("$RATE" > 0)); then
       echo "$(gettime) left"
@@ -46,7 +46,7 @@ status() {
   fi
 }
 
-color() {
+color () {
   if [[ "$STATE" == "Charging" ]]; then
     if (($ALTERNATOR % 2 == 0)); then
       echo "$BLUE"
@@ -71,11 +71,11 @@ color() {
   fi
 }
 
-wattage() {
+wattage () {
   echo "$(bc -l <<< "scale=1; $RATE / $MICRO_WATTS")w"
 }
 
-gettime() {
+gettime () {
   # Maximum capacity
   local full=$(cat /sys/class/power_supply/BAT1/energy_full)
   # Current energy

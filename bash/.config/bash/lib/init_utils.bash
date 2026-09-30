@@ -7,7 +7,7 @@ init::login? () {
 }
 
 # Set the `ENV_SET` flag to indicate we've logged in
-init::set_login() {
+init::set_login () {
   export ENV_SET=1
 }
 
@@ -18,27 +18,27 @@ init::contains? () { (
 ); }
 
 # append_path appends the given argument to the PATH
-init::append_path() {
+init::append_path () {
   init::contains? "$PATH" $1 && return
   declare -g PATH=$PATH:$1
 }
 
 # prepend_path prepends the given argument to the PATH
-init::prepend_path() {
+init::prepend_path () {
   init::contains? "$PATH" $1 && return
   declare -g PATH=$1:${PATH}
 }
 
 # export exports the key value pair, only using the value $2 if the
 # export key is not already set.
-init::export() {
+init::export () {
   export $1=${!1:-$2}
 }
 
 # export_builtin sets the variable $1 to the first verified builtin
 # $2.. are variadic args that may or may not be builtin commands. export_builtin
 # exports the first valid builtin and returns.
-init::export_builtin() {
+init::export_builtin () {
   local ref=$1
   shift
   local builtin_cmd
@@ -70,7 +70,7 @@ init::load_app? () {
 }
 
 # list_dir lists the directory's contents without newlines
-init::list_dir() { (
+init::list_dir () { (
   local items=()
   cd $1
   utils::globbing on
@@ -79,26 +79,26 @@ init::list_dir() { (
 ); }
 
 # Write arguments to stdout only if the debug flag is set
-init::debug() {
+init::debug () {
   ! ((INIT_DEBUG_MODE)) && return
 
   echo -e "[DEBUG: $(date +"%T.%3N")] $1"
 }
 
 # Toggle the debug flag
-init::toggle_debug() {
+init::toggle_debug () {
   ((INIT_DEBUG_MODE ^= 1))
   :
   export INIT_DEBUG_MODE
 }
 
 # Turn on debug mode
-init::enable_debug() {
+init::enable_debug () {
   export INIT_DEBUG_MODE=1
 }
 
 # Wrapper; order app by dependencies
-init::order_by_dependencies() {
+init::order_by_dependencies () {
   local -A satisfied=()
 
   init::_order_by_dependencies
@@ -106,7 +106,7 @@ init::order_by_dependencies() {
 
 # order_by_dependencies recurses a stream of apps
 # and orders them by dependencies declared in app/deps
-init::_order_by_dependencies() {
+init::_order_by_dependencies () {
   local app
   local dep
 

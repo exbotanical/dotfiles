@@ -1,4 +1,4 @@
-get_flag() {
+get_flag () {
   local bin="$1"
   echo $(($(
     type $bin &> /dev/null

@@ -3,7 +3,7 @@
 #author         :Matthew Zito
 #===============================================================================
 
-main() {
+main () {
   read -pr "[*] Warning: this script will modify your IP Tables configurations. Continue? (y/n) " answer
 
   case $answer in

@@ -14,7 +14,7 @@ MAX_OUTPUT_LENGTH=200
 REFRESH_TTL_IN_MINUTES=5
 
 # Spin up a login shell that sources config and dumps aliases/functions
-refresh_cache() {
+refresh_cache () {
   mkdir -p "$CACHE_DIR"
 
   bash --login -i -c '
@@ -31,7 +31,7 @@ refresh_cache() {
 }
 
 # Retrieves cached aliases and functions
-get_available_commands() {
+get_available_commands () {
   local aliases_cache="$CACHE_DIR/aliases-cache"
 
   # Regenerate if missing or older than 5 minutes
@@ -43,7 +43,7 @@ get_available_commands() {
 }
 
 # Retrieves command history
-get_command_history() {
+get_command_history () {
   if [[ -f "$HISTORY_FILE" ]]; then
     echo ""
     echo "# Recent Commands"
@@ -54,7 +54,7 @@ get_command_history() {
 # Adds command to history
 # Arguments:
 #   $1=command
-add_to_history() {
+add_to_history () {
   local cmd="$1"
 
   # Remove the command if it already exists, then add it to the top
@@ -74,7 +74,7 @@ add_to_history() {
 # Executes command with proper environment
 # Arguments:
 #   $1=command
-execute_command() {
+execute_command () {
   local cmd="$1"
   local temp_script=$(mktemp)
 
@@ -130,13 +130,13 @@ EOF
 # Sanitizes command (remove type annotations)
 # Arguments:
 #   $1=command
-clean_command() {
+clean_command () {
   local cmd="$1"
   # Remove type annotations like " (alias)", " (function)", " (recent)"
   echo "$cmd" | sed 's/ (alias)$//' | sed 's/ (function)$//' | sed 's/ (recent)$//'
 }
 
-main() {
+main () {
   mkdir -p "$CACHE_DIR"
 
   if [[ $# -eq 0 ]]; then

@@ -3,7 +3,7 @@
 #author         :Matthew Zito
 #===============================================================================
 
-flush() {
+flush () {
   # Avoid ssh lock by accepting all traffic
   iptables -P INPUT ACCEPT
   iptables -P FORWARD ACCEPT
@@ -23,7 +23,7 @@ flush() {
   iptables -t raw -X
 }
 
-main() {
+main () {
   read -p "[*] Warning: this script will modify your IP Tables configurations. Continue? (y/n) " answer
 
   case $answer in

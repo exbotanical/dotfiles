@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 SLEEP_INTERVAL=3
 
-main() {
+main () {
   local powered
   local status
   local name

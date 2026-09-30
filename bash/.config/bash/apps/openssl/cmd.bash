@@ -1,5 +1,5 @@
 # base64 encodes to and decodes from base64
-base64() {
+base64 () {
   while getopts ":d:e:" opt; do
     case $opt in
       d)

@@ -2,7 +2,7 @@
 
 PROGRAM=${PROGRAM:-npm}
 
-install() {
+install () {
   local key='dependencies'
   local dep_type="${1:-whatever}"
   local install_cmd='install'
@@ -29,7 +29,7 @@ install() {
   return $did_anything
 }
 
-main() {
+main () {
   local did_anything=0
   declare deps
 

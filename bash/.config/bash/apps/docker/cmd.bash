@@ -1,5 +1,5 @@
 # dockerize launches a containerized dev env of the PWD
-dockerize() {
+dockerize () {
   local docker_image='ghcr.io/exbotanical/docker-dev-env:latest'
 
   echo -e "Building a fresh dev environment as an ephemeral container in $(pwd)...\n"
@@ -7,6 +7,6 @@ dockerize() {
 }
 
 # docker_intermediate_prune prunes all dangling intermediate images
-docker_intermediate_prune() {
+docker_intermediate_prune () {
   docker rmi $(docker images -a | grep '<none>' | awk '{ print $3 }')
 }

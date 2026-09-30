@@ -4,7 +4,7 @@ declare VOL_ICONS=('󰸈' '󰖀' '󰕾')
 SOURCE='SOURCE'
 SINK='SINK'
 
-get_vol() {
+get_vol () {
   local device="$1"
   local vol="$(wpctl get-volume @DEFAULT_AUDIO_$device@ | awk '{print int($2*100)}')"
 
@@ -15,31 +15,31 @@ get_vol() {
   fi
 }
 
-is_muted() {
+is_muted () {
   local device="$1"
   wpctl get-volume "@DEFAULT_AUDIO_$device"@ | rg -i muted
   echo $?
 }
 
-set_vol() {
+set_vol () {
   local device="$1"
   local volume="$2"
   wpctl set-volume "@DEFAULT_AUDIO_$device"@ "$(awk -v n="$volume" 'BEGIN{print (n / 100)}')"
 }
 
-set_mute() {
+set_mute () {
   local device="$1"
   wpctl set-mute "@DEFAULT_AUDIO_$device"@ toggle
 }
 
-is_invalid_src() {
+is_invalid_src () {
   local src="$1"
   [[ "$src" != "$SOURCE" ]] && [[ "$src" != "$SINK" ]] && {
     echo 1
   }
 }
 
-panic() {
+panic () {
   local ec=$1
   shift
 
@@ -47,7 +47,7 @@ panic() {
   exit $ec
 }
 
-main() {
+main () {
   local command="$1"
   local src="$2"
   local volume="$3"

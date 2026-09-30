@@ -4,11 +4,11 @@
 #===============================================================================
 # shellcheck disable=SC2086,SC2048
 
-current_time() {
+current_time () {
   date +'%Y-%m-%dT%H:%M:%S%z'
 }
 
-panic() {
+panic () {
   local exit_status=$1
   shift
 
@@ -16,7 +16,7 @@ panic() {
   exit $exit_status
 }
 
-usage() {
+usage () {
   cat << EOF
 Add or remove a given line from /etc/hosts. Must be run as root.
 
@@ -33,19 +33,19 @@ Examples:
 EOF
 }
 
-validate_hosts_file() {
+validate_hosts_file () {
   [[ ! -e $HOSTS_FILE ]] && {
     panic $E_FILENOTFOUND "Hosts file not found"
   }
 }
 
-validate_root_user() {
+validate_root_user () {
   [[ ! $UID -eq $ROOT_UID ]] && {
     panic $E_NOTROOT "Must execute as root"
   }
 }
 
-validate_args() {
+validate_args () {
   local n_expected_args=$1
   local n_args=$2
 

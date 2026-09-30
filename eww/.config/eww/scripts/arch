@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 INTERVAL=3600
 
-main() {
+main () {
   local updates=$(yay -Qua)
   local num_updates_total=$(echo $updates | wc -l)
   local num_updates_warn=$(echo $updates | grep -c '\(linux\|linux-lts\|linux-zen\)')

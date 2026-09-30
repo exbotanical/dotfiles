@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 DEFAULT_HEADPHONES_MAC='34:09:C9:B2:A8:F6'
 
-bt_toggle() {
+bt_toggle () {
   local mac="${1:-$DEFAULT_HEADPHONES_MAC}"
 
   if bluetoothctl info "$mac" | grep -q "Connected: yes"; then

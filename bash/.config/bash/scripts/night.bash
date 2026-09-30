@@ -31,7 +31,7 @@ readonly OVERRIDE_FILE="$STATE_DIR/override"
 # mid-twilight, so stepping on a timer tracks the dusk ramp. The period is
 # deliberately coarse -- the transition percentage moves every tick and would
 # otherwise expire an override immediately.
-read_schedule() {
+read_schedule () {
   redshift \
     -l "$LOCATION" \
     -t "$DAY_TEMP:$NIGHT_TEMP" \
@@ -46,35 +46,35 @@ read_schedule() {
     '
 }
 
-current_period() {
+current_period () {
   read_schedule | cut -d' ' -f1
 }
 
 # -P resets the ramps to pure before applying. Without it redshift composes onto
 # whatever is already on screen, and a fresh process every tick would compound
 # its own warmth without bound.
-apply_values() {
+apply_values () {
   redshift -P -O "$1" -b "$2" -m "$METHOD" &> /dev/null
 }
 
-clear_gamma() {
+clear_gamma () {
   redshift -m "$METHOD" -x &> /dev/null
 }
 
-read_override() {
+read_override () {
   [[ -f $OVERRIDE_FILE ]] && cat "$OVERRIDE_FILE" || true
 }
 
-write_override() {
+write_override () {
   mkdir -p "$STATE_DIR"
   printf '%s %s\n' "$1" "$2" >| "$OVERRIDE_FILE"
 }
 
-clear_override() {
+clear_override () {
   rm -f "$OVERRIDE_FILE"
 }
 
-get_mode() {
+get_mode () {
   local override
   override=$(read_override)
 
@@ -85,7 +85,7 @@ get_mode() {
   fi
 }
 
-notify() {
+notify () {
   local state="$1"
   local label="${2:-$state}"
   local icon=weather-clear
@@ -95,7 +95,7 @@ notify() {
   dunstify -a "night" -u low -r 9992 -i "$icon" "Night mode: ${label}"
 }
 
-apply_mode() {
+apply_mode () {
   local mode="$1"
   local sched_temp="$2"
   local sched_brightness="$3"
@@ -111,7 +111,7 @@ apply_mode() {
 # was recorded in is still current, so daytime toggling is discarded at dusk and
 # the schedule resumes at its own values. Re-asserting every tick is also what
 # heals gamma clobbered by a monitor coming online.
-apply() {
+apply () {
   local period temp brightness
   read -r period temp brightness < <(read_schedule)
 
@@ -137,7 +137,7 @@ apply() {
   apply_values "$temp" "$brightness"
 }
 
-warm() {
+warm () {
   local temp="${1:-$NIGHT_TEMP}"
 
   write_override "$(current_period)" "warm:$temp"
@@ -145,23 +145,23 @@ warm() {
   notify on "${temp}K"
 }
 
-on() {
+on () {
   warm "$NIGHT_TEMP"
 }
 
-off() {
+off () {
   write_override "$(current_period)" off
   clear_gamma
   notify off
 }
 
-auto() {
+auto () {
   clear_override
   apply
   notify on auto
 }
 
-toggle() {
+toggle () {
   local mode
   mode=$(get_mode)
 
@@ -178,7 +178,7 @@ toggle() {
   esac
 }
 
-status() {
+status () {
   local period temp brightness
   read -r period temp brightness < <(read_schedule)
 

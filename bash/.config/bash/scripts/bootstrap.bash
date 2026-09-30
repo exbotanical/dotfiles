@@ -13,7 +13,7 @@ GO_REPO=$GITHUB_URL/go-lib-boilerplate
 C_REPO=$GITHUB_URL/c-boilerplate
 CLIB_REPO=$GITHUB_URL/clib-boilerplate
 
-clib_setup_files() {
+clib_setup_files () {
   # the include header
   local header=include/lib$proj.h
 
@@ -46,20 +46,20 @@ extern "C" {
 END
 }
 
-designate() {
+designate () {
   local proj=$1
 
   find . -type f -exec sed -i "s/<project>/$proj/g" {} \;
   sed -i "s/<year>/$(date +%Y)/" LICENSE
 }
 
-git_setup() {
+git_setup () {
   # Remove existing git dir
   rm -rf .git
   git init
 }
 
-setup() {
+setup () {
   local env=$1
   local proj=$2
 
@@ -99,7 +99,7 @@ setup() {
   git_setup
 }
 
-main() {
+main () {
   local env=$1
   local proj=$2
 

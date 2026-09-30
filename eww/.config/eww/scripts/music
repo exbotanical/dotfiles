@@ -3,7 +3,7 @@
 # TODO: bandcamp, spotify, rumble, cineworld, netflix
 COVERS_DIR="${XDG_CACHE_DIR:-$HOME/.cache}/eww_covers"
 
-get_status() {
+get_status () {
   local s=$1
   if [[ "$s" == 'Playing' ]]; then
     echo ''
@@ -12,7 +12,7 @@ get_status() {
   fi
 }
 
-get_length_sec() {
+get_length_sec () {
   local len=$1
   if [[ -z "$len" ]]; then
     echo 0
@@ -21,7 +21,7 @@ get_length_sec() {
   fi
 }
 
-get_length_time() {
+get_length_time () {
   local len=$1
   if [[ -n "$len" ]]; then
     len=$(bc <<< "$len / 1000000 + 1")
@@ -31,7 +31,7 @@ get_length_time() {
   fi
 }
 
-get_position() {
+get_position () {
   local pos=$1
   local len=$2
   if [[ -n "$pos" ]]; then
@@ -41,7 +41,7 @@ get_position() {
   fi
 }
 
-get_position_time() {
+get_position_time () {
   local pos=$1
   local len=$2
   if [[ -n "$pos" ]]; then
@@ -51,12 +51,12 @@ get_position_time() {
   fi
 }
 
-is_webp() {
+is_webp () {
   local path="$1"
   [[ "$(identify "$path" | awk '{print $2}')" == "WEBP" ]]
 }
 
-get_cover() {
+get_cover () {
   local img_path="$COVERS_DIR/cover_art.png"
   local cover_url="$1"
 
@@ -91,17 +91,17 @@ get_cover() {
   fi
 }
 
-sanitize() {
+sanitize () {
   echo "$1" | sed 's/"/\"/g'
 }
 
-truncate() {
+truncate () {
   local str="$1"
   local max_len="$2"
   echo $str | awk -v len=$max_len '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
 }
 
-main() {
+main () {
   mkdir -p "$COVERS_DIR"
   cd "$COVERS_DIR" || exit
 

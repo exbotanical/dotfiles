@@ -3,14 +3,14 @@
 # (installed and $DISPLAY set), apps/xclip/alias.bash defines a clip alias that
 # shadows this function in interactive shells, since aliases resolve before
 # functions regardless of definition order.
-function clip() {
+function clip () {
   local data
   data="$(cat)"
   printf '\033]52;c;%s\007' "$(printf '%s' "$data" | base64 | tr -d '\n')"
 }
 
 # extract unarchives the file based on the archive type
-extract() {
+extract () {
   local file_name="$1"
 
   echo Extracting "$file_name"...
@@ -37,24 +37,24 @@ extract() {
 }
 
 # bak backs up a file with a timestamp in the name
-bak() {
+bak () {
   local file_name="$1"
   cp "$file_name" "${file_name}-$(date +%Y%m%d%H%M).bak"
 }
 
 # ptree displays tree of running user processes
-ptree() {
+ptree () {
   ps f -u "$USER" -o command,pid,%cpu,%mem,time,etime,tty \
     | awk 'NR <= 1 {print;next} !/awk/ && $0~var' var="${1:-".*"}"
 }
 
 # psaux less-es running processes of the given target
-psaux() {
+psaux () {
   pgrep -f "$@" | xargs ps -fp 2> /dev/null
 }
 
 # open_enc mounts an encrypted directory
-open_enc() {
+open_enc () {
   local mount="$1"
   local proxy="$2"
 
@@ -62,47 +62,47 @@ open_enc() {
 }
 
 # close_enc unmounts an encrypted directory
-close_enc() {
+close_enc () {
   local proxy="$1"
 
   fusermount -u "${proxy:-$HOME/enc}"
 }
 
 # cheat searches cheat.sh
-cheat() {
+cheat () {
   curl "cht.sh/$*"
 }
 
 # lsuptime prints the system uptime
-lsuptime() {
+lsuptime () {
   uptime | awk '{ print "Uptime:", $3, $4, $5 }' | sed 's/,//g'
 }
 
 # lscmd prints the most used commands
-lscmd() {
+lscmd () {
   history | awk '{CMD[$4]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n10
 }
 
 # toggle_k toggles the keyboard layout between qwerty and colemak
-toggle_k() {
+toggle_k () {
   local current_variant=$(setxkbmap -query | grep "variant")
   [[ "$current_variant" == '' ]] && setxkbmap -variant colemak || setxkbmap us
 }
 
 # cmd_out runs a command and pipes its stdout and stderr to respective files
-cmd_out() {
+cmd_out () {
   local cmd="$*"
   $cmd >| stdout.txt 2>| stderr.txt
 }
 
 # cmd_out_clean quietly tries to remove the cmd_out artifacts
-cmd_out_clean() {
+cmd_out_clean () {
   rm stdout.txt stderr.txt &> /dev/null
 }
 
 # ssh_cache starts the ssh agent and caches the private key
 # this allows the user to avoid entering the passphrase over and over
-ssh_cache() {
+ssh_cache () {
   local SSH_KPATH="$HOME/.ssh/id_rsa"
 
   eval $(ssh-agent -s)
@@ -110,7 +110,7 @@ ssh_cache() {
 }
 
 # for_each_dir runs the given command inside every directory immediately below the cwd
-for_each_dir() {
+for_each_dir () {
   local cmd="$1"
   for d in ./*/; do (cd "$d" && eval "$cmd"); done
 }
@@ -136,7 +136,7 @@ for_each_dir() {
 #   manopt find -print    # MUST prefix with '-' here.
 #   manopt find '-exec.*' # find options *starting* with '-exec'
 # Src: https://stackoverflow.com/a/24967501
-manopt() {
+manopt () {
   local cmd=$1
   local opt=$2
 
@@ -145,12 +145,12 @@ manopt() {
 }
 
 # to_snake_case converts a given string to lower and snake case
-to_snake_case() {
+to_snake_case () {
   echo "$1" | tr '[:upper:]' '[:lower:]' | tr ' ' '_'
 }
 
 # poll polls a command ($1) every $2 seconds until it returns a success (0 rc)
-poll() {
+poll () {
   local cmd="$1"
   local interval="$2"
 
@@ -159,7 +159,7 @@ poll() {
 
 # history_prune deletes bash history entries from before a given date
 # Usage: history_prune 2024-01-01
-history_prune() {
+history_prune () {
   local cutoff="$1"
   if [[ -z "$cutoff" ]]; then
     echo "Usage: history_prune YYYY-MM-DD"

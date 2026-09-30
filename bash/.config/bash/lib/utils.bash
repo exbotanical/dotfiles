@@ -20,7 +20,7 @@ utils::extant? () {
 }
 
 # strict_mode toggles strict mode
-utils::strict_mode() {
+utils::strict_mode () {
   case "$1" in
     on)
       set -o errexit
@@ -43,7 +43,7 @@ utils::strict_mode() {
 }
 
 # debug_mode toggles debug mode (xtrace)
-utils::debug_mode() {
+utils::debug_mode () {
   case "$1" in
     on) set -x ;;
     off) set +x ;;
@@ -52,7 +52,7 @@ utils::debug_mode() {
 }
 
 # globbing toggles globbing
-utils::globbing() {
+utils::globbing () {
   case $1 in
     on) set +o noglob ;;
     off) set -o noglob ;;
@@ -60,7 +60,7 @@ utils::globbing() {
 }
 
 # splitspace toggles splitting on spaces
-utils::splitspace() {
+utils::splitspace () {
   case $1 in
     on) IFS=$' \t\n' ;;
     off) IFS=$'\n' ;;
@@ -68,7 +68,7 @@ utils::splitspace() {
 }
 
 # aliases toggles shell aliases
-utils::aliases() {
+utils::aliases () {
   case $1 in
     on) shopt -s expand_aliases ;;
     off) shopt -u expand_aliases ;;
@@ -76,7 +76,7 @@ utils::aliases() {
 }
 
 # traceback adds stack traces to bash ops
-utils::traceback() {
+utils::traceback () {
   local -i rc=$?
   set +o xtrace
   local -i frame=0
@@ -102,7 +102,7 @@ utils::traceback() {
 
 # filter applies a unary function on a stream of values,
 # returning only those values for which the function evaluates to true
-utils::filter() {
+utils::filter () {
   local item
 
   while read -r item; do
@@ -130,6 +130,6 @@ utils::vscodium? () {
   [[ "$TERM_PROGRAM" == 'vscode' ]]
 }
 
-utils::rmdir_exists() {
+utils::rmdir_exists () {
   utils::dir? $1 && rm -rf $1
 }

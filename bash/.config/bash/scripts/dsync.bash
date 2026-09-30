@@ -38,7 +38,7 @@ readonly SSH_FLAGS=(
 
 readonly IGNORE_FILE_NAME=.dsyncignore
 
-usage() {
+usage () {
   cat << END
 Sync a directory with its counterpart on a remote host, via rsync over SSH.
 
@@ -76,14 +76,14 @@ sourced? () {
   [[ ${FUNCNAME[1]:-} == source ]]
 }
 
-panic() {
+panic () {
   printf '[-] %s\n' "$*" >&2
   exit 1
 }
 
 # remote_dir_for resolves the remote counterpart of a local directory, mapping
 # it to ROOT/<basename> whenever an explicit remote directory is not given.
-remote_dir_for() {
+remote_dir_for () {
   local local_dir=${1%/}
   local explicit=${2:-}
   local root=${3:-}
@@ -100,7 +100,7 @@ remote_dir_for() {
 
 # rsh_command prints the rsync --rsh value, joining the ssh flags on spaces
 # regardless of the caller's IFS.
-rsh_command() {
+rsh_command () {
   local IFS=' '
 
   printf 'ssh %s\n' "${SSH_FLAGS[*]}"
@@ -108,7 +108,7 @@ rsh_command() {
 
 # endpoints_for prints the rsync source then destination for a direction, with
 # the trailing slashes that make rsync sync contents rather than the dir itself.
-endpoints_for() {
+endpoints_for () {
   local direction=$1
   local host=$2
   local local_dir=${3%/}
@@ -123,7 +123,7 @@ endpoints_for() {
 
 # exclude_flags prints an rsync --exclude flag per default pattern and per
 # non-empty, non-comment line of the ignore file, when one exists.
-exclude_flags() {
+exclude_flags () {
   local ignore_file=${1:-}
   local pattern
 
@@ -139,7 +139,7 @@ exclude_flags() {
   done < "$ignore_file"
 }
 
-make_dest_dir() {
+make_dest_dir () {
   local direction=$1
   local host=$2
   local local_dir=$3
@@ -153,7 +153,7 @@ make_dest_dir() {
 
 # confirm_deletions prompts before a --delete run, listing the entries the
 # destination would lose. Refuses to guess when stdin is not a terminal.
-confirm_deletions() {
+confirm_deletions () {
   local preview
   local deletions
   local reply
@@ -171,7 +171,7 @@ confirm_deletions() {
   [[ $reply == [yY]* ]] || panic 'aborted'
 }
 
-main() {
+main () {
   local direction=$1
   local local_dir=${2%/}
   local remote_dir_arg=${3:-}

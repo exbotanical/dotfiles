@@ -8,7 +8,7 @@ utils::splitspace off
 
 PROG=$0
 
-usage() {
+usage () {
   cat << END
 Monitor a directory and copy files to a host.
 
@@ -45,7 +45,7 @@ HELP_FLAG=0
 TRACE_FLAG=0
 VERSION_FLAG=0
 
-panic() {
+panic () {
   echo $1
   exit 1
 }
@@ -55,7 +55,7 @@ blank? () {
 }
 
 # list lists files matching a series of | delimited glob patterns
-list() { (
+list () { (
   cd $1
   # Don't return the pattern if it doesn't evaluate to anything
   shopt -s nullglob
@@ -68,7 +68,7 @@ list() { (
 ); }
 
 # newitems diffs two newline-delimited lists
-newitems() {
+newitems () {
   # Mitigate edgecase whereby comm exits the pipeline if no result
   blank? $2 && return
   # Use process substitution
@@ -79,7 +79,7 @@ busy? () {
   fuser $DIR/$1 &> /dev/null
 }
 
-not_busy() {
+not_busy () {
   local file
 
   while read -r file; do
@@ -95,13 +95,13 @@ lockfile? () {
   ) 2> /dev/null
 }
 
-track() { (
+track () { (
   cd $Dir
   md5sum $1 | append_file $PROCESSED_FILE
 ); }
 
 # transfer reads from stdin and pipe into scp
-transfer() {
+transfer () {
   local file
 
   while read -r file; do
@@ -116,7 +116,7 @@ transferred? () { (
   grep -q $(md5sum $1) $PROCESSED_FILE
 ); }
 
-not_transferred() {
+not_transferred () {
   local file
 
   while read -r file; do
@@ -125,11 +125,11 @@ not_transferred() {
   :
 }
 
-write_file() {
+write_file () {
   cat > $1
 }
 
-append_file() {
+append_file () {
   cat >> $1
 }
 
@@ -143,7 +143,7 @@ singleton? () {
   ! lockfile? && trap "rm $LOCKFILE;"' echo "stopped at $(date)"' EXIT
 }
 
-start_monitor() {
+start_monitor () {
   local new_contents
   local old_contents
 
@@ -157,7 +157,7 @@ start_monitor() {
   : # Perform transfer in parallel
 }
 
-main() {
+main () {
   touch $DIR/$PROCESSED_FILE
 
   echo "started at $(date)"
