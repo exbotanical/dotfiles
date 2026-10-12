@@ -20,7 +20,6 @@ install_root:
 install_al2:
 	mkdir -p $(AL2_HOME)/.local/bin
 	stow --verbose 3 --target=$(AL2_HOME) --restow $(INCLUDE_DIRS)
-	HOME=$(AL2_HOME) ./$(INSTALL_DIR)/al2.bash
 	$(MAKE) postinstall
 	$(MAKE) hooks
 
