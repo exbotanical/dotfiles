@@ -71,6 +71,7 @@
   "window.openFoldersInNewWindow": "on",
   "window.title": "${dirty}${activeEditorShort}${separator}${rootName}",
   "window.titleBarStyle": "native",
+  "window.dialogStyle": "custom",
   "window.newWindowDimensions": "inherit",
   "window.menuBarVisibility": "hidden",
   "editor.rulers": [80],
