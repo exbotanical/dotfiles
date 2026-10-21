@@ -30,22 +30,12 @@
     "when": "isLinux && terminalFocus && terminalHasBeenCreated && !terminalEditorFocus"
   },
   {
-    "key": "ctrl+b",
-    "command": "workbench.action.toggleSidebarVisibility",
-    "when": "isLinux && editorTextFocus"
-  },
-  {
     "key": "ctrl+shift+d",
-    "command": "dockerContainers.focus",
+    "command": "vscode-containers.views.containers.focus",
     "when": "isLinux"
   },
   {
-    "key": "ctrl+shift+f",
-    "command": "vue3snippets.format",
-    "when": "isLinux && editorTextFocus && !editorReadonly && editorLangId == 'vue'"
-  },
-  {
-    "key": "ctrl+cmd+left",
+    "key": "ctrl+meta+left",
     "command": "cursorWordEndLeft"
   },
   {
