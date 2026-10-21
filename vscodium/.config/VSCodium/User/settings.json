@@ -7,7 +7,6 @@
   "editor.cursorBlinking": "expand",
   "editor.cursorStyle": "line",
   "editor.codeActionsOnSave": {},
-  "editor.suggestSelection": "first",
   "editor.accessibilitySupport": "off",
   "editor.fontFamily": "FiraCode Nerd Font",
   "editor.fontSize": 16,
@@ -66,11 +65,10 @@
     "args": ["-l"],
   },
 
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-
   "window.openFoldersInNewWindow": "on",
   "window.title": "${dirty}${activeEditorShort}${separator}${rootName}",
-  "window.titleBarStyle": "native",
+  "window.titleBarStyle": "custom",
+  "window.controlsStyle": "hidden",
   "window.dialogStyle": "custom",
   "window.newWindowDimensions": "inherit",
   "window.menuBarVisibility": "hidden",
@@ -84,9 +82,6 @@
    * LSP Configurations
    */
 
-  "go.languageServerExperimentalFeatures": {
-    "diagnostics": true, // for diagnostics as you type
-  },
   "go.coverShowCounts": true,
   "go.toolsManagement.autoUpdate": true,
   "gopls": {
@@ -105,14 +100,11 @@
     "editor.tabSize": 4,
   },
 
-  "clang-format.executable": "/usr/bin/clang-format",
-  "clang-format.style": "file",
-  "clang-format.language.c.enable": true,
   "[c]": {
     "editor.codeActionsOnSave": {
       "source.fixAll": "explicit",
     },
-    "editor.defaultFormatter": "xaver.clang-format",
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
     "editor.wordBasedSuggestions": "off",
     "editor.suggest.insertMode": "replace",
     "editor.semanticHighlighting.enabled": true,
@@ -125,10 +117,18 @@
   "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google }",
   "[cpp]": {},
 
-  "python.formatting.provider": "black",
-  "python.formatting.blackArgs": ["--skip-string-normalization"],
   "python.terminal.activateEnvironment": false,
-  "[python]": {},
+  "ruff.configuration": {
+    "format": { "quote-style": "preserve" },
+  },
+  "ruff.configurationPreference": "filesystemFirst",
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit",
+    },
+    "editor.defaultFormatter": "charliermarsh.ruff",
+  },
 
   "redhat.telemetry.enabled": false,
   "java.configuration.runtimes": [
@@ -166,6 +166,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
 
+  // timonwong.shellcheck runs ShellCheck, so bash-ide must not run it a second time.
+  "bashIde.shellcheckPath": "",
   "[shellscript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
