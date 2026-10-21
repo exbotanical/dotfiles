@@ -59,6 +59,7 @@
   "terminal.integrated.fontWeight": "600",
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "terminal.integrated.gpuAcceleration": "off",
 
   "terminal.integrated.automationProfile.linux": {
     "path": "bash",
