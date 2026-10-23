@@ -1,4 +1,4 @@
-.PHONY: install install_al2 delete simulate unit_test integ_test deps postinstall fmt fmt_check lint lint_fix hooks
+.PHONY: install install_al2 delete simulate unit_test integ_test deps postinstall fmt fmt_check lint lint_fix hooks prettier_global
 
 INSTALL_DIR  := .install
 ROOT_DIR     := root
@@ -13,6 +13,7 @@ install: deps
 	stow --verbose 3 --target=$$HOME --restow $(INCLUDE_DIRS)
 	$(MAKE) postinstall
 	$(MAKE) hooks
+	$(MAKE) prettier_global
 
 install_root:
 	stow --verbose 3 --target=/ --restow $(ROOT_DIR)
@@ -22,6 +23,7 @@ install_al2:
 	stow --verbose 3 --target=$(AL2_HOME) --restow $(INCLUDE_DIRS)
 	$(MAKE) postinstall
 	$(MAKE) hooks
+	$(MAKE) prettier_global
 
 delete:
 	stow --verbose --target=$$HOME --delete $(INCLUDE_DIRS)
@@ -58,3 +60,8 @@ hooks:
 	@command -v npm >/dev/null || { echo 'hooks: npm not found; install node, then run `make hooks`' >&2; exit 1; }
 	npm ci
 	git config --local core.hooksPath .githooks
+
+prettier_global:
+	@command -v npm >/dev/null || { echo 'prettier_global: npm not found; install node, then run `make prettier_global`' >&2; exit 1; }
+	@version=$$(node -p 'require("./package-lock.json").packages["node_modules/prettier"].version') || exit 1; \
+		npm ls -g "prettier@$$version" >/dev/null || npm i -g "prettier@$$version"
