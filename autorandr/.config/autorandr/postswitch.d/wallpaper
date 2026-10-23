@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Redraw the wallpaper after autorandr switches profiles: the root pixmap keeps
+# the screen size it had when feh last ran.
+
+set -euo pipefail
+
+"$HOME/.local/bin/wallpaper"
