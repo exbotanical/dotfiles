@@ -9,7 +9,6 @@ EXTENSIONS=(
   'bradlc.vscode-tailwindcss@0.14.28'
   'charliermarsh.ruff@2026.88.0'
   'cschlosser.doxdocgen@1.4.0'
-  'davidanson.vscode-markdownlint@0.62.1'
   'dbaeumer.vscode-eslint@3.0.13'
   'dlasagno.rasi@1.1.0'
   'dracula-theme.theme-dracula@2.25.1'
