@@ -1,0 +1,1 @@
+# TODO: seed from `pacman -Qqem` on the machine, then prune to the packages the dotfiles use.

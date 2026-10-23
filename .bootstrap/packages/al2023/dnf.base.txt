@@ -1,0 +1,9 @@
+# TODO: seed from `dnf repoquery --userinstalled --qf '%{name}'` on the machine, then prune to the packages the dotfiles use.
+
+# Bootstrap module prerequisites
+git
+gzip
+make
+tar
+unzip
+vim-enhanced

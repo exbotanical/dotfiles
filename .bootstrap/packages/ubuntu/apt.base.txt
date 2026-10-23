@@ -1,0 +1,29 @@
+# Shell and CLI tools the bash config and scripts use
+bash-completion
+curl
+git
+git-delta
+gojq
+htop
+jq
+lsd
+pandoc
+ripgrep
+rsync
+shellcheck
+stow
+tmux
+unzip
+vim
+xz-utils
+yq
+
+# Toolchain prerequisites: rustup and cargo builds, ghcup, opam
+build-essential
+bubblewrap
+libffi-dev
+libgmp-dev
+libncurses-dev
+libssl-dev
+opam
+pkg-config

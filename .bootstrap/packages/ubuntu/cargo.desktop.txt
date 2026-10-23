@@ -1,0 +1,2 @@
+# Ubuntu's alacritty package is older than the 0.17 the alacritty config targets.
+alacritty

@@ -1,0 +1,1 @@
+[[ $PROFILE == desktop ]] && has codium

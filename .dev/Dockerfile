@@ -24,6 +24,8 @@ USER dev
 WORKDIR /home/dev/dotfiles
 
 FROM common AS integ
+# opam cannot run its bubblewrap sandbox in an unprivileged container.
+ENV BOOTSTRAP_CONTAINER=1
 COPY --chown=dev:dev . .
 
 # The hooks target runs `git config --local`, so the copy needs its own repository.

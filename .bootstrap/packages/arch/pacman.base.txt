@@ -1,0 +1,8 @@
+# TODO: seed from `pacman -Qqen` on the machine, then prune to the packages the dotfiles use.
+
+# Bootstrap module prerequisites
+git
+make
+tar
+unzip
+vim

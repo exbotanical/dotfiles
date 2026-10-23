@@ -4,6 +4,8 @@ set -euo pipefail
 readonly REPO="$HOME/dotfiles"
 readonly INIT_FILE="$HOME/.config/bash/init.bash"
 readonly SCRIPTS_DIR="$REPO/bash/.config/bash/scripts"
+# Modules that compile for several minutes or download gigabytes; unit tests cover their helpers.
+readonly HEAVY_MODULES=43-haskell,45-cargo,61-eww
 
 log () {
   printf '[integ] %s\n' "$*"
@@ -15,8 +17,8 @@ fail () {
 }
 
 install_all () {
-  log 'make install'
-  make -C "$REPO" install
+  log 'make bootstrap'
+  SKIP="$HEAVY_MODULES" make -C "$REPO" bootstrap
   remove_root_conflicts
   log 'sudo make install_root'
   sudo make -C "$REPO" install_root

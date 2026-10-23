@@ -18,6 +18,10 @@
 - [ ] fix eww popups on X
 - [ ] xdg settings
 - [ ] thunar settings
+- [ ] seed the arch and al2023 bootstrap package lists, then prune each to the packages the dotfiles use
+  - arch: `pacman -Qqen` into `.bootstrap/packages/arch/pacman.{base,desktop}.txt`, `pacman -Qqem` into `.bootstrap/packages/arch/aur.desktop.txt`
+  - al2023: `dnf repoquery --userinstalled --qf '%{name}'` into `.bootstrap/packages/al2023/dnf.base.txt`
+  - al2023: decide between SPAL and a source build for stow (and lsd), since `make install` needs stow
 
 ## Deps
 

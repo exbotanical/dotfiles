@@ -1,0 +1,1 @@
+[[ -n $(bootstrap::packages cargo) ]]

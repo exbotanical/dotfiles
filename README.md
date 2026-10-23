@@ -24,6 +24,15 @@ As of 7/26/2024 my primary setup consists of:
 - shell: bash
 - terminal: alacritty
 
+## Bootstrap
+
+On a fresh Arch, Ubuntu, or AL2023 machine, clone the repo and run `make bootstrap`. It installs every prerequisite, then runs `make install`, and is safe to re-run:
+
+- Each `.bootstrap/modules/NN-name/` runs in order when its `detect.bash` passes; `install.bash` skips what is already installed.
+- Package names are in `.bootstrap/packages/`: `<manager>.<profile>.txt` for every distro, `<distro>/<manager>.<profile>.txt` for one.
+- The profile is `headless` on AL2023 and `desktop` elsewhere; override it with `PROFILE=headless`.
+- `ONLY=41-rust` runs only the named modules, and `SKIP=43-haskell,61-eww` skips them.
+
 ## Prettier Default
 
 `make install` gives every project under `$HOME` without its own Prettier config a default one:

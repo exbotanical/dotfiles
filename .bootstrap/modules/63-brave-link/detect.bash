@@ -1,0 +1,1 @@
+[[ $DISTRO == ubuntu && $PROFILE == desktop ]]

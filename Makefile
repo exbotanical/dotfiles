@@ -1,9 +1,12 @@
-.PHONY: install install_al2 delete simulate unit_test integ_test deps postinstall fmt fmt_check lint lint_fix hooks prettier_global
+.PHONY: bootstrap install install_al2 delete simulate unit_test integ_test deps postinstall fmt fmt_check lint lint_fix hooks prettier_global
 
 INSTALL_DIR  := .install
 ROOT_DIR     := root
 INCLUDE_DIRS := $(filter-out $(ROOT_DIR)/ node_modules/, $(wildcard */))
 AL2_HOME     := /local/home/$$USER
+
+bootstrap:
+	./.bootstrap/bootstrap.bash
 
 postinstall:
 	./$(INSTALL_DIR)/postinstall.bash
