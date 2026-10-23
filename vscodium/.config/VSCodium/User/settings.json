@@ -147,6 +147,7 @@
   },
 
   "js/ts.updateImportsOnFileMove.enabled": "always",
+  "prettier.resolveGlobalModules": true,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
