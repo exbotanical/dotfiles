@@ -65,7 +65,7 @@ Last, the [config](bash/.config/bash/config) directory houses config for the Bas
 
 ### Testing
 
-The Bash config loader is fully unit-tested using `shpec`. One can find the tests [here](bash/t). The tests are also run as part of a CI workflow in this GitHub repository.
+The Bash config loader is fully unit-tested using `shpec`. One can find the tests [here](bash/tests). The tests are also run as part of a CI workflow in this GitHub repository.
 
 ### Scripts
 
