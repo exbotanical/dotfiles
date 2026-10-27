@@ -8,7 +8,7 @@ Here's how it all works.
 
 First, I manage all dotfiles via [Gnu Stow](https://www.gnu.org/software/stow/). Stow allows one to manage all dotfiles from a single place, then symlink them to their respective locations. For example, all of my dotfiles are housed in a `dotfiles` directory under my home directory. Suppose I need my i3wm config file to reside at `~/.config/i3/config`. I would then structure this as `~/dotfiles/i3/.config/i3/config`. The top-level `i3` directory is simply nominal; everything therein specifies the filepath at which it will exist on the host system when I invoke `stow`.
 
-I use a Makefile to do this: `make install` will invoke `stow`. `make test` will, shockingly, run the unit tests.
+I use a Makefile to do this: `make install` will invoke `stow`. `make unit_test` will, shockingly, run the unit tests.
 
 Other examples follow. As an exercise to the reader, try looking through the dotfiles directory for each of the following:
 
@@ -23,6 +23,22 @@ As of 7/26/2024 my primary setup consists of:
 - toolbar: eww
 - shell: bash
 - terminal: alacritty
+
+## Packages and Makefiles
+
+- Each top-level directory is a stow package. A directory whose name starts with a dot holds repo tooling; `make install` never stows it, because make's `*/` glob skips dot names.
+- The root Makefile runs repo-wide commands (stow, format, lint) and hands every package-specific command to that package with `$(MAKE) -C <package> <target>`.
+- A package that needs setup or has tests owns a `Makefile` with these targets, named in snake_case:
+  - `all` is the first target, so it is what `make install` runs in every package, before stowing. It is empty when the package needs no setup.
+  - `postinstall` runs after stowing.
+  - `unit_test` runs the package's tests.
+- A package that adds a `Makefile`, tests, or install files lists them in its `.stow-local-ignore`. That file replaces stow's built-in ignore list, so it must also name anything else that has to stay out of `~`, such as a `README.md`.
+
+## Tests
+
+- Unit tests are `shpec` files in `<package>/tests/*_shpec.bash`. `make unit_test` runs `unit_test` in every package that has them, and CI runs the same target.
+- `shpec` has no shebang, so each package Makefile that runs it sets `SHELL := bash`.
+- `make integ_test` builds a container per distro, runs `make bootstrap` in it, checks the installed state, runs the unit tests, and reinstalls.
 
 ## Bootstrap
 
