@@ -37,9 +37,9 @@ On a fresh Arch, Ubuntu, or AL2023 machine, clone the repo and run `make bootstr
 
 `make install` gives every project under `$HOME` without its own Prettier config a default one:
 
-- Stow links `prettier/prettier.config.mjs` to `~/prettier.config.mjs`; Prettier uses the nearest config, so projects with their own are unaffected.
-- Node resolves a symlinked module's imports from its real path, so the config loads its packages from this repo's `node_modules` (installed by `npm ci`) and nothing goes in `~/node_modules`.
-- `make prettier_global` installs the `package-lock.json` Prettier version globally for VSCodium; rerun it after switching nvm versions.
+- Stow links `npm/prettier.config.mjs` to `~/prettier.config.mjs`; Prettier uses the nearest config, so projects with their own are unaffected.
+- Node resolves a symlinked module's imports from its real path, so the config loads its packages from `npm/node_modules` (installed by `npm/Makefile`) and nothing goes in `~/node_modules`.
+- `npm/Makefile` also installs the Prettier version in `npm/package-lock.json` globally for VSCodium; rerun `make -C npm` after switching nvm versions.
 
 ## Bash Config Framework
 

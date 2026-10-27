@@ -1,45 +1,53 @@
-.PHONY: bootstrap install install_al2 delete simulate unit_test integ_test deps postinstall fmt fmt_check lint lint_fix hooks prettier_global
-
-INSTALL_DIR  := .install
 ROOT_DIR     := root
 INCLUDE_DIRS := $(filter-out $(ROOT_DIR)/ node_modules/, $(wildcard */))
+UNIT_DIRS    := $(patsubst %/tests/,%,$(sort $(dir $(wildcard */tests/*_shpec.bash .[!.]*/tests/*_shpec.bash))))
 AL2_HOME     := /local/home/$$USER
 
+.PHONY: bootstrap
 bootstrap:
-	./.bootstrap/bootstrap.bash
+	$(MAKE) -C .bootstrap
 
+.PHONY: postinstall
 postinstall:
-	./$(INSTALL_DIR)/postinstall.bash
+	$(MAKE) -C bash postinstall
+	$(MAKE) -C vim postinstall
 
+.PHONY: install
 install: deps
 	mkdir -p $$HOME/.local/bin
 	stow --verbose 3 --target=$$HOME --restow $(INCLUDE_DIRS)
 	$(MAKE) postinstall
 	$(MAKE) hooks
-	$(MAKE) prettier_global
 
+.PHONY: install_root
 install_root:
 	stow --verbose 3 --target=/ --restow $(ROOT_DIR)
 
+.PHONY: install_al2
 install_al2:
 	mkdir -p $(AL2_HOME)/.local/bin
 	stow --verbose 3 --target=$(AL2_HOME) --restow $(INCLUDE_DIRS)
 	$(MAKE) postinstall
 	$(MAKE) hooks
-	$(MAKE) prettier_global
+	$(MAKE) -C npm
 
+.PHONY: delete
 delete:
 	stow --verbose --target=$$HOME --delete $(INCLUDE_DIRS)
 
+.PHONY: simulate
 simulate:
 	stow --verbose 3 --target=$$HOME --simulate $(INCLUDE_DIRS)
 
+.PHONY: unit_test
 unit_test:
-	find . -path ./.git -prune -o -type f -print | bash -c "shpec $1"
+	@for dir in $(UNIT_DIRS); do $(MAKE) -C $$dir unit_test || exit 1; done
 
+.PHONY: integ_test
 integ_test:
-	./.dev/run-integ.bash
+	$(MAKE) -C .dev integ_test
 
+.PHONY: deps
 deps:
 	@for dir in $(wildcard */); do \
 		if [ -f "$$dir/Makefile" ]; then \
@@ -47,24 +55,22 @@ deps:
 		fi \
 	done
 
+.PHONY: fmt
 fmt:
 	npm run fmt
 
+.PHONY: fmt_check
 fmt_check:
 	npm run fmt:check
 
+.PHONY: lint
 lint:
 	npm run lint
 
+.PHONY: lint_fix
 lint_fix:
 	npm run lint:fix
 
+.PHONY: hooks
 hooks:
-	@command -v npm >/dev/null || { echo 'hooks: npm not found; install node, then run `make hooks`' >&2; exit 1; }
-	npm ci
-	git config --local core.hooksPath .githooks
-
-prettier_global:
-	@command -v npm >/dev/null || { echo 'prettier_global: npm not found; install node, then run `make prettier_global`' >&2; exit 1; }
-	@version=$$(node -p 'require("./package-lock.json").packages["node_modules/prettier"].version') || exit 1; \
-		npm ls -g "prettier@$$version" >/dev/null || npm i -g "prettier@$$version"
+	$(MAKE) -C .githooks
