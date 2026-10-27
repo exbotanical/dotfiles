@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Re-place workspaces after autorandr switches profiles, because the monitors'
+# left-to-right order may have changed.
+
+set -euo pipefail
+
+"$HOME/.local/bin/workspaces"

@@ -29,11 +29,6 @@ set $BLUE               #8be9fd
 set $DARKBLUE           #c394b4
 set $BAR_BG             #161516
 
-# Monitor Configuration
-set $MON_PRIMARY eDP
-set $MON_SECONDARY DVI-I-2-2
-set $MON_TERTIARY DVI-I-1-1
-
 # System Paths
 set $CONFIG_DIR $HOME/.config
 
