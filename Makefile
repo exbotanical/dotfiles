@@ -1,6 +1,6 @@
 ROOT_DIR     := root
 INCLUDE_DIRS := $(filter-out $(ROOT_DIR)/ node_modules/, $(wildcard */))
-UNIT_DIRS    := $(patsubst %/tests/,%,$(sort $(dir $(wildcard */tests/*_shpec.bash .[!.]*/tests/*_shpec.bash))))
+MAKE_DIRS    := $(patsubst %/,%,$(dir $(wildcard */Makefile .[!.]*/Makefile)))
 AL2_HOME     := /local/home/$$USER
 
 .PHONY: bootstrap
@@ -9,8 +9,7 @@ bootstrap:
 
 .PHONY: postinstall
 postinstall:
-	$(MAKE) -C bash postinstall
-	$(MAKE) -C vim postinstall
+	./.dev/each-package.bash postinstall $(MAKE_DIRS)
 
 .PHONY: install
 install: deps
@@ -41,7 +40,7 @@ simulate:
 
 .PHONY: unit_test
 unit_test:
-	@for dir in $(UNIT_DIRS); do $(MAKE) -C $$dir unit_test || exit 1; done
+	./.dev/each-package.bash unit_test $(MAKE_DIRS)
 
 .PHONY: integ_test
 integ_test:

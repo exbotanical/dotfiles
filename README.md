@@ -1,6 +1,6 @@
 # Personal Configurations
 
-This directory houses my configuration files. It's also home to probably the most intense bash setup ever.
+This directory houses my configuration files. It's also home to perhaps the most elaborate bash setup ever created.
 
 ## How it works
 
@@ -15,7 +15,7 @@ Other examples follow. As an exercise to the reader, try looking through the dot
 - VSCodium config files must reside in `~/.config/VSCodium/User/*`.
 - X11 configurations reside in the home directory itself.
 
-As of 7/26/2024 my primary setup consists of:
+As of ~~7/26/2024~~ 10/27/2026 my primary setup consists of:
 
 - desktop env: x11
 - window manager: i3wm
@@ -26,36 +26,36 @@ As of 7/26/2024 my primary setup consists of:
 
 ## Packages and Makefiles
 
-- Each top-level directory is a stow package. A directory whose name starts with a dot holds repo tooling; `make install` never stows it, because make's `*/` glob skips dot names.
-- The root Makefile runs repo-wide commands (stow, format, lint) and hands every package-specific command to that package with `$(MAKE) -C <package> <target>`.
-- A package that needs setup or has tests owns a `Makefile` with these targets, named in snake_case:
-  - `all` is the first target, so it is what `make install` runs in every package, before stowing. It is empty when the package needs no setup.
-  - `postinstall` runs after stowing.
-  - `unit_test` runs the package's tests.
-- A package that adds a `Makefile`, tests, or install files lists them in its `.stow-local-ignore`. That file replaces stow's built-in ignore list, so it must also name anything else that has to stay out of `~`, such as a `README.md`.
+- Each top-level directory constitutes a stow package except for those whose names are dot-prefixed; these contain dev tooling. We therefore filter these packages when running `stow`.
+- The root Makefile runs repo-wide commands; for commands which have per-package counterparts, the target delegates to the corresponding target on each underlying package-level Makefile.
+- Viz., a package that requires setup or has tests maintains its own subsidiarys `Makefile` with these targets e.g.
+  - `all` - always the first and therefore default target. `make install` runs in every package prior to stowing. It is empty when the package needs no setup.
+  - `postinstall` - runs after stowing.
+  - `unit_test` - runs the package's tests.
+- A package that adds a `Makefile`, tests, or install files enumerates said files in a package-local `.stow-local-ignore` to prevent them from being inadvertently stowed.
 
 ## Tests
 
-- Unit tests are `shpec` files in `<package>/tests/*_shpec.bash`. `make unit_test` runs `unit_test` in every package that has them, and CI runs the same target.
-- `shpec` has no shebang, so each package Makefile that runs it sets `SHELL := bash`.
+- `make unit_test` runs the `unit_test` target of every package whose Makefile defines one, irrespective of the test framework therein; CI runs the same target. These are - hence the name - unit tests.
 - `make integ_test` builds a container per distro, runs `make bootstrap` in it, checks the installed state, runs the unit tests, and reinstalls.
 
 ## Bootstrap
 
-On a fresh Arch, Ubuntu, or AL2023 machine, clone the repo and run `make bootstrap`. It installs every prerequisite, then runs `make install`, and is safe to re-run:
+On a fresh Arch, Ubuntu, or AL2023 machine, clone the repo and run `make bootstrap`; this will install all prerequisite packages. Once done, run `make install`.
 
-- Each `.bootstrap/modules/NN-name/` runs in order when its `detect.bash` passes; `install.bash` skips what is already installed.
-- Package names are in `.bootstrap/packages/`: `<manager>.<profile>.txt` for every distro, `<distro>/<manager>.<profile>.txt` for one.
+- Each `.bootstrap/modules/NN-name/` whose `detect.bash` file (which determines whether the module meets the criteria required for it to run e.g. dependencies satisfied) returns 0 runs in ls order; `install.bash` skips what is already installed.
+- Dependency package names are housed under `.bootstrap/packages/`. `<manager>.<profile>.txt` contains distro-agnostic packages per profile whereas `<distro>/<manager>.<profile>.txt` files exist for each supported distro's distro-specific packages.
 - The profile is `headless` on AL2023 and `desktop` elsewhere; override it with `PROFILE=headless`.
-- `ONLY=41-rust` runs only the named modules, and `SKIP=43-haskell,61-eww` skips them.
+- Filtering: e.g. `ONLY=41-rust` runs only the named modules, and `SKIP=43-haskell,61-eww` skips them.
 
-## Prettier Default
+## Global NPM
 
-`make install` gives every project under `$HOME` without its own Prettier config a default one:
+The npm package furnishes fallback configs for npm-based tools (e.g. Prettier) such that any project under $HOME lacking its own config and node_modules defaults to those used here. We do this in such a way that we avoid polluting ~/node_modules, which every project under $HOME would otherwise resolve against.
 
-- Stow links `npm/prettier.config.mjs` to `~/prettier.config.mjs`; Prettier uses the nearest config, so projects with their own are unaffected.
-- Node resolves a symlinked module's imports from its real path, so the config loads its packages from `npm/node_modules` (installed by `npm/Makefile`) and nothing goes in `~/node_modules`.
-- `npm/Makefile` also installs the Prettier version in `npm/package-lock.json` globally for VSCodium; rerun `make -C npm` after switching nvm versions.
+- Stow links each config (e.g. npm/prettier.config.mjs) into ~; tools use the nearest config, so projects with their own are unaffected.
+- Node resolves a symlinked module's imports from its real path; thus the symlinked configs will load their plugins from npm/node_modules if they are not present locally. This means we do not need a node_modules in ~ and which pollutes all npm packages therein.
+- npm/Makefile runs npm ci and installs, globally, the version of each tool that npm/package-lock.json pins (e.g. Prettier, for VSCodium); the global tool thus matches the plugins it loads. nvm maintains one global folder per Node version, so rerun make -C npm after switching versions.
+- npm/.stow-local-ignore keeps package.json and node_modules out of ~; otherwise, npm would treat ~ as the package root of every directory beneath it.
 
 ## Bash Config Framework
 
