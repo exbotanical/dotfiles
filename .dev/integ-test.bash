@@ -59,6 +59,9 @@ assert_install_state () {
   log 'asserting install state'
   assert_dir "$HOME/.local/bin"
   assert_dir "$HOME/.cache/vim"
+  assert_dir "$HOME/.themes/Dracula"
+  assert_dir "$HOME/.local/share/icons/Dracula"
+  assert_dir "$HOME/.local/share/icons/catppuccin-frappe-sapphire-cursors"
   assert_link_to "$HOME/.bashrc" "$INIT_FILE"
   assert_link_to "$HOME/.bash_profile" "$INIT_FILE"
   assert_resolves_into_repo "$HOME/.gtkrc-2.0"
