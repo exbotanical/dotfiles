@@ -1,8 +1,10 @@
 # Installs the GTK, icon, and cursor themes that x11/.config/theme.env names. Neither distro
-# packages them under these names. Icons and cursors go to ~/.local/share/icons because the gtk
-# package stows ~/.icons.
+# packages them under these names. Cursors go to ~/.icons because libXcursor searches
+# ~/.icons:/usr/share/icons:/usr/share/pixmaps by default; icons go to ~/.local/share/icons,
+# which GTK searches.
 readonly THEMES_DIR=$HOME/.themes
 readonly ICONS_DIR=$HOME/.local/share/icons
+readonly CURSORS_DIR=$HOME/.icons
 
 source "$REPO_DIR/x11/.config/theme.env"
 
@@ -32,4 +34,4 @@ trap 'rm -rf "${work:-}"' EXIT
 
 install_theme "$THEMES_DIR/$GTK_THEME" "$GTK_THEME_DIR" "$GTK_THEME_URL"
 install_theme "$ICONS_DIR/$ICON_THEME" "$ICON_THEME_DIR" "$ICON_THEME_URL"
-install_theme "$ICONS_DIR/$CURSOR_THEME" "$CURSOR_THEME_DIR" "$CURSOR_THEME_URL"
+install_theme "$CURSORS_DIR/$CURSOR_THEME" "$CURSOR_THEME_DIR" "$CURSOR_THEME_URL"

@@ -63,7 +63,7 @@ assert_install_state () {
   source "$REPO/x11/.config/theme.env"
   assert_dir "$HOME/.themes/$GTK_THEME"
   assert_dir "$HOME/.local/share/icons/$ICON_THEME"
-  assert_dir "$HOME/.local/share/icons/$CURSOR_THEME"
+  assert_dir "$HOME/.icons/$CURSOR_THEME"
   assert_link_to "$HOME/.bashrc" "$INIT_FILE"
   assert_link_to "$HOME/.bash_profile" "$INIT_FILE"
   assert_resolves_into_repo "$HOME/.gtkrc-2.0"
