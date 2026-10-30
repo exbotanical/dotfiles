@@ -15,7 +15,6 @@ deepin-calculator
 feh
 hsetroot
 light
-lxappearance
 network-manager
 pavucontrol
 pcmanfm
