@@ -1,0 +1,28 @@
+# X session setup, sourced by the display manager's Xsession and by .xinitrc before i3 starts.
+# Applies the themes that ~/.config/theme.env names to X, GTK, and Qt applications. POSIX sh.
+
+. "$HOME/.config/theme.env"
+
+# GDM merges ~/.Xresources with -nocpp, which skips its #include, so merge it again with cpp.
+xrdb -merge "$HOME/.Xresources"
+printf 'Xcursor.theme: %s\n' "$CURSOR_THEME" | xrdb -merge
+
+# xsettingsd serves these settings to GTK applications; i3 starts it on the generated file.
+mkdir -p "$HOME/.cache"
+{
+  cat "$HOME/.config/xsettings/xsettingsd.conf"
+  printf 'Net/ThemeName "%s"\n' "$GTK_THEME"
+  printf 'Net/IconThemeName "%s"\n' "$ICON_THEME"
+  printf 'Gtk/CursorThemeName "%s"\n' "$CURSOR_THEME"
+} > "$HOME/.cache/xsettingsd.conf"
+
+# libadwaita applications ignore the theme name and load only this stylesheet. An @import keeps
+# the theme's relative asset URLs resolving against the theme directory.
+mkdir -p "$HOME/.config/gtk-4.0"
+printf '@import url("file://%s/.themes/%s/gtk-4.0/gtk.css");\n' "$HOME" "$GTK_THEME" \
+  > "$HOME/.config/gtk-4.0/gtk.css"
+
+# The desktop portal reports this key to libadwaita and Chromium-based applications.
+gsettings set org.gnome.desktop.interface color-scheme "$COLOR_SCHEME"
+
+export QT_QPA_PLATFORMTHEME=gtk3

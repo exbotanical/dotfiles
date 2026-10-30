@@ -1,6 +1,5 @@
 #!/bin/sh
 
-USER_RESOURCES=$HOME/.Xresources
 USER_MOD_MAP=$HOME/.Xmodmap
 SYS_RESOURCES=/etc/X11/xinit/.Xresources
 SYS_MOD_MAP=/etc/X11/xinit/.Xmodmap
@@ -15,10 +14,6 @@ merge_resources () {
 
   if [ -f $SYS_MOD_MAP ]; then
     xmodmap $SYS_MOD_MAP
-  fi
-
-  if [ -f "$USER_RESOURCES" ]; then
-    xrdb -merge "$USER_RESOURCES"
   fi
 
   if [ -f "$USER_MOD_MAP" ]; then
@@ -37,6 +32,11 @@ init () {
   fi
 
   # setxkbmap -variant $KEYBOARD_LAYOUT
+
+  # The user's resources, themes, and session environment, shared with display manager logins.
+  if [ -f "$HOME/.xprofile" ]; then
+    . "$HOME/.xprofile"
+  fi
 
   exec i3
 }
