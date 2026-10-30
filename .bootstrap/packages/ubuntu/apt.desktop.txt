@@ -23,6 +23,7 @@ pulseaudio-utils
 redshift
 shutter
 xclip
+xdg-utils
 xdotool
 xsettingsd
 

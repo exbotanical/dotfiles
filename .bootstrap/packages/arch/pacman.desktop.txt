@@ -2,4 +2,5 @@
 
 # Bootstrap module prerequisites
 fontconfig
+xdg-utils
 xz
