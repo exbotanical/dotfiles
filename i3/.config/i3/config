@@ -7,7 +7,7 @@ set $MOD                 Mod4
 
 # Typography
 set $FONT               "Fira Code"
-set $FONT_SIZE_PX       20
+set_from_resource $FONT_SIZE_PX i3wm.font_size 20
 
 # Theme and Colors (Dracula theme)
 set $BG                 #282a36

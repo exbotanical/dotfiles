@@ -4,7 +4,8 @@ set -euo pipefail
 readonly REPO="$HOME/dotfiles"
 readonly INIT_FILE="$HOME/.config/bash/init.bash"
 readonly SCRIPTS_DIR="$REPO/bash/.config/bash/scripts"
-# Modules that compile for several minutes or download gigabytes; unit tests cover their helpers.
+# Modules that take several minutes to compile or are otherwise large (e.g. gigabytes).
+# These are skipped during the integ tests. They nevertheless have at least some unit test coverage.
 readonly HEAVY_MODULES=43-haskell,45-cargo,61-eww
 
 log () {
@@ -24,7 +25,7 @@ install_all () {
   sudo make -C "$REPO" install_root
 }
 
-# Stow won't link files it does not own, so we remove any existing distro
+# Stow refuses to link files it does not own, so we remove any existing distro
 # counterparts of the root package's files prior to running `install_root`.
 remove_root_conflicts () {
   local path
@@ -64,6 +65,7 @@ assert_install_state () {
   assert_dir "$HOME/.themes/$GTK_THEME"
   assert_dir "$HOME/.local/share/icons/$ICON_THEME"
   assert_dir "$HOME/.icons/$CURSOR_THEME"
+  assert_file "$HOME/.config/machine"
   assert_link_to "$HOME/.bashrc" "$INIT_FILE"
   assert_link_to "$HOME/.bash_profile" "$INIT_FILE"
   assert_resolves_into_repo "$HOME/.gtkrc-2.0"
@@ -86,7 +88,7 @@ assert_root_state () {
   assert_resolves_into_repo /etc/issue
 }
 
-# Starts bash with the given flags on a pseudo-terminal and asserts init.bash loads with no output.
+# Starts bash with the given flags on a pseudo-terminal and asserts that init.bash loads with no output.
 assert_shell_loads () {
   local flags=$1 output
   log "bash $flags loads cleanly"
@@ -99,7 +101,7 @@ assert_shell_loads () {
   [[ -z $output ]] || fail "bash $flags wrote output: $output"
 }
 
-# Asserts that an interactive login copied every script into ~/.local/bin.
+# Asserts that an interactive login copies every script into ~/.local/bin.
 # See: bash/.config/bash/src/login.bash
 assert_login_state () {
   log 'asserting login state'

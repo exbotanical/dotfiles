@@ -8,9 +8,4 @@ Xft.hinting: true
 Xft.hintstyle: hintslight
 Xft.rgba: rgb
 
-! Cursor configuration
-Xcursor.size: 42
-
-! Font defaults
-*.font: FiraCode Nerd Font:size=20
-*.boldFont: FiraCode Nerd Font:style=Bold:size=20
+! The cursor and default font sizes differ per machine; ~/.xprofile merges them.

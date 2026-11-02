@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
-# Installs every prerequisite of the dotfiles, then runs `make install`. Safe to re-run.
+# Installs every prerequisite for dotfiles, then runs `make install`.
+# This entire script is idempotent and is therefore safe to re-run.
 #
 # Usage: .bootstrap/bootstrap.bash
 #   PROFILE=desktop|headless  override the profile chosen for the distro
 #   ONLY=10-apt-repos,...     run only these modules
 #   SKIP=43-haskell,...       skip these modules
+#   MACHINE=<name>            select the machine (x11/.config/machines/<name>.env) used by ~/.xprofile
 set -euo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/lib.bash"
 
-# Runs a module file in its own bash process, so errexit applies inside it even though the
-# caller tests its status.
+# Runs a module file in its own bash process;
+# errexit therefore applies therein although the caller tests its status.
 run_module_file () {
   bash -euo pipefail -c 'source "$1"; source "$2"' _ "$BOOTSTRAP_DIR/lib.bash" "$1"
 }
@@ -23,6 +25,7 @@ run_module () {
     log "[-] $name (not selected)"
     return
   fi
+
   if ! run_module_file "$dir/detect.bash"; then
     log "[-] $name (not applicable)"
     return
@@ -32,13 +35,15 @@ run_module () {
   run_module_file "$dir/install.bash" || die "[!] $name failed; rerun it with ONLY=$name"
 }
 
-# Refreshes the sudo timestamp until the bootstrap exits, so long builds do not prompt again.
+# Refreshes the sudo timestamp until this script exits to prevent re-prompts in the likely event of a long build.
 keep_sudo_alive () {
   sudo -v
+
   while sleep 60; do
     sudo -n true
     kill -0 "$$" 2> /dev/null || exit
   done &
+
   trap 'kill $! 2> /dev/null' EXIT
 }
 

@@ -47,6 +47,7 @@ On a fresh Arch, Ubuntu, or AL2023 machine, clone the repo and run `make bootstr
 - Dependency package names are housed under `.bootstrap/packages/`. `<manager>.<profile>.txt` contains distro-agnostic packages per profile whereas `<distro>/<manager>.<profile>.txt` files exist for each supported distro's distro-specific packages.
 - The profile is `headless` on AL2023 and `desktop` elsewhere; override it with `PROFILE=headless`.
 - Filtering: e.g. `ONLY=41-rust` runs only the named modules, and `SKIP=43-haskell,61-eww` skips them.
+- Per-machine sizes live in `x11/.config/machines/<name>.env`; `MACHINE=<name> make bootstrap` records the selection in `~/.config/machine`, which `x11/.xprofile` reads. Without `MACHINE`, bootstrap keeps a selection that names an existing profile, and otherwise records the profile that sets `DEFAULT=1`.
 
 ## Global NPM
 

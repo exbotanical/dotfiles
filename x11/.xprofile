@@ -1,28 +1,79 @@
-# X session setup, sourced by the display manager's Xsession and by .xinitrc before i3 starts.
-# Applies the themes that ~/.config/theme.env names to X, GTK, and Qt applications. POSIX sh.
+# shellcheck shell=bash
+# Note: shellcheck doesn't support multiple directives so just know we're actually POSIX-compliant sh
+# until after the subsequent condition.
 
-. "$HOME/.config/theme.env"
+# X session setup. Sourced by the display manager's Xsession and by .xinitrc prior to starting i3.
+# Applies X, GTK, and Qt applications themes as prescribed in ~/.config/theme.env.
+# Then, applies themeing overlay values from the current machine's profile (found under ~/.config/machines/).
 
-# GDM merges ~/.Xresources with -nocpp, which skips its #include, so merge it again with cpp.
-xrdb -merge "$HOME/.Xresources"
-printf 'Xcursor.theme: %s\n' "$CURSOR_THEME" | xrdb -merge
+# The remainder of this file is bash.
+# A display manager that sources this file via /bin/sh will stop here
+# and print the below warning message instead of a syntax error.
+# As aforementioned, the following condition is POSIX-compliant sh.
+if [ -z "${BASH_VERSION:-}" ]; then
+  printf '.xprofile: needs bash; skipping the session setup\n' >&2
+  return 1
+fi
 
-# xsettingsd serves these settings to GTK applications; i3 starts it on the generated file.
-mkdir -p "$HOME/.cache"
-{
-  cat "$HOME/.config/xsettings/xsettingsd.conf"
-  printf 'Net/ThemeName "%s"\n' "$GTK_THEME"
-  printf 'Net/IconThemeName "%s"\n' "$ICON_THEME"
-  printf 'Gtk/CursorThemeName "%s"\n' "$CURSOR_THEME"
-} > "$HOME/.cache/xsettingsd.conf"
+# Given the display manager's shell persists after beyond file,
+# we run the entire setup in the following function scope,
+# whose locals store all the vars sourced from our two settings files.
+xprofile::main () {
+  local config=$HOME/.config machine
+  local -a names
 
-# libadwaita applications ignore the theme name and load only this stylesheet. An @import keeps
-# the theme's relative asset URLs resolving against the theme directory.
-mkdir -p "$HOME/.config/gtk-4.0"
-printf '@import url("file://%s/.themes/%s/gtk-4.0/gtk.css");\n' "$HOME" "$GTK_THEME" \
-  > "$HOME/.config/gtk-4.0/gtk.css"
+  # shellcheck source=.config/machines/select.bash
+  source "$config/machines/select.bash"
 
-# The desktop portal reports this key to libadwaita and Chromium-based applications.
-gsettings set org.gnome.desktop.interface color-scheme "$COLOR_SCHEME"
+  machine=$(machines_select "$config/machines" "$(cat "$config/machine" 2> /dev/null)")
 
-export QT_QPA_PLATFORMTHEME=gtk3
+  mapfile -t names < <(sed -n 's/^\([A-Za-z_][A-Za-z0-9_]*\)=.*/\1/p' \
+    "$config/theme.env" "$config/machines/$machine.env")
+
+  local "${names[@]}"
+
+  # shellcheck source=.config/theme.env
+  source "$config/theme.env"
+  # Note: the following shellcheck source doesn't need to be the exact machine profile we're loading;
+  # it just needs to be one that has the largest superset of possible values for LSP inference.
+  # shellcheck source=.config/machines/eve.env
+  source "$config/machines/$machine.env"
+
+  # GDM merges ~/.Xresources with -nocpp, which skips its #include.
+  # We therefore merge it again with cpp.
+  # i3 reads i3wm.font_size with set_from_resource.
+  xrdb -merge "$HOME/.Xresources"
+  xrdb -merge << EOF
+Xcursor.theme: $CURSOR_THEME
+Xcursor.size: $CURSOR_SIZE
+*.font: FiraCode Nerd Font:size=$X_FONT_SIZE
+*.boldFont: FiraCode Nerd Font:style=Bold:size=$X_FONT_SIZE
+i3wm.font_size: $I3_FONT_SIZE
+EOF
+
+  # Generate the config file passed to xsettingsd when started in our i3 config.
+  mkdir -p "$HOME/.cache"
+  {
+    cat "$config/xsettings/xsettingsd.conf"
+    printf 'Net/ThemeName "%s"\n' "$GTK_THEME"
+    printf 'Net/IconThemeName "%s"\n' "$ICON_THEME"
+    printf 'Gtk/CursorThemeName "%s"\n' "$CURSOR_THEME"
+    printf 'Gtk/CursorThemeSize %s\n' "$CURSOR_SIZE"
+    printf 'Gtk/FontName "%s"\n' "$GTK_FONT"
+  } > "$HOME/.cache/xsettingsd.conf"
+
+  # libadwaita applications ignore the theme name and load only this stylesheet.
+  # We inject an @import statement therein to ensure the theme's
+  # relative asset URLs resolve against our chosen theme's directory.
+  mkdir -p "$config/gtk-4.0"
+  printf '@import url("file://%s/.themes/%s/gtk-4.0/gtk.css");\n' "$HOME" "$GTK_THEME" \
+    > "$config/gtk-4.0/gtk.css"
+
+  # The desktop portal reports this key to libadwaita and Chromium-based applications, thus we need to set it.
+  gsettings set org.gnome.desktop.interface color-scheme "$COLOR_SCHEME"
+
+  export QT_QPA_PLATFORMTHEME=gtk3
+}
+
+xprofile::main
+unset -f xprofile::main machines_select
