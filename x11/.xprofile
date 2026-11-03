@@ -39,6 +39,15 @@ xprofile::main () {
   # shellcheck source=.config/machines/eve.env
   source "$config/machines/$machine.env"
 
+  # eww reads EWW_* keys with get_env, and i3 starts eww after this file, so these keys alone
+  # leave the function as exported globals. declare -g reaches past the local of the same name.
+  local name
+  for name in "${names[@]}"; do
+    if [[ $name == EWW_* ]]; then
+      declare -gx "$name=${!name}"
+    fi
+  done
+
   # GDM merges ~/.Xresources with -nocpp, which skips its #include.
   # We therefore merge it again with cpp.
   # i3 reads i3wm.font_size with set_from_resource.

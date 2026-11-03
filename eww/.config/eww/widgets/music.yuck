@@ -10,7 +10,7 @@
         :class "song-cover-art"
         :style "background-image: url(\"${music.cover}\");")
       (button
-        :onclick "${EWW_CMD} open --toggle music"
+        :onclick "${EWW_CMD} open --toggle music --arg y=${get_env("EWW_MUSIC_Y")}"
         
       {music.display_title})
       (revealer

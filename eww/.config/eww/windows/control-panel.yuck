@@ -175,13 +175,13 @@
   )
 )
 
-(defwindow control-panel-window
+(defwindow control-panel-window [y]
   :stacking "bg"
   :monitor 0
   :wm-ignore true
   :geometry (geometry
     :x "0"
-    :y "24"
+    :y y
     :width "0%"
     :height "0%"
   :anchor "right top")

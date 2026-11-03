@@ -42,13 +42,13 @@
             :onchange "playerctl position `bc <<< \"{} * $(playerctl metadata mpris:length) / 1000000 / 100\"`"
           :value {music.position}))))))
 
-(defwindow music
+(defwindow music [y]
   :stacking "fg"
   :focusable false
   :monitor 0
   :geometry (geometry
     :x "0"
-    :y "24"
+    :y y
     :width "0%"
     :height "0%"
   :anchor "top center")
