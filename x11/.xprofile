@@ -48,11 +48,17 @@ xprofile::main () {
     fi
   done
 
+  # eww's sizes are tuned at 96 DPI, so i3 starts its daemon with GDK_DPI_SCALE set to this
+  # ratio, which scales GTK text back to its 96 DPI size at any X_DPI.
+  declare -gx EWW_GDK_DPI_SCALE
+  EWW_GDK_DPI_SCALE=$(awk -v dpi="$X_DPI" 'BEGIN { printf "%.4f", 96 / dpi }')
+
   # GDM merges ~/.Xresources with -nocpp, which skips its #include.
   # We therefore merge it again with cpp.
   # i3 reads i3wm.font_size with set_from_resource.
   xrdb -merge "$HOME/.Xresources"
   xrdb -merge << EOF
+Xft.dpi: $X_DPI
 Xcursor.theme: $CURSOR_THEME
 Xcursor.size: $CURSOR_SIZE
 *.font: FiraCode Nerd Font:size=$X_FONT_SIZE
@@ -69,6 +75,7 @@ EOF
     printf 'Gtk/CursorThemeName "%s"\n' "$CURSOR_THEME"
     printf 'Gtk/CursorThemeSize %s\n' "$CURSOR_SIZE"
     printf 'Gtk/FontName "%s"\n' "$GTK_FONT"
+    printf 'Xft/DPI %s\n' "$((X_DPI * 1024))" # xsettingsd takes the DPI in 1/1024ths
   } > "$HOME/.cache/xsettingsd.conf"
 
   # libadwaita applications ignore the theme name and load only this stylesheet.
