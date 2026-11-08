@@ -59,6 +59,11 @@
     "command": "-workbench.action.quickOpen"
   },
   {
+    "key": "ctrl+e",
+    "command": "cursorEnd",
+    "when": "editorTextFocus"
+  },
+  {
     "key": "ctrl+shift+v",
     "command": "markdown.extension.closePreview",
     "when": "!terminalFocus && activeWebviewPanelId == 'markdown.preview'"
