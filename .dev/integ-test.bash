@@ -45,10 +45,11 @@ assert_file () {
   [[ -f $1 ]] || fail "expected file $1"
 }
 
-assert_link_to () {
-  local link=$1 target=$2
-  [[ -L $link && $(readlink "$link") == "$target" ]] \
-    || fail "expected $link to link to $target, got '$(readlink "$link" || true)'"
+# Asserts that $1 is a read-only regular file that sources $2.
+assert_rc_stub () {
+  local rc=$1 init=$2
+  [[ -f $rc && ! -L $rc && ! -w $rc ]] || fail "expected $rc to be a read-only regular file"
+  grep -qxF "source \"\$HOME${init#"$HOME"}\"" "$rc" || fail "expected $rc to source $init"
 }
 
 assert_resolves_into_repo () {
@@ -66,8 +67,8 @@ assert_install_state () {
   assert_dir "$HOME/.local/share/icons/$ICON_THEME"
   assert_dir "$HOME/.icons/$CURSOR_THEME"
   assert_file "$HOME/.config/machine"
-  assert_link_to "$HOME/.bashrc" "$INIT_FILE"
-  assert_link_to "$HOME/.bash_profile" "$INIT_FILE"
+  assert_rc_stub "$HOME/.bashrc" "$INIT_FILE"
+  assert_rc_stub "$HOME/.bash_profile" "$INIT_FILE"
   assert_resolves_into_repo "$HOME/.gtkrc-2.0"
   assert_resolves_into_repo "$HOME/.config/gtk-3.0/settings.ini"
   assert_file "$REPO/startpage/bundle.js"
@@ -115,10 +116,7 @@ assert_login_state () {
 # Prints the state this repo's install and login code produces such that two runs can be compared.
 snapshot () {
   local path
-  for path in "$HOME/.bashrc" "$HOME/.bash_profile"; do
-    printf 'link %s -> %s\n' "$path" "$(readlink "$path")"
-  done
-  for path in "$HOME/.local/bin"/* "$REPO/startpage/bundle.js" "$REPO/startpage/startpage.html"; do
+  for path in "$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.local/bin"/* "$REPO/startpage/bundle.js" "$REPO/startpage/startpage.html"; do
     printf 'file %s %s\n' "$path" "$(sha256sum < "$path")"
   done
   printf 'dir %s\n' "$HOME/.cache/vim"
