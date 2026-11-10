@@ -77,7 +77,7 @@ alias reload="source $RootDir/init.bash reload"
 alias dotfiles='code ~/dotfiles'
 
 # Re-open Eww bar until I get around to figuring out why it periodically crashes and/or open an issue
-alias bar='eww open bar'
+alias bar='GDK_DPI_SCALE=${EWW_GDK_DPI_SCALE:-1} eww open bar'
 alias schedule='code ~/Documents/studies/schedule.md'
 
 # Quick way to reboot network daemon
