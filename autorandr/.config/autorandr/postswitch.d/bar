@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Reopen eww bar(s) after autorandr switches profiles such that every connected
+# monitor has one and none remains for a monitor that is gone.
+
+set -euo pipefail
+
+"$HOME/.local/bin/bar"
