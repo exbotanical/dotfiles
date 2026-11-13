@@ -85,6 +85,15 @@ describe 'bootstrap lib'
       done
     ti
   end_describe
+
+  describe bootstrap::read_list
+    it 'prints the names in every existing file, without comments or blank lines'
+      printf '# head\n\na  # trailing\nb\n' > "$Fixtures/first.txt"
+      printf 'c\n' > "$Fixtures/second.txt"
+      actual=$(bootstrap::read_list "$Fixtures/first.txt" "$Fixtures/missing.txt" "$Fixtures/second.txt" | tr '\n' ' ')
+      assert equal 'a b c' "${actual% }"
+    ti
+  end_describe
 end_describe
 
 rm -rf "$Fixtures"

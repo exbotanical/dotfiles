@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shared helpers for bootstrap.bash and its modules.
+# Shared utilities for bootstrap.bash and its modules.
 
 readonly BOOTSTRAP_DIR="$(CDPATH= cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly REPO_DIR="${BOOTSTRAP_DIR%/*}"
@@ -24,6 +24,7 @@ bootstrap::distro () {
   local id version
   id=$(. "$OS_RELEASE" && printf '%s' "${ID:-}")
   version=$(. "$OS_RELEASE" && printf '%s' "${VERSION_ID:-}")
+
   case "$id:$version" in
     arch:*) printf 'arch' ;;
     ubuntu:*) printf 'ubuntu' ;;
@@ -39,20 +40,27 @@ bootstrap::default_profile () {
   esac
 }
 
-# Prints every package in the lists for a package manager that apply to $DISTRO and $PROFILE,
-# one per line. A desktop profile includes the base lists. Lists may contain blank lines and
-# '#' comments.
+# Prints the package names in the list files (one per line)
+# sans '#' comments, trailing whitespace, or blank lines.
+# Missing files are skipped.
+bootstrap::read_list () {
+  local file
+  for file; do
+    [[ -e $file ]] && sed -e 's/#.*//' -e 's/[[:space:]]*$//' -e '/^$/d' "$file"
+  done
+  return 0
+}
+
+# Prints every package (one per line) in the lists for a package manager that apply to $DISTRO and $PROFILE.
+# A `desktop` profile includes the base lists. Lists may contain blank lines and '#' comments.
 bootstrap::packages () {
-  local manager=$1 profile file
+  local manager=$1 profile
   local profiles=(base)
   [[ $PROFILE == desktop ]] && profiles+=(desktop)
 
   for profile in "${profiles[@]}"; do
-    for file in "$PACKAGES_DIR/$manager.$profile.txt" "$PACKAGES_DIR/$DISTRO/$manager.$profile.txt"; do
-      [[ -f $file ]] && sed -e 's/#.*//' -e 's/[[:space:]]*$//' -e '/^$/d' "$file"
-    done
+    bootstrap::read_list "$PACKAGES_DIR/$manager.$profile.txt" "$PACKAGES_DIR/$DISTRO/$manager.$profile.txt"
   done
-  return 0
 }
 
 # Returns 0 when $1 appears in the comma-separated list $2.

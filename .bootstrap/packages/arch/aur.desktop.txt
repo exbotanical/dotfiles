@@ -1,1 +1,15 @@
-# TODO: seed from `pacman -Qqem` on the machine, then prune to the packages the dotfiles use.
+# Shell and CLI tools the bash config and scripts use
+gojq
+pandoc-bin
+
+# Programs the i3 config, eww widgets, and scripts launch
+brave-bin
+coreshot
+eww
+i3lock-color
+light
+rofi-file-browser-extended-git
+vscodium-bin
+
+# Fonts
+ttf-font-awesome-5

@@ -1,0 +1,12 @@
+# Packages required by the bootstrap modules under test during the integ tests (integ-test.bash).
+# Does not include packages already provided by the Docker image.
+curl
+git
+make
+stow
+unzip
+vim
+xz-utils
+
+# The node binary that 40-node installs links against libatomic.
+libatomic1

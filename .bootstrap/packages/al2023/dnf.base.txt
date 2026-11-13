@@ -1,4 +1,5 @@
-# TODO: seed from `dnf repoquery --userinstalled --qf '%{name}'` on the machine, then prune to the packages the dotfiles use.
+# TODO: seed by running `dnf repoquery --userinstalled --qf '%{name}'` on the machine
+# and select the subset of packages needed across dotfiles.
 
 # Bootstrap module prerequisites
 git

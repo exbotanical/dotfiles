@@ -1,0 +1,9 @@
+# Packages required by the bootstrap modules under test during the integ tests (integ-test.bash).
+# Does not include packages already provided by the Docker image.
+curl
+git
+make
+stow
+tar
+unzip
+vim

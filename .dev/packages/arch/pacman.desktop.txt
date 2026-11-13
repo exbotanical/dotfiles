@@ -1,0 +1,4 @@
+# 60-fonts and 65-mime
+fontconfig
+xdg-utils
+xz

@@ -1,8 +1,25 @@
-# TODO: seed from `pacman -Qqen` on the machine, then prune to the packages the dotfiles use.
-
 # Bootstrap module prerequisites
 git
 make
 tar
 unzip
 vim
+
+# Shell and CLI tools the bash config and scripts use
+bash-completion
+curl
+git-delta
+htop
+jq
+lsd
+ripgrep
+rsync
+shellcheck
+stow
+tmux
+yq
+
+# Toolchain prerequisites: rustup and cargo builds, ghcup, opam
+base-devel
+bubblewrap
+opam

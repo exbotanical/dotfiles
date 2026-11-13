@@ -6,7 +6,13 @@ readonly INIT_FILE="$HOME/.config/bash/init.bash"
 readonly SCRIPTS_DIR="$REPO/bash/.config/bash/scripts"
 # Modules that take several minutes to compile or are otherwise large (e.g. gigabytes).
 # These are skipped during the integ tests. They nevertheless have at least some unit test coverage.
-readonly HEAVY_MODULES=43-haskell,45-cargo,61-eww
+readonly HEAVY_MODULES=30-aur,43-haskell,45-cargo,61-eww
+# Bootstrap installs only the packages required by the modules under test.
+# The full package list is not installed; it is instead verified against the upstream via `assert_packages_exist`.
+readonly FIXTURE_PACKAGES_DIR="$REPO/.dev/packages"
+readonly LISTS_DIR="$REPO/.bootstrap/packages"
+readonly LIB="$REPO/.bootstrap/lib.bash"
+readonly AUR_RPC=https://aur.archlinux.org/rpc/v5/info
 
 log () {
   printf '[integ] %s\n' "$*"
@@ -19,7 +25,7 @@ fail () {
 
 install_all () {
   log 'make bootstrap'
-  SKIP="$HEAVY_MODULES" make -C "$REPO" bootstrap
+  SKIP="$HEAVY_MODULES" PACKAGES_DIR="$FIXTURE_PACKAGES_DIR" make -C "$REPO" bootstrap
   remove_root_conflicts
   log 'sudo make install_root'
   sudo make -C "$REPO" install_root
@@ -124,6 +130,53 @@ snapshot () {
   printf 'worktree %s\n' "$(git -C "$REPO" status --porcelain | sha256sum)"
 }
 
+# Prints the sorted names in the real desktop lists for the manager $2 on the distro $1.
+listed_packages () {
+  PACKAGES_DIR=$LISTS_DIR bash -c 'source "$1"; DISTRO=$2 PROFILE=desktop bootstrap::packages "$3"' \
+    _ "$LIB" "$1" "$2" | LC_ALL=C sort -u
+}
+
+# Fails when the AUR lacks a name in the AUR list. Skips the check when the AUR is unreachable.
+assert_aur_packages_exist () {
+  local -a names args=()
+  local name response missing
+  mapfile -t names < <(listed_packages arch aur)
+  for name in "${names[@]}"; do
+    args+=(--data-urlencode "arg[]=$name")
+  done
+
+  if ! response=$(curl -fsS --get "${args[@]}" "$AUR_RPC"); then
+    log "skipping the AUR name check: $AUR_RPC is unreachable"
+    return
+  fi
+  missing=$(LC_ALL=C comm -23 <(printf '%s\n' "${names[@]}") \
+    <(jq -r '.results[].Name' <<< "$response" | LC_ALL=C sort -u))
+  [[ -z $missing ]] || fail "not in the AUR: ${missing//$'\n'/ }"
+}
+
+# Fails when the repository package names $3 lack a name in the real lists for the manager $2 on
+# the distro $1.
+assert_in_repositories () {
+  local missing
+  missing=$(LC_ALL=C comm -23 <(listed_packages "$1" "$2") <(LC_ALL=C sort -u <<< "$3"))
+  [[ -z $missing ]] || fail "not in the $1 repositories: ${missing//$'\n'/ }"
+}
+
+# Fails when the distro's repositories lack a name in the real package lists. 20-packages has
+# synced the package databases, and 10-apt-repos has added the Ubuntu repositories the lists use.
+assert_packages_exist () {
+  local distro
+  distro=$(bash -c 'source "$1"; bootstrap::distro' _ "$LIB")
+  log "checking the $distro package names"
+  case $distro in
+    arch)
+      assert_in_repositories arch pacman "$(pacman -Slq)"
+      assert_aur_packages_exist
+      ;;
+    ubuntu) assert_in_repositories ubuntu apt "$(apt-cache pkgnames)" ;;
+  esac
+}
+
 prepare_home () {
   mkdir -p "$HOME/.config/gtk-3.0"
 }
@@ -134,6 +187,7 @@ main () {
   assert_repo_unchanged
   assert_install_state
   assert_root_state
+  assert_packages_exist
 
   assert_shell_loads -i
   assert_shell_loads -l

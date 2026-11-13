@@ -1,0 +1,4 @@
+# 63-brave-link links brave-browser; 60-fonts and 65-mime
+brave-browser
+fontconfig
+xdg-utils
