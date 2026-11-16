@@ -22,10 +22,10 @@ focusedws=$(i3-msg -t get_workspaces | gojq -r '.[] | select(.focused==true) | .
 declare -A occupied_workspaces=([1]=0 [2]=0 [3]=0 [4]=0 [5]=0 [6]=0 [7]=0 [8]=0 [9]=0 [10]=0)
 declare -A workspaces # Map<WsNum, Monitor>
 
-# set color for each workspace
+# set color for each workspace on the bar of output $2; a workspace on another output is empty there
 status () {
-  local ws_id="$1"
-  if (("${occupied_workspaces[$ws_id]}" == 1)); then
+  local ws_id="$1" output="$2"
+  if (("${occupied_workspaces[$ws_id]}" == 1)) && [[ ${workspaces[$ws_id]:-} == "$output" ]]; then
     if (("$focusedws" == "$ws_id")); then
       echo -n "$FOCUSED"
     else
@@ -52,15 +52,21 @@ applist () {
   echo -En ${apps%"\n"}
 }
 
-# generate the json for eww
+# generate the json for eww: an object that maps each active output to its bar's workspace list
 generate () {
-  echo -n '['
+  local output separator=''
+  echo -n '{'
 
-  for i in {1..10}; do
-    echo -n ''$([ $i -eq 1 ] || echo ,) '{ "number": "'"$i"'", "color": "'$(status "$i")'", "tooltip": "'$(applist "$i")'" }'
-  done
+  while read -r output; do
+    echo -n "$separator"'"'"$output"'": ['
+    for i in {1..10}; do
+      echo -n ''$([ $i -eq 1 ] || echo ,) '{ "number": "'"$i"'", "color": "'$(status "$i" "$output")'", "tooltip": "'$(applist "$i")'" }'
+    done
+    echo -n ']'
+    separator=', '
+  done < <(i3-msg -t get_outputs | gojq -r '.[] | select(.active) | .name')
 
-  echo ']'
+  echo '}'
 }
 
 # setup
@@ -78,13 +84,12 @@ done
 generate
 
 # main loop
-# TODO: multi-monitor support
 i3-msg -t subscribe '["workspace"]' --monitor | while read -r line; do
   change=$(echo "$line" | gojq -r '(.change)')
   ws_id=$(echo "$line" | gojq -r '(.current) | (.name)')
 
   case $change in
-    'init')
+    'init' | 'move')
       workspace_event "$ws_id" 1
       ;;
 
