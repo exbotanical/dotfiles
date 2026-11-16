@@ -14,13 +14,13 @@
 (include "./windows/music.yuck")
 ; (include "./windows/osd.yuck")
 
-(defwidget left-widget []
+(defwidget left-widget [screen]
   (box
     :space-evenly false
     :halign "start"
     (workspaces-widget)))
 
-(defwidget right-widget []
+(defwidget right-widget [screen]
   (box
     :space-evenly false
     :halign "end"
@@ -29,26 +29,26 @@
     (bluetooth-widget)
     (net-widget)
     (docker-widget)
-    (control-panel-tray-widget)
-    (clock-widget)
+    (control-panel-tray-widget :screen screen)
+    (clock-widget :screen screen)
   ))
 
-(defwidget center-widget []
+(defwidget center-widget [screen]
   (box
     :space-evenly false
     :halign "center"
-    (music-widget)))
+    (music-widget :screen screen)))
 
-(defwidget bar-widget []
+(defwidget bar-widget [screen]
   (systray
     :class "bar"
     :space-evenly true
-    (left-widget)
-    (center-widget)
-    (right-widget)))
+    (left-widget :screen screen)
+    (center-widget :screen screen)
+    (right-widget :screen screen)))
 
-(defwindow bar
-  :monitor 0
+(defwindow bar [screen]
+  :monitor screen
   :windowtype "dock"
   :geometry (geometry :x "0%"
     :y "0%"
@@ -57,4 +57,4 @@
   :anchor "top center")
   :stacking "fg"
   :reserve (struts :distance "30px" :side "top")
-  (bar-widget))
+  (bar-widget :screen screen))

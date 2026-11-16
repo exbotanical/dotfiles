@@ -1,7 +1,7 @@
-(defwidget control-panel-tray-widget []
+(defwidget control-panel-tray-widget [screen]
   (eventbox
     :class "module"
-    :onclick "${EWW_CMD} open --toggle control-panel-window --arg y=${get_env("EWW_CONTROL_PANEL_Y")}"
+    :onclick "${EWW_CMD} open --toggle control-panel-window --screen ${screen} --arg y=${get_env("EWW_CONTROL_PANEL_Y")}"
     (box
       (circular-progress
         :value "${EWW_CPU.avg}"
