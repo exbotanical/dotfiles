@@ -3,7 +3,7 @@
     :class "control-panel container"
     :space-evenly false
     :orientation "v"
-    
+
     ; Datetime
     (box
       :class "top-row"
@@ -19,10 +19,8 @@
         :text {time.date})
         (label
           :class "day"
-        :text {time.day})
-      )
-    )
-    
+        :text {time.day})))
+
     ; Wireless Conn
     (centerbox
       :class "system-row"
@@ -37,18 +35,16 @@
             :onclick "scripts/net toggle"
           {net.icon})
           (label
-            :class "control-panel separator"
+            :class "separator"
           :text "│")
           (button
             :onclick "${EWW_CMD} close control-panel-window && nm-connection-editor &"
-          "󰒓")
-        )
+          "󰒓"))
         (label
-          :text {net.essid}
+          :text {net.name}
           :xalign 0.5
-        :limit-width 15)
-      )
-      
+        :limit-width 15))
+
       ; Bluetooth
       (box
         :class "box-container"
@@ -61,19 +57,17 @@
             :onclick "scripts/bluetooth toggle"
           {bluetooth.icon})
           (label
-            :class "control-panel separator"
+            :class "separator"
           :text "│")
           (button
             :onclick "${EWW_CMD} close control-panel-window && blueman-manager &"
-          "󰒓")
-        )
+          "󰒓"))
         (label
           :text {bluetooth.text}
           :xalign 0.5
           :tooltip "${bluetooth.text} ${bluetooth.battery}"
-        :limit-width 15)
-      )
-      
+        :limit-width 15))
+
       ; Airplane Mode
       (box
         :class "box-container"
@@ -83,15 +77,12 @@
           :class "box ${airplane.class}"
           (button
             :onclick "scripts/airplane toggle"
-          {airplane.icon})
-        )
+          {airplane.icon}))
         (label
           :text "Airplane Mode"
           :xalign 0.5
-        :limit-width 16)
-      )
-    )
-    
+        :limit-width 16)))
+
     ; Volume and Brightness Controls
     (box
       :class "sliders-row"
@@ -106,8 +97,7 @@
           :class "slider"
           :value {volume.percent}
           :tooltip "volume at ${volume.percent}%"
-        :onchange "scripts/volume set_vol SINK {}")
-      )
+        :onchange "scripts/volume set_vol SINK {}"))
       (box
         :class "brightness-slider-box"
         :space-evenly false
@@ -115,11 +105,8 @@
         {brightness.icon})
         (scale
           :value {brightness.level}
-          :marks true
-        :onchange "light -S {}")
-      )
-    )
-    
+        :onchange "light -S {}")))
+
     ; CPU and Memory Cards - Side by Side
     (box
       :class "system-cards-row"
@@ -135,19 +122,15 @@
           :thickness {sys_circle_thickness}
           (label
             :text ""
-          :class "sys-icon-cpu icon")
-        )
+          :class "sys-icon-cpu icon"))
         (box
           :orientation "v"
           :class "system-info-text"
-          
+
           (label
             :text "${round(EWW_CPU.avg,2)}%"
-            :halign "center"
-          :class "sys-text-sub")
-        )
-      )
-      
+            :halign "center")))
+
       ; Memory Card
       (box
         :class "memory-card"
@@ -159,21 +142,14 @@
           :thickness {sys_circle_thickness}
           (label
             :text ""
-          :class "sys-icon-mem icon")
-        )
+          :class "sys-icon-mem icon"))
         (box
           :orientation "v"
           :class "system-info-text"
-          
+
           (label
             :text "${memory.used} | ${memory.total}"
-            :halign "center"
-          :class "sys-text-sub")
-        )
-      )
-    )
-  )
-)
+            :halign "center"))))))
 
 (defwindow control-panel-window [y]
   :stacking "bg"
@@ -185,5 +161,4 @@
     :width "0%"
     :height "0%"
   :anchor "right top")
-  (control-panel-widget)
-)
+  (control-panel-widget))

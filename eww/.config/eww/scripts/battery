@@ -1,109 +1,93 @@
 #!/usr/bin/env bash
-# see: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/include/linux/power_supply.h?h=v6.0.11
-# TODO: theme all scripts
+# Prints the state of the first battery as one JSON line every INTERVAL seconds, and sends a
+# critical notification every LOW_NOTIFY_INTERVAL seconds while it is not charging and at or below
+# LOW_PERCENT. Without a battery, prints one line with percentage 0 and exits.
+# Usage: battery
+# See: https://www.kernel.org/doc/html/latest/power/power_supply_class.html
+set -euo pipefail
 
-declare ICONS=('' '' '' '' '\uf240')
-RANGE_SIZE=25
+readonly INTERVAL=1
+readonly LOW_PERCENT=15
+readonly LOW_NOTIFY_INTERVAL=30
 
-MICRO_WATTS=1000000
-
-LOW_BAT_NOTIFY_INTERVAL=30
-INTERVAL=1
-ALTERNATOR=1
-
-if [[ "$SYSTEM_THEME" == 'everforest' ]]; then
-  RED='#e67e80'
-  GREEN='#a7c080'
-  YELLOW='#dbbc7f'
-  BLUE='#7fbbb3'
+if [[ ${SYSTEM_THEME:-} == everforest ]]; then
+  readonly RED='#e67e80' YELLOW='#dbbc7f' GREEN='#a7c080' BLUE='#7fbbb3'
 else
-  RED='#FF5555'
-  GREEN='#83f59f'
-  YELLOW='#F1FA8C'
-  BLUE='#8BE9FD'
+  readonly RED='#ff5555' YELLOW='#f1fa8c' GREEN='#83f59f' BLUE='#8be9fd'
 fi
 
-icon () {
-  if [[ "$STATE" == "Charging" ]]; then
-    echo ${ICONS[4]}
+# Prints the time until empty (discharging) or full (charging) as H:MM, or nothing when the
+# battery does not report energy and power.
+time_left () {
+  local dir=$1 state=$2 now full power
+  [[ -r $dir/energy_now && -r $dir/energy_full && -r $dir/power_now ]] || return 0
+  now=$(< "$dir/energy_now")
+  full=$(< "$dir/energy_full")
+  power=$(< "$dir/power_now")
+  ((power > 0)) || return 0
+
+  local minutes
+  if [[ $state == Discharging ]]; then
+    minutes=$((now * 60 / power))
   else
-    local level=$(awk -v n="$CAPACITY" -v c="$RANGE_SIZE" 'BEGIN{print int((n - 1) / c)}')
-    echo "${ICONS[$level]}"
+    minutes=$(((full - now) * 60 / power))
+  fi
+  printf '%d:%02d' $((minutes / 60)) $((minutes % 60))
+}
+
+# Prints the circle color: alternating blue and green on odd and even ticks while charging,
+# otherwise by capacity.
+color () {
+  local state=$1 capacity=$2 tick=$3
+  if [[ $state == Charging ]] && ((tick % 2 == 0)); then
+    printf '%s' "$BLUE"
+  elif [[ $state == Charging ]]; then
+    printf '%s' "$GREEN"
+  elif ((capacity <= 20)); then
+    printf '%s' "$RED"
+  elif ((capacity <= 60)); then
+    printf '%s' "$YELLOW"
+  else
+    printf '%s' "$GREEN"
   fi
 }
 
 status () {
-  if [[ "$STATE" == "Charging" ]]; then
-    if (("$RATE" > 0)); then
-      echo "$(gettime) left"
-    else
-      echo ""
-    fi
-  elif [[ "$STATE" == "Discharging" ]]; then
-    echo "$(gettime)h left"
-  else
-    echo "full"
+  local state=$1 left=$2
+  case $state in
+    Charging) printf 'charging%s' "${left:+, $left until full}" ;;
+    Discharging) printf '%s' "${left:+$left left}" ;;
+    *) printf 'full' ;;
+  esac
+}
+
+main () {
+  local dir
+  dir=$(compgen -G '/sys/class/power_supply/BAT*' | head -n 1 || true)
+  if [[ -z $dir ]]; then
+    jq -nc --arg color "$GREEN" '{percentage: 0, color: $color, status: "no battery"}'
+    return
   fi
-}
 
-color () {
-  if [[ "$STATE" == "Charging" ]]; then
-    if (($ALTERNATOR % 2 == 0)); then
-      echo "$BLUE"
-    else
-      echo "$GREEN"
+  local tick=0 last_notified=-$LOW_NOTIFY_INTERVAL capacity state
+  while true; do
+    capacity=$(< "$dir/capacity")
+    state=$(< "$dir/status")
+
+    if [[ $state != Charging ]] && ((capacity <= LOW_PERCENT && SECONDS - last_notified >= LOW_NOTIFY_INTERVAL)); then
+      notify-send -u critical -a battery 'Battery low' "$capacity% remaining"
+      last_notified=$SECONDS
     fi
-  else
-    (("$CAPACITY" <= 15)) && {
-      local n_seconds=$(date +%S)
-      # Only notify once per LOW_BAT_NOTIFY_INTERVAL seconds
-      (("$n_seconds" % "$LOW_BAT_NOTIFY_INTERVAL" == 0)) && {
-        notify-send -u critical -a battery 'Battery low' "$CAPACITY% remaining"
-      }
-    }
-    if (("$CAPACITY" <= 20)); then
-      echo "$RED"
-    elif (("$CAPACITY" <= 60)); then
-      echo "$YELLOW"
-    else
-      echo "$GREEN"
-    fi
-  fi
+
+    jq -nc \
+      --argjson percentage "$capacity" \
+      --arg color "$(color "$state" "$capacity" "$tick")" \
+      --arg status "$(status "$state" "$(time_left "$dir" "$state")")" \
+      '{percentage: $percentage, color: $color, status: $status}'
+
+    sleep "$INTERVAL"
+    tick=$((tick + 1))
+  done
 }
 
-wattage () {
-  echo "$(bc -l <<< "scale=1; $RATE / $MICRO_WATTS")w"
-}
-
-gettime () {
-  # Maximum capacity
-  local full=$(cat /sys/class/power_supply/BAT1/energy_full)
-  # Current energy
-  local now=$(cat /sys/class/power_supply/BAT1/energy_now)
-  # Current power draw or charge rate
-  local rate=$(cat /sys/class/power_supply/BAT1/power_now)
-  # Charging or Discharging
-  local state=$(cat /sys/class/power_supply/BAT1/status)
-
-  if ((rate > 0)); then
-    local ex
-    if [[ "$state" == "Discharging" ]]; then
-      ex="$now / $rate"
-    else
-      ex="($full - $now) / $rate"
-    fi
-    # Calculate time remaining in seconds and convert to HH:MM format
-    date -u -d@"$(bc -l <<< "$ex * 3600")" +%H:%M
-  fi
-}
-
-while true; do
-  RATE=$(cat /sys/class/power_supply/BAT1/voltage_now)
-  CAPACITY=$(cat /sys/class/power_supply/BAT1/capacity)
-  STATE=$(cat /sys/class/power_supply/BAT1/status)
-
-  echo '{"icon":"'"$(icon)"'","percentage": '"$CAPACITY"',"wattage":"'"$(wattage)"'","status":"'"($(status))"'","color":"'"$(color)"'"}'
-
-  sleep $INTERVAL
-  ((ALTERNATOR++))
-done
+main

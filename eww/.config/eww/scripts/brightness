@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
+# Prints the screen brightness as one JSON line at start and on every backlight udev event.
+# Usage: brightness
+set -euo pipefail
 
-declare icons=('󰃝' '󰃟' '󰃞')
+# Brightness icons, dimmest first.
+readonly ICONS=('󰃝' '󰃟' '󰃞')
 
-get_level () {
-  awk -v n="$(light)" 'BEGIN{print int(n/34)}'
+print_state () {
+  local level
+  level=$(light)
+  jq -nc --argjson level "$level" --argjson icons "$(printf '%s\n' "${ICONS[@]}" | jq -R . | jq -sc .)" \
+    '{level: $level, icon: $icons[[($level / 34 | floor), 2] | min]}'
 }
 
-main () {
-  local icon=${icons[$(get_level)]}
-  echo '{ "level": '"$(light)"', "icon": "'"$icon"'" }'
-
-  udevadm monitor | rg --line-buffered 'backlight' | while read -r _; do
-    icon="${icons[$(get_level)]}"
-
-    echo '{"level":'"$(light)"',"icon":"'"$icon"'"}'
-  done
-}
-
-main
+print_state
+udevadm monitor --subsystem-match=backlight | grep --line-buffered 'backlight' | while read -r _; do
+  print_state
+done

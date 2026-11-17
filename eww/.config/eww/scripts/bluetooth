@@ -1,47 +1,47 @@
 #!/usr/bin/env bash
-SLEEP_INTERVAL=3
+# Prints the Bluetooth state as one JSON line every INTERVAL seconds, or toggles Bluetooth.
+# Usage: bluetooth
+#        bluetooth toggle
+set -euo pipefail
 
-main () {
-  local powered
-  local status
-  local name
-  local battery
+readonly INTERVAL=3
 
-  if [[ "$1" == 'toggle' ]]; then
-    rfkill toggle bluetooth
+print_state () {
+  local powered info icon text class battery=''
+  powered=$(bluetoothctl show | awk '/Powered:/ { print $2; exit }')
+  # With no connected device, bluetoothctl info prints "Missing device address argument".
+  info=$(bluetoothctl info 2> /dev/null || true)
+
+  if [[ $powered != yes ]]; then
+    icon='󰂲' text='Bluetooth off' class='disabled'
+  elif [[ -z $info || $info == 'Missing device address argument'* ]]; then
+    icon='󰂯' text='Disconnected' class='inactive'
   else
-    while true; do
-      powered=$(bluetoothctl show | rg Powered | cut -f 2- -d ' ')
-      status=$(bluetoothctl info)
-      name=$(echo "$status" | rg Name | cut -f 2- -d ' ')
-
-      if [[ "$(echo "$status" | rg Percentage)" != '' ]]; then
-        battery="$(bluetoothctl info | grep Battery | sed -n 's/.*(\([0-9]*\)).*/\1/p')%"
-      else
-        battery=''
-      fi
-
-      if [[ "$powered" == 'yes' ]]; then
-        if [[ "$status" != 'Missing device address argument'* ]]; then
-          text="$name"
-          icon='󰂰'
-          class='active bt-connected'
-        else
-          icon='󰂯'
-          text='Disconnected'
-          class='inactive'
-        fi
-      else
-        icon='󰂲'
-        text='Bluetooth off'
-        class='disabled'
-      fi
-
-      echo '{"icon":"'"$icon"'","battery":"'"$battery"'","text":"'"$text"'","class":"'"$class"'"}'
-
-      sleep $SLEEP_INTERVAL
-    done
+    icon='󰂰' class='active bt-connected'
+    text=$(awk -F': ' '/^[[:space:]]*Name:/ { print $2; exit }' <<< "$info")
+    battery=$(sed -n 's/.*Battery Percentage:.*(\([0-9]*\)).*/\1%/p' <<< "$info")
   fi
+
+  jq -nc --arg icon "$icon" --arg text "$text" --arg class "$class" --arg battery "$battery" \
+    '{icon: $icon, text: $text, class: $class, battery: $battery}'
 }
 
-main $*
+main () {
+  case "${1:-}" in
+    toggle)
+      rfkill toggle bluetooth
+      ;;
+    '')
+      while true; do
+        print_state
+        sleep "$INTERVAL"
+      done
+      ;;
+    *)
+      printf 'bluetooth: unknown command %s\n' "$1" >&2
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"

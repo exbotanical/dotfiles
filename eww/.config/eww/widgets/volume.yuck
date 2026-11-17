@@ -1,11 +1,16 @@
+; The icon shows speakers by level, headphones, or a Bluetooth device, and a muted variant.
 (defwidget volume-widget []
-  (box
-    :class "module active"
+  (box :class "module active"
     (eventbox
-      :onscroll "echo {} | sed -e 's/up/+/g' -e 's/down/-/g' | xargs -I% wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.005%"
+      :onscroll "echo {} | sed -e 's/up/+/' -e 's/down/-/' | xargs -I% wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.005%"
       :onclick "pavucontrol &"
       :onrightclick "scripts/volume mute SINK"
-      (label
-        :tooltip "volume ${volume.percent}%"
-        :text {volume.icon}
-      ))))
+      (label :tooltip "${volume.device}: ${volume.percent}%${volume.muted ? ' (muted)' : ''}"
+        :text {volume.icon}))))
+
+; Visible while any app records from a microphone.
+(defwidget mic-widget []
+  (box :class "module mic"
+    :visible {volume.mic_in_use}
+    (eventbox :onclick "pavucontrol --tab=2 &"
+      (label :tooltip "Microphone in use" :text {volume.mic_icon}))))

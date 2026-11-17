@@ -1,19 +1,12 @@
+; Clicking a day opens it in GNOME Calendar. The calendar reports months from 0.
 (defwidget calendar-widget []
-  (box
-    :class "calendar-window"
-    (
-      calendar
-      :onclick "${EWW_CMD} close calendar-window && gnome-calendar --date $(({1} + 1 ))/{0}/{2} &"
-    )))
+  (box :class "calendar-window"
+    (calendar
+      :onclick "${EWW_CMD} close calendar-window && gnome-calendar --date $(({1} + 1))/{0}/{2} &")))
 
 (defwindow calendar-window
-  :stacking "fg"
   :monitor 0
+  :stacking "fg"
   :wm-ignore true
-  :geometry (geometry
-    :x "0"
-    :y "43"
-    :anchor "top right"
-    :width "0px"
-  :height "0px")
+  :geometry (geometry :x "0" :y "43" :width "0px" :height "0px" :anchor "top right")
   (calendar-widget))

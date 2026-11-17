@@ -1,21 +1,21 @@
-@import 'css/themes/_ghost';
+@import 'css/themes/ghost';
 
 $font-xs: 1rem;
 $font-sm: 1.25rem;
 $font-base: 1.5rem;
-$font-md: 1.75rem;
-$font-lg: 2rem;
+$font-md: 2rem;
 $font-xl: 3rem;
 
 @mixin rounding {
   border-radius: 1rem;
 }
 
+// The frame of a popup window that hangs below the bar.
 @mixin window {
   background-color: $bg;
-  margin-top: 2rem;
-  border: 1px solid $border;
-  box-shadow: 0 2px 3px $shadow;
+  margin-top: 2.175rem;
+  border: 1px solid $bg;
+  box-shadow: 0 2px 3px $bg;
   border-radius: 0 0 1rem 1rem;
 }
 
@@ -23,80 +23,30 @@ $font-xl: 3rem;
   all: unset;
   transition: 200ms ease;
   font-family: Roboto, sans-serif;
-  font-size: $font-md;
-}
-
-@import 'css/calendar';
-@import 'css/music';
-@import 'css/osd';
-@import 'css/control-panel';
-@import 'css/control-panel-tray';
-@import 'css/modules';
-
-.bar {
-  background-color: $bar-bg;
-  color: $fg;
-
-  label {
-    font-size: $font-md;
-  }
+  font-size: $font-base;
 }
 
 tooltip {
   background: $bg;
-  border: 1px solid $border;
+  border: 1px solid $bg;
   border-radius: 8px;
 
   label {
-    margin: 0 1rem;
-    font-size: $font-base;
-  }
-}
-
-.time {
-  label {
-    font-size: $font-lg;
-  }
-}
-
-.hour {
-  padding-left: 1rem;
-}
-
-.time-delimiter {
-  margin: 4px 1px 0px 0px;
-}
-
-.minute {
-  padding-right: 0.7rem;
-}
-
-.date {
-  background: $bg;
-
-  label {
-    font-size: $font-lg;
+    font-size: $font-xs;
   }
 }
 
 scale trough {
-  background-color: $bg1;
+  background-color: $surface;
   border-radius: 24px;
   margin: 0 1rem;
   min-height: 10px;
   min-width: 70px;
 }
 
-.workspaces {
-  margin-left: 10px;
-}
-
-.workspaces {
-  label {
-    // Workspace dot size
-    font-size: $font-lg;
-    // Space between workspace dots
-    margin: -0.1rem 0.1rem;
-    margin-bottom: 0.15rem;
-  }
-}
+@import 'css/modules';
+@import 'css/control-panel-tray';
+@import 'css/control-panel';
+@import 'css/calendar';
+@import 'css/music';
+@import 'css/bar';

@@ -1,15 +1,23 @@
-(defpoll time :interval "5s" `date +'{"date": "%m/%d", "hour": "%I", "minute": "%M", "day": "%A"}'`)
+(defpoll time :interval "5s"
+  :initial '{"date": "", "day": "", "hour": "", "minute": ""}'
+  `date +'{"date": "%m/%d", "day": "%A", "hour": "%I", "minute": "%M"}'`)
 
-(deflisten arch "scripts/arch")
-(deflisten airplane "scripts/airplane")
-(deflisten battery "scripts/battery")
-(deflisten bluetooth "scripts/bluetooth")
-(deflisten brightness "scripts/brightness")
-(deflisten docker "scripts/docker")
-(deflisten memory "scripts/memory")
-(deflisten music "scripts/music")
-(deflisten net "scripts/net")
-(deflisten volume "scripts/volume")
+; Each :initial matches the JSON shape its script prints, so widgets render before the first line.
+(deflisten airplane :initial '{"icon": "", "class": ""}' "scripts/airplane")
+(deflisten battery :initial '{"percentage": 0, "color": "#83f59f", "status": ""}' "scripts/battery")
+(deflisten bluetooth :initial '{"icon": "", "text": "", "class": "", "battery": ""}' "scripts/bluetooth")
+(deflisten brightness :initial '{"level": 0, "icon": ""}' "scripts/brightness")
+(deflisten docker :initial '{"active": false, "running": 0, "icon": "", "class": "", "text": ""}' "scripts/docker")
+(deflisten memory :initial '{"total": "", "used": "", "percentage": 0}' "scripts/memory")
+(deflisten music
+  :initial '{"title": "", "artist": "", "playing": false, "status": "", "position": 0, "position_time": "", "length": "", "cover": "", "color1": "#1e1e2e", "color2": "#28283d"}'
+  "scripts/music")
+(deflisten net :initial '{"icon": "", "name": "", "class": "", "vpn": false, "vpn_name": "", "vpn_icon": ""}' "scripts/net")
+(deflisten volume
+  :initial '{"percent": 0, "muted": false, "output": "", "device": "", "icon": "", "mic_in_use": false, "mic_icon": ""}'
+  "scripts/volume")
+(deflisten window :initial '{"class": "", "title": ""}' "scripts/window")
+(deflisten workspaces :initial '{}' "scripts/workspaces")
 
-(defvar bar_circle_thickness 5)
-(defvar sys_circle_thickness 20)
+(defvar bar_circle_thickness 3)
+(defvar sys_circle_thickness 12)

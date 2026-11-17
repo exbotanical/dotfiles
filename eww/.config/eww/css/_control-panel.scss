@@ -1,43 +1,47 @@
-@mixin element-bg {
-  background-color: $surface0;
+@mixin card {
+  @include rounding;
+  background-color: $surface;
+}
+
+@mixin connected($color, $hover) {
+  background-color: $color;
+  border-color: $color;
+
+  button:hover {
+    background-color: $hover;
+  }
 }
 
 .control-panel {
   &.container {
     @include window;
-    border: 1px solid $border;
     border-top: none;
     color: $text;
   }
 
   .separator {
-    font-size: $font-lg;
+    font-size: $font-xs;
   }
 
   .top-row {
-    border-bottom: 1px solid $overlay0;
-    margin: 1.2rem 1.2rem 0rem 1.2rem;
+    border-bottom: 1px solid $overlay;
+    margin: 1.2rem 1.2rem 0;
 
     .time {
-      font-size: 4rem;
+      font-size: $font-xl;
       font-weight: bold;
     }
 
     .date-box {
       margin: 1rem;
 
-      label {
-        font-size: $font-md;
-      }
-
       .date {
-        background: unset;
-        margin: 0 0.5rem 0 0;
+        margin-right: 0.5rem;
         font-weight: 500;
       }
 
       .day {
-        color: $subtext1;
+        color: $subtext-bright;
       }
     }
   }
@@ -46,81 +50,55 @@
     margin: 0.8rem 0.6rem;
 
     label {
-      font-size: $font-base;
+      font-size: $font-sm;
     }
 
     .box {
-      @include rounding;
-      @include element-bg;
-      margin: 0.6rem;
-      min-width: 11rem;
+      @include card;
+      margin: 0.4rem;
+      min-width: 9rem;
       border: 1px solid transparent;
-      transition: all 200ms ease;
 
       button {
         @include rounding;
         padding: 0.8rem;
-        min-height: 4rem;
+        min-height: 2.5rem;
 
         label {
-          font-size: $font-lg;
+          font-size: $font-md;
         }
 
         &:hover {
-          background-color: $overlay0;
+          background-color: $overlay;
         }
       }
     }
 
     .box + label {
       margin: 0 0.8rem;
-      font-size: $font-sm;
+      font-size: $font-xs;
     }
 
     .airplane-connected {
-      background-color: $red;
-      border-color: $red;
-
-      button:hover {
-        background-color: $red-dark;
-      }
+      @include connected($red, $red-dark);
     }
 
     .bt-connected {
-      background-color: $blue;
-      color: $crust;
-      border-color: $blue;
-
-      button:hover {
-        background-color: $blue-dark;
-      }
+      @include connected($blue, $blue-dark);
+      color: $bg;
     }
 
-    .wifi-connected {
-      background-color: $mauve;
-      color: $crust;
-      border-color: $mauve;
-
-      button:hover {
-        background-color: $mauve-dark;
-      }
+    .net-connected {
+      @include connected($cyan, $cyan-dark);
+      color: $bg;
     }
   }
 
   .sliders-row {
-    @include rounding;
-    @include element-bg;
-    margin: 0rem 1rem;
-    padding: 1rem 1rem;
-    border: 1px solid $overlay0;
-
-    scale {
-      min-width: 32rem;
-
-      trough {
-        border-radius: 8px;
-      }
-    }
+    @include card;
+    margin: 0 1rem;
+    padding: 1rem 1.5rem;
+    border: 1px solid $overlay;
 
     box {
       margin: 0.6rem 0;
@@ -132,65 +110,28 @@
       min-width: 2rem;
     }
 
-    .volume-slider-box,
-    .brightness-slider-box {
+    scale {
+      min-width: 24rem;
+
       trough {
-        background-color: $base;
-        border: 1px solid $overlay0;
+        margin-right: 0;
+        border-radius: 8px;
+        background-color: $bg;
+        border: 1px solid $overlay;
+      }
+
+      highlight {
+        @include rounding;
       }
     }
 
-    .volume-slider-box scale highlight {
-      @include rounding;
-      background-image: linear-gradient(to right, $teal, $sky);
+    .volume-slider-box highlight {
+      background-image: linear-gradient(to right, $teal, $cyan);
     }
 
-    .brightness-slider-box scale highlight {
-      @include rounding;
-      background-image: linear-gradient(to right, $yellow, $peach);
+    .brightness-slider-box highlight {
+      background-image: linear-gradient(to right, $yellow, $green);
     }
-  }
-
-  .sys-text-sub {
-    color: $text;
-  }
-
-  .sys-icon-cpu,
-  .sys-icon-mem {
-    font-size: $font-xl;
-    margin: 3rem;
-  }
-
-  .system-info-text {
-    label {
-      font-size: $font-xl;
-    }
-  }
-
-  .sys-mem,
-  .sys-cpu {
-    background-color: $bg;
-  }
-  .sys-icon-mem,
-  .sys-text-mem,
-  .sys-mem,
-  .sys-icon-cpu,
-  .sys-text-cpu,
-  .sys-cpu {
-    // RAM/CPU circle size
-    min-width: 1rem;
-  }
-
-  .sys-icon-mem,
-  .sys-text-mem,
-  .sys-mem {
-    color: $peach;
-  }
-
-  .sys-icon-cpu,
-  .sys-text-cpu,
-  .sys-cpu {
-    color: $sapphire;
   }
 
   .system-cards-row {
@@ -200,20 +141,41 @@
 
   .cpu-card,
   .memory-card {
-    @include rounding;
-    @include element-bg;
+    @include card;
     margin: 0.4rem;
     padding: 0.6rem;
-    border: 1px solid $overlay0;
+    border: 1px solid $overlay;
     min-width: 0;
+  }
 
-    .system-info-text {
-      margin-top: 0.3rem;
+  .system-info-text {
+    margin-top: 0.3rem;
 
-      label {
-        // RAM/CPU font size
-        font-size: $font-base;
-      }
+    label {
+      font-size: $font-sm;
     }
+  }
+
+  .sys-cpu,
+  .sys-mem {
+    background-color: $bg;
+    min-width: 80px;
+    min-height: 80px;
+  }
+
+  .sys-icon-cpu,
+  .sys-icon-mem {
+    font-size: $font-xl;
+    margin: 3rem;
+  }
+
+  .sys-cpu,
+  .sys-icon-cpu {
+    color: $sapphire;
+  }
+
+  .sys-mem,
+  .sys-icon-mem {
+    color: $green;
   }
 }

@@ -1,29 +1,33 @@
 #!/usr/bin/env bash
-SLEEP_INTERVAL=5
+# Prints the Docker state as one JSON line every INTERVAL seconds: whether the daemon runs, and how
+# many containers are running, exited, and created.
+# Usage: docker
+set -euo pipefail
 
-main () {
-  while true; do
-    if ! systemctl is-active --quiet docker; then
-      text='Docker not active'
-      class='disabled'
-    else
-      local running="$(docker ps -q | wc -l)"
-      local stopped="$(docker ps -q -f 'status=exited' | wc -l)"
-      local created="$(docker ps -q -f 'status=created' | wc -l)"
+readonly INTERVAL=5
+readonly ICON=''
 
-      text="$running running, $stopped stopped, $created created"
+print_state () {
+  if ! systemctl is-active --quiet docker; then
+    jq -nc --arg icon "$ICON" '{active: false, running: 0, icon: $icon, class: "disabled", text: "Docker not active"}'
+    return
+  fi
 
-      if [[ $running -gt 0 ]]; then
-        class='active'
-      else
-        class='inactive'
-      fi
-    fi
-
-    echo '{"icon":"'""'","text":"'"$text"'","class":"'"$class"'"}'
-
-    sleep $SLEEP_INTERVAL
-  done
+  local states
+  states=$(docker ps -a --format '{{.State}}' 2> /dev/null || true)
+  jq -nc --arg icon "$ICON" --arg states "$states" '
+    ($states | split("\n") | map(select(. != ""))) as $s
+    | ($s | map(select(. == "running")) | length) as $running
+    | {
+        active: true,
+        running: $running,
+        icon: $icon,
+        class: (if $running > 0 then "active" else "inactive" end),
+        text: "\($running) running, \($s | map(select(. == "exited")) | length) stopped, \($s | map(select(. == "created")) | length) created"
+      }'
 }
 
-main $*
+while true; do
+  print_state
+  sleep "$INTERVAL"
+done

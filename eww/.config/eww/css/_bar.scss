@@ -1,0 +1,43 @@
+.bar {
+  background-color: $bar-bg;
+  color: $text;
+}
+
+.workspaces {
+  margin-left: 10px;
+
+  label {
+    font-size: 1.75rem;
+    margin: -0.1rem 0 0.15rem;
+  }
+}
+
+.window-title {
+  color: $subtext;
+}
+
+.clock {
+  .time label {
+    font-size: $font-md;
+  }
+
+  .hour {
+    padding-left: 1rem;
+  }
+
+  .time-delimiter {
+    margin: 4px 1px 0 0;
+  }
+
+  .minute {
+    padding-right: 0.7rem;
+  }
+
+  .date {
+    background: $bg;
+
+    label {
+      font-size: $font-md;
+    }
+  }
+}

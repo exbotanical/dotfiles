@@ -1,44 +1,95 @@
 #!/usr/bin/env bash
+# Prints the network state as one JSON line at start, on every NetworkManager change, and every
+# REFRESH seconds for the Wi-Fi signal; or toggles Wi-Fi.
+# Usage: net
+#        net toggle
+set -euo pipefail
 
-INTERVAL=3
-declare ICONS=(
-  '󰤮'
-  '󰤟'
-  '󰤢'
-  '󰤥'
-  '󰤨'
-)
+readonly REFRESH=30
+# Wi-Fi icons, weakest signal first.
+readonly WIFI_ICONS=('󰤟' '󰤢' '󰤥' '󰤨')
+readonly DISCONNECTED_ICON='󰤮'
+readonly ETHERNET_ICON='󰈀'
+readonly VPN_ICON='󰦝'
 
-main () {
-  if [[ "$1" == "toggle" ]]; then
-    rfkill toggle wlan
-  else
-    while true; do
-      local status=$(nmcli g | tail -n 1 | awk '{print $1}')
-      local signal=$(nmcli -f in-use,signal dev wifi | rg "\*" | awk '{ print $2 }')
-      local essid=$(nmcli -t -f NAME connection show --active | head -n1 | sed 's/\"/\\"/g')
-      local icon
-      local level
-      local class
-
-      if [[ "$status" == 'disconnected' ]]; then
-        icon=${ICONS[0]}
-        class='inactive'
-      else
-        level=$(awk -v n="$signal" 'BEGIN{print int((n-1)/20)}')
-        if (("$level" > 4)); then
-          level=4
-        fi
-
-        icon=${ICONS[$level]}
-        class='active wifi-connected'
-      fi
-
-      echo '{"essid":"'"$essid"'","icon":"'"$icon"'","class":"'"$class"'"}'
-
-      sleep $INTERVAL
-    done
-  fi
+# Prints the last field of nmcli -t lines whose first fields match, unescaped. nmcli -t escapes ':'
+# inside a field as '\:'; the leading TYPE and STATE fields never contain one, so the last field
+# is everything after them.
+last_field () {
+  awk -F: -v type="$1" -v state="$2" -v skip="$3" '
+    $1 == type && $2 ~ state {
+      for (i = 1; i <= skip; i++) sub(/^[^:]*:/, "")
+      gsub(/\\:/, ":")
+      print
+      exit
+    }'
 }
 
-main "$*"
+# Prints the connection name of the first device of type $1 that NetworkManager reports as
+# connected.
+connected_device () {
+  nmcli -t -f TYPE,STATE,CONNECTION device | last_field "$1" '^connected' 2
+}
+
+# Prints the name of the active VPN: a NetworkManager vpn or wireguard connection, or a tun device
+# that a client such as openconnect created.
+vpn_name () {
+  local active name
+  active=$(nmcli -t -f TYPE,NAME connection show --active)
+  name=$(last_field vpn '' 1 <<< "$active")
+  [[ -n $name ]] || name=$(last_field wireguard '' 1 <<< "$active")
+  [[ -n $name ]] || name=$(connected_device tun)
+  printf '%s' "$name"
+}
+
+wifi_signal () {
+  nmcli -t -f IN-USE,SIGNAL device wifi list --rescan no | awk -F: '$1 == "*" { print $2; exit }'
+}
+
+print_state() {
+  local ethernet wifi vpn icon name class
+  ethernet=$(connected_device ethernet)
+  wifi=$(connected_device wifi)
+  vpn=$(vpn_name)
+  class='active net-connected'
+
+  if [[ -n $ethernet ]]; then
+    icon=$ETHERNET_ICON
+    name=$ethernet
+  elif [[ -n $wifi ]]; then
+    local signal level
+    signal=$(wifi_signal)
+    level=$(((${signal:-1} - 1) / 25))
+    icon=${WIFI_ICONS[level > 3 ? 3 : level]}
+    name=$wifi
+  else
+    icon=$DISCONNECTED_ICON
+    name='Disconnected'
+    class='inactive'
+  fi
+
+  jq -nc --arg icon "$icon" --arg name "$name" --arg class "$class" --arg vpn "$vpn" --arg vpn_icon "$VPN_ICON" \
+    '{icon: $icon, name: $name, class: $class, vpn: ($vpn != ""), vpn_name: $vpn, vpn_icon: $vpn_icon}'
+}
+
+main() {
+  case "${1:-}" in
+    toggle)
+      rfkill toggle wlan
+      ;;
+    '')
+      print_state
+      nmcli monitor | while true; do
+        # read times out after REFRESH seconds (status > 128) and ends the loop at EOF (status 1).
+        read -r -t "$REFRESH" _ || (($? > 128)) || break
+        print_state
+      done
+      ;;
+    *)
+      printf 'net: unknown command %s\n' "$1" >&2
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"

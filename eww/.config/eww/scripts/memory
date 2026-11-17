@@ -1,22 +1,17 @@
 #!/usr/bin/env bash
+# Prints RAM use as one JSON line every INTERVAL seconds: SI-formatted total and used, and the used
+# percentage to one decimal.
+# Usage: memory
+set -euo pipefail
 
-INTERVAL=3
+readonly INTERVAL=3
 
 while true; do
-  # human-readable
-  free_h=$(free -h --si | rg "Mem:")
-  # non-human-readable
-  free_n=$(free --mega | rg "Mem:")
-
-  total="$(echo "$free_h" | awk '{ print $2 }')"
-  used="$(echo "$free_h" | awk '{ print $3 }')"
-  t="$(echo "$free_n" | awk '{ print $2 }')"
-  u="$(echo "$free_n" | awk '{ print $3 }')"
-
-  free=$(printf '%.1fG' "$(bc -l <<< "($t - $u) / 1000")")
-  perc=$(printf '%.1f' "$(free -m | rg Mem | awk '{print ($3/$2)*100}')")
-
-  echo '{"total":"'"$total"'","used":"'"$used"'","free":"'"$free"'","percentage":"'"$perc"'"}'
-
-  sleep $INTERVAL
+  read -r total used < <(free -b | awk '/^Mem:/ { print $2, $3 }')
+  jq -nc \
+    --arg total "$(numfmt --to=si --round=towards-zero "$total")" \
+    --arg used "$(numfmt --to=si --round=towards-zero "$used")" \
+    --argjson percentage "$((used * 1000 / total))" \
+    '{total: $total, used: $used, percentage: ($percentage / 10)}'
+  sleep "$INTERVAL"
 done

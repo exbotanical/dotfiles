@@ -1,21 +1,13 @@
-.membar {
-  color: $peach;
-}
-
-.cpubar {
-  color: $blue;
-}
-
-.batbar {
-  color: $green;
-}
-
 .circular-progress {
-  background-color: $bg1;
-  // Space between circles in tray
-  margin: 0 0.5rem;
-}
+  background-color: $surface;
+  margin: 0 0.3rem;
+  padding: 2px;
 
-.tray-circle {
-  font-size: $font-md;
+  &.cpubar {
+    color: $blue;
+  }
+
+  &.membar {
+    color: $green;
+  }
 }

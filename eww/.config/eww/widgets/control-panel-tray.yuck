@@ -1,34 +1,21 @@
+; CPU, RAM, and battery rings; a click opens the control panel on this bar's monitor.
 (defwidget control-panel-tray-widget [screen]
-  (eventbox
-    :class "module"
+  (eventbox :class "module"
     :onclick "${EWW_CMD} open --toggle control-panel-window --screen ${screen} --arg y=${get_env("EWW_CONTROL_PANEL_Y")}"
     (box
-      (circular-progress
-        :value "${EWW_CPU.avg}"
-        :class "circular-progress cpubar"
+      (circular-progress :class "circular-progress cpubar"
+        :value {EWW_CPU.avg}
         :thickness {bar_circle_thickness}
-        
-        (box
-          :tooltip "using ${round(EWW_CPU.avg,0)}% cpu"
-          (label :class "tray-circle" :text "")
-        ))
-      
-      (circular-progress
+        (box :tooltip "using ${round(EWW_CPU.avg, 0)}% cpu"
+          (label :class "tray-circle" :text "")))
+      (circular-progress :class "circular-progress membar"
         :value {memory.percentage}
-        :class "circular-progress membar"
         :thickness {bar_circle_thickness}
-        (box
-          :tooltip "using ${round(memory.percentage,0)}% ram"
-          (label :class "tray-circle" :text "")
-        ))
-      
-      (circular-progress
-        :value "${EWW_BATTERY["BAT1"].capacity}"
-        :class "circular-progress batbar"
+        (box :tooltip "using ${round(memory.percentage, 0)}% ram"
+          (label :class "tray-circle" :text "")))
+      (circular-progress :class "circular-progress batbar"
+        :value {battery.percentage}
         :style "color: ${battery.color};"
         :thickness {bar_circle_thickness}
-        (box
-          :tooltip "battery at ${EWW_BATTERY["BAT1"].capacity}%"
-          (label :class "tray-circle" :text "")
-        ))))
-)
+        (box :tooltip "battery at ${battery.percentage}% (${battery.status})"
+          (label :class "tray-circle" :text ""))))))

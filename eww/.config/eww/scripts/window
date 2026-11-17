@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Prints, at start and on every i3 window or workspace event, one JSON line with the class and
+# title of the focused window. Both are empty when the focused container is an empty workspace.
+# Usage: window
+set -euo pipefail
+
+print_focused () {
+  i3-msg -t get_tree | jq -c '
+    first(.. | objects | select(.focused == true))
+    | {class: (.window_properties.class // ""), title: (if .window_properties then .name else "" end)}'
+}
+
+print_focused
+i3-msg -t subscribe -m '["window", "workspace"]' | while read -r _; do
+  print_focused
+done

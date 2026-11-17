@@ -1,20 +1,22 @@
 .calendar-window {
   @include window;
-  border: 1px solid $border;
-  color: $fg;
+  color: $text;
   padding: 0.5em;
-  font-size: $font-base;
 }
 
 calendar {
   padding: 5px;
 
-  :selected {
-    color: $yellow;
+  // The selected day, which is today when the calendar opens.
+  &:selected {
+    background-color: $cyan;
+    color: $bar-bg;
+    font-weight: bold;
+    border-radius: 6px;
   }
 
   .header {
-    color: $subtext1;
+    color: $subtext-bright;
   }
 
   .highlight {
@@ -26,7 +28,7 @@ calendar {
     color: $sapphire;
   }
 
-  :indeterminate {
-    color: $overlay0;
+  &:indeterminate {
+    color: $overlay;
   }
 }

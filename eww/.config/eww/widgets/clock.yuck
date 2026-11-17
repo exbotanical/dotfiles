@@ -1,27 +1,16 @@
 (defvar date-reveal false)
 
+; Hovering reveals the date, which opens the calendar on this bar's monitor.
 (defwidget clock-widget [screen]
-  (eventbox
+  (eventbox :class "clock"
     :onhover "${EWW_CMD} update date-reveal=true"
     :onhoverlost "${EWW_CMD} update date-reveal=false"
     (overlay
-      (box
-        :space-evenly false
-        :class "time"
-        (label
-          :text {time.hour}
-        :class "hour")
-        (label
-          :class "time-delimiter"
-        :text "")
-        (label
-          :text {time.minute}
-        :class "minute")
-)
-      (revealer
-        :reveal date-reveal
-        (button
-          :class "date"
+      (box :class "time" :space-evenly false
+        (label :class "hour" :text {time.hour})
+        (label :class "time-delimiter" :text "")
+        (label :class "minute" :text {time.minute}))
+      (revealer :reveal date-reveal
+        (button :class "date"
           :onclick "${EWW_CMD} open --toggle calendar-window --screen ${screen}"
-        {time.date})
-))))
+          {time.date})))))

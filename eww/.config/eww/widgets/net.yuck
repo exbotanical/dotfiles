@@ -1,6 +1,11 @@
+; Wi-Fi signal or Ethernet, and a VPN shield while a VPN is connected.
 (defwidget net-widget []
-  (button
-    :class "module ${net.class}"
-    :onclick "nm-applet 2>&1 > /dev/null &"
-    :tooltip {net.essid}
-  {net.icon}))
+  (box :space-evenly false
+    (button :class "module ${net.class}"
+      :onclick "nm-applet > /dev/null 2>&1 &"
+      :tooltip {net.name}
+      {net.icon})
+    (label :class "module active"
+      :visible {net.vpn}
+      :tooltip "VPN: ${net.vpn_name}"
+      :text {net.vpn_icon})))

@@ -1,142 +1,88 @@
 #!/usr/bin/env bash
-# TODO: cronjob to clean
-# TODO: bandcamp, spotify, rumble, cineworld, netflix
-COVERS_DIR="${XDG_CACHE_DIR:-$HOME/.cache}/eww_covers"
+# Prints the current media track as one JSON line on every playerctl metadata change. Covers given
+# as https URLs are downloaded once into COVERS_DIR; the two dominant colors of each new cover
+# theme the music window.
+# Usage: music
+set -euo pipefail
 
-get_status () {
-  local s=$1
-  if [[ "$s" == 'Playing' ]]; then
-    echo ''
-  else
-    echo ''
+readonly COVERS_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/eww_covers"
+readonly SEP=$'\x1f'
+readonly FORMAT="{{title}}${SEP}{{artist}}${SEP}{{status}}${SEP}{{position}}${SEP}{{mpris:length}}${SEP}{{mpris:artUrl}}${SEP}{{xesam:url}}"
+readonly DEFAULT_COLORS=('#1e1e2e' '#28283d')
+
+# Prints microseconds $1 plus $2 seconds as MM:SS, or nothing when $1 is empty.
+mmss () {
+  [[ -n $1 ]] || return 0
+  date -u -d@"$(($1 / 1000000 + ${2:-0}))" +%M:%S
+}
+
+# Prints the local path of cover $1: a downloaded copy for an https URL, otherwise $1 unchanged.
+# YouTube serves WebP covers, which are converted to JPEG for GTK.
+cover_path () {
+  local url=$1
+  [[ $url == https* ]] || {
+    printf '%s' "$url"
+    return
+  }
+
+  local file
+  file="$COVERS_DIR/$(basename "$url")"
+  if [[ ! -e $file ]]; then
+    wget -q -O "$file" "$url" || {
+      rm -f "$file"
+      return 0
+    }
+    [[ $(identify -format '%m' "$file" 2> /dev/null) == WEBP ]] && convert "webp:$file" "jpeg:$file"
   fi
+  printf '%s' "$file"
 }
 
-get_length_sec () {
-  local len=$1
-  if [[ -z "$len" ]]; then
-    echo 0
-  else
-    bc <<< "$len / 1000000"
-  fi
-}
-
-get_length_time () {
-  local len=$1
-  if [[ -n "$len" ]]; then
-    len=$(bc <<< "$len / 1000000 + 1")
-    date -d@"$len" +%M:%S
-  else
-    echo ''
-  fi
-}
-
-get_position () {
-  local pos=$1
-  local len=$2
-  if [[ -n "$pos" ]]; then
-    bc -l <<< "$pos / $len * 100"
-  else
-    echo 0
-  fi
-}
-
-get_position_time () {
-  local pos=$1
-  local len=$2
-  if [[ -n "$pos" ]]; then
-    date -d@"$(bc <<< "$pos / 1000000")" +%M:%S
-  else
-    echo ''
-  fi
-}
-
-is_webp () {
-  local path="$1"
-  [[ "$(identify "$path" | awk '{print $2}')" == "WEBP" ]]
-}
-
-get_cover () {
-  local img_path="$COVERS_DIR/cover_art.png"
-  local cover_url="$1"
-
-  # If the cover image is a link, check if we need to download and process it
-  if [[ "$cover_url" = https* ]]; then
-    local file_path="$COVERS_DIR/$(basename "$cover_url")"
-
-    # Download and process the cover image
-    if [[ ! -e "$file_path" ]]; then
-      wget -N "$cover_url" -o /dev/null
-
-      # Handle YouTube and other media players that use webp images
-      is_webp "$file_path" && {
-        convert "$file_path" "$file_path.jpg" > /dev/null
-        # Just replace the downloaded file with a converted version
-        mv "$file_path.jpg" "$file_path"
-      }
-    fi
-
-    # symlink it to the default cover image path
-    # so we can cache the real file for later
-    rm "$img_path" 2> /dev/null
-    ln -s "$file_path" "$img_path"
-
-    echo "$img_path"
-  # No cover image :(
-  elif [[ "$cover_url" == '' ]]; then
-    echo ''
-  # Return it as-is
-  else
-    echo "$cover_url"
-  fi
-}
-
-sanitize () {
-  echo "$1" | sed 's/"/\"/g'
-}
-
-truncate () {
-  local str="$1"
-  local max_len="$2"
-  echo $str | awk -v len=$max_len '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
+# Prints the two dominant colors of image $1, one per line.
+cover_colors () {
+  convert "$1" -colors 2 -format '%c' histogram:info: | awk '{ print $3 }'
 }
 
 main () {
   mkdir -p "$COVERS_DIR"
-  cd "$COVERS_DIR" || exit
+  local prev_id='' colors=("${DEFAULT_COLORS[@]}")
 
-  local prev_id=''
-
-  playerctl -F metadata -f '{{title}}\{{artist}}\{{status}}\{{position}}\{{mpris:length}}\{{mpris:artUrl}}\{{xesam:url}}' 2> /dev/null | while IFS="$(printf '\')" read -r title artist status position len cover id; do
-    # For YouTube, which sometimes emits events w/out `artUrl` or `url`
-    cover_path=$(get_cover "$cover")
-    if [[ "$id" != '' ]] && [[ "$id" != "$prev_id" ]]; then
-      if [[ "$cover_path" != '' ]]; then
-        cols=$(convert "$cover_path" -colors 2 -format "%c" histogram:info: | awk '{print $3}')
-        color_1=$(echo "$cols" | head -1)
-        color_2=$(echo "$cols" | tail -1)
+  playerctl -F metadata -f "$FORMAT" 2> /dev/null | while IFS="$SEP" read -r title artist status position length cover id; do
+    cover=$(cover_path "$cover")
+    # Some players emit events without artUrl or url, so colors change only with the track.
+    if [[ -n $id && $id != "$prev_id" ]]; then
+      if [[ -n $cover ]]; then
+        mapfile -t colors < <(cover_colors "$cover")
       else
-        color_1="#1e1e2e"
-        color_2="#28283d"
+        colors=("${DEFAULT_COLORS[@]}")
       fi
+      prev_id=$id
     fi
 
-    title=$(sanitize "$title")
-    jaq --null-input -r -c \
-      --arg artist "$(sanitize "$artist")" \
-      --arg display_title "$(truncate "$title" 40)" \
+    jq -nc \
       --arg title "$title" \
-      --arg status "$(get_status "$status")" \
-      --arg pos "$(get_position "$position" "$len")" \
-      --arg pos_time "$(get_position_time "$position" "$len")" \
-      --arg length "$(get_length_time "$len")" \
-      --arg cover "$cover_path" \
-      --arg color1 "$color_1" \
-      --arg color2 "$color_2" \
-      '{"artist": $artist, "title": $title, "display_title": $display_title, "status": $status, "position": $pos, "position_time": $pos_time, "length": $length, "cover": $cover, "color1": $color1, "color2": $color2}'
-
-    prev_id=$id
+      --arg artist "$artist" \
+      --arg playing "$status" \
+      --arg position "$position" \
+      --arg length "$length" \
+      --arg position_time "$(mmss "$position")" \
+      --arg length_time "$(mmss "$length" 1)" \
+      --arg cover "$cover" \
+      --arg color1 "${colors[0]}" \
+      --arg color2 "${colors[1]:-${colors[0]}}" '
+      {
+        title: $title,
+        artist: $artist,
+        playing: ($playing == "Playing"),
+        status: (if $playing == "Playing" then "" else "" end),
+        position: (if $position != "" and $length != "" and ($length | tonumber) > 0
+                   then ($position | tonumber) / ($length | tonumber) * 100 else 0 end),
+        position_time: $position_time,
+        length: $length_time,
+        cover: $cover,
+        color1: $color1,
+        color2: $color2
+      }'
   done
 }
 
-main "$*"
+main

@@ -1,93 +1,90 @@
 #!/usr/bin/env bash
+# Prints the audio state as one JSON line at start and on every PulseAudio/PipeWire change, or
+# changes the volume of the default sink or source.
+# Usage: volume
+#        volume mute SINK|SOURCE
+#        volume set_vol SINK|SOURCE <1-100>
+set -euo pipefail
 
-declare VOL_ICONS=('󰸈' '󰖀' '󰕾')
-SOURCE='SOURCE'
-SINK='SINK'
+# Volume icons for speakers, lowest level first.
+readonly SPEAKER_ICONS=('󰕿' '󰖀' '󰕾')
+readonly SPEAKER_MUTED_ICON='󰸈'
+readonly HEADPHONES_ICON='󰋋'
+readonly HEADPHONES_MUTED_ICON='󰟎'
+readonly BLUETOOTH_ICON='󰥰'
+readonly MIC_ICON='󰍬'
 
-get_vol () {
-  local device="$1"
-  local vol="$(wpctl get-volume @DEFAULT_AUDIO_$device@ | awk '{print int($2*100)}')"
-
-  if (("$vol" > 100)); then
-    echo 100
-  else
-    echo "$vol"
-  fi
+die () {
+  printf 'volume: %s\n' "$*" >&2
+  exit 1
 }
 
-is_muted () {
-  local device="$1"
-  wpctl get-volume "@DEFAULT_AUDIO_$device"@ | rg -i muted
-  echo $?
+# Prints the number of streams that record from a microphone. Streams from sink monitors (screen
+# recorders capturing desktop audio) and pavucontrol's level meters do not count.
+recording_count () {
+  jq -n \
+    --argjson sources "$(pactl -f json list sources)" \
+    --argjson outputs "$(pactl -f json list source-outputs)" '
+    ($sources | map(select(.name | endswith(".monitor") | not) | .index)) as $mics
+    | $outputs
+    | map(select((.source as $s | $mics | index($s)) and .properties["media.name"] != "Peak detect"))
+    | length'
 }
 
-set_vol () {
-  local device="$1"
-  local volume="$2"
-  wpctl set-volume "@DEFAULT_AUDIO_$device"@ "$(awk -v n="$volume" 'BEGIN{print (n / 100)}')"
+print_state () {
+  pactl -f json list sinks | jq -c \
+    --arg sink "$(pactl get-default-sink)" \
+    --argjson recording "$(recording_count)" \
+    --argjson speaker_icons "$(printf '%s\n' "${SPEAKER_ICONS[@]}" | jq -R . | jq -sc .)" \
+    --arg speaker_muted "$SPEAKER_MUTED_ICON" \
+    --arg headphones "$HEADPHONES_ICON" \
+    --arg headphones_muted "$HEADPHONES_MUTED_ICON" \
+    --arg bluetooth "$BLUETOOTH_ICON" \
+    --arg mic "$MIC_ICON" '
+    (map(select(.name == $sink)) | first) as $s
+    | ([$s.volume[].value_percent | rtrimstr("%") | tonumber] | max | if . > 100 then 100 else . end) as $percent
+    | (if ($s.name | startswith("bluez_output")) then "bluetooth"
+       elif (($s.active_port // "") | test("headphone")) then "headphones"
+       else "speakers" end) as $output
+    | {
+        percent: $percent,
+        muted: $s.mute,
+        output: $output,
+        device: $s.description,
+        icon: (if $output == "bluetooth" then $bluetooth
+               elif $output == "headphones" then (if $s.mute then $headphones_muted else $headphones end)
+               elif $s.mute then $speaker_muted
+               else $speaker_icons[[($percent / 34 | floor), 2] | min] end),
+        mic_in_use: ($recording > 0),
+        mic_icon: $mic
+      }'
 }
 
-set_mute () {
-  local device="$1"
-  wpctl set-mute "@DEFAULT_AUDIO_$device"@ toggle
-}
-
-is_invalid_src () {
-  local src="$1"
-  [[ "$src" != "$SOURCE" ]] && [[ "$src" != "$SINK" ]] && {
-    echo 1
-  }
-}
-
-panic () {
-  local ec=$1
-  shift
-
-  echo "[-] ERROR ($(current_time)): $*" >&2
-  exit $ec
+require_device () {
+  [[ $1 == SINK || $1 == SOURCE ]] || die "expected SINK or SOURCE, got '$1'"
 }
 
 main () {
-  local command="$1"
-  local src="$2"
-  local volume="$3"
-
-  if [[ "$command" == "mute" ]]; then
-    if [[ $(is_invalid_src "$src") ]]; then
-      panic 1 "Can only mute $SINK or $SOURCE"
-    fi
-
-    set_mute "$src"
-  elif [[ "$command" = "set_vol" ]]; then
-    if [[ $(is_invalid_src "$src") ]]; then
-      panic 1 "Can only set volume for $SINK or $SOURCE"
-    elif (("$volume" < 1)) || (("$volume" > 100)); then
-      panic 1 "Volume must be between 1 and 100"
-    fi
-
-    set_vol "$src" "$volume"
-  else
-    local lvl=$(awk -v n="$(get_vol "$SINK")" 'BEGIN{print int(n/34)}')
-
-    if [[ "$(is_muted "$SINK")" == 1 ]]; then
-      icon="${VOL_ICONS[$lvl]}"
-    else
-      icon=${VOL_ICONS[0]}
-    fi
-    echo '{ "icon": "'"$icon"'", "percent": "'"$(get_vol "$SINK")"'", "microphone": "'"$(get_vol "$SOURCE")"'" }'
-
-    pactl subscribe | rg --line-buffered "change" | while read -r _; do
-      lvl=$(awk -v n="$(get_vol "$SINK")" 'BEGIN{print int(n/34)}')
-
-      if [[ "$(is_muted "$SINK")" == 1 ]]; then
-        icon="${VOL_ICONS[$lvl]}"
-      else
-        icon=${VOL_ICONS[0]}
-      fi
-
-      echo '{"icon":"'"$icon"'","percent":"'"$(get_vol "$SINK")"'","microphone":"'"$(get_vol "$SOURCE")"'"}'
-    done
-  fi
+  case "${1:-}" in
+    mute)
+      require_device "${2:-}"
+      wpctl set-mute "@DEFAULT_AUDIO_$2@" toggle
+      ;;
+    set_vol)
+      require_device "${2:-}"
+      ((${3:-0} >= 1 && ${3:-0} <= 100)) || die 'volume must be between 1 and 100'
+      wpctl set-volume "@DEFAULT_AUDIO_$2@" "$3%"
+      ;;
+    '')
+      print_state
+      pactl subscribe | grep --line-buffered -E "on (sink|source|source-output|server|card) " | while read -r _; do
+        print_state
+      done
+      ;;
+    *)
+      die "unknown command '$1'"
+      ;;
+  esac
 }
 
 main "$@"

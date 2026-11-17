@@ -1,29 +1,29 @@
 .module {
   margin: 0 8px;
-  padding: 4px 12px;
-  font-size: $font-base;
+  padding: 4px 6px;
   min-height: 26px;
 
   label {
-    // Space between tray icons
-    padding: 2px;
-    // Tray circle size
-    min-width: 15px;
-    min-height: 15px;
+    padding: 2px 4px;
+    min-width: 20px;
+    min-height: 20px;
   }
 
   &.inactive {
-    color: $overlay2;
+    color: $muted;
   }
 
   &.disabled {
-    color: $flamingo;
+    color: $blush;
   }
 }
 
-.module-docker {
-  // Space between tray circles and other icons
-  margin-right: 30px;
+.mic label {
+  color: $orange;
+}
+
+.docker {
+  margin-right: 20px;
 }
 
 .right-section {

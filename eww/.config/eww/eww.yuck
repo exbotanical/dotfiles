@@ -1,61 +1,51 @@
 (include "./variables.yuck")
+
 (include "./widgets/bluetooth.yuck")
 (include "./widgets/brightness.yuck")
 (include "./widgets/clock.yuck")
+(include "./widgets/control-panel-tray.yuck")
 (include "./widgets/docker.yuck")
 (include "./widgets/music.yuck")
 (include "./widgets/net.yuck")
-(include "./widgets/control-panel-tray.yuck")
 (include "./widgets/volume.yuck")
 (include "./widgets/workspaces.yuck")
 
 (include "./windows/calendar.yuck")
 (include "./windows/control-panel.yuck")
 (include "./windows/music.yuck")
-; (include "./windows/osd.yuck")
 
 (defwidget left-widget [screen]
-  (box
-    :space-evenly false
-    :halign "start"
+  (box :space-evenly false :halign "start"
     (workspaces-widget :screen screen)))
 
+; The center shows the playing track, and the focused window's title while nothing plays.
+(defwidget center-widget [screen]
+  (box :space-evenly false :halign "center"
+    (box :visible {music.playing}
+      (music-widget :screen screen))
+    (label :class "window-title" :visible {!music.playing} :limit-width 80
+      :tooltip {window.class}
+      :text {window.title})))
+
 (defwidget right-widget [screen]
-  (box
-    :space-evenly false
-    :halign "end"
-    :class "right-section"
+  (box :class "right-section" :space-evenly false :halign "end"
     (systray :class "system-tray" :space-evenly false :halign "start" :spacing 34)
     (brightness-widget)
     (volume-widget)
+    (mic-widget)
     (bluetooth-widget)
     (net-widget)
     (docker-widget)
     (control-panel-tray-widget :screen screen)
-    (clock-widget :screen screen)
-  ))
-
-(defwidget center-widget [screen]
-  (box
-    :space-evenly false
-    :halign "center"
-    (music-widget :screen screen)))
-
-(defwidget bar-widget [screen]
-  (centerbox
-    :class "bar"
-    (left-widget :screen screen)
-    (center-widget :screen screen)
-    (right-widget :screen screen)))
+    (clock-widget :screen screen)))
 
 (defwindow bar [screen]
   :monitor screen
   :windowtype "dock"
-  :geometry (geometry :x "0%"
-    :y "0%"
-    :width "100%"
-    :height "30px"
-  :anchor "top center")
   :stacking "fg"
+  :geometry (geometry :x "0%" :y "0%" :width "100%" :height "30px" :anchor "top center")
   :reserve (struts :distance "30px" :side "top")
-  (bar-widget :screen screen))
+  (centerbox :class "bar"
+    (left-widget :screen screen)
+    (center-widget :screen screen)
+    (right-widget :screen screen)))

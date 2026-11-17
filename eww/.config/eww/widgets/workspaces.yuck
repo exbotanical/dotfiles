@@ -1,14 +1,9 @@
-(deflisten workspace "scripts/workspaces")
-
 (defwidget workspaces-widget [screen]
   (eventbox
-    :onscroll "echo {} | sed -e \"s/up/-1/g\" -e \"s/down/+1/g\" | xargs i3-msg workspace"
-    (box
-      :class "workspaces"
-      :spacing 5
-      (for ws in {workspace[screen]}
-        (button
-          :onclick "i3-msg workspace ${ws.number}"
-          :style "color: ${ws.color};"
+    :onscroll "echo {} | sed -e 's/up/prev_on_output/' -e 's/down/next_on_output/' | xargs i3-msg -q workspace"
+    (box :class "workspaces" :spacing 5
+      (for ws in {workspaces?.[screen] ?: []}
+        (button :onclick "i3-msg -q workspace number ${ws.number}"
+          :style "color: ${ws.color}"
           :tooltip {ws.tooltip}
-        "●")))))
+          "●")))))

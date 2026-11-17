@@ -1,108 +1,39 @@
 #!/usr/bin/env bash
+# Prints, at start and on every i3 workspace or output event, one JSON line that maps each active
+# output to the dots of workspaces 1-10 on its bar. A workspace that does not exist or is on another
+# output gets the EMPTY color there.
+# Usage: workspaces
+set -euo pipefail
 
-# TODO: config from file?
-declare -a COLORS=(
-  '#01d9fa'
-  '#f5db69'
-  '#2d9abe'
-  '#2bc7e3'
-  '#a8ff4b'
-  '#19e4e0'
-  '#17dec9'
-  '#14d8b3'
-  '#11d29d'
-  '#0fcc87'
-)
-EMPTY='#313244'
-FOCUSED='#ffa7f6'
+# The color of workspace N is COLORS[N % 10], so workspace 10 uses the first entry.
+readonly COLORS=('#01d9fa' '#f5db69' '#2d9abe' '#2bc7e3' '#a8ff4b' '#19e4e0' '#17dec9' '#14d8b3' '#11d29d' '#0fcc87')
+readonly EMPTY='#313244'
+readonly FOCUSED='#ffa7f6'
 
-# get initial focused workspace
-focusedws=$(i3-msg -t get_workspaces | gojq -r '.[] | select(.focused==true) | .name')
-
-declare -A occupied_workspaces=([1]=0 [2]=0 [3]=0 [4]=0 [5]=0 [6]=0 [7]=0 [8]=0 [9]=0 [10]=0)
-declare -A workspaces # Map<WsNum, Monitor>
-
-# set color for each workspace on the bar of output $2; a workspace on another output is empty there
-status () {
-  local ws_id="$1" output="$2"
-  if (("${occupied_workspaces[$ws_id]}" == 1)) && [[ ${workspaces[$ws_id]:-} == "$output" ]]; then
-    if (("$focusedws" == "$ws_id")); then
-      echo -n "$FOCUSED"
-    else
-      # Workspaces 1-9 use indices 1-9 and workspace 10 uses index 0.
-      echo -n "${COLORS[ws_id % 10]}"
-    fi
-  else
-    echo -n "$EMPTY"
-  fi
+print_workspaces () {
+  jq -nc \
+    --argjson workspaces "$(i3-msg -t get_workspaces)" \
+    --argjson outputs "$(i3-msg -t get_outputs)" \
+    --argjson colors "$(printf '%s\n' "${COLORS[@]}" | jq -R . | jq -sc .)" \
+    --arg empty "$EMPTY" \
+    --arg focused "$FOCUSED" '
+    $outputs
+    | map(select(.active) | .name as $output | {
+        key: $output,
+        value: [range(1; 11) as $n
+          | ($workspaces | map(select(.num == $n)) | first) as $ws
+          | {
+              number: $n,
+              tooltip: ($ws.name // ""),
+              color: (if $ws == null or $ws.output != $output then $empty
+                      elif $ws.focused then $focused
+                      else $colors[$n % 10] end)
+            }]
+      })
+    | from_entries'
 }
 
-# handle workspace create/destroy
-workspace_event () {
-  occupied_workspaces[$1]=$2
-  while read -r k v; do
-    workspaces[$k]="$v"
-  done < <(i3-msg -rt get_workspaces | gojq -r '.[]|"\(.name) \(.output)"')
-}
-
-# get all apps titles in a workspace
-applist () {
-  local ws="$1"
-
-  apps=$(i3-msg -t get_workspaces | gojq -jr '.[] | select(.num == '"$ws"') | .name + "\\n"')
-  echo -En ${apps%"\n"}
-}
-
-# generate the json for eww: an object that maps each active output to its bar's workspace list
-generate () {
-  local output separator=''
-  echo -n '{'
-
-  while read -r output; do
-    echo -n "$separator"'"'"$output"'": ['
-    for i in {1..10}; do
-      echo -n ''$([ $i -eq 1 ] || echo ,) '{ "number": "'"$i"'", "color": "'$(status "$i" "$output")'", "tooltip": "'$(applist "$i")'" }'
-    done
-    echo -n ']'
-    separator=', '
-  done < <(i3-msg -t get_outputs | gojq -r '.[] | select(.active) | .name')
-
-  echo '}'
-}
-
-# setup
-
-# add workspaces
-while read -r k v; do
-  workspaces[$k]="$v"
-done < <(i3-msg -rt get_workspaces | gojq -r '.[]|"\(.name) \(.output)"')
-
-# check occupied workspaces
-for num in "${!workspaces[@]}"; do
-  occupied_workspaces[$num]=1
-done
-# generate initial widget
-generate
-
-# main loop
-i3-msg -t subscribe '["workspace"]' --monitor | while read -r line; do
-  change=$(echo "$line" | gojq -r '(.change)')
-  ws_id=$(echo "$line" | gojq -r '(.current) | (.name)')
-
-  case $change in
-    'init' | 'move')
-      workspace_event "$ws_id" 1
-      ;;
-
-    'focus')
-      focusedws="$ws_id"
-      ;;
-
-    'empty')
-      workspace_event "$ws_id" 0
-      ;;
-
-  esac
-
-  generate
+print_workspaces
+i3-msg -t subscribe -m '["workspace", "output"]' | while read -r _; do
+  print_workspaces
 done

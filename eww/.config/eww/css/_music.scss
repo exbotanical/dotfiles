@@ -9,9 +9,7 @@
 
 .music-window {
   @include window;
-  background-color: $bg;
-  border: 1px solid $border;
-  color: $fg;
+  color: $text;
 }
 
 .music-cover-art {
@@ -33,31 +31,27 @@
   font-size: $font-sm;
 }
 
-.music-artist {
-  color: $subtext1;
+.music-artist,
+.music-time {
+  color: $subtext-bright;
 }
 
 .music-button label {
-  color: $subtext1;
+  color: $subtext-bright;
   font-size: $font-xl;
 }
 
 .music-time {
-  color: $subtext1;
   margin: 0 1rem;
 }
 
 .music-bar scale {
   highlight {
-    background-image: linear-gradient(to right, $teal, $sky);
+    background-image: linear-gradient(to right, $teal, $cyan);
     border-radius: 24px;
   }
 
   trough {
-    background-color: $bg1;
-    border-radius: 24px;
-    margin-top: 0;
-    min-height: 10px;
     min-width: 475px;
   }
 }

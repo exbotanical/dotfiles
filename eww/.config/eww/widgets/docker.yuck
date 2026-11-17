@@ -1,6 +1,9 @@
+; Hidden while the Docker daemon is stopped. Shows the running container count when it is above 0.
 (defwidget docker-widget []
-  (button
-    :class "module-docker module ${docker.class}"
-    :onclick "alacritty -e bash -c \"docker ps -a && exec bash\" &"
-    :tooltip "${docker.text}"
-  {docker.icon}))
+  (button :class "module docker ${docker.class}"
+    :visible {docker.active}
+    :onclick "alacritty -e bash -c 'docker ps -a && exec bash' &"
+    :tooltip {docker.text}
+    (box :space-evenly false
+      (label :text {docker.icon})
+      (label :visible {docker.running > 0} :text {docker.running}))))
