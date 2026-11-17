@@ -1,4 +1,5 @@
 init::export_builtin PAGER less
+init::export LESS '-R'
 
 init::append_path $ExecDir
 
