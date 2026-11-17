@@ -101,10 +101,19 @@
 
 ### Application-Specific Styling with Dracula Colors ###
 [volume]
-    appname = "volume*"
+    appname = "volume"
     set_stack_tag = "volume"
     timeout = 2
-    format = "<b>🔊 Volume</b>\n%b"
+    format = "<b>🔊 %s</b>\n%b"
+
+[volume_muted]
+    appname = "volume"
+    summary = "*Muted*"
+    set_stack_tag = "volume"
+    timeout = 2
+    format = "<b>🔇 %s</b>\n%b"
+    background = "#ff5555"
+    foreground = "#f8f8f2"
 
 [brightness]
     appname = "*brightness*"
