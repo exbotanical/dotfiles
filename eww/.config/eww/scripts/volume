@@ -90,4 +90,4 @@ main () {
   fi
 }
 
-main "$*"
+main "$@"
