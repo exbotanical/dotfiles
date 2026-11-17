@@ -58,7 +58,7 @@ color () {
       local n_seconds=$(date +%S)
       # Only notify once per LOW_BAT_NOTIFY_INTERVAL seconds
       (("$n_seconds" % "$LOW_BAT_NOTIFY_INTERVAL" == 0)) && {
-        notify-send "Battery low: $CAPACITY%"
+        notify-send -u critical -a battery 'Battery low' "$CAPACITY% remaining"
       }
     }
     if (("$CAPACITY" <= 20)); then

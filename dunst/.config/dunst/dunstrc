@@ -114,7 +114,7 @@
 
 [battery]
     appname = "*battery*"
-    timeout = 8
+    set_stack_tag = "battery"
     format = "<b>🔋 Battery</b>\n%b"
 
 [network]
