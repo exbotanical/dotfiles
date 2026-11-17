@@ -29,7 +29,8 @@ status () {
     if (("$focusedws" == "$ws_id")); then
       echo -n "$FOCUSED"
     else
-      echo -n "${COLORS[$ws_id]}"
+      # Workspaces 1-9 use indices 1-9 and workspace 10 uses index 0.
+      echo -n "${COLORS[ws_id % 10]}"
     fi
   else
     echo -n "$EMPTY"
