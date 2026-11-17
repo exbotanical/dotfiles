@@ -24,15 +24,15 @@ main () {
       if [[ "$powered" == 'yes' ]]; then
         if [[ "$status" != 'Missing device address argument'* ]]; then
           text="$name"
-          icon=''
+          icon='󰂰'
           class='active bt-connected'
         else
-          icon=''
+          icon='󰂯'
           text='Disconnected'
           class='inactive'
         fi
       else
-        icon=''
+        icon='󰂲'
         text='Bluetooth off'
         class='disabled'
       fi

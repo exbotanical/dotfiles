@@ -4,9 +4,9 @@ INTERVAL=3
 
 icon () {
   if [[ "$1" == 'no' ]]; then
-    echo ''
+    echo '󰀞'
   else
-    echo ''
+    echo '󰀝'
   fi
 }
 

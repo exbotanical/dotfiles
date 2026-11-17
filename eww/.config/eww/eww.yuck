@@ -24,6 +24,8 @@
   (box
     :space-evenly false
     :halign "end"
+    :class "right-section"
+    (systray :class "system-tray" :space-evenly false :halign "start" :spacing 34)
     (brightness-widget)
     (volume-widget)
     (bluetooth-widget)
@@ -40,9 +42,8 @@
     (music-widget :screen screen)))
 
 (defwidget bar-widget [screen]
-  (systray
+  (centerbox
     :class "bar"
-    :space-evenly true
     (left-widget :screen screen)
     (center-widget :screen screen)
     (right-widget :screen screen)))
