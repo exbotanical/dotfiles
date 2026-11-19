@@ -12,7 +12,7 @@
 (deflisten music
   :initial '{"title": "", "artist": "", "playing": false, "status": "", "position": 0, "position_time": "", "length": "", "cover": "", "color1": "#1e1e2e", "color2": "#28283d"}'
   "scripts/music")
-(deflisten net :initial '{"icon": "", "name": "", "class": "", "vpn": false, "vpn_name": "", "vpn_icon": ""}' "scripts/net")
+(deflisten net :initial '{"icon": "", "name": "", "detail": "", "class": "", "vpn": false, "vpn_name": "", "vpn_icon": ""}' "scripts/net")
 (deflisten volume
   :initial '{"percent": 0, "muted": false, "output": "", "device": "", "icon": "", "mic_in_use": false, "mic_icon": ""}'
   "scripts/volume")

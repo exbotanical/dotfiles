@@ -1,9 +1,9 @@
-; Wi-Fi signal or Ethernet, and a VPN shield while a VPN is connected.
+; The connection icon, with the network name on hover, and a VPN shield while a VPN is connected.
 (defwidget net-widget []
   (box :space-evenly false
     (button :class "module ${net.class}"
       :onclick "nm-applet > /dev/null 2>&1 &"
-      :tooltip {net.name}
+      :tooltip "${net.name}: ${net.detail}"
       {net.icon})
     (label :class "module active"
       :visible {net.vpn}

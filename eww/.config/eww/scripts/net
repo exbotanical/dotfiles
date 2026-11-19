@@ -10,6 +10,7 @@ readonly REFRESH=30
 readonly WIFI_ICONS=('󰤟' '󰤢' '󰤥' '󰤨')
 readonly DISCONNECTED_ICON='󰤮'
 readonly ETHERNET_ICON='󰈀'
+readonly HOTSPOT_ICON='󰠕'
 readonly VPN_ICON='󰦝'
 
 # Prints the last field of nmcli -t lines whose first fields match, unescaped. nmcli -t escapes ':'
@@ -42,34 +43,56 @@ vpn_name () {
   printf '%s' "$name"
 }
 
-wifi_signal () {
-  nmcli -t -f IN-USE,SIGNAL device wifi list --rescan no | awk -F: '$1 == "*" { print $2; exit }'
+connected_wifi_device () {
+  nmcli -t -f TYPE,STATE,DEVICE device | awk -F: '$1 == "wifi" && $2 ~ /^connected/ && !found++ { print $3 }'
+}
+
+# Prints SIGNAL:SSID of the access point in use, with the SSID unescaped.
+active_access_point () {
+  nmcli -t -f IN-USE,SIGNAL,SSID device wifi list --rescan no \
+    | awk '/^\*:/ && !found++ { sub(/^\*:/, ""); gsub(/\\:/, ":"); print }'
+}
+
+# NetworkManager reports "yes (guessed)" for a phone hotspot that announces itself as metered, and
+# "yes" for a profile set with connection.metered yes.
+is_metered () {
+  [[ $(nmcli -g GENERAL.METERED device show "$1") == yes* ]]
+}
+
+wifi_icon() {
+  local signal=$1 level
+  level=$(((${signal:-1} - 1) / 25))
+  printf '%s' "${WIFI_ICONS[level > 3 ? 3 : level]}"
 }
 
 print_state() {
-  local ethernet wifi vpn icon name class
+  local ethernet wifi_device vpn icon name detail class='active net-connected'
   ethernet=$(connected_device ethernet)
-  wifi=$(connected_device wifi)
+  wifi_device=$(connected_wifi_device)
   vpn=$(vpn_name)
-  class='active net-connected'
 
   if [[ -n $ethernet ]]; then
-    icon=$ETHERNET_ICON
-    name=$ethernet
-  elif [[ -n $wifi ]]; then
-    local signal level
-    signal=$(wifi_signal)
-    level=$(((${signal:-1} - 1) / 25))
-    icon=${WIFI_ICONS[level > 3 ? 3 : level]}
-    name=$wifi
+    icon=$ETHERNET_ICON name='Ethernet' detail=$ethernet
+  elif [[ -n $wifi_device ]]; then
+    local access_point signal
+    access_point=$(active_access_point)
+    signal=${access_point%%:*}
+    name=${access_point#*:}
+    name=${name:-Wi-Fi}
+    detail="Wi-Fi, signal ${signal:-unknown}%"
+    if is_metered "$wifi_device"; then
+      icon=$HOTSPOT_ICON detail="Hotspot, signal ${signal:-unknown}%"
+    else
+      icon=$(wifi_icon "$signal")
+    fi
   else
-    icon=$DISCONNECTED_ICON
-    name='Disconnected'
-    class='inactive'
+    icon=$DISCONNECTED_ICON name='Disconnected' detail='No connection' class='inactive'
   fi
 
-  jq -nc --arg icon "$icon" --arg name "$name" --arg class "$class" --arg vpn "$vpn" --arg vpn_icon "$VPN_ICON" \
-    '{icon: $icon, name: $name, class: $class, vpn: ($vpn != ""), vpn_name: $vpn, vpn_icon: $vpn_icon}'
+  jq -nc --arg icon "$icon" --arg name "$name" --arg detail "$detail" --arg class "$class" \
+    --arg vpn "$vpn" --arg vpn_icon "$VPN_ICON" \
+    '{icon: $icon, name: $name, detail: $detail, class: $class, vpn: ($vpn != ""), vpn_name: $vpn,
+      vpn_icon: $vpn_icon}'
 }
 
 main() {
@@ -78,11 +101,14 @@ main() {
       rfkill toggle wlan
       ;;
     '')
-      print_state
+      # print_state runs with errexit ignored in a || list. An nmcli query that fails while
+      # NetworkManager changes state, such as on resume, then prints an empty field for one line
+      # instead of ending the listener and leaving the bar on its last state.
+      print_state || true
       nmcli monitor | while true; do
         # read times out after REFRESH seconds (status > 128) and ends the loop at EOF (status 1).
         read -r -t "$REFRESH" _ || (($? > 128)) || break
-        print_state
+        print_state || true
       done
       ;;
     *)
