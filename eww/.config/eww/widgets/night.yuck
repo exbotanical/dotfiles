@@ -1,0 +1,6 @@
+; A moon while the screen is warm. Clicking runs `night toggle`.
+(defwidget night-widget []
+  (button :class "module ${night.class}"
+    :onclick "night toggle &"
+    :tooltip {night.text}
+    {night.icon}))
