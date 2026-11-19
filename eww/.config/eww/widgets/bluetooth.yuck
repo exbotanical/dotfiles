@@ -1,5 +1,5 @@
 (defwidget bluetooth-widget []
   (button :class "module ${bluetooth.class}"
-    :onclick "blueman-manager &"
+    :onclick "rofi-bluetooth &"
     :tooltip "${bluetooth.text} ${bluetooth.battery}"
     {bluetooth.icon}))

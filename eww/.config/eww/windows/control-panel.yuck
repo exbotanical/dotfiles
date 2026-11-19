@@ -38,7 +38,7 @@
             :class "separator"
           :text "│")
           (button
-            :onclick "${EWW_CMD} close control-panel-window && nm-connection-editor &"
+            :onclick "${EWW_CMD} close control-panel-window && networkmanager_dmenu &"
           "󰒓"))
         (label
           :text {net.name}
@@ -60,7 +60,7 @@
             :class "separator"
           :text "│")
           (button
-            :onclick "${EWW_CMD} close control-panel-window && blueman-manager &"
+            :onclick "${EWW_CMD} close control-panel-window && rofi-bluetooth &"
           "󰒓"))
         (label
           :text {bluetooth.text}

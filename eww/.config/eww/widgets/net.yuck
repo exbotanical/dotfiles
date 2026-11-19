@@ -2,7 +2,7 @@
 (defwidget net-widget []
   (box :space-evenly false
     (button :class "module ${net.class}"
-      :onclick "nm-applet > /dev/null 2>&1 &"
+      :onclick "networkmanager_dmenu &"
       :tooltip "${net.name}: ${net.detail}"
       {net.icon})
     (label :class "module active"
