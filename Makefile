@@ -1,5 +1,5 @@
 ROOT_DIR     := root
-INCLUDE_DIRS := $(filter-out $(ROOT_DIR)/ node_modules/, $(wildcard */))
+INCLUDE_DIRS := $(filter-out $(ROOT_DIR)/ docs/ node_modules/, $(wildcard */))
 MAKE_DIRS    := $(patsubst %/,%,$(dir $(wildcard */Makefile .[!.]*/Makefile)))
 AL2_HOME     := /local/home/$$USER
 

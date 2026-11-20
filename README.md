@@ -27,6 +27,7 @@ As of ~~7/26/2024~~ 10/27/2026 my primary setup consists of:
 ## Packages and Makefiles
 
 - Each top-level directory constitutes a stow package except for those whose names are dot-prefixed; these contain dev tooling. We therefore filter these packages when running `stow`.
+- `docs/` is not stowed either; it houses maintenance guides, e.g. for [Wi-Fi](docs/wifi/).
 - The root Makefile runs repo-wide commands; for commands which have per-package counterparts, the target delegates to the corresponding target on each underlying package-level Makefile.
 - Viz., a package that requires setup or has tests maintains its own subsidiarys `Makefile` with these targets e.g.
   - `all` - always the first and therefore default target. `make install` runs in every package prior to stowing. It is empty when the package needs no setup.
