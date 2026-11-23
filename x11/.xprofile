@@ -49,9 +49,11 @@ xprofile::main () {
   done
 
   # eww's sizes are tuned at 96 DPI, so i3 starts its daemon with GDK_DPI_SCALE set to this
-  # ratio, which scales GTK text back to its 96 DPI size at any X_DPI.
+  # ratio, which scales GTK text back to its 96 DPI size at any X_DPI. GTK also multiplies text
+  # by GDK_SCALE, which the bash environment sets on some machines, so the ratio divides it out.
   declare -gx EWW_GDK_DPI_SCALE
-  EWW_GDK_DPI_SCALE=$(awk -v dpi="$X_DPI" 'BEGIN { printf "%.4f", 96 / dpi }')
+  EWW_GDK_DPI_SCALE=$(awk -v dpi="$X_DPI" -v scale="${GDK_SCALE:-1}" \
+    'BEGIN { printf "%.4f", 96 / dpi / scale }')
 
   # GDM merges ~/.Xresources with -nocpp, which skips its #include.
   # We therefore merge it again with cpp.
