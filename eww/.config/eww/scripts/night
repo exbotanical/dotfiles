@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
 # Prints the night mode state as one JSON line every INTERVAL seconds. Night mode is on when the
 # first output's gamma differs from 1.0:1.0:1.0, which covers both the redshift schedule and a
-# `night` override.
-# Usage: night
+# `night` override. `refresh` instead sets the eww variable once; the `night` command runs it
+# after each manual change, so the poll only follows the schedule, which night.timer applies
+# every 2 minutes.
+# Usage: night [refresh]
 set -euo pipefail
 
-readonly INTERVAL=3
+readonly INTERVAL=30
 readonly NEUTRAL_GAMMA='1.0:1.0:1.0'
 
-# awk reads to the end instead of exiting at the first match: xrandr --verbose prints about 30 KB,
+# --current reads the X server's cached configuration. Without it xrandr requests
+# RRGetScreenResources, which makes the server re-probe every output and read its EDID.
+# awk reads to the end instead of exiting at the first match: xrandr --verbose prints about 16 KB,
 # and an early exit would end xrandr with SIGPIPE.
 applied_gamma () {
-  xrandr --verbose | awk '/Gamma:/ && !found++ { print $2 }'
+  xrandr --current --verbose | awk '/Gamma:/ && !found++ { print $2 }'
 }
 
 print_state () {
@@ -23,15 +27,19 @@ print_state () {
 }
 
 main () {
-  if (($# > 0)); then
-    printf 'night: unknown command %s\n' "$1" >&2
-    exit 1
-  fi
-
-  while true; do
-    print_state
-    sleep "$INTERVAL"
-  done
+  case ${1:-} in
+    '')
+      while true; do
+        print_state
+        sleep "$INTERVAL"
+      done
+      ;;
+    refresh) eww update night="$(print_state)" ;;
+    *)
+      printf 'night: unknown command %s\n' "$1" >&2
+      exit 1
+      ;;
+  esac
 }
 
 main "$@"

@@ -95,6 +95,12 @@ notify () {
   dunstify -a "night" -u low -r 9992 -i "$icon" "Night mode: ${label}"
 }
 
+# Sets the eww bar's night indicator now rather than at the bar's next 30-second poll.
+# Noops if eww is not running.
+refresh_bar () {
+  "$HOME/.config/eww/scripts/night" refresh &> /dev/null || true
+}
+
 apply_mode () {
   local mode="$1"
   local sched_temp="$2"
@@ -143,6 +149,7 @@ warm () {
   write_override "$(current_period)" "warm:$temp"
   apply_values "$temp" "$NIGHT_BRIGHTNESS"
   notify on "${temp}K"
+  refresh_bar
 }
 
 on () {
@@ -153,12 +160,14 @@ off () {
   write_override "$(current_period)" off
   clear_gamma
   notify off
+  refresh_bar
 }
 
 auto () {
   clear_override
   apply
   notify on auto
+  refresh_bar
 }
 
 toggle () {
@@ -189,7 +198,7 @@ status () {
   printf 'scheduled: %sK @ %s brightness\n' "$temp" "$brightness"
   printf 'override:  %s\n' "${override:-none}"
   printf 'applied:   %s\n' \
-    "$(xrandr --verbose | awk '/Gamma:/ { gsub(/[ \t]+/, " "); print $2; exit }')"
+    "$(xrandr --current --verbose | awk '/Gamma:/ { gsub(/[ \t]+/, " "); print $2; exit }')"
 }
 
 case "${1:-}" in
