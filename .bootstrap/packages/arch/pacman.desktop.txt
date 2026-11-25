@@ -38,3 +38,12 @@ xsettingsd
 ttf-dejavu
 ttf-fira-code
 ttf-roboto
+
+# Soulseek: the client, the batch checks, and the VPN (autodidact miscellaneous/SOULSEEK_GUIDE.md)
+clamav
+flac
+ffmpeg
+gnome-keyring
+nicotine+
+proton-vpn-gtk-app
+spek
