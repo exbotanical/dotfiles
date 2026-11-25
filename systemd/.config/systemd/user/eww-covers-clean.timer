@@ -1,5 +1,5 @@
 [Unit]
-Description=eww - delete the cached album covers every Saturday at 20:00
+Description=eww - delete the cached album covers and cap the eww logs every Saturday at 20:00
 
 [Timer]
 OnCalendar=Sat 20:00

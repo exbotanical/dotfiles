@@ -1,11 +1,15 @@
 [Unit]
-Description=eww - delete the album covers the music widget cached
+Description=eww - delete the cached album covers and cap the eww logs
 # The music listener (eww/.config/eww/scripts/music) downloads each new cover once and keeps it.
-ConditionPathIsDirectory=%C/eww_covers
+# eww appends its log while the daemon runs and limits it to 100 MB only when a daemon starts;
+# an eww release before 0.6 kept its log in the cache directory itself and never limited it.
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/find %C/eww_covers -mindepth 1 -delete
+# A leading - lets the next command run when a directory does not exist.
+ExecStart=-/usr/bin/find %C/eww_covers -mindepth 1 -delete
+ExecStart=-/usr/bin/find %C/eww -maxdepth 1 -name eww_*.log -size +100M -exec truncate -s 0 {} +
+ExecStart=-/usr/bin/find %C -maxdepth 1 -name eww_*.log -delete
 
 # Hardening
 SystemCallArchitectures=native
