@@ -20,7 +20,7 @@ install: deps
 
 .PHONY: install_root
 install_root:
-	stow --verbose 3 --target=/ --restow $(ROOT_DIR)
+	./.dev/install-root.bash $(ROOT_DIR)
 
 .PHONY: install_al2
 install_al2:
