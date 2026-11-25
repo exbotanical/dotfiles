@@ -11,3 +11,4 @@ startpage/startpage.js
 node_modules
 bundle.js
 haskell/.ghc/ghci_history
+*.omp.json.bak

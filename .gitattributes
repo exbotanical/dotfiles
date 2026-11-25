@@ -1,0 +1,3 @@
+# pcmanfm writes its window geometry into this tracked file whenever a window closes; the
+# pcmanfm-geometry clean filter (.githooks/Makefile) drops those keys from what git stores.
+pcmanfm/.config/pcmanfm/default/pcmanfm.conf filter=pcmanfm-geometry

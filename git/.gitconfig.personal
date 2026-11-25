@@ -4,7 +4,8 @@ defaultBranch = master
 [user]
 email = exbotanical@protonmail.com
 name = Matthew Zito
-signingkey = 583F94EFB513DA5F
 
-[gpg]
-program = /usr/bin/gpg
+# Each host's signing key, untracked and not stowed. The include sits here, before .gitconfig's
+# work includes, so that work repos still sign with the work key.
+[include]
+path = ~/.gitconfig.personal.local

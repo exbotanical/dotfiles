@@ -142,8 +142,7 @@
     format = "<b>🎵 Music</b>\n%b"
 
 [screenshot]
-    appname = "*screenshot*"
-    appname = "*coreshot*"
+    appname = "Shutter"
     timeout = 3
     format = "<b>📸 Screenshot</b>\n%b"
 
