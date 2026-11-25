@@ -112,6 +112,38 @@ describe 'bootstrap lib'
       assert equal 0 $?
     ti
   end_describe
+
+  describe bootstrap::require_interface
+    alias setup='dir=$(mktemp -d) || return'
+    alias teardown='rm -rf $dir'
+
+    it 'accepts every module in the repository'
+      failed=$(for module in "$RootDir"/../modules/*/; do
+        bootstrap::require_interface "${module%/}" 2> /dev/null || printf '%s ' "${module%/}"
+      done)
+      assert equal '' "$failed"
+    ti
+
+    it 'names each interface function a module does not define'
+      printf 'module::applies () { :; }\n' > $dir/module.bash
+      result=$(bootstrap::require_interface $dir 2>&1)
+      assert equal "[!] $dir/module.bash does not define module::install module::outdated" "$result"
+    ti
+  end_describe
+
+  describe bootstrap::newest_tag
+    it 'prints the newest release in version order and skips prereleases'
+      result=$(printf '%s\n' v0.9.1 v0.40.8 v0.41.0-rc1 v0.10.0 v0.40.10 | bootstrap::newest_tag)
+      assert equal 'v0.40.10' "$result"
+    ti
+  end_describe
+
+  describe bootstrap::report_outdated
+    it 'reports a differing latest version and nothing for a current or unknown one'
+      result=$(bootstrap::report_outdated a v1 v2; bootstrap::report_outdated b v1 v1; bootstrap::report_outdated c v1 '')
+      assert equal 'a v1 -> v2' "$result"
+    ti
+  end_describe
 end_describe
 
 rm -rf "$Fixtures"

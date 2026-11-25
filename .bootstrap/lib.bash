@@ -88,3 +88,45 @@ bootstrap::inputs_checksum () {
 bootstrap::stamp_file () {
   printf '%s/dotfiles/bootstrap.sha256' "${XDG_STATE_HOME:-$HOME/.local/state}"
 }
+
+# Prints the newest release among the tag names on stdin, one per line, in version order. Tags
+# with a '-', which marks a release candidate or beta, are skipped.
+bootstrap::newest_tag () {
+  grep -v -- - | sort -V | tail -n 1
+}
+
+# Prints the newest release tag of the git repository at URL $1.
+bootstrap::latest_tag () {
+  git ls-remote --tags --refs "$1" | sed 's|.*refs/tags/||' | bootstrap::newest_tag
+}
+
+# Prints the commit at HEAD of the git repository at URL $1.
+bootstrap::head_commit () {
+  git ls-remote "$1" HEAD | cut -f1
+}
+
+# Prints "NAME CURRENT -> LATEST" when LATEST is set and differs from CURRENT. Module outdated
+# functions report through it.
+bootstrap::report_outdated () {
+  local name=$1 current=$2 latest=$3
+  [[ -n $latest && $current != "$latest" ]] && printf '%s %s -> %s\n' "$name" "$current" "$latest"
+  return 0
+}
+
+# The functions every module.bash defines; bootstrap.bash documents what each does.
+readonly MODULE_INTERFACE=(module::applies module::install module::outdated)
+
+# Fails, naming them, when module directory $1 does not define every MODULE_INTERFACE function.
+bootstrap::require_interface () {
+  bash -euo pipefail -c '
+    source "$1"
+    dir=$2
+    shift 2
+    source "$dir/module.bash"
+    missing=()
+    for function; do
+      declare -F "$function" > /dev/null || missing+=("$function")
+    done
+    ((${#missing[@]} == 0)) || die "[!] $dir/module.bash does not define ${missing[*]}"
+  ' _ "$BOOTSTRAP_DIR/lib.bash" "$1" "${MODULE_INTERFACE[@]}"
+}

@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
-# Installs every prerequisite for dotfiles, then runs `make install`.
-# This entire script is idempotent and is therefore safe to re-run.
+# Installs every prerequisite for dotfiles, runs `make install`, and then warns about pinned
+# versions that have a newer upstream release. This entire script is idempotent and is therefore
+# safe to re-run.
 #
-# Usage: .bootstrap/bootstrap.bash
+# Each .bootstrap/modules/NN-name/module.bash defines the functions in MODULE_INTERFACE (lib.bash):
+#   module::applies   returns 0 when the module applies to this machine
+#   module::install   installs what is missing and skips what is already installed
+#   module::outdated  prints one line per pinned version with a newer upstream release
+#
+# Usage: .bootstrap/bootstrap.bash [outdated]
+#   outdated                  only report the pinned versions with a newer upstream release
 #   PROFILE=desktop|headless  override the profile chosen for the distro
 #   ONLY=10-apt-repos,...     run only these modules
 #   SKIP=43-haskell,...       skip these modules
@@ -11,28 +18,48 @@ set -euo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/lib.bash"
 
-# Runs a module file in its own bash process;
+# Runs function $2 of module directory $1 in its own bash process;
 # errexit therefore applies therein although the caller tests its status.
-run_module_file () {
-  bash -euo pipefail -c 'source "$1"; source "$2"' _ "$BOOTSTRAP_DIR/lib.bash" "$1"
+call_module () {
+  bash -euo pipefail -c 'source "$1"; source "$2/module.bash"; "$3"' _ "$BOOTSTRAP_DIR/lib.bash" "$1" "$2"
 }
 
-run_module () {
-  local dir=${1%/}
-  local name=${dir##*/}
+# Returns 0 when module directory $1 is selected and applies, and logs why it is skipped otherwise.
+module_runs () {
+  local name=${1##*/}
 
   if ! bootstrap::selected "$name"; then
     log "[-] $name (not selected)"
-    return
+    return 1
   fi
 
-  if ! run_module_file "$dir/detect.bash"; then
+  if ! call_module "$1" module::applies; then
     log "[-] $name (not applicable)"
-    return
+    return 1
   fi
+}
 
+install_module () {
+  local name=${1##*/}
+  module_runs "$1" || return 0
   log "[+] $name"
-  run_module_file "$dir/install.bash" || die "[!] $name failed; rerun it with ONLY=$name"
+  call_module "$1" module::install || die "[!] $name failed; rerun it with ONLY=$name"
+}
+
+# Warns about each line module directory $1 reports as outdated. A check that fails, e.g. offline,
+# is reported and does not stop the run.
+report_outdated () {
+  local name=${1##*/} lines line
+  bootstrap::selected "$name" && call_module "$1" module::applies || return 0
+
+  if ! lines=$(call_module "$1" module::outdated); then
+    log "[?] $name: could not check for newer versions"
+    return 0
+  fi
+  while IFS= read -r line; do
+    [[ -n $line ]] && log "[!] outdated: $name: $line"
+  done <<< "$lines"
+  return 0
 }
 
 # Refreshes the sudo timestamp until this script exits to prevent re-prompts in the likely event of a long build.
@@ -48,6 +75,10 @@ keep_sudo_alive () {
 }
 
 main () {
+  local command=${1:-install} dir
+  local -a modules
+  [[ $command == install || $command == outdated ]] || die 'usage: bootstrap.bash [outdated]'
+
   export DISTRO PROFILE
   DISTRO=$(bootstrap::distro)
   PROFILE=${PROFILE:-$(bootstrap::default_profile "$DISTRO")}
@@ -56,15 +87,24 @@ main () {
   # stamp.bash check skips the warning for the make install that 90-dotfiles runs.
   export DOTFILES_BOOTSTRAPPING=1
 
-  log "[*] bootstrapping $DISTRO ($PROFILE)"
-  keep_sudo_alive
-
-  local dir
   for dir in "$BOOTSTRAP_DIR"/modules/*/; do
-    run_module "$dir"
+    modules+=("${dir%/}")
+    bootstrap::require_interface "${dir%/}" || exit 1
   done
 
-  "$BOOTSTRAP_DIR/stamp.bash" write
+  if [[ $command == install ]]; then
+    log "[*] bootstrapping $DISTRO ($PROFILE)"
+    keep_sudo_alive
+    for dir in "${modules[@]}"; do
+      install_module "$dir"
+    done
+    "$BOOTSTRAP_DIR/stamp.bash" write
+  fi
+
+  log "[*] checking pinned versions"
+  for dir in "${modules[@]}"; do
+    report_outdated "$dir"
+  done
 }
 
-main
+main "$@"

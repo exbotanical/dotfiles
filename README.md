@@ -44,7 +44,8 @@ As of ~~7/26/2024~~ 10/27/2026 my primary setup consists of:
 
 On a fresh Arch, Ubuntu, or AL2023 machine, clone the repo and run `make bootstrap`; this will install all prerequisite packages. Once done, run `make install`.
 
-- Each `.bootstrap/modules/NN-name/` whose `detect.bash` file (which determines whether the module meets the criteria required for it to run e.g. dependencies satisfied) returns 0 runs in ls order; `install.bash` skips what is already installed.
+- Each `.bootstrap/modules/NN-name/module.bash` defines `module::applies` (whether the module meets the criteria required for it to run, e.g. dependencies satisfied), `module::install` (which skips what is already installed), and `module::outdated` (which reports pinned versions that have a newer upstream release). Bootstrap refuses a module that lacks one, runs the applicable modules in ls order, and then prints a warning per outdated pin; `make outdated` runs only the check.
+- After a successful run, bootstrap records a checksum of its modules and package lists; `make install` warns when they changed since, i.e. when bootstrap has something to install.
 - Dependency package names are housed under `.bootstrap/packages/`. `<manager>.<profile>.txt` contains distro-agnostic packages per profile whereas `<distro>/<manager>.<profile>.txt` files exist for each supported distro's distro-specific packages.
 - The profile is `headless` on AL2023 and `desktop` elsewhere; override it with `PROFILE=headless`.
 - Filtering: e.g. `ONLY=41-rust` runs only the named modules, and `SKIP=43-haskell,61-eww` skips them.

@@ -7,6 +7,10 @@ AL2_HOME     := /local/home/$$USER
 bootstrap:
 	$(MAKE) -C .bootstrap
 
+.PHONY: outdated
+outdated:
+	$(MAKE) -C .bootstrap outdated
+
 .PHONY: postinstall
 postinstall:
 	./.dev/each-package.bash postinstall $(MAKE_DIRS)
