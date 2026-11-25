@@ -59,6 +59,9 @@ path = .gitconfig.personal
 [includeIf "hasconfig:remote.*.url:ssh://git.amazon.com:*/**"]
 path = .gitconfig.work
 
+[includeIf "hasconfig:remote.*.url:ssh://git.amazon.com/**"]
+path = .gitconfig.work
+
 [includeIf "onbranch:mainline"]
 path = .gitconfig.work
 
