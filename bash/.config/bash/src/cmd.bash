@@ -100,15 +100,6 @@ cmd_out_clean () {
   rm stdout.txt stderr.txt &> /dev/null
 }
 
-# ssh_cache starts the ssh agent and caches the private key
-# this allows the user to avoid entering the passphrase over and over
-ssh_cache () {
-  local SSH_KPATH="$HOME/.ssh/id_rsa"
-
-  eval $(ssh-agent -s)
-  ssh-add "$SSH_KPATH"
-}
-
 # for_each_dir runs the given command inside every directory immediately below the cwd
 for_each_dir () {
   local cmd="$1"
