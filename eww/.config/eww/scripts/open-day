@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Opens a day in the Outlook PWA when the outlook launcher (~/.local/bin/outlook) exists, and in
+# GNOME Calendar otherwise. The eww calendar reports months from 0.
+# Usage: open-day DAY MONTH YEAR
+set -euo pipefail
+
+readonly OUTLOOK_DAY_URL=https://outlook.cloud.microsoft/calendar/view/day
+
+main () {
+  (($# == 3)) || {
+    printf 'usage: open-day DAY MONTH YEAR\n' >&2
+    exit 1
+  }
+  local day=$1 month=$(($2 + 1)) year=$3
+
+  if command -v outlook > /dev/null; then
+    exec outlook --app-launch-url-for-shortcuts-menu-item="$OUTLOOK_DAY_URL/$year/$month/$day"
+  fi
+  exec gnome-calendar --date "$month/$day/$year"
+}
+
+main "$@"
