@@ -8,7 +8,7 @@ set -euo pipefail
 readonly INTERVAL=3
 
 soft_blocked () {
-  rfkill list | awk '/Soft blocked:/ { print $3; exit }'
+  rfkill list | awk '/Soft blocked:/ && !found++ { print $3 }'
 }
 
 toggle () {
