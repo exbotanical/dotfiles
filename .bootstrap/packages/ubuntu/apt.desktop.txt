@@ -32,6 +32,7 @@ xsettingsd
 
 # Fonts
 fontconfig
+fonts-dejavu-core
 fonts-firacode
 fonts-font-awesome
 fonts-roboto

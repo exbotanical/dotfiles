@@ -35,5 +35,6 @@ wireplumber
 xsettingsd
 
 # Fonts the eww, i3, dunst, and rofi configs name
+ttf-dejavu
 ttf-fira-code
 ttf-roboto

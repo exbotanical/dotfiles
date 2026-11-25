@@ -24,8 +24,8 @@
   (box :space-evenly false :halign "center"
     (box :visible {music.playing}
       (music-widget :screen screen))
-    (label :class "window-title" :visible {!music.playing} :limit-width 80
-      :tooltip {window.class}
+    (label :class "window-title" :visible {!music.playing} :limit-width 50
+      :tooltip {window.title}
       :text {window.title})))
 
 (defwidget right-widget [screen]

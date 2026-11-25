@@ -6,7 +6,10 @@
 .workspaces {
   margin-left: 10px;
 
+  // Roboto, the bar font, lacks ● on Ubuntu and draws a small one on Arch, so the dots name a
+  // font that both laptops install.
   label {
+    font-family: 'DejaVu Sans';
     font-size: 1.75rem;
     margin: -0.1rem 0 0.15rem;
   }
