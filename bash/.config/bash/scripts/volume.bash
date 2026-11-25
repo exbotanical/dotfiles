@@ -7,12 +7,14 @@ set -euo pipefail
 
 VOLUME_STEP="${2:-5}"
 
+# Prints the default sink's volume in percent. pactl prints a percentage per channel, and awk
+# keeps the first and reads to the end, because an early exit can end pactl with SIGPIPE.
 get_volume () {
-  pactl get-sink-volume @DEFAULT_SINK@ | head -n 1 | awk '{print $5}' | sed 's/[^0-9]*//g'
+  pactl get-sink-volume @DEFAULT_SINK@ | awk '!found && match($0, /[0-9]+%/) { print substr($0, RSTART, RLENGTH - 1); found = 1 }'
 }
 
 is_muted () {
-  pactl get-sink-mute @DEFAULT_SINK@ | grep -q 'yes'
+  [[ $(pactl get-sink-mute @DEFAULT_SINK@) == 'Mute: yes' ]]
 }
 
 notify_volume () {
@@ -28,11 +30,11 @@ notify_volume () {
 
 case "${1:-}" in
   up)
-    pactl set-sink-volume @DEFAULT_SINK@ +${VOLUME_STEP}%
+    pactl set-sink-volume @DEFAULT_SINK@ "+${VOLUME_STEP}%"
     notify_volume
     ;;
   down)
-    pactl set-sink-volume @DEFAULT_SINK@ -${VOLUME_STEP}%
+    pactl set-sink-volume @DEFAULT_SINK@ "-${VOLUME_STEP}%"
     notify_volume
     ;;
   mute)

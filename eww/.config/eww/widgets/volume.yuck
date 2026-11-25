@@ -2,7 +2,7 @@
 (defwidget volume-widget []
   (box :class "module active"
     (eventbox
-      :onscroll "echo {} | sed -e 's/up/+/' -e 's/down/-/' | xargs -I% wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.005%"
+      :onscroll "scripts/volume step SINK {}"
       :onclick "pavucontrol &"
       :onrightclick "scripts/volume mute SINK"
       (label :tooltip "${volume.device}: ${volume.percent}%${volume.muted ? ' (muted)' : ''}"

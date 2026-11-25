@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Prints the audio state as one JSON line at start and on every PulseAudio/PipeWire change, or
-# changes the volume of the default sink or source.
+# changes the volume of the default sink or source. Every command goes through pactl, which both
+# PulseAudio and PipeWire's pipewire-pulse serve.
 # Usage: volume
 #        volume mute SINK|SOURCE
 #        volume set_vol SINK|SOURCE <1-100>
+#        volume step SINK|SOURCE up|down
 set -euo pipefail
 
 # Volume icons for speakers, lowest level first.
@@ -13,6 +15,8 @@ readonly HEADPHONES_ICON='󰋋'
 readonly HEADPHONES_MUTED_ICON='󰟎'
 readonly BLUETOOTH_ICON='󰥰'
 readonly MIC_ICON='󰍬'
+# The volume change per scroll step.
+readonly STEP=0.5%
 
 die () {
   printf 'volume: %s\n' "$*" >&2
@@ -68,12 +72,20 @@ main () {
   case "${1:-}" in
     mute)
       require_device "${2:-}"
-      wpctl set-mute "@DEFAULT_AUDIO_$2@" toggle
+      pactl "set-${2,,}-mute" "@DEFAULT_$2@" toggle
       ;;
     set_vol)
       require_device "${2:-}"
       ((${3:-0} >= 1 && ${3:-0} <= 100)) || die 'volume must be between 1 and 100'
-      wpctl set-volume "@DEFAULT_AUDIO_$2@" "$3%"
+      pactl "set-${2,,}-volume" "@DEFAULT_$2@" "$3%"
+      ;;
+    step)
+      require_device "${2:-}"
+      case ${3:-} in
+        up) pactl "set-${2,,}-volume" "@DEFAULT_$2@" "+$STEP" ;;
+        down) pactl "set-${2,,}-volume" "@DEFAULT_$2@" "-$STEP" ;;
+        *) die "expected up or down, got '${3:-}'" ;;
+      esac
       ;;
     '')
       print_state
