@@ -1,0 +1,10 @@
+[Unit]
+Description=eww - delete the cached album covers every Saturday at 20:00
+
+[Timer]
+OnCalendar=Sat 20:00
+# Run a catch-up pass if the time elapsed while suspended or powered off
+Persistent=true
+
+[Install]
+WantedBy=timers.target

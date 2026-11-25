@@ -1,0 +1,12 @@
+[Unit]
+Description=eww - delete the album covers the music widget cached
+# The music listener (eww/.config/eww/scripts/music) downloads each new cover once and keeps it.
+ConditionPathIsDirectory=%C/eww_covers
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/find %C/eww_covers -mindepth 1 -delete
+
+# Hardening
+SystemCallArchitectures=native
+NoNewPrivileges=true
