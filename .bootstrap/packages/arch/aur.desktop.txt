@@ -1,16 +1,12 @@
 # Shell and CLI tools the bash config and scripts use
-gojq
 pandoc-bin
 
 # Programs the i3 config, eww widgets, and scripts launch
 brave-bin
-coreshot
-eww
+eww-git # eww's release truncates labels when the bar is full, which turns workspace dots into ellipses
 i3lock-color
-light
 networkmanager-dmenu-git
 rofi-bluetooth-git
-rofi-file-browser-extended-git
 vscodium-bin
 
 # Fonts

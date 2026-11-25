@@ -15,7 +15,11 @@ GREEN='50fa7b'
 
 FONT='FiraCode Nerd Font Mono Light 22'
 
-i3lock-color \
+# A source build installs i3lock-color; the Arch package installs the same program as i3lock.
+LOCKER=i3lock-color
+command -v "$LOCKER" > /dev/null || LOCKER=i3lock
+
+"$LOCKER" \
   --insidever-color=$SELECTION$ALPHA \
   --insidewrong-color=$SELECTION$ALPHA \
   --inside-color=$SELECTION$ALPHA \

@@ -12,14 +12,17 @@ rofi
 
 # Programs the i3 config, eww widgets, and scripts launch
 alacritty
+bluez
+bluez-utils
+brightnessctl
 autorandr
 blueman
 deepin-calculator
 feh
 gnome-calendar
-hsetroot
-jaq
+imagemagick
 networkmanager
+pipewire-pulse
 pavucontrol
 pcmanfm
 playerctl
@@ -28,4 +31,10 @@ redshift
 shutter
 xclip
 xdotool
+wget
+wireplumber
 xsettingsd
+
+# Fonts the eww, i3, dunst, and rofi configs name
+ttf-fira-code
+ttf-roboto

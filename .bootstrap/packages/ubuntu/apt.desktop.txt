@@ -9,19 +9,23 @@ rofi
 # Programs the i3 config, eww widgets, and scripts launch
 autorandr
 blueman
+bluez
 brave-browser
+brightnessctl
 codium
 deepin-calculator
 feh
-hsetroot
-light
+imagemagick
 network-manager
 pavucontrol
 pcmanfm
+pipewire-pulse
 playerctl
 pulseaudio-utils
 redshift
 shutter
+wget
+wireplumber
 xclip
 xdg-utils
 xdotool
@@ -29,7 +33,9 @@ xsettingsd
 
 # Fonts
 fontconfig
+fonts-firacode
 fonts-font-awesome
+fonts-roboto
 
 # eww build dependencies (elkowar.github.io/eww)
 libcairo2-dev
@@ -52,3 +58,23 @@ libfontconfig1-dev
 libxcb-xfixes0-dev
 libxkbcommon-dev
 python3
+
+# i3lock-color build dependencies (i3lock-color README)
+autoconf
+automake
+libcairo2-dev
+libev-dev
+libfontconfig1-dev
+libgif-dev
+libjpeg-dev
+libpam0g-dev
+libx11-xcb-dev
+libxcb-composite0-dev
+libxcb-image0-dev
+libxcb-randr0-dev
+libxcb-util-dev
+libxcb-xinerama0-dev
+libxcb-xkb-dev
+libxcb-xrm-dev
+libxkbcommon-dev
+libxkbcommon-x11-dev

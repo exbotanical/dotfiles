@@ -8,7 +8,8 @@ readonly ICONS=('󰃝' '󰃟' '󰃞')
 
 print_state () {
   local level
-  level=$(light)
+  # brightnessctl -m prints device,class,current,percent%,max for the backlight it controls.
+  level=$(brightnessctl -m | cut -d, -f4 | tr -d %)
   jq -nc --argjson level "$level" --argjson icons "$(printf '%s\n' "${ICONS[@]}" | jq -R . | jq -sc .)" \
     '{level: $level, icon: $icons[[($level / 34 | floor), 2] | min]}'
 }

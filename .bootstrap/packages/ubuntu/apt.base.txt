@@ -3,7 +3,6 @@ bash-completion
 curl
 git
 git-delta
-gojq
 htop
 jq
 lsd

@@ -1,0 +1,4 @@
+# Packages replaced by others; 15-remove-packages removes them before the replacements install.
+eww # replaced by eww-git, whose labels no longer truncate when the bar is full
+light # replaced by brightnessctl; light's upstream is archived
+npm # nvm's node and npm replace it; pacman's npm does not support pacman's node

@@ -1,0 +1,3 @@
+# Packages replaced by others; 15-remove-packages removes them before the replacements install.
+light # replaced by brightnessctl; light's upstream is archived
+pulseaudio # replaced by pipewire-pulse

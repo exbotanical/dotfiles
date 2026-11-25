@@ -8,7 +8,7 @@ set -euo pipefail
 BRIGHTNESS_STEP="${2:-5}"
 
 get_brightness () {
-  light -G | cut -d'.' -f1
+  brightnessctl -m | cut -d, -f4 | tr -d %
 }
 
 notify_brightness () {
@@ -19,11 +19,11 @@ notify_brightness () {
 
 case "${1:-}" in
   up)
-    light -A $BRIGHTNESS_STEP
+    brightnessctl -q set "${BRIGHTNESS_STEP}%+"
     notify_brightness
     ;;
   down)
-    light -U $BRIGHTNESS_STEP
+    brightnessctl -q set "${BRIGHTNESS_STEP}%-"
     notify_brightness
     ;;
   *)
