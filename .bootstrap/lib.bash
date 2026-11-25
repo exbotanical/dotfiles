@@ -76,3 +76,15 @@ bootstrap::selected () {
   fi
   ! bootstrap::listed "$name" "${SKIP:-}"
 }
+
+# Prints one checksum of every file under the bootstrap directory $1 except its tests: the
+# modules, the package lists, and the scripts that run them decide what bootstrap installs.
+bootstrap::inputs_checksum () {
+  (cd "$1" && find . -type f -not -path './tests/*' -print0 | LC_ALL=C sort -z | xargs -0 sha256sum) \
+    | sha256sum | cut -d' ' -f1
+}
+
+# Prints the file that records the inputs checksum of the last bootstrap run that succeeded.
+bootstrap::stamp_file () {
+  printf '%s/dotfiles/bootstrap.sha256' "${XDG_STATE_HOME:-$HOME/.local/state}"
+}

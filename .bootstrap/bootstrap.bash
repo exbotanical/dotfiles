@@ -53,6 +53,9 @@ main () {
   PROFILE=${PROFILE:-$(bootstrap::default_profile "$DISTRO")}
   export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.ghcup/bin:/usr/local/go/bin:$PATH"
 
+  # stamp.bash check skips the warning for the make install that 90-dotfiles runs.
+  export DOTFILES_BOOTSTRAPPING=1
+
   log "[*] bootstrapping $DISTRO ($PROFILE)"
   keep_sudo_alive
 
@@ -60,6 +63,8 @@ main () {
   for dir in "$BOOTSTRAP_DIR"/modules/*/; do
     run_module "$dir"
   done
+
+  "$BOOTSTRAP_DIR/stamp.bash" write
 }
 
 main

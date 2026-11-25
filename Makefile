@@ -13,6 +13,7 @@ postinstall:
 
 .PHONY: install
 install: deps
+	@./.bootstrap/stamp.bash check
 	mkdir -p $$HOME/.local/bin
 	stow --verbose 3 --target=$$HOME --restow $(INCLUDE_DIRS)
 	$(MAKE) postinstall

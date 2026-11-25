@@ -94,6 +94,24 @@ describe 'bootstrap lib'
       assert equal 'a b c' "${actual% }"
     ti
   end_describe
+
+  describe bootstrap::inputs_checksum
+    alias setup='dir=$(mktemp -d) || return; mkdir -p $dir/modules/10-x $dir/packages $dir/tests
+      printf a > $dir/modules/10-x/install.bash; printf b > $dir/packages/apt.base.txt
+      printf c > $dir/tests/lib_shpec.bash; before=$(bootstrap::inputs_checksum $dir)'
+    alias teardown='rm -rf $dir'
+
+    it 'changes when a module or a package list changes, and ignores the tests'
+      printf changed > $dir/tests/lib_shpec.bash
+      tests_only=$(bootstrap::inputs_checksum $dir)
+      printf b2 > $dir/packages/apt.base.txt
+      list=$(bootstrap::inputs_checksum $dir)
+      printf a2 > $dir/modules/10-x/install.bash
+      module=$(bootstrap::inputs_checksum $dir)
+      [[ $tests_only == "$before" && $list != "$before" && $module != "$list" ]]
+      assert equal 0 $?
+    ti
+  end_describe
 end_describe
 
 rm -rf "$Fixtures"
