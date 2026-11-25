@@ -14,7 +14,7 @@ get_brightness () {
 notify_brightness () {
   local brightness
   brightness=$(get_brightness)
-  dunstify -a "brightness" -u low -r 9991 -h int:value:"$brightness" -i "display-brightness-symbolic" "Brightness: ${brightness}%"
+  notify-send -a "brightness" -u low -r 9991 -h int:value:"$brightness" -i "display-brightness-symbolic" "Brightness: ${brightness}%"
 }
 
 case "${1:-}" in

@@ -22,9 +22,9 @@ notify_volume () {
   volume=$(get_volume)
 
   if is_muted; then
-    dunstify -a "volume" -u low -r 9992 -h int:value:"$volume" -i "audio-volume-muted-symbolic" "Volume (Muted)" "${volume}%"
+    notify-send -a "volume" -u low -r 9992 -h int:value:"$volume" -i "audio-volume-muted-symbolic" "Volume (Muted)" "${volume}%"
   else
-    dunstify -a "volume" -u low -r 9992 -h int:value:"$volume" -i "audio-volume-high-symbolic" "Volume" "${volume}%"
+    notify-send -a "volume" -u low -r 9992 -h int:value:"$volume" -i "audio-volume-high-symbolic" "Volume" "${volume}%"
   fi
 }
 

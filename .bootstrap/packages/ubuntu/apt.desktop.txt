@@ -8,7 +8,6 @@ rofi
 
 # Programs the i3 config, eww widgets, and scripts launch
 autorandr
-blueman
 bluez
 brave-browser
 brightnessctl

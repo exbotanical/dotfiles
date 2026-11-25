@@ -49,7 +49,7 @@ alias purgehist='cat /dev/null >| ~/.bash_history'
 alias hs='history | grep'
 
 # Notify for long-running commands
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo utilities-terminal-symbolic || echo dialog-error-symbolic)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Perms helpers
 alias mx='chmod a+x'

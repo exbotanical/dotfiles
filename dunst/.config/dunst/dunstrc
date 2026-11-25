@@ -55,14 +55,17 @@
     icon_position = left
     min_icon_size = 48
     max_icon_size = 64
-    icon_path = /usr/share/icons/gnome/48x48/status/:/usr/share/icons/gnome/48x48/devices/:/usr/share/icons/hicolor/48x48/apps/
+    # Looks icons up by name in these themes (x11/.config/theme.env installs Dracula), instead of
+    # the fixed icon_path directories, which neither machine has.
+    enable_recursive_icon_lookup = true
+    icon_theme = "Dracula, Adwaita"
 
     ### History ###
     sticky_history = yes
     history_length = 25
 
     ### Misc/Advanced ###
-    dmenu = /usr/bin/dmenu -p dunst:
+    dmenu = /usr/bin/rofi -dmenu -p dunst
     browser = /usr/bin/brave -new-tab
     always_run_script = true
     title = "Dunst"

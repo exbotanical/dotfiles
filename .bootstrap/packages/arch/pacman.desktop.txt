@@ -16,7 +16,6 @@ bluez
 bluez-utils
 brightnessctl
 autorandr
-blueman
 deepin-calculator
 feh
 gnome-calendar

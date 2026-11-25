@@ -9,11 +9,23 @@ readonly COVERS_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/eww_covers"
 readonly SEP=$'\x1f'
 readonly FORMAT="{{title}}${SEP}{{artist}}${SEP}{{status}}${SEP}{{position}}${SEP}{{mpris:length}}${SEP}{{mpris:artUrl}}${SEP}{{xesam:url}}"
 readonly DEFAULT_COLORS=('#1e1e2e' '#28283d')
+# ImageMagick 7 (Arch) deprecates convert in favor of magick; ImageMagick 6 (Ubuntu) has only convert.
+if command -v magick > /dev/null; then
+  readonly CONVERT=(magick)
+else
+  readonly CONVERT=(convert)
+fi
 
-# Prints microseconds $1 plus $2 seconds as MM:SS, or nothing when $1 is empty.
-mmss () {
+# Prints microseconds $1 plus $2 seconds as MM:SS below an hour and H:MM:SS from an hour on, or
+# nothing when $1 is empty.
+track_time () {
   [[ -n $1 ]] || return 0
-  date -u -d@"$(($1 / 1000000 + ${2:-0}))" +%M:%S
+  local seconds=$(($1 / 1000000 + ${2:-0}))
+  if ((seconds >= 3600)); then
+    date -u -d@"$seconds" +%-H:%M:%S
+  else
+    date -u -d@"$seconds" +%M:%S
+  fi
 }
 
 # Prints the local path of cover $1: a downloaded copy for an https URL, otherwise $1 unchanged.
@@ -32,14 +44,14 @@ cover_path () {
       rm -f "$file"
       return 0
     }
-    [[ $(identify -format '%m' "$file" 2> /dev/null) == WEBP ]] && convert "webp:$file" "jpeg:$file"
+    [[ $(identify -format '%m' "$file" 2> /dev/null) == WEBP ]] && "${CONVERT[@]}" "webp:$file" "jpeg:$file"
   fi
   printf '%s' "$file"
 }
 
 # Prints the two dominant colors of image $1, one per line.
 cover_colors () {
-  convert "$1" -colors 2 -format '%c' histogram:info: | awk '{ print $3 }'
+  "${CONVERT[@]}" "$1" -colors 2 -format '%c' histogram:info: | awk '{ print $3 }'
 }
 
 main () {
@@ -64,8 +76,8 @@ main () {
       --arg playing "$status" \
       --arg position "$position" \
       --arg length "$length" \
-      --arg position_time "$(mmss "$position")" \
-      --arg length_time "$(mmss "$length" 1)" \
+      --arg position_time "$(track_time "$position")" \
+      --arg length_time "$(track_time "$length" 1)" \
       --arg cover "$cover" \
       --arg color1 "${colors[0]}" \
       --arg color2 "${colors[1]:-${colors[0]}}" '

@@ -88,11 +88,11 @@ get_mode () {
 notify () {
   local state="$1"
   local label="${2:-$state}"
-  local icon=weather-clear
+  local icon=weather-clear-symbolic
 
-  [[ $state == on ]] && icon=weather-clear-night
+  [[ $state == on ]] && icon=weather-clear-night-symbolic
 
-  dunstify -a "night" -u low -r 9992 -i "$icon" "Night mode: ${label}"
+  notify-send -a "night" -u low -r 9993 -i "$icon" "Night mode: ${label}"
 }
 
 # Sets the eww bar's night indicator now rather than at the bar's next 30-second poll.
@@ -198,7 +198,7 @@ status () {
   printf 'scheduled: %sK @ %s brightness\n' "$temp" "$brightness"
   printf 'override:  %s\n' "${override:-none}"
   printf 'applied:   %s\n' \
-    "$(xrandr --current --verbose | awk '/Gamma:/ { gsub(/[ \t]+/, " "); print $2; exit }')"
+    "$(xrandr --current --verbose | awk '/Gamma:/ && !found++ { gsub(/[ \t]+/, " "); print $2 }')"
 }
 
 case "${1:-}" in

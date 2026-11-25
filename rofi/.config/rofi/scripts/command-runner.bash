@@ -97,7 +97,7 @@ EOF
   local output
   local exit_code=0
 
-  notify-send -t 2000 -i "system-run" "Running Command" "$cmd" &
+  notify-send -t 2000 -i "system-run-symbolic" "Running Command" "$cmd" &
 
   if output=$(bash "$temp_script" 2>&1); then
     # Success case
@@ -107,9 +107,9 @@ EOF
     fi
 
     if [[ -n "$output" ]]; then
-      notify-send -t 8000 -i "dialog-information" "Command Completed" "$cmd\n\nOutput: $truncated_output"
+      notify-send -t 8000 -i "dialog-information-symbolic" "Command Completed" "$cmd\n\nOutput: $truncated_output"
     else
-      notify-send -t 4000 -i "dialog-information" "Command Completed" "$cmd\n\n(No output)"
+      notify-send -t 4000 -i "dialog-information-symbolic" "Command Completed" "$cmd\n\n(No output)"
     fi
   else
     # Failure case
@@ -120,7 +120,7 @@ EOF
       truncated_output="${output:0:$MAX_OUTPUT_LENGTH}..."
     fi
 
-    notify-send -t 10000 -u critical -i "dialog-error" "Command Failed" "$cmd\n\nError: $truncated_output"
+    notify-send -t 10000 -u critical -i "dialog-error-symbolic" "Command Failed" "$cmd\n\nError: $truncated_output"
   fi
 
   rm -f "$temp_script"

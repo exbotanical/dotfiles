@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 # Prints the airplane mode state as one JSON line every INTERVAL seconds, or toggles it. Airplane
-# mode is on when the first rfkill device is soft-blocked.
+# mode is on when every rfkill device is soft-blocked; the first device is a Bluetooth switch on
+# both laptops, so blocking Bluetooth alone does not count.
 # Usage: airplane
 #        airplane toggle
 set -euo pipefail
 
 readonly INTERVAL=3
 
+# Prints yes when every radio is soft-blocked, and no otherwise.
 soft_blocked () {
-  rfkill list | awk '/Soft blocked:/ && !found++ { print $3 }'
+  rfkill --noheadings --output SOFT | awk '$1 != "blocked" { on = 1 } END { print (NR > 0 && !on) ? "yes" : "no" }'
 }
 
 toggle () {
