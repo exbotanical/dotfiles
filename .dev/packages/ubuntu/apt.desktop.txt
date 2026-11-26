@@ -2,3 +2,25 @@
 brave-browser
 fontconfig
 xdg-utils
+
+# 68-i3lock-color build dependencies (i3lock-color README)
+autoconf
+automake
+build-essential
+libcairo2-dev
+libev-dev
+libfontconfig1-dev
+libgif-dev
+libjpeg-dev
+libpam0g-dev
+libx11-xcb-dev
+libxcb-composite0-dev
+libxcb-image0-dev
+libxcb-randr0-dev
+libxcb-util-dev
+libxcb-xinerama0-dev
+libxcb-xkb-dev
+libxcb-xrm-dev
+libxkbcommon-dev
+libxkbcommon-x11-dev
+pkg-config

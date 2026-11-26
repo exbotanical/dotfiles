@@ -21,8 +21,9 @@ module::install () {
   set +u
   source "$NVM_DIR/nvm.sh"
   local current lts
-  current=$(nvm version default)
-  lts=$(nvm version-remote --lts)
+  # Each prints N/A and exits 3 when there is no default node or the LTS is unreachable.
+  current=$(nvm version default || true)
+  lts=$(nvm version-remote --lts || true)
 
   if [[ $lts != v* ]]; then
     [[ $current == v* ]] || die '[!] cannot read the node LTS version and no default node is installed'

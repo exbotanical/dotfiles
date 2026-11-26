@@ -92,7 +92,7 @@ assert_repo_unchanged () {
 
 assert_root_state () {
   log 'asserting root install state'
-  assert_resolves_into_repo /etc/issue
+  cmp -s /etc/issue "$REPO/root/etc/issue" || fail "expected /etc/issue to be a copy of $REPO/root/etc/issue"
 }
 
 # Starts bash with the given flags on a pseudo-terminal and asserts that init.bash loads with no output.

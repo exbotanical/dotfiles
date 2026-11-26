@@ -7,3 +7,6 @@ stow
 tar
 unzip
 vim
+
+# install-root.bash compares the installed copies with cmp
+diffutils

@@ -3,8 +3,9 @@
 # the files a previous run installed that the package no longer has. Copies, unlike stow's links
 # into the repo, exist before a separately mounted /home is, when systemd reads unit drop-ins and
 # applies sysctl.d. A link into SOURCE left by the stow install is replaced by the copy. When
-# anything changed under /, the systemd units and the sysctl settings are reloaded. A run changes
-# nothing when every copy is current.
+# anything changed under / and systemd is running, the systemd units and the sysctl settings are
+# reloaded; otherwise systemd reads them when it starts. A run changes nothing when every copy is
+# current.
 #
 # Usage: install-root.bash SOURCE [TARGET] [MANIFEST]
 #   SOURCE    the root package directory
@@ -97,7 +98,8 @@ main () {
     return 0
   fi
   printf '%s\n' "$changes"
-  if [[ -z $target ]]; then
+  # /run/systemd/system exists only when systemd is the running init (sd_booted(3)).
+  if [[ -z $target && -d /run/systemd/system ]]; then
     systemctl daemon-reload
     sysctl --quiet --system
   fi
