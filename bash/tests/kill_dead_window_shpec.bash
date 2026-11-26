@@ -73,7 +73,7 @@ describe 'kill_dead_window'
     stub_session () {
       xdotool () {
         case $1 in
-          getactivewindow) printf '11\n' ;;
+          selectwindow) printf '11\n' ;;
           getwindowpid) [[ $2 == 11 ]] && printf '100\n' || printf '%s\n' "$OWNER_OF_22" ;;
           getwindowname) [[ ! -e $dir/closed ]] ;;
         esac
@@ -115,6 +115,14 @@ describe 'kill_dead_window'
       CLOSES=false EXITS_ON=none OWNER_OF_22=200 XDG_CACHE_HOME=$dir
       stub_session
       write_thread_report () { :; }
+      (main) 2> /dev/null
+      assert equal 1 $?
+    ti
+
+    it 'exits 1 when no window is selected'
+      CLOSES=true EXITS_ON=TERM OWNER_OF_22=200
+      stub_session
+      xdotool () { return 1; }
       (main) 2> /dev/null
       assert equal 1 $?
     ti

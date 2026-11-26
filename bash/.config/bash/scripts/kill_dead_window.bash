@@ -4,8 +4,7 @@
 # to 2 seconds after each step. Before SIGKILL it writes each thread's scheduler state and kernel
 # wait channel to ~/.cache/kill_dead_window/, which records where the process was blocked. It
 # refuses to signal a process that owns other i3 windows, because the signal would close them too.
-# Usage: kill_dead_window [-s]
-#   -s  select the window by clicking it; without -s it closes the focused window
+# Usage: kill_dead_window, then click the window to close
 
 readonly POLL_SECONDS=0.1
 readonly POLL_ATTEMPTS=20
@@ -16,17 +15,7 @@ die () {
 }
 
 usage () {
-  printf '%s\n' 'Usage: kill_dead_window [-s]' \
-    '  -s  select the window by clicking it; without -s it closes the focused window'
-}
-
-# Prints the ID of the clicked window when $1 is true, and of the focused window otherwise.
-target_window () {
-  if [[ $1 == true ]]; then
-    xdotool selectwindow
-  else
-    xdotool getactivewindow
-  fi
+  printf '%s\n' 'Usage: kill_dead_window, then click the window to close'
 }
 
 # Succeeds as soon as the given command succeeds, and fails once POLL_ATTEMPTS polls have failed.
@@ -82,10 +71,9 @@ write_thread_report () {
 }
 
 main () {
-  local select=false opt window pid report_dir report
-  while getopts ':sh' opt; do
+  local opt window pid report_dir report
+  while getopts ':h' opt; do
     case $opt in
-      s) select=true ;;
       h)
         usage
         return 0
@@ -97,7 +85,7 @@ main () {
     esac
   done
 
-  window=$(target_window "$select") || die 'no window was selected'
+  window=$(xdotool selectwindow) || die 'no window was selected'
   pid=$(xdotool getwindowpid "$window") || die "window $window has no _NET_WM_PID"
 
   i3-msg "[id=$window] kill" > /dev/null || die "i3 could not close window $window"
