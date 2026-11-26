@@ -34,6 +34,9 @@ wget
 wireplumber
 xsettingsd
 
+# Default handlers that the mime list names, besides pcmanfm above and vscodium-bin from the AUR
+vlc
+
 # Fonts the eww, i3, dunst, and rofi configs name
 ttf-dejavu
 ttf-fira-code

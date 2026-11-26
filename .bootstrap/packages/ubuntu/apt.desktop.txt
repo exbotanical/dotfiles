@@ -30,6 +30,9 @@ xdg-utils
 xdotool
 xsettingsd
 
+# Default handlers that the mime list names, besides codium and pcmanfm above
+vlc
+
 # Fonts
 fontconfig
 fonts-dejavu-core

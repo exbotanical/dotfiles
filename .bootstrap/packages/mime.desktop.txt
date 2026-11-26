@@ -1,0 +1,27 @@
+# MIME types and the applications that 65-mime makes their default handlers. Other handlers that
+# claim these types, such as VSCodium for directories, Kdenlive and Firefox for video and audio,
+# and Wine for text, sort first in mimeinfo.cache. Each alias such as video/x-matroska is the name
+# file(1) prints, which xdg-mime matches; GIO resolves it to the canonical type.
+inode/directory pcmanfm
+
+video/mp2t vlc
+video/mp4 vlc
+video/mpeg vlc
+video/ogg vlc
+video/quicktime vlc
+video/webm vlc
+video/x-matroska vlc
+video/x-msvideo vlc
+audio/flac vlc
+audio/mpeg vlc
+audio/ogg vlc
+audio/x-m4a vlc
+audio/x-opus+ogg vlc
+audio/x-vorbis+ogg vlc
+audio/x-wav vlc
+
+# shared-mime-info ranks the Qt Linguist type above TypeScript for *.ts, so GIO types TypeScript
+# source as text/vnd.trolltech.linguist; file(1), which xdg-open uses, prints text/javascript.
+text/vnd.trolltech.linguist vscodium
+text/javascript vscodium
+text/plain vscodium
