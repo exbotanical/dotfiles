@@ -37,6 +37,12 @@ fonts-firacode
 fonts-font-awesome
 fonts-roboto
 
+# Font families web pages name, listed for Arch too so pages render alike on both laptops
+fonts-cantarell
+fonts-inter
+fonts-lato
+fonts-ubuntu
+
 # eww build dependencies (elkowar.github.io/eww)
 libcairo2-dev
 libdbusmenu-gtk3-dev

@@ -39,6 +39,12 @@ ttf-dejavu
 ttf-fira-code
 ttf-roboto
 
+# Font families web pages name, listed for Ubuntu too so pages render alike on both laptops
+cantarell-fonts
+inter-font
+ttf-lato
+ttf-ubuntu-font-family
+
 # Soulseek: the client, the batch checks, and the VPN (autodidact miscellaneous/SOULSEEK_GUIDE.md)
 clamav
 flac
