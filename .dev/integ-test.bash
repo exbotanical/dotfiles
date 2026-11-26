@@ -13,6 +13,9 @@ readonly FIXTURE_PACKAGES_DIR="$REPO/.dev/packages"
 readonly LISTS_DIR="$REPO/.bootstrap/packages"
 readonly LIB="$REPO/.bootstrap/lib.bash"
 readonly AUR_RPC=https://aur.archlinux.org/rpc/v5/info
+# systemd is not the init in the container, so install_root runs stubs that record the reload calls.
+readonly STUB_DIR="$HOME/.cache/integ-stubs"
+readonly STUB_LOG="$STUB_DIR/calls.log"
 
 log () {
   printf '[integ] %s\n' "$*"
@@ -26,20 +29,23 @@ fail () {
 install_all () {
   log 'make bootstrap'
   SKIP="$HEAVY_MODULES" PACKAGES_DIR="$FIXTURE_PACKAGES_DIR" make -C "$REPO" bootstrap
-  remove_root_conflicts
-  log 'sudo make install_root'
-  sudo make -C "$REPO" install_root
+  install_root
 }
 
-# Stow refuses to link files it does not own, so we remove any existing distro
-# counterparts of the root package's files prior to running `install_root`.
-remove_root_conflicts () {
-  local path
-  for path in /etc/issue; do
-    if [[ -f $path && ! -L $path ]]; then
-      log "removing the image's $path"
-      sudo rm "$path"
-    fi
+# sudo resets PATH, so the stub directory is put first on the PATH it passes to make.
+install_root () {
+  : > "$STUB_LOG"
+  log 'sudo make install_root'
+  sudo env PATH="$STUB_DIR:$PATH" make -C "$REPO" install_root
+}
+
+# Writes systemctl and sysctl stubs that append their name and arguments to STUB_LOG and exit 0.
+write_reload_stubs () {
+  local name
+  mkdir -p "$STUB_DIR"
+  for name in systemctl sysctl; do
+    printf '#!/usr/bin/env bash\nprintf "%%s\\n" "%s $*" >> %q\n' "$name" "$STUB_LOG" > "$STUB_DIR/$name"
+    chmod +x "$STUB_DIR/$name"
   done
 }
 
@@ -93,6 +99,23 @@ assert_repo_unchanged () {
 assert_root_state () {
   log 'asserting root install state'
   cmp -s /etc/issue "$REPO/root/etc/issue" || fail "expected /etc/issue to be a copy of $REPO/root/etc/issue"
+}
+
+# Asserts that the last install_root run made exactly the calls $1, one per line, to the stubs.
+assert_reload_calls () {
+  local expected=$1 calls
+  calls=$(< "$STUB_LOG")
+  [[ $calls == "$expected" ]] \
+    || fail "expected install_root to call [${expected//$'\n'/; }], got [${calls//$'\n'/; }]"
+}
+
+# Asserts that install_root reloaded systemd and sysctl after it installed the root package, and
+# that a rerun, in which every file is current, reloads neither.
+assert_root_reloads () {
+  log 'asserting install_root reloads only after a change'
+  assert_reload_calls $'systemctl daemon-reload\nsysctl --quiet --system'
+  install_root
+  assert_reload_calls ''
 }
 
 # Starts bash with the given flags on a pseudo-terminal and asserts that init.bash loads with no output.
@@ -183,10 +206,12 @@ prepare_home () {
 
 main () {
   prepare_home
+  write_reload_stubs
   install_all
   assert_repo_unchanged
   assert_install_state
   assert_root_state
+  assert_root_reloads
   assert_packages_exist
 
   assert_shell_loads -i
