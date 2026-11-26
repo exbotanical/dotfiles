@@ -48,6 +48,12 @@ inter-font
 ttf-lato
 ttf-ubuntu-font-family
 
+# Music library: beets and the dependencies of the discogs and chroma metadata sources
+beets
+chromaprint
+python-discogs-client
+python-pyacoustid
+
 # Soulseek: the client, the batch checks, and the VPN (autodidact miscellaneous/SOULSEEK_GUIDE.md)
 clamav
 flac
