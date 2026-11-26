@@ -1,7 +1,7 @@
 # Installs nvm into the directory apps/nvm/env.bash exports as NVM_DIR, then makes the current
 # node LTS the default. When the default is an older version, the new LTS gets its global packages.
 # PROFILE=/dev/null stops the nvm installer from appending to the stowed ~/.bashrc.
-readonly NVM_INSTALLER_VERSION=v0.40.8
+readonly NVM_INSTALLER_VERSION=v0.41.0
 readonly NVM_REPO=https://github.com/nvm-sh/nvm
 
 module::applies () {

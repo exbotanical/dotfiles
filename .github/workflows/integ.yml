@@ -19,7 +19,7 @@ jobs:
         distro: [ubuntu, arch]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install integration test
         run: ./.dev/run-integ.bash ${{ matrix.distro }}
