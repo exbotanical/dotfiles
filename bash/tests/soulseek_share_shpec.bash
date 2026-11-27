@@ -24,10 +24,33 @@ beet () {
         'albumartist:Nurse With Wound') printf '%s\n' "$LIB/Nurse With Wound/Chance (1979)" "$LIB/Nurse With Wound/Live (1984)" ;;
         'album::(?i)live') printf '%s\n' "$LIB/Nurse With Wound/Live (1984)" ;;
         'albumartist:Godz album::^Contact') printf '%s\n' "$LIB/The Godz/Contact High (1966)" ;;
+        albumartist:Flagged) printf '%s\n' "$LIB/Flagged/Video (2001)" ;;
         bad*) return 1 ;;
       esac
       ;;
   esac
+}
+
+# A fake soulseek_check: every album folder under $LIB/Flagged holds one failing file, video.mp4,
+# unless a --skip glob matches it. Exits with CHECK_STATUS when that is set.
+soulseek_check () {
+  local -a globs=()
+  local dir glob status=0
+  while [[ $1 == --skip ]]; do
+    globs+=("$2")
+    shift 2
+  done
+  shift
+  [[ -n ${CHECK_STATUS:-} ]] && return "$CHECK_STATUS"
+  for dir; do
+    [[ $dir == "$LIB/Flagged/"* ]] || continue
+    for glob in "${globs[@]}"; do
+      [[ $dir/video.mp4 == $glob ]] && continue 2
+    done
+    printf '%s/video.mp4: type: neither audio nor artwork\n' "$dir"
+    status=1
+  done
+  return "$status"
 }
 
 describe 'soulseek_share'
@@ -79,9 +102,43 @@ describe 'soulseek_share'
       assert equal '1 1' "$result"
     ti
 
-    it 'exits 2 on an unknown option'
-      (main -x) > /dev/null 2>&1
-      assert equal 2 $?
+    it 'changes nothing and exits 1 when an album it would add fails the checks'
+      printf '%s\n' 'albumartist:Godz album::^Contact' 'albumartist:Flagged' > "$ALLOWLIST"
+      mkdir -p "$SHARE_DIR/Old Artist"
+      ln -s "$LIB/Old Artist/Gone (1970)" "$SHARE_DIR/Old Artist/Gone (1970)"
+      (main) > /dev/null 2>&1
+      assert equal "1 Old Artist/Gone (1970) -> $LIB/Old Artist/Gone (1970)" "$? $(share_links)"
+    ti
+
+    it 'shares a failing album when --skip matches each failing file'
+      printf '%s\n' 'albumartist:Flagged' > "$ALLOWLIST"
+      main --skip '*/Video (2001)/*.mp4' > /dev/null
+      assert equal "0 Flagged/Video (2001) -> $LIB/Flagged/Video (2001)" "$? $(share_links)"
+    ti
+
+    it 'does not check albums already in the share'
+      printf '%s\n' 'albumartist:Flagged' > "$ALLOWLIST"
+      mkdir -p "$SHARE_DIR/Flagged"
+      ln -s "$LIB/Flagged/Video (2001)" "$SHARE_DIR/Flagged/Video (2001)"
+      main > /dev/null
+      assert equal "0 Flagged/Video (2001) -> $LIB/Flagged/Video (2001)" "$? $(share_links)"
+    ti
+
+    it 'runs no checks with -n'
+      printf '%s\n' 'albumartist:Flagged' > "$ALLOWLIST"
+      main -n > /dev/null
+      assert equal 0 $?
+    ti
+
+    it 'exits 1 when soulseek_check itself fails'
+      printf '%s\n' 'albumartist:Godz album::^Contact' > "$ALLOWLIST"
+      (CHECK_STATUS=2 main) > /dev/null 2>&1
+      assert equal "1 " "$? $(share_links)"
+    ti
+
+    it 'exits 2 on an unknown option or a --skip without a glob'
+      result=$( (main -x) > /dev/null 2>&1; printf '%s ' $?; (main --skip) > /dev/null 2>&1; printf '%s' $?)
+      assert equal '2 2' "$result"
     ti
   end_describe
 end_describe

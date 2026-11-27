@@ -2,7 +2,8 @@
 # Rebuilds the Soulseek share as symlinks to the beets albums an allowlist selects. Each allowlist
 # line is a beets query; an album is shared when any line matches it and no line starting with "!"
 # does. The share mirrors the library's Artist/Album layout, so a link to an album that beets has
-# since renamed is replaced on the next run. Regular files in the share are never touched.
+# since renamed is replaced on the next run. Regular files in the share are never touched. Albums
+# the run would add must first pass soulseek_check; otherwise the run changes nothing.
 
 readonly SOULSEEK_DIR=${SOULSEEK_DIR:-$HOME/soulseek}
 readonly ALLOWLIST=${SOULSEEK_ALLOWLIST:-$SOULSEEK_DIR/allowlist}
@@ -15,13 +16,19 @@ die () {
 
 usage () {
   cat << EOF
-Usage: soulseek_share [-n] [-h]
+Usage: soulseek_share [-n] [-s GLOB]... [-h]
 
 Makes $SHARE_DIR contain exactly the albums that $ALLOWLIST selects, as symlinks named
 Artist/Album like the library. Share that directory in Nicotine+, then use Rescan Shares.
 
-  -n  show the links that would be added and removed, and change nothing
-  -h  show this help
+Before adding albums, runs soulseek_check on them. If any file fails a check, prints the failures
+and changes nothing: fix or remove the files, or rerun with -s for the files to share as they are.
+Albums already in the share are not checked again.
+
+  -n               show the links that would be added and removed, and change nothing; runs no checks
+  -s, --skip GLOB  do not check files whose path matches GLOB (see soulseek_check -h); repeatable,
+                   e.g. -s '*/Some Album (1999)/*.mp4'
+  -h               show this help
 
 Allowlist: one beets query per line; blank lines and lines starting with # are ignored.
   albumartist:"Nurse With Wound"            every album by that artist
@@ -69,13 +76,39 @@ selected_dirs () {
   done
 }
 
+# Runs soulseek_check with the arguments given and fails when a file fails a check.
+check_albums () {
+  local status=0
+  soulseek_check "$@" || status=$?
+  case $status in
+    0) return 0 ;;
+    1)
+      printf 'soulseek_share: the files above failed the checks, so nothing changed; fix them, or rerun with --skip GLOB to share them as they are\n' >&2
+      return 1
+      ;;
+    *) die "soulseek_check exited with status $status" ;;
+  esac
+}
+
 main () {
-  local opt dry_run='' library selected dir rel link target
+  local dry_run='' library selected dir rel link target
+  local -a check_args=() new_dirs=()
   local -A wanted=()
-  while getopts ':nh' opt; do
-    case $opt in
-      n) dry_run=1 ;;
-      h)
+  while (($#)); do
+    case $1 in
+      -n)
+        dry_run=1
+        shift
+        ;;
+      -s | --skip)
+        (($# >= 2)) || {
+          usage >&2
+          return 2
+        }
+        check_args+=(--skip "$2")
+        shift 2
+        ;;
+      -h)
         usage
         return 0
         ;;
@@ -97,6 +130,14 @@ main () {
     [[ $dir == "$library"/* ]] || die "album outside the library: $dir"
     wanted[${dir#"$library"/}]=$dir
   done <<< "$selected"
+
+  for rel in "${!wanted[@]}"; do
+    link=$SHARE_DIR/$rel
+    [[ -L $link && $(readlink "$link") == "${wanted[$rel]}" ]] || new_dirs+=("${wanted[$rel]}")
+  done
+  if [[ -z $dry_run ]] && ((${#new_dirs[@]})); then
+    check_albums "${check_args[@]}" -- "${new_dirs[@]}" || exit 1
+  fi
 
   mkdir -p "$SHARE_DIR" || die "creating $SHARE_DIR failed"
   while IFS= read -r -d '' link; do
