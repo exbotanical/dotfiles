@@ -246,11 +246,14 @@ main () {
     return 2
   }
 
-  local tool resolved
+  local tool path resolved
   for tool in clamscan ffmpeg file flac; do
     command -v "$tool" > /dev/null || die "$tool is not installed"
   done
-  resolved=$(realpath -s -e -- "${paths[@]}") || die 'a PATH does not exist'
+  for path in "${paths[@]}"; do
+    [[ -e $path ]] || die 'a PATH does not exist'
+  done
+  resolved=$(realpath -s -- "${paths[@]}") || die 'realpath failed'
   mapfile -t paths <<< "$resolved"
   warn_old_signatures
 
