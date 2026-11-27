@@ -38,31 +38,42 @@ Allowlist: one beets query per line; blank lines and lines starting with # are i
   category:noise label_type:independent      fields stored by the library classification
   !album::(?i)live                           a leading ! removes matching albums
 
+Quoting: a line is split into terms as a shell splits words. Quote a value that contains spaces,
+&, or an apostrophe, and put no space after the colon: albumartist:"Amos & Sara",
+albumartist:"Guns N' Roses". A line with an unmatched quote, no terms, or a field without a value
+(albumartist:) stops the run, because beets matches every album to those. On the command line,
+put the whole term in single quotes, without inner quotes: beet ls -a 'albumartist:Amos & Sara'.
+
 category is one of krautrock, cassette, noise, jungle, other; label_type is one of
 independent, diy, major, major-distributed, unknown. See 'beet help query' for the syntax.
 EOF
 }
 
-# Prints the words of query line $1, split as a shell would split them, each followed by NUL.
+# Splits query line $1 as a shell would into the array named $2. Fails on an unmatched quote, on
+# a line without terms, and on a term that names a field without a value, such as "albumartist:",
+# because beets matches every album to an empty query or an empty value.
 query_words () {
-  xargs printf '%s\0' <<< "$1"
-}
-
-# Prints the directory of every album that query line $1 matches, one per line.
-album_dirs () {
-  local -a words
-  mapfile -d '' -t words < <(query_words "$1") || return 1
-  beet ls -a -p "${words[@]}"
+  local -n words_=$2
+  local word
+  mapfile -d '' -t words_ < <(xargs -r printf '%s\0' <<< "$1" 2> /dev/null)
+  wait $! || return 1
+  ((${#words_[@]})) || return 1
+  for word in "${words_[@]}"; do
+    [[ $word =~ ^[^:]+::?$ ]] && return 1
+  done
+  return 0
 }
 
 # Prints the album directories the allowlist selects, after removing those its ! lines match.
 selected_dirs () {
-  local line query matches dir
+  local line matches dir
+  local -a words
   local -A allowed=() denied=()
   while IFS= read -r line || [[ -n $line ]]; do
-    [[ $line =~ ^[[:space:]]*(#|$) ]] && continue
-    query=${line#!}
-    matches=$(album_dirs "$query") || die "beets rejected the query: $line"
+    line=${line#"${line%%[![:space:]]*}"}
+    [[ -z $line || $line == '#'* ]] && continue
+    query_words "${line#!}" words || die "unmatched quote, no terms, or a field without a value: $line"
+    matches=$(beet ls -a -p "${words[@]}") || die "beets rejected the query: $line"
     if [[ -z $matches ]]; then
       printf 'soulseek_share: no album matches: %s\n' "$line" >&2
       continue

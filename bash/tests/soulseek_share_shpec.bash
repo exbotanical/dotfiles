@@ -15,12 +15,15 @@ share_links () {
 }
 
 # A fake library of three albums: two by Nurse With Wound, one of them live, and one by the Godz.
+# Like beets, it lists every album for an empty query.
 beet () {
   case $1 in
     config) printf 'directory: %s\n' "$LIB" ;;
     ls)
       shift 3
       case "$*" in
+        '') printf '%s\n' "$LIB/Nurse With Wound/Chance (1979)" "$LIB/Nurse With Wound/Live (1984)" "$LIB/The Godz/Contact High (1966)" ;;
+        'albumartist: Godz') printf '%s\n' "$LIB/The Godz/Contact High (1966)" ;;
         'albumartist:Nurse With Wound') printf '%s\n' "$LIB/Nurse With Wound/Chance (1979)" "$LIB/Nurse With Wound/Live (1984)" ;;
         'album::(?i)live') printf '%s\n' "$LIB/Nurse With Wound/Live (1984)" ;;
         'albumartist:Godz album::^Contact') printf '%s\n' "$LIB/The Godz/Contact High (1966)" ;;
@@ -56,11 +59,20 @@ soulseek_check () {
 describe 'soulseek_share'
   describe 'query_words'
     it 'splits a query line the way a shell would'
-      result=$(for line in 'albumartist:"Nurse With Wound"' 'albumartist:Godz album::^Contact' "label:'A B' , label:C"; do
-        query_words "$line" | tr '\0' '|'
+      result=$(for line in 'albumartist:"Nurse With Wound"' 'albumartist:Godz album::^Contact' "label:'A B' , label:C" "albumartist:\"Guns N' Roses\""; do
+        query_words "$line" words
+        printf '%s|' "$?" "${words[@]}"
         printf '\n'
       done)
-      assert equal $'albumartist:Nurse With Wound|\nalbumartist:Godz|album::^Contact|\nlabel:A B|,|label:C|' "$result"
+      assert equal $'0|albumartist:Nurse With Wound|\n0|albumartist:Godz|album::^Contact|\n0|label:A B|,|label:C|\n0|albumartist:Guns N\' Roses|' "$result"
+    ti
+
+    it 'fails on an unmatched quote, no terms, or a field without a value'
+      result=$(for line in "albumartist:Guns N' Roses" 'album:"Hopes and Fears' '' '   ' 'albumartist: "Amos & Sara"' 'album:: year:1970'; do
+        query_words "$line" words
+        printf '%s ' "$?"
+      done)
+      assert equal '1 1 1 1 1 1 ' "$result"
     ti
   end_describe
 
@@ -95,6 +107,21 @@ describe 'soulseek_share'
       printf '%s\n' 'albumartist:"Nurse With Wound"' > "$ALLOWLIST"
       main -n > /dev/null
       assert equal '' "$(share_links)"
+    ti
+
+    it 'reads a ! line indented with spaces as a ! line'
+      printf '%s\n' 'albumartist:"Nurse With Wound"' '   !album::(?i)live' > "$ALLOWLIST"
+      main > /dev/null
+      assert equal "Nurse With Wound/Chance (1979) -> $LIB/Nurse With Wound/Chance (1979)" "$(share_links)"
+    ti
+
+    it 'changes nothing and exits 1 on a line that beets would read as every album'
+      result=$(for line in 'album:"Hopes and Fears' '!' 'albumartist: Godz'; do
+        printf '%s\n' "$line" > "$ALLOWLIST"
+        (main) > /dev/null 2>&1
+        printf '%s:%s ' "$?" "$(share_links | wc -l)"
+      done)
+      assert equal '1:0 1:0 1:0 ' "$result"
     ti
 
     it 'exits 1 when the allowlist is missing or beets rejects a query'
