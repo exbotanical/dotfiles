@@ -2,6 +2,7 @@ RootDir="$(dirname "$(readlink -f $BASH_SOURCE)")"
 TestRoot=$(mktemp -d)
 Script=$RootDir/../.config/bash/apps/soulseek/scripts/soulseek_check.bash
 export SOULSEEK_INCOMPLETE=$TestRoot/downloads/incomplete
+export SOULSEEK_CACHE=$TestRoot/cache
 
 source "$RootDir/../../.test/shpec_utils.bash"
 source "$Script"
@@ -11,27 +12,40 @@ source "$Script"
 export GenuineBands=$'20000 -47.6\n19000 -47.3\n18000 -47.2\n17000 -46.9\n16000 -46.7\n15000 -46.4\n14000 -46.1\n13000 -45.8'
 export TranscodeBands=$'19000 -104.7\n18000 -103.9\n17000 -102.1\n16000 -49.7\n15000 -46.8\n14000 -46.4\n13000 -46.2'
 
-# Fakes of the tools, which judge each file by its content: a marker word (virus, text, corrupt,
+# Fakes of the tools. Each judges a file by its content: a marker word (virus, text, corrupt,
 # transcode) or "damaged N" for a file with N damaged frames. They are exported so that the
-# script, run as its own process, calls them.
+# script, executed as its own process, calls them.
+# CLAM_SIGNATURES and FFMPEG_VERSION set the versions they report; CLAM_FLAGS sets the marker word
+# clamscan flags, and FFMPEG_BROKEN=1 makes every decode fail.
 clamscan () {
   local file
   if [[ $1 == --version ]]; then
-    printf 'ClamAV 1.5.4/28194/%s\n' "$(date)"
+    printf "ClamAV 1.5.4/%s/%s\\n" "${CLAM_SIGNATURES:-28194}" "$(date "+%a %b %e 00:00:00 %Y")"
     return 0
   fi
   while IFS= read -r file; do
-    if grep -q virus "$file"; then printf '%s: Eicar-Test-Signature FOUND\n' "$file"; fi
+    if grep -q "${CLAM_FLAGS:-virus}" "$file"; then printf '%s: Eicar-Test-Signature FOUND\n' "$file"; fi
   done < "${3#--file-list=}"
   return 0
 }
 file () {
-  if grep -q text "$3"; then printf 'ASCII text\n'; else printf 'FLAC audio bitstream data\n'; fi
+  if [[ $1 == --version ]]; then
+    printf 'file-5.46\nmagic file from /usr/share/file/misc/magic\n'
+  elif grep -q text "$3"; then
+    printf 'ASCII text\n'
+  else
+    printf 'FLAC audio bitstream data\n'
+  fi
 }
 ffmpeg () {
   local input word count bands
+  if [[ $1 == -version ]]; then
+    printf 'ffmpeg version %s\nbuilt with gcc 15\n' "${FFMPEG_VERSION:-8.0}"
+    return 0
+  fi
   while [[ $1 != -i ]]; do shift; done
   input=$2
+  [[ -n ${FFMPEG_BROKEN:-} ]] && return 234
   grep -q corrupt "$input" && return 234
   if [[ $* != *-filter_complex* ]]; then
     read -r word count < "$input"
@@ -48,11 +62,15 @@ ffmpeg () {
   done <<< "$bands"
 }
 flac () {
+  if [[ $1 == --version ]]; then
+    printf 'flac 1.5.0\n'
+    return 0
+  fi
   ! grep -q corrupt "$4"
 }
 export -f clamscan file ffmpeg flac
 
-# Writes each "path:content" argument as a file under TestRoot.
+# Writes each given "path:content" argument $@ as a file in TestRoot
 make_files () {
   local spec
   for spec; do
@@ -78,9 +96,9 @@ describe 'soulseek_check'
     ti
   end_describe
 
-  # These run the script as its own process, so they run under its set -euo pipefail.
+  # These execute the script as its own process; they are therefore subject to its set -euo pipefail
   describe 'the script'
-    alias setup='rm -rf "$TestRoot/downloads"'
+    alias setup='rm -rf "$TestRoot/downloads" "$SOULSEEK_CACHE"'
 
     it 'prints one sorted line per failed check and per warning, and exits 1 on a failure'
       d=$TestRoot/downloads/album
@@ -120,6 +138,29 @@ $d/setup.exe: type: neither audio nor artwork" "$? $output"
       make_files downloads/album/01.flac:corrupt downloads/album/video.mp4:ok downloads/album/02.flac:ok
       output=$(bash "$Script" --skip '*/01.flac' -s '*.mp4' "$TestRoot/downloads/album")
       assert equal '0 ' "$? $output"
+    ti
+
+    it 'reuses the cached results of an unchanged file and checks a changed one'
+      d=$TestRoot/downloads/album
+      make_files downloads/album/01.flac:ok downloads/album/02.flac:corrupt
+      first=$(bash "$Script" "$d")
+      printf 'changed\n' >> "$d/01.flac"
+      printf 'ok\n' > "$d/02.flac"
+      second=$(FFMPEG_BROKEN=1 bash "$Script" "$d")
+      status=$?
+      assert equal "$d/02.flac: decode: ffmpeg cannot decode the file
+$d/02.flac: flac: flac -t reports an error|1 $d/01.flac: decode: ffmpeg cannot decode the file" "$first|$status $second"
+    ti
+
+    it 'checks every file again when the ClamAV signatures or a tool version change'
+      d=$TestRoot/downloads/album
+      make_files downloads/album/01.flac:virus
+      result=$(for run in 'CLAM_FLAGS=none' 'CLAM_FLAGS=virus' 'CLAM_FLAGS=virus CLAM_SIGNATURES=28195' \
+        'FFMPEG_BROKEN=1' 'FFMPEG_BROKEN=1 FFMPEG_VERSION=8.1'; do
+        printf '[%s]' "$(env $run bash "$Script" "$d" | sed "s|$d/||")"
+      done)
+      assert equal '[][][01.flac: malware: Eicar-Test-Signature][01.flac: malware: Eicar-Test-Signature][01.flac: decode: ffmpeg cannot decode the file
+01.flac: malware: Eicar-Test-Signature]' "$result"
     ti
 
     it 'exits 2 without a path, on an unknown option, or for a missing path'

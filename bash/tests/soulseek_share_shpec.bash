@@ -6,7 +6,7 @@ LIB=$TestRoot/Music
 source "$RootDir/../../.test/shpec_utils.bash"
 source "$RootDir/../.config/bash/apps/soulseek/scripts/soulseek_share.bash"
 
-# Lists the links in the share as "relative path -> target", sorted, one per line.
+# Prints the sorted, newline-delimited links in the share as "relative path -> target"
 share_links () {
   local link
   while IFS= read -r -d '' link; do
@@ -14,8 +14,9 @@ share_links () {
   done < <(find "$SHARE_DIR" -type l -print0) | sort
 }
 
-# A fake library of three albums: two by Nurse With Wound, one of them live, and one by the Godz.
-# Like beets, it lists every album for an empty query.
+# A fake beets library: two albums by Nurse With Wound (one of them live), one by the Godz, one in
+# Flagged, and albums in music_archive by Steve Reich and the Godz. As beets does, it lists every
+# album for an empty query.
 beet () {
   case $1 in
     config) printf 'directory: %s\n' "$LIB" ;;
@@ -28,14 +29,16 @@ beet () {
         'album::(?i)live') printf '%s\n' "$LIB/Nurse With Wound/Live (1984)" ;;
         'albumartist:Godz album::^Contact') printf '%s\n' "$LIB/The Godz/Contact High (1966)" ;;
         albumartist:Flagged) printf '%s\n' "$LIB/Flagged/Video (2001)" ;;
+        'albumartist:Steve Reich') printf '%s\n' "$LIB/music_archive/Steve Reich/Drumming (1974)" ;;
+        album:Contact) printf '%s\n' "$LIB/The Godz/Contact High (1966)" "$LIB/music_archive/The Godz/Contact High (1966)" ;;
         bad*) return 1 ;;
       esac
       ;;
   esac
 }
 
-# A fake soulseek_check: every album folder under $LIB/Flagged holds one failing file, video.mp4,
-# unless a --skip glob matches it. Exits with CHECK_STATUS when that is set.
+# A fake soulseek_check: every album folder in $LIB/Flagged contains one failing file, video.mp4,
+# unless a --skip glob matches it. Exits with CHECK_STATUS if that is set.
 soulseek_check () {
   local -a globs=()
   local dir glob status=0
@@ -161,6 +164,27 @@ describe 'soulseek_share'
       printf '%s\n' 'albumartist:Godz album::^Contact' > "$ALLOWLIST"
       (CHECK_STATUS=2 main) > /dev/null 2>&1
       assert equal "1 " "$? $(share_links)"
+    ti
+
+    it 'shares an album of the music_archive folder under its Artist/Album name'
+      printf '%s\n' 'albumartist:"Steve Reich"' > "$ALLOWLIST"
+      main > /dev/null
+      assert equal "Steve Reich/Drumming (1974) -> $LIB/music_archive/Steve Reich/Drumming (1974)" "$(share_links)"
+    ti
+
+    it 'changes nothing and exits 1 when two albums would get the same link name'
+      printf '%s\n' 'album:Contact' > "$ALLOWLIST"
+      (main) > /dev/null 2>&1
+      assert equal '1 ' "$? $(share_links)"
+    ti
+
+    it 'changes nothing and exits 1 on a line or a ! line that matches no album'
+      result=$(for line in 'albumartist:Nobody' '!albumartist:Nobody'; do
+        printf '%s\n' 'albumartist:"Nurse With Wound"' "$line" > "$ALLOWLIST"
+        (main) > /dev/null 2>&1
+        printf '%s:%s ' "$?" "$(share_links | wc -l)"
+      done)
+      assert equal '1:0 1:0 ' "$result"
     ti
 
     it 'exits 2 on an unknown option or a --skip without a glob'

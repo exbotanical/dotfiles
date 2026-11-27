@@ -1,0 +1,14 @@
+# Overlay for the beet import that soulseek_import --apply executes with --search-id and the release
+# its proposal matched. The import writes tags and moves the files. It accepts said release at any
+# distance and with missing tracks, because the user approved the proposal.
+import:
+  write: yes
+  move: yes
+  quiet_fallback: skip
+  duplicate_action: skip
+match:
+  # A quiet import applies a match only if its distance is below strong_rec_thresh, and a distance
+  # never exceeds 1
+  strong_rec_thresh: 1.01
+  max_rec:
+    missing_tracks: strong

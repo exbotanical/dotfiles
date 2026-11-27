@@ -1,0 +1,35 @@
+# An import records matches in the database only; write, copy, and move stay off unless an
+# overlay (intake.yaml or soulseek-import.yaml, passed via beet -c) turns them on.
+# secrets.yaml is not in the repository and contains the Discogs token:
+#   discogs:
+#     user_token: "..."
+include: [secrets.yaml]
+directory: ~/Music
+library: ~/.local/share/beets/library.db
+pluginpath: [~/.config/beets/plugins]
+import:
+  languages: en
+  write: no
+  copy: no
+  move: no
+  quiet_fallback: skip
+# beets uses the first rule whose query matches, so the archive rules precede comp. soulseek_import
+# sets archive=1 on the albums it adds; this ensures said albums stay in the music_archive folder
+# whenever beets moves files.
+paths:
+  'archive:1 comp:true': music_archive/Various Artists/$album%aunique{}%if{$year, ($year)}/$track $title
+  'archive:1': music_archive/$albumartist/$album%aunique{}%if{$year, ($year)}/$track $title
+  default: $albumartist/$album%aunique{}%if{$year, ($year)}/$track $title
+  singleton: Non-Album/$artist/$title
+  comp: Various Artists/$album%aunique{}%if{$year, ($year)}/$track $title
+plugins: musicbrainz mbsync discogs chroma types candidates proposal
+# Exact release names: Linux forbids only "/" and NUL in a name, so only those are substituted.
+# U+FF0F stands in for "/" because Nicotine+ search splits words at it, as at "/".
+path_sep_replace: ／
+drive_sep_replace: ':'
+replace:
+  '\x00': ''
+  '\\': ＼
+# Lets range queries such as missing:1.. compare missing as a number.
+types:
+  missing: int

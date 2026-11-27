@@ -57,8 +57,10 @@ chromaprint
 python-discogs-client
 python-pyacoustid
 
-# Soulseek: the client, the batch checks, and the VPN (autodidact miscellaneous/SOULSEEK_GUIDE.md)
+# Soulseek: the client, the batch checks, and the VPN.
+# soulseek_import compares file manifests with cmp from diffutils, which the base metapackage omits.
 clamav
+diffutils
 flac
 ffmpeg
 gnome-keyring

@@ -1,0 +1,9 @@
+# Overlay for a manual beet -c intake.yaml import: writes tags, moves files into the library, and
+# accepts albums with missing tracks
+import:
+  write: yes
+  move: yes
+match:
+  strong_rec_thresh: 0.1
+  max_rec:
+    missing_tracks: strong

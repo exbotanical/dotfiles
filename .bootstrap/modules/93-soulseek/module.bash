@@ -1,6 +1,6 @@
-# Prepares the Soulseek setup that autodidact's miscellaneous/SOULSEEK_GUIDE.md describes: its
-# folders, and ClamAV signatures for the batch scan. clamav-freshclam-once.timer, which the clamav
-# package ships, runs freshclam daily and catches up after a missed day.
+# Prepares the Soulseek setup: its folders, and ClamAV signatures for the batch scan.
+# clamav-freshclam-once.timer, which the clamav package ships, runs freshclam daily and catches up
+# after a missed day.
 readonly FOLDERS=(
   "$HOME/Downloads/soulseek/incomplete"
   "$HOME/Downloads/soulseek/received"
