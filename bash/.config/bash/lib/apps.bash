@@ -16,6 +16,7 @@ for app in $APP_LIST; do
     init::debug "Loading env and login configs for $app if present"
     init::source? $app/env.bash
     init::source? $app/login.bash
+    init::install_scripts $app/scripts
   }
 
   utils::splitspace on

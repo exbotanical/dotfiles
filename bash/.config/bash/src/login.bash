@@ -1,16 +1,6 @@
-# Copy scripts to user-local executables dir
-(
-  init::debug 'Loading scripts'
-  utils::globbing on
-
-  for file in $RootDir/scripts/*; do
-    init::debug "Loading script $file"
-
-    chmod u+x $file
-    file_name=$(basename $file)
-    rsync -u $file $ExecDir/${file_name%.*}
-  done
-)
+# Copy scripts to user-local executables dir; lib/apps.bash copies each loaded app's scripts
+init::debug 'Loading scripts'
+init::install_scripts $RootDir/scripts
 
 init::feature_enabled? WMOnStartup && {
   init::debug 'WMOnStartup enabled'

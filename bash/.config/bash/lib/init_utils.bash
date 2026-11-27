@@ -55,6 +55,21 @@ init::source? () {
   utils::file? $1 && source $1
 }
 
+# install_scripts copies each script in the directory $1 to ExecDir, named without its extension
+init::install_scripts () { (
+  local file name
+  utils::globbing on
+
+  for file in "$1"/*; do
+    [[ -f $file ]] || continue
+    init::debug "Loading script $file"
+
+    chmod u+x "$file"
+    name=${file##*/}
+    rsync -u "$file" "$ExecDir/${name%.*}"
+  done
+); }
+
 init::load_app? () {
   local dir=$1
   local detect_file=$dir/detect.bash

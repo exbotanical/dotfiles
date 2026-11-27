@@ -4,7 +4,7 @@ export SOULSEEK_DIR=$TestRoot/soulseek
 LIB=$TestRoot/Music
 
 source "$RootDir/../../.test/shpec_utils.bash"
-source "$RootDir/../.config/bash/scripts/soulseek_share.bash"
+source "$RootDir/../.config/bash/apps/soulseek/scripts/soulseek_share.bash"
 
 # Lists the links in the share as "relative path -> target", sorted, one per line.
 share_links () {

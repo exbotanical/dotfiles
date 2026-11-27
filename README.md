@@ -88,4 +88,4 @@ The Bash config loader is fully unit-tested using `shpec`. One can find the test
 
 ### Scripts
 
-I've written various Bash scripts that are housed [here](bash/.config/bash/scripts). When loading the login configurations, I [load](bash/.config/bash/settings/login.bash#L3) these into `/usr/bin` so they're on the `PATH`.
+I've written various Bash scripts that are housed [here](bash/.config/bash/scripts). When loading the login configurations, I [copy](bash/.config/bash/src/login.bash) these into `~/.local/bin` so they're on the `PATH`. A script that needs a specific program goes in that app's `scripts` directory instead (e.g. [soulseek](bash/.config/bash/apps/soulseek/scripts)), and it is copied only on machines where the app loads.

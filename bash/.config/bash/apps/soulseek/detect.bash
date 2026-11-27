@@ -1,0 +1,1 @@
+type nicotine &> /dev/null

@@ -3,7 +3,8 @@ set -euo pipefail
 
 readonly REPO="$HOME/dotfiles"
 readonly INIT_FILE="$HOME/.config/bash/init.bash"
-readonly SCRIPTS_DIR="$REPO/bash/.config/bash/scripts"
+readonly BASH_CONFIG_DIR="$REPO/bash/.config/bash"
+readonly SCRIPTS_DIR="$BASH_CONFIG_DIR/scripts"
 # Modules that take several minutes to compile or are otherwise large (e.g. gigabytes).
 # These are skipped during the integ tests. They nevertheless have at least some unit test coverage.
 readonly HEAVY_MODULES=30-aur,43-haskell,45-cargo,61-eww
@@ -131,14 +132,32 @@ assert_shell_loads () {
   [[ -z $output ]] || fail "bash $flags wrote output: $output"
 }
 
-# Asserts that an interactive login copies every script into ~/.local/bin.
-# See: bash/.config/bash/src/login.bash
+# Succeeds when the bash config loads the app $1 on this host.
+app_loads () {
+  bash -c 'source "$1/lib/utils.bash"; source "$1/lib/init_utils.bash"; cd "$1/apps"; init::load_app? "$2"' \
+    _ "$BASH_CONFIG_DIR" "$1"
+}
+
+# Asserts that an interactive login copies every script, and the scripts of each app that loads,
+# into ~/.local/bin, and none of the scripts of an app that does not load.
+# See: bash/.config/bash/src/login.bash, bash/.config/bash/lib/apps.bash
 assert_login_state () {
   log 'asserting login state'
-  local script name
+  local script name app
   for script in "$SCRIPTS_DIR"/*; do
     name=${script##*/}
     [[ -x "$HOME/.local/bin/${name%.*}" ]] || fail "expected executable ~/.local/bin/${name%.*}"
+  done
+  for script in "$BASH_CONFIG_DIR"/apps/*/scripts/*; do
+    name=${script##*/}
+    name=${name%.*}
+    app=${script%/scripts/*}
+    app=${app##*/}
+    if app_loads "$app"; then
+      [[ -x "$HOME/.local/bin/$name" ]] || fail "expected executable ~/.local/bin/$name"
+    else
+      [[ ! -e "$HOME/.local/bin/$name" ]] || fail "expected no ~/.local/bin/$name, because $app does not load"
+    fi
   done
 }
 

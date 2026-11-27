@@ -6,10 +6,23 @@ SHELL := bash
 # fails there instead of writing to init.bash. rm runs first because the files are read-only.
 RC_FILES := $(HOME)/.bashrc $(HOME)/.bash_profile
 
-# Login shells copy each script to ~/.local/bin without its extension (src/login.bash);
-# postinstall makes the same copies so that an install takes effect before the next login.
-SCRIPTS := $(wildcard .config/bash/scripts/*.bash)
+# Login shells copy each script, and the scripts of each app that loads on this host, to
+# ~/.local/bin without its extension (src/login.bash, lib/apps.bash); postinstall makes the same
+# copies with the same functions so that an install takes effect before the next login.
 BIN_DIR := $(HOME)/.local/bin
+define INSTALL_SCRIPTS
+source .config/bash/lib/utils.bash
+source .config/bash/lib/init_utils.bash
+init::install_scripts .config/bash/scripts
+cd .config/bash/apps > /dev/null
+for app in */; do
+  app=$${app%/}
+  if [[ -d $$app/scripts ]] && init::load_app? $$app; then
+    init::install_scripts $$app/scripts
+  fi
+done
+endef
+export INSTALL_SCRIPTS
 
 .PHONY: all postinstall unit_test
 
@@ -23,10 +36,7 @@ postinstall:
 		chmod 444 "$$rc"; \
 	done
 	@mkdir -p $(BIN_DIR)
-	@for script in $(SCRIPTS); do \
-		name=$${script##*/}; \
-		rsync -u --chmod=u+x "$$script" "$(BIN_DIR)/$${name%.bash}"; \
-	done
+	@ExecDir=$(BIN_DIR) bash -c "$$INSTALL_SCRIPTS"
 
 unit_test:
 	shpec tests/*_shpec.bash
