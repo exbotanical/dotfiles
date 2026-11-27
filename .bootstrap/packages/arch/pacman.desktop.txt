@@ -48,6 +48,9 @@ inter-font
 ttf-lato
 ttf-ubuntu-font-family
 
+# Icon theme that the Dracula icon theme in x11/.config/theme.env inherits its status icons from
+papirus-icon-theme
+
 # Music library: beets and the dependencies of the discogs and chroma metadata sources
 beets
 chromaprint

@@ -4,7 +4,7 @@
     follow = mouse
 
     ### Geometry ###
-    width = (300, 400)
+    width = 340
     height = 120
     origin = top-right
     offset = 20x60
@@ -13,34 +13,36 @@
 
     ### Progress bar ###
     progress_bar = true
-    progress_bar_height = 12
-    progress_bar_frame_width = 2
+    progress_bar_height = 6
+    progress_bar_frame_width = 0
+    progress_bar_corner_radius = 3
     progress_bar_min_width = 200
-    progress_bar_max_width = 380
+    progress_bar_max_width = 340
 
     ### Visual Enhancements ###
     indicate_hidden = yes
-    transparency = 8
-    separator_height = 2
-    padding = 18
-    horizontal_padding = 18
+    # Matches the 0.95 window opacity in alacritty/.config/alacritty/alacritty.toml.
+    transparency = 5
+    separator_height = 0
+    # Stacked notifications render as separate cards instead of one block with separators.
+    gap_size = 8
+    padding = 12
+    horizontal_padding = 14
     text_icon_padding = 12
 
     corner_radius = 12
 
-    frame_width = 0
-
-    separator_color = "#6272a4"
+    frame_width = 1
 
     sort = yes
     idle_threshold = 120
 
     ### Typography ###
-    font = "Fira Code 16"
-    line_height = 3
+    font = "FiraCode Nerd Font 12"
+    line_height = 2
     markup = full
 
-    format = "<b>%s</b> %p\n<span size='small' alpha='90%'>%b</span>"
+    format = "<b>%s</b>\n<span alpha='70%%'>%b</span>"
 
     alignment = left
     vertical_alignment = center
@@ -53,10 +55,12 @@
 
     ### Icons ###
     icon_position = left
-    min_icon_size = 48
-    max_icon_size = 64
+    min_icon_size = 32
+    max_icon_size = 40
+    icon_corner_radius = 6
     # Looks icons up by name in these themes (x11/.config/theme.env installs Dracula), instead of
-    # the fixed icon_path directories, which neither machine has.
+    # the fixed icon_path directories, which neither machine has. Dracula inherits the status
+    # icons (volume, brightness, battery) from Papirus-Dark, which the bootstrap package lists install.
     enable_recursive_icon_lookup = true
     icon_theme = "Dracula, Adwaita"
 
@@ -84,104 +88,97 @@
 [experimental]
     per_monitor_dpi = false
 
+### Colors from alacritty/.config/alacritty/themes/ghost.toml ###
 [urgency_low]
-    background = "#282A36"
-    foreground = "#6272a4"
-    highlight = "#8be9fd"
+    background = "#282a36"
+    foreground = "#bfbfbf"
+    frame_color = "#44475a"
+    highlight = "#8abeb7"
     timeout = 8
 
 [urgency_normal]
-    background = "#282A36"
-    foreground = "#F8F8F2"
-    highlight = "#50fa7b"
+    background = "#282a36"
+    foreground = "#f8f8f2"
+    frame_color = "#44475a"
+    highlight = "#8abeb7"
     timeout = 10
 
 [urgency_critical]
-    background = "#ff5555"
+    background = "#282a36"
     foreground = "#f8f8f2"
-    highlight = "#ffb86c"
+    frame_color = "#ff5555"
+    highlight = "#ff5555"
     timeout = 0
+    format = "<b><span foreground='#ff5555'>%s</span></b>\n<span alpha='70%%'>%b</span>"
 
-### Application-Specific Styling with Dracula Colors ###
+### Application-Specific Rules ###
 [volume]
     appname = "volume"
     set_stack_tag = "volume"
     timeout = 2
-    format = "<b>🔊 %s</b>\n%b"
 
 [volume_muted]
     appname = "volume"
     summary = "*Muted*"
     set_stack_tag = "volume"
     timeout = 2
-    format = "<b>🔇 %s</b>\n%b"
-    background = "#ff5555"
-    foreground = "#f8f8f2"
+    highlight = "#4d4d4d"
 
 [brightness]
     appname = "*brightness*"
     set_stack_tag = "brightness"
     timeout = 2
-    format = "<b>☀️ Brightness</b>\n%b"
+    # bash/.config/bash/scripts/brightness.bash sends no body, which would render as a blank line.
+    format = "<b>%s</b>"
 
 [battery]
     appname = "*battery*"
     set_stack_tag = "battery"
-    format = "<b>🔋 Battery</b>\n%b"
 
 [network]
     appname = "*network*"
     timeout = 6
-    format = "<b>🌐 Network</b>\n%b"
 
 [music]
     appname = "*music*"
     appname = "*spotify*"
     appname = "*mpd*"
     timeout = 4
-    format = "<b>🎵 Music</b>\n%b"
 
 [screenshot]
     appname = "Shutter"
     timeout = 3
-    format = "<b>📸 Screenshot</b>\n%b"
 
-### Status-Based Styling ###
+### Status-Based Frame Accents ###
 [success]
     summary = "*success*"
     summary = "*completed*"
     summary = "*done*"
     summary = "*finished*"
+    frame_color = "#69ff94"
     timeout = 5
-    format = "<b>✅ Success</b>\n%b"
 
 [warning]
     summary = "*warning*"
     summary = "*warn*"
     summary = "*caution*"
-    background = "#f1fa8c"
-    foreground = "#282A36"
+    frame_color = "#ffffa5"
     timeout = 8
-    format = "<b>⚠️ Warning</b>\n%b"
 
 [error]
     summary = "*error*"
     summary = "*failed*"
     summary = "*fail*"
     summary = "*critical*"
-    background = "#ff5555"
-    foreground = "#f8f8f2"
+    frame_color = "#ff5555"
     timeout = 12
-    format = "<b>❌ Error</b>\n%b"
 
 [info]
     summary = "*info*"
     summary = "*information*"
     summary = "*note*"
-    background = "#8be9fd"
-    foreground = "#282A36"
+    frame_color = "#99d1d8"
     timeout = 6
-    format = "<b>ℹ️ Info</b>\n%b"
 
 ### Special Rules ###
 [transient_disable]

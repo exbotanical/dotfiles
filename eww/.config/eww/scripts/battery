@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Prints the state of the first battery as one JSON line every INTERVAL seconds, and sends a
 # critical notification every LOW_NOTIFY_INTERVAL seconds while it is not charging and at or below
-# LOW_PERCENT. Without a battery, prints one line with percentage 0 and exits.
+# LOW_PERCENT. Closes that notification once the battery charges. Without a battery, prints one line
+# with percentage 0 and exits.
 # Usage: battery
 # See: https://www.kernel.org/doc/html/latest/power/power_supply_class.html
 set -euo pipefail
@@ -9,6 +10,8 @@ set -euo pipefail
 readonly INTERVAL=1
 readonly LOW_PERCENT=15
 readonly LOW_NOTIFY_INTERVAL=30
+# Each warning replaces the previous one under this ID, so closing it removes the only warning.
+readonly LOW_NOTIFICATION_ID=9994
 
 if [[ ${SYSTEM_THEME:-} == everforest ]]; then
   readonly RED='#e67e80' YELLOW='#dbbc7f' GREEN='#a7c080' BLUE='#7fbbb3'
@@ -69,14 +72,21 @@ main () {
     return
   fi
 
-  local tick=0 last_notified=-$LOW_NOTIFY_INTERVAL capacity state
+  local tick=0 last_notified=-$LOW_NOTIFY_INTERVAL low_shown=false capacity state
   while true; do
     capacity=$(< "$dir/capacity")
     state=$(< "$dir/status")
 
-    if [[ $state != Charging ]] && ((capacity <= LOW_PERCENT && SECONDS - last_notified >= LOW_NOTIFY_INTERVAL)); then
-      notify-send -u critical -a battery 'Battery low' "$capacity% remaining"
-      last_notified=$SECONDS
+    if [[ $state != Charging ]] && ((capacity <= LOW_PERCENT)); then
+      if ((SECONDS - last_notified >= LOW_NOTIFY_INTERVAL)); then
+        notify-send -u critical -a battery -r "$LOW_NOTIFICATION_ID" 'Battery low' "$capacity% remaining"
+        last_notified=$SECONDS
+        low_shown=true
+      fi
+    elif [[ $low_shown == true ]]; then
+      dunstify -C "$LOW_NOTIFICATION_ID"
+      last_notified=-$LOW_NOTIFY_INTERVAL
+      low_shown=false
     fi
 
     jq -nc \

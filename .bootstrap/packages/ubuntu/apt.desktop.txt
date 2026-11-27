@@ -46,6 +46,9 @@ fonts-inter
 fonts-lato
 fonts-ubuntu
 
+# Icon theme that the Dracula icon theme in x11/.config/theme.env inherits its status icons from
+papirus-icon-theme
+
 # eww build dependencies (elkowar.github.io/eww)
 libcairo2-dev
 libdbusmenu-gtk3-dev
