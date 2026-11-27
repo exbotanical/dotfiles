@@ -23,7 +23,8 @@ Artist/Album like the library. Share that directory in Nicotine+, then use Resca
 
 Before adding albums, runs soulseek_check on them. If any file fails a check, prints the failures
 and changes nothing: fix or remove the files, or rerun with -s for the files to share as they are.
-Albums already in the share are not checked again.
+Warnings, such as a few damaged frames in a file, are printed and do not stop the run. Albums
+already in the share are not checked again.
 
   -n               show the links that would be added and removed, and change nothing; runs no checks
   -s, --skip GLOB  do not check files whose path matches GLOB (see soulseek_check -h); repeatable,

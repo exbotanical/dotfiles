@@ -2,7 +2,7 @@
 # Runs the batch checks of autodidact's miscellaneous/SOULSEEK_GUIDE.md (section 10) on music
 # files: a ClamAV scan, a file type allowlist, the real type of each audio file, a full decode,
 # `flac -t` on FLAC files, and a test for lossless files decoded from a lossy encoding. Prints one
-# line per failed check and changes no file.
+# line per failed check or warning and changes no file.
 
 readonly AUDIO_EXTENSIONS=' flac mp3 m4a ogg opus wav aiff '
 readonly ARTWORK_EXTENSIONS=' jpg jpeg png cue log txt '
@@ -11,6 +11,10 @@ readonly LOSSLESS_EXTENSIONS=' flac wav aiff '
 readonly AUDIO_TYPES='audio|flac|mpeg|ogg|wave|iso media'
 readonly INCOMPLETE_DIR=${SOULSEEK_INCOMPLETE:-$HOME/Downloads/soulseek/incomplete}
 readonly SIGNATURE_MAX_AGE_DAYS=3
+# A few damaged frames in a file that otherwise decodes are inaudible (an MP3 frame is about
+# 26 ms), so up to MAX_DAMAGED_FRAMES of them are a warning.
+readonly MAX_DAMAGED_FRAMES=50
+readonly WARNING_SUFFIX=' (warning)'
 JOBS=$(nproc)
 readonly JOBS
 
@@ -37,7 +41,8 @@ usage () {
 Usage: soulseek_check [-s GLOB]... PATH...
 
 Checks every file under each PATH (files or directories, followed through symlinks) and prints
-one "path: check: detail" line per failure. Exits 0 when every file passes, 1 when any fails.
+one "path: check: detail" line per failure, and the same line ending in "$WARNING_SUFFIX" per
+warning. Exits 0 when no file fails, including when there are warnings, and 1 when any fails.
 
   -s, --skip GLOB  do not check files whose absolute path matches GLOB, a bash pattern in
                    which * also matches /; repeat for more globs
@@ -47,7 +52,8 @@ Checks:
   malware    ClamAV flags the file (signatures older than $SIGNATURE_MAX_AGE_DAYS days are reported)
   type       the extension is neither audio (${AUDIO_EXTENSIONS# }) nor artwork or notes (${ARTWORK_EXTENSIONS# })
   content    an audio file's content is not audio, whatever its extension says
-  decode     ffmpeg reports an error decoding the file
+  decode     ffmpeg cannot decode the file, or finds more than $MAX_DAMAGED_FRAMES damaged frames in it;
+             1 to $MAX_DAMAGED_FRAMES damaged frames are a warning
   flac       flac -t reports an error in a FLAC file
   transcode  a FLAC, WAV, or AIFF file has a lossy encoder's cutoff below 20 kHz; check it in Spek.
              Cutoffs of 320 kbit/s and V0 MP3s lie above 20 kHz and pass.
@@ -139,6 +145,25 @@ cutoff () {
   '
 }
 
+# Prints a decode line for the file $1 when ffmpeg cannot decode it or finds damaged frames in it.
+# ffmpeg prints "Error submitting packet to decoder" once per damaged frame; the repeat flag
+# stops it from folding identical lines into "Last message repeated" lines. Other error output
+# counts one frame per line.
+check_decode () {
+  local errors damaged unit=frames suffix=$WARNING_SUFFIX
+  if ! errors=$(ffmpeg -nostdin -v repeat+error -i "$1" -f null - 2>&1 > /dev/null); then
+    printf '%s: decode: ffmpeg cannot decode the file\n' "$1"
+    return 0
+  fi
+  [[ -n $errors ]] || return 0
+  damaged=$(grep -c 'Error submitting packet to decoder' <<< "$errors")
+  ((damaged)) || damaged=$(wc -l <<< "$errors")
+  ((damaged == 1)) && unit=frame
+  ((damaged > MAX_DAMAGED_FRAMES)) && suffix=''
+  printf '%s: decode: %s damaged %s%s\n' "$1" "$damaged" "$unit" "$suffix"
+  return 0
+}
+
 # Prints a line for each check of the audio checks that the file $1, of extension $2, fails.
 check_audio () {
   local file=$1 extension=$2 type drop
@@ -147,9 +172,7 @@ check_audio () {
     printf '%s: content: %s\n' "$file" "$type"
     return 0
   fi
-  if ! ffmpeg -nostdin -v error -xerror -i "$file" -f null - > /dev/null 2>&1; then
-    printf '%s: decode: ffmpeg reports an error\n' "$file"
-  fi
+  check_decode "$file"
   if [[ $extension == flac ]] && ! flac -t -s -- "$file" > /dev/null 2>&1; then
     printf '%s: flac: flac -t reports an error\n' "$file"
   fi
@@ -188,7 +211,7 @@ check_each_file () {
 
 main () {
   local -a paths=()
-  local work violations
+  local work results
   while (($#)); do
     case $1 in
       -s | --skip)
@@ -238,13 +261,17 @@ main () {
   [[ -s $work/files ]] || return 0
   tr '\0' '\n' < "$work/files" > "$work/clamscan-list"
 
-  violations=$({
+  results=$({
     check_malware "$work/clamscan-list"
     check_each_file < "$work/files"
   } | LC_ALL=C sort) || exit 2
-  [[ -z $violations ]] && return 0
-  printf '%s\n' "$violations"
-  return 1
+  [[ -n $results ]] || return 0
+  printf '%s\n' "$results"
+  # A line without the warning suffix is a failure.
+  if grep -q -v -F -e "$WARNING_SUFFIX" <<< "$results"; then
+    return 1
+  fi
+  return 0
 }
 
 # stop here if being sourced
