@@ -16,6 +16,8 @@ readonly SEPARATOR=$'\x1f'
 # beets formats and parses a multi-value field such as genres with this delimiter
 readonly GENRE_DELIMITER='; '
 readonly WARNING_SUFFIX=' (warning)'
+# The audio extensions of beet propose's audio_items, space-delimited with a space at each end
+readonly AUDIO_EXTENSIONS=' aac aif aiff alac ape flac m4a m4p mp3 mp4 mpc ogg opus wav wma wv '
 
 die () {
   printf 'soulseek_import: %s\n' "$@" >&2
@@ -42,8 +44,9 @@ every folder passed that run and no file changed since. It asks whether to impor
 incomplete album, then asks for each album's category, label_type, and genres, offering the
 proposed values. genres takes a comma-delimited list, or - for none. Each value must be one that
 an album in the library already has, or a new value that you confirm. beets writes the tags,
-moves the audio files to the library, and sets archive=1, category, label_type, genres, missing,
-and missing_note; other files stay in the folder.
+moves the audio files and the album's image (as cover.<ext>, not embedded) to the library, and
+sets archive=1, category, label_type, genres, missing, and missing_note. The download folder,
+with any files beets did not move, is then deleted, unless it still contains an audio file.
 
   -i, --id ID      match the folder only against this MusicBrainz or Discogs release ID, at any
                    similarity; takes exactly one FOLDER
@@ -300,9 +303,41 @@ import_album () {
   printf '%s\n' "$imported"
 }
 
+# Prints the image beets moved into the album with the given release ID $1, or nothing if the
+# album has none.
+album_art () {
+  local art
+  # shellcheck disable=SC2016 # $artpath is a beets template field
+  art=$(beet ls -a -f '$artpath' "mb_albumid:=$1" archive:1) || return 1
+  # `##*/` leaves the file name
+  printf '%s\n' "${art##*/}"
+}
+
+# Deletes the given download folder $1 and the files left in it, sans when said folder lies in the
+# given library folder $2 or still contains an audio file. Prints each deleted file.
+remove_download () {
+  local folder=$1 library=$2 file name extension
+  [[ -d $folder ]] || return 0
+  [[ $folder != "$library" && $folder != "$library"/* ]] || die "refusing to delete $folder in the library"
+  # 1. Keep the folder if beets left an audio file in it.
+  while IFS= read -r -d '' file; do
+    # `##*/` leaves the file name and `##*.` its extension; `,,` lowercases it
+    name=${file##*/}
+    extension=''
+    [[ $name == *.* ]] && extension=${name##*.}
+    if [[ -n $extension && $AUDIO_EXTENSIONS == *" ${extension,,} "* ]]; then
+      printf 'soulseek_import: kept %s, which still contains %s\n' "$folder" "${file#"$folder"/}" >&2
+      return 0
+    fi
+  done < <(find "$folder" -type f -print0)
+  # 2. List the remaining files, then delete the folder.
+  find "$folder" -type f -printf '  deleted from the download folder: %P\n'
+  rm -r -- "$folder" || die "deleting $folder failed"
+}
+
 # Imports every folder of FOLDERS as proposed; the given arguments $@ are passed to soulseek_check.
 apply () {
-  local folder line library imported categories_in_use label_types_in_use genres_in_use i
+  local folder line library imported art categories_in_use label_types_in_use genres_in_use i
   local -a check_args=("$@") records=() categories=() label_types=() genres=() album_dirs=()
   local -A record FAILED=()
 
@@ -336,8 +371,8 @@ apply () {
     genres[i]=$(ask_genres "${record[genres]}" "$genres_in_use")
   done
 
-  # 4. Import each album that was not skipped. A failed import stops the invocation and keeps the
-  # proposals of the albums not yet imported.
+  # 4. Import each album that was not skipped, then delete its download folder. A failed import
+  # stops the invocation and keeps the proposals and folders of the albums not yet imported.
   for i in "${!records[@]}"; do
     read_record "${records[i]}" record
     if [[ -z ${categories[i]} ]]; then
@@ -349,9 +384,9 @@ apply () {
     # `{,.files}` expands to the proposal file and its manifest
     rm -f -- "$(proposal_file "${record[folder]}")"{,.files}
     printf 'soulseek_import: imported %s\n' "$imported"
-    if [[ -d ${record[folder]} ]]; then
-      find "${record[folder]}" -type f -printf '  left in the download folder: %P\n'
-    fi
+    art=$(album_art "${record[release_id]}") || die 'beet ls failed'
+    printf '  art: %s\n' "${art:-none}"
+    remove_download "${record[folder]}" "$library"
   done
 
   # 5. beets rewrote every imported file with its tags, which changed each file's SHA-256. We check

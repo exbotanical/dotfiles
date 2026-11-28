@@ -22,7 +22,12 @@ paths:
   default: $albumartist/$album%aunique{}%if{$year, ($year)}/$track $title
   singleton: Non-Album/$artist/$title
   comp: Various Artists/$album%aunique{}%if{$year, ($year)}/$track $title
-plugins: musicbrainz mbsync discogs chroma types candidates proposal
+plugins: musicbrainz mbsync discogs chroma types fetchart candidates proposal
+# fetchart moves an image from the folder being imported into the album folder as cover.<ext>.
+# Only the filesystem source is enabled, so no image is downloaded, and none is embedded in the
+# audio files.
+fetchart:
+  sources: filesystem
 # Exact release names: Linux forbids only "/" and NUL in a name, so only those are substituted.
 # U+FF0F stands in for "/" because Nicotine+ search splits words at it, as at "/".
 path_sep_replace: ／

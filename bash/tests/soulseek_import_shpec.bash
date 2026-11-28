@@ -23,10 +23,10 @@ soulseek_check () {
 #            named "partial", and proposes the genres Minimalism and Classical for a folder named
 #            "one" and Minimalism for the others
 #   import   (beet -c CONFIG import) appends its arguments to IMPORTS, then moves the folder's FLAC
-#            files into the archive unless IMPORT_SKIP is set
+#            files and cover.jpg (as fetchart does) into the archive unless IMPORT_SKIP is set
 #   modify   appends "modify" and its arguments to IMPORTS
-#   ls       prints the category, label_type, and genres values in use for `ls -a -f`, and
-#            otherwise answers from the folders that import created
+#   ls       prints the category, label_type, and genres values in use and the album's art path
+#            for `ls -a -f`, and otherwise answers from the folders that import created
 beet () {
   local output folder name status missing note genres
   case $1 in
@@ -50,7 +50,7 @@ beet () {
       printf '%s\n' "${*:4}" >> "$IMPORTS"
       [[ -n ${IMPORT_SKIP:-} ]] && return 0
       mkdir -p "$LIB/music_archive/Artist/${folder##*/}"
-      mv "$folder"/*.flac "$LIB/music_archive/Artist/${folder##*/}/"
+      mv "$folder"/*.flac "$folder/cover.jpg" "$LIB/music_archive/Artist/${folder##*/}/"
       ;;
     modify) printf 'modify %s\n' "${*:2}" >> "$IMPORTS" ;;
     ls)
@@ -58,6 +58,10 @@ beet () {
         [[ $4 == '$category' ]] && printf 'noise\nother\n'
         [[ $4 == '$label_type' ]] && printf 'diy\nindependent\n'
         [[ $4 == '$genres' ]] && printf 'Classical\nMinimalism; Drone\n'
+        name=${*: -2:1}
+        name=${name#mb_albumid:=rel-}
+        [[ $4 == '$artpath' && -f $LIB/music_archive/Artist/$name/cover.jpg ]] \
+          && printf '%s\n' "$LIB/music_archive/Artist/$name/cover.jpg"
         return 0
       fi
       name=${*: -2:1}
@@ -72,7 +76,7 @@ beet () {
   esac
 }
 
-# Writes two FLAC files and a cover into each given download folder name $@
+# Writes two FLAC files, a cover, and a rip log into each given download folder name $@
 make_folders () {
   local name
   for name; do
@@ -80,6 +84,7 @@ make_folders () {
     printf '%s\n' "$name 1" > "$DOWNLOADS/$name/01.flac"
     printf '%s\n' "$name 2" > "$DOWNLOADS/$name/02.flac"
     printf 'jpeg\n' > "$DOWNLOADS/$name/cover.jpg"
+    printf 'log\n' > "$DOWNLOADS/$name/rip.log"
   done
 }
 
@@ -100,6 +105,19 @@ describe 'soulseek_import'
       (main --apply "$DOWNLOADS/one" "$DOWNLOADS/two" <<< $'\n\n\nnoise\ndiy\nDrone, Minimalism\n') > /dev/null 2>&1
       assert equal "0 0 --quiet --search-id rel-one --set archive=1 --set category=other --set label_type=independent --set missing=0 --set genres=Minimalism; Classical $DOWNLOADS/one
 --quiet --search-id rel-two --set archive=1 --set category=noise --set label_type=diy --set missing=0 --set genres=Drone; Minimalism $DOWNLOADS/two" "$proposed $? $(< "$IMPORTS")"
+    ti
+
+    it 'moves the cover, deletes the emptied download folder, and keeps one that still has audio'
+      make_folders one two
+      printf 'mp3\n' > "$DOWNLOADS/two/extra.mp3"
+      (main "$DOWNLOADS/one" "$DOWNLOADS/two") > /dev/null
+      output=$( (main --apply "$DOWNLOADS/one" <<< $'\n\n\n') 2>&1)
+      (main --apply "$DOWNLOADS/two" <<< $'\n\n\n') > /dev/null 2>&1
+      result=$(for path in "$DOWNLOADS/one" "$DOWNLOADS/two/rip.log" "$LIB/music_archive/Artist/one/cover.jpg"; do
+        [[ -e $path ]] && printf 'present ' || printf 'absent '
+      done)
+      assert equal "absent present present|  art: cover.jpg|  deleted from the download folder: rip.log" \
+        "${result% }|$(grep -E '^  (art|deleted)' <<< "$output" | paste -sd '|')"
     ti
 
     it 'fails a folder with a failing file or without a match, and imports nothing for it'
