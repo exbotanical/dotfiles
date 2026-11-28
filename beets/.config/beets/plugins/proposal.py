@@ -31,7 +31,7 @@ from beetsplug.candidates import audio_items
 SEPARATOR = "\x1f"
 RECORD_FIELDS = [
     "folder", "status", "reason", "release_id", "tracks", "missing", "missing_note", "category",
-    "label_type", "destination", "genres",
+    "destination", "genres",
 ]
 # beets formats a multi-value field such as genres by joining its values with this delimiter
 GENRE_DELIMITER = "; "
@@ -186,10 +186,9 @@ class Proposal:
         files = destinations(scratch, best)
         note = missing_note(info, best.extra_tracks)
         category, category_count = most_common(lib, "category", "albumartist", info.artist)
-        label_type, label_count = most_common(lib, "label_type", "label", info.label)
         self.record |= {
             "release_id": info.album_id, "tracks": len(files), "missing": len(best.extra_tracks),
-            "missing_note": note, "category": category, "label_type": label_type,
+            "missing_note": note, "category": category,
             "destination": os.path.dirname(files[0][1]), "genres": GENRE_DELIMITER.join(genres),
         }
         self.lines.append(f"  match     {candidate_text(best)}")
@@ -197,7 +196,6 @@ class Proposal:
         self.lines.extend(f"  file      {name} -> {os.path.basename(path)}" for name, path in files)
         self.lines.append(f"  missing   {note or 'none'}")
         self.lines.append(f"  category  {category or '?'} (from {category_count} albums by {info.artist})")
-        self.lines.append(f"  label     {label_type or '?'} (from {label_count} albums on {info.label or 'no label'})")
         self.lines.append(f"  genres    {', '.join(genres) or '?'} (from {genre_source})")
         self.lines.extend(f"  other     {candidate_text(m)}" for m in proposal.candidates[1:1 + ALTERNATIVES])
         album = release_album(lib, info)

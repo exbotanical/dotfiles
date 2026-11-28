@@ -10,7 +10,7 @@
 # Extension lists are space-delimited with a space at each end, so `== *" $extension "*` matches
 # whole words only
 readonly AUDIO_EXTENSIONS=' flac mp3 m4a ogg opus wav aiff '
-readonly ARTWORK_EXTENSIONS=' jpg jpeg png cue log txt '
+readonly ARTWORK_EXTENSIONS=' jpg jpeg png cue log nfo txt '
 readonly LOSSLESS_EXTENSIONS=' flac wav aiff '
 # Lowercase regular expression for the descriptions `file` gives each audio format
 readonly AUDIO_TYPES='audio|flac|mpeg|ogg|wave|iso media'

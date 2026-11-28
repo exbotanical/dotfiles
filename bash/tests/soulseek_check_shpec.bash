@@ -102,7 +102,7 @@ describe 'soulseek_check'
 
     it 'prints one sorted line per failed check and per warning, and exits 1 on a failure'
       d=$TestRoot/downloads/album
-      make_files downloads/album/01.flac:ok downloads/album/02.flac:corrupt \
+      make_files downloads/album/01.flac:ok downloads/album/02.flac:corrupt downloads/album/info.nfo:text \
         downloads/album/03.flac:transcode downloads/album/04.mp3:transcode downloads/album/05.mp3:text \
         downloads/album/06.mp3:virus downloads/album/setup.exe:ok downloads/album/README:ok \
         downloads/album/cover.JPG:ok downloads/album/notes.txt:text downloads/incomplete/x.flac:corrupt \

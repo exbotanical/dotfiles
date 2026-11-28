@@ -45,7 +45,7 @@ that matches no album stops the run, so remove it or import the album first.
   albumartist:Godz album::^Contact           :: makes the value a regular expression
   year:1968..1975 country:DE                 terms on one line must all match
   label:"ReR Megacorp" , label:Recommended   a lone , between terms means or
-  category:noise label_type:independent      fields stored by the library classification
+  category:noise genres:=Drone               fields that soulseek_import sets
   !album::(?i)live                           a leading ! removes matching albums
 
 Quoting: a line is split into terms as a shell splits words. Quote a value that contains spaces,
@@ -54,9 +54,8 @@ albumartist:"Guns N' Roses". A line with an unmatched quote, no terms, or a fiel
 (albumartist:) stops the run, because beets matches every album to those. On the command line,
 put the whole term in single quotes, without inner quotes: beet ls -a 'albumartist:Amos & Sara'.
 
-List the category and label_type values in use with
+List the category values in use with
   beet ls -a -f '\$category' 'category::.' | sort -u
-  beet ls -a -f '\$label_type' 'label_type::.' | sort -u
 See 'beet help query' for the query syntax.
 EOF
 }

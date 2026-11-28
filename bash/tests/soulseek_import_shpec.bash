@@ -8,12 +8,15 @@ IMPORTS=$TestRoot/imports
 source "$RootDir/../../.test/shpec_utils.bash"
 source "$RootDir/../.config/bash/apps/soulseek/scripts/soulseek_import.bash"
 
-# A fake soulseek_check that fails every file named bad.flac in the last given folder
+# A fake soulseek_check: in the given folders, it fails each file named bad.flac with a decode line
+# and each .exe file with a type line
 soulseek_check () {
-  local line
-  line=$(find "${@: -1}" -name bad.flac -printf '%p: type: neither audio nor artwork\n')
-  [[ -z $line ]] || {
-    printf '%s\n' "$line"
+  local lines
+  [[ $1 == -- ]] && shift
+  lines=$(find "$@" \( -name bad.flac -printf '%p: decode: ffmpeg cannot decode the file\n' \) \
+    -o \( -name '*.exe' -printf '%p: type: neither audio nor artwork\n' \))
+  [[ -z $lines ]] || {
+    printf '%s\n' "$lines"
     return 1
   }
 }
@@ -25,7 +28,7 @@ soulseek_check () {
 #   import   (beet -c CONFIG import) appends its arguments to IMPORTS, then moves the folder's FLAC
 #            files and cover.jpg (as fetchart does) into the archive unless IMPORT_SKIP is set
 #   modify   appends "modify" and its arguments to IMPORTS
-#   ls       prints the category, label_type, and genres values in use and the album's art path
+#   ls       prints the category and genres values in use and the album's art path
 #            for `ls -a -f`, and otherwise answers from the folders that import created
 beet () {
   local output folder name status missing note genres
@@ -41,7 +44,7 @@ beet () {
         [[ $name == partial ]] && missing=1 note='missing 1 of 3: #3 100% $5 {x}' genres=''
         [[ $name == one ]] && genres='Minimalism; Classical'
         printf '%s\n' "$folder"
-        printf '%s\x1f%s\x1f\x1frel-%s\x1f2\x1f%s\x1f%s\x1fother\x1findependent\x1fmusic_archive/Artist/%s\x1f%s\n' \
+        printf '%s\x1f%s\x1f\x1frel-%s\x1f2\x1f%s\x1f%s\x1fother\x1fmusic_archive/Artist/%s\x1f%s\n' \
           "$folder" "$status" "$name" "$missing" "$note" "$name" "$genres" >> "$output"
       done
       ;;
@@ -56,7 +59,6 @@ beet () {
     ls)
       if [[ $2 == -a && $3 == -f ]]; then
         [[ $4 == '$category' ]] && printf 'noise\nother\n'
-        [[ $4 == '$label_type' ]] && printf 'diy\nindependent\n'
         [[ $4 == '$genres' ]] && printf 'Classical\nMinimalism; Drone\n'
         name=${*: -2:1}
         name=${name#mb_albumid:=rel-}
@@ -102,41 +104,52 @@ describe 'soulseek_import'
       make_folders one two
       (main "$DOWNLOADS/one" "$DOWNLOADS/two") > /dev/null
       proposed=$?
-      (main --apply "$DOWNLOADS/one" "$DOWNLOADS/two" <<< $'\n\n\nnoise\ndiy\nDrone, Minimalism\n') > /dev/null 2>&1
-      assert equal "0 0 --quiet --search-id rel-one --set archive=1 --set category=other --set label_type=independent --set missing=0 --set genres=Minimalism; Classical $DOWNLOADS/one
---quiet --search-id rel-two --set archive=1 --set category=noise --set label_type=diy --set missing=0 --set genres=Drone; Minimalism $DOWNLOADS/two" "$proposed $? $(< "$IMPORTS")"
+      (main --apply "$DOWNLOADS/one" "$DOWNLOADS/two" <<< $'\n\nnoise\nDrone, Minimalism\ny\ny\n') > /dev/null 2>&1
+      assert equal "0 0 --quiet --search-id rel-one --set archive=1 --set category=other --set missing=0 --set genres=Minimalism; Classical $DOWNLOADS/one
+--quiet --search-id rel-two --set archive=1 --set category=noise --set missing=0 --set genres=Drone; Minimalism $DOWNLOADS/two" "$proposed $? $(< "$IMPORTS")"
     ti
 
-    it 'moves the cover, deletes the emptied download folder, and keeps one that still has audio'
-      make_folders one two
+    it 'asks before deleting leftovers, deletes an emptied folder, and keeps one that still has audio'
+      make_folders one two three four
       printf 'mp3\n' > "$DOWNLOADS/two/extra.mp3"
-      (main "$DOWNLOADS/one" "$DOWNLOADS/two") > /dev/null
-      output=$( (main --apply "$DOWNLOADS/one" <<< $'\n\n\n') 2>&1)
-      (main --apply "$DOWNLOADS/two" <<< $'\n\n\n') > /dev/null 2>&1
-      result=$(for path in "$DOWNLOADS/one" "$DOWNLOADS/two/rip.log" "$LIB/music_archive/Artist/one/cover.jpg"; do
+      rm "$DOWNLOADS/three/rip.log"
+      (main "$DOWNLOADS"/{one,two,three,four}) > /dev/null
+      output=$( (main --apply "$DOWNLOADS"/{one,two,three,four} <<< $'\n\n\n\n\n\n\n\ny\nn\n') 2>&1)
+      result=$(for path in "$DOWNLOADS"/{one,two/rip.log,three,four/rip.log} "$LIB/music_archive/Artist/one/cover.jpg"; do
         [[ -e $path ]] && printf 'present ' || printf 'absent '
       done)
-      assert equal "absent present present|  art: cover.jpg|  deleted from the download folder: rip.log" \
-        "${result% }|$(grep -E '^  (art|deleted)' <<< "$output" | paste -sd '|')"
+      assert equal "absent present absent present present|4" "${result% }|$(grep -c '^  art: cover.jpg' <<< "$output")"
     ti
 
-    it 'fails a folder with a failing file or without a match, and imports nothing for it'
-      make_folders good checked nomatch
+    it 'fails a folder with a failing check or without a match, but not for a non-audio file'
+      make_folders good checked nomatch typed
       printf 'x\n' > "$DOWNLOADS/checked/bad.flac"
-      (main "$DOWNLOADS/good" "$DOWNLOADS/checked" "$DOWNLOADS/nomatch") > /dev/null 2>&1
+      printf 'x\n' > "$DOWNLOADS/typed/setup.exe"
+      (main "$DOWNLOADS"/{good,checked,nomatch,typed}) > /dev/null 2>&1
       proposed=$?
       result=$(for folder in checked nomatch; do
-        (main --apply "$DOWNLOADS/good" "$DOWNLOADS/$folder" <<< $'\n\n\n\n') > /dev/null 2>&1
+        (main --apply "$DOWNLOADS/good" "$DOWNLOADS/$folder" < /dev/null) > /dev/null 2>&1
         printf '%s ' "$?"
       done)
-      assert equal "1 1 1 " "$proposed $result$(< "$IMPORTS")"
+      (main --apply "$DOWNLOADS/typed" <<< $'\n\ny\n') > /dev/null 2>&1
+      assert equal "1 1 1 0 --quiet --search-id rel-typed --set archive=1 --set category=other --set missing=0 --set genres=Minimalism $DOWNLOADS/typed|absent" \
+        "$proposed $result$? $(< "$IMPORTS")|$([[ -e $DOWNLOADS/typed ]] && echo present || echo absent)"
     ti
 
     it 'imports nothing when a file changed after the proposal'
       make_folders one two
       (main "$DOWNLOADS/one" "$DOWNLOADS/two") > /dev/null
       printf 'edited\n' >> "$DOWNLOADS/two/cover.jpg"
-      (main --apply "$DOWNLOADS/one" "$DOWNLOADS/two" <<< $'\n\n\n\n') > /dev/null 2>&1
+      (main --apply "$DOWNLOADS/one" "$DOWNLOADS/two" < /dev/null) > /dev/null 2>&1
+      assert equal "1 " "$? $(< "$IMPORTS")"
+    ti
+
+    it 'imports nothing for a proposal saved with other record fields'
+      make_folders one
+      (main "$DOWNLOADS/one") > /dev/null
+      file=$(proposal_file "$DOWNLOADS/one")
+      printf '%s\x1fextra\n' "$(< "$file")" > "$file"
+      (main --apply "$DOWNLOADS/one" <<< $'\n\ny\n') > /dev/null 2>&1
       assert equal "1 " "$? $(< "$IMPORTS")"
     ti
 
@@ -146,41 +159,41 @@ describe 'soulseek_import'
         : > "$IMPORTS"
         make_folders partial
         (main "$DOWNLOADS/partial") > /dev/null
-        (main --apply "$DOWNLOADS/partial" <<< "$answer"$'\n\n\n') > /dev/null 2>&1
+        (main --apply "$DOWNLOADS/partial" <<< "$answer"$'\n\n\ny\n') > /dev/null 2>&1
         printf '%s[%s]' "$?" "$(< "$IMPORTS")"
       done)
-      assert equal "0[]0[--quiet --search-id rel-partial --set archive=1 --set category=other --set label_type=independent --set missing=1 --set missing_note=missing 1 of 3: #3 100\$% \$\$5 {x\$} $DOWNLOADS/partial
+      assert equal "0[]0[--quiet --search-id rel-partial --set archive=1 --set category=other --set missing=1 --set missing_note=missing 1 of 3: #3 100\$% \$\$5 {x\$} $DOWNLOADS/partial
 modify -y -a -w -M mb_albumid:=rel-partial archive:1 genres!]" "$result"
     ti
 
-    it 'asks again for a category or label_type no album has unless the user confirms it'
+    it 'asks again for a category no album has unless the user confirms it'
       make_folders one
       (main "$DOWNLOADS/one") > /dev/null
-      (main --apply "$DOWNLOADS/one" <<< $'Noise\nn\nnoise\npunk\ny\n\n') > /dev/null 2>&1
-      assert equal "0 --quiet --search-id rel-one --set archive=1 --set category=noise --set label_type=punk --set missing=0 --set genres=Minimalism; Classical $DOWNLOADS/one" "$? $(< "$IMPORTS")"
+      (main --apply "$DOWNLOADS/one" <<< $'Noise\nn\nnoise\n\ny\n') > /dev/null 2>&1
+      assert equal "0 --quiet --search-id rel-one --set archive=1 --set category=noise --set missing=0 --set genres=Minimalism; Classical $DOWNLOADS/one" "$? $(< "$IMPORTS")"
     ti
 
     it 'splits comma-delimited genres, trims them, drops repeats, and confirms each new genre'
       make_folders one
       (main "$DOWNLOADS/one") > /dev/null
-      (main --apply "$DOWNLOADS/one" <<< $'\n\n Drone ,, Kosmische,Drone \nn\nDrone, Kosmische\ny\n') > /dev/null 2>&1
-      assert equal "0 --quiet --search-id rel-one --set archive=1 --set category=other --set label_type=independent --set missing=0 --set genres=Drone; Kosmische $DOWNLOADS/one" "$? $(< "$IMPORTS")"
+      (main --apply "$DOWNLOADS/one" <<< $'\n Drone ,, Kosmische,Drone \nn\nDrone, Kosmische\ny\ny\n') > /dev/null 2>&1
+      assert equal "0 --quiet --search-id rel-one --set archive=1 --set category=other --set missing=0 --set genres=Drone; Kosmische $DOWNLOADS/one" "$? $(< "$IMPORTS")"
     ti
 
     it 'clears the genres after the import on - and passes template characters in a category literally'
       make_folders one
       (main "$DOWNLOADS/one") > /dev/null
-      (main --apply "$DOWNLOADS/one" <<< $'50% off\ny\n\n-\n') > /dev/null 2>&1
-      assert equal "0 --quiet --search-id rel-one --set archive=1 --set category=50\$% off --set label_type=independent --set missing=0 $DOWNLOADS/one
+      (main --apply "$DOWNLOADS/one" <<< $'50% off\ny\n-\ny\n') > /dev/null 2>&1
+      assert equal "0 --quiet --search-id rel-one --set archive=1 --set category=50\$% off --set missing=0 $DOWNLOADS/one
 modify -y -a -w -M mb_albumid:=rel-one archive:1 genres!" "$? $(< "$IMPORTS")"
     ti
 
-    it 'exits 1 and keeps the proposal when beets does not import the album'
+    it 'exits 1 and keeps the proposal and folder when beets does not import the album'
       make_folders one
       (main "$DOWNLOADS/one") > /dev/null
-      (IMPORT_SKIP=1 main --apply "$DOWNLOADS/one" <<< $'\n\n\n') > /dev/null 2>&1
+      (IMPORT_SKIP=1 main --apply "$DOWNLOADS/one" <<< $'\n\n') > /dev/null 2>&1
       first=$?
-      (main --apply "$DOWNLOADS/one" <<< $'\n\n\n') > /dev/null 2>&1
+      (main --apply "$DOWNLOADS/one" <<< $'\n\ny\n') > /dev/null 2>&1
       assert equal '1 0' "$first $?"
     ti
 
