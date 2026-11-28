@@ -2,8 +2,8 @@
 
 `beet propose -o FILE [--id RELEASE_ID] FOLDER...` matches the audio files directly in each given
 folder against the enabled metadata sources. For each folder it prints the best match, the library
-path of each file, the missing tracks, and the proposed classification, and it appends one record
-to FILE. Neither the library nor any file changes.
+path of each file, the missing tracks, and the proposed classification and genres, and it appends
+one record to FILE. Neither the library nor any file changes.
 
 Each record is one line of RECORD_FIELDS separated by U+001F (the ASCII unit separator). Unlike a
 tab, said separator keeps empty fields apart when bash splits the line with `read`.
@@ -31,8 +31,10 @@ from beetsplug.candidates import audio_items
 SEPARATOR = "\x1f"
 RECORD_FIELDS = [
     "folder", "status", "reason", "release_id", "tracks", "missing", "missing_note", "category",
-    "label_type", "destination",
+    "label_type", "destination", "genres",
 ]
+# beets formats a multi-value field such as genres by joining its values with this delimiter
+GENRE_DELIMITER = "; "
 # The flexible field that the archive path rules in config.yaml match on
 ARCHIVE_FIELD = "archive"
 # The number of runner-up candidates printed after the best match
@@ -79,6 +81,20 @@ def most_common(lib, value_field, match_field, value):
     if not values:
         return "", 0
     return values.most_common(1)[0][0], values.total()
+
+
+def proposed_genres(lib, items, artist):
+    """Returns the genres of the given items' tags, most frequent first, and where they came from.
+    If the tags contain no genre, returns the genres of the library albums by the given artist
+    instead. The result is only a proposal; soulseek_import --apply sets the genres the user
+    confirms."""
+    counts = collections.Counter(genre for item in items for genre in item.get("genres") or [])
+    source = "the files' tags"
+    if not counts:
+        albums = lib.albums(MatchQuery("albumartist", artist))
+        counts = collections.Counter(genre for album in albums for genre in album.get("genres") or [])
+        source = f"albums by {artist}"
+    return [genre for genre, _ in counts.most_common()], source
 
 
 def destinations(lib, match, scratch_dir):
@@ -161,6 +177,8 @@ class Proposal:
         passes or fails the proposal and returns it."""
         best = proposal.candidates[0]
         info = best.info
+        # destinations applies the match to the items, so the tags' genres are read first
+        genres, genre_source = proposed_genres(lib, best.items, info.artist)
         files = destinations(lib, best, scratch_dir)
         note = missing_note(info, best.extra_tracks)
         category, category_count = most_common(lib, "category", "albumartist", info.artist)
@@ -168,7 +186,7 @@ class Proposal:
         self.record |= {
             "release_id": info.album_id, "tracks": len(files), "missing": len(best.extra_tracks),
             "missing_note": note, "category": category, "label_type": label_type,
-            "destination": os.path.dirname(files[0][1]),
+            "destination": os.path.dirname(files[0][1]), "genres": GENRE_DELIMITER.join(genres),
         }
         self.lines.append(f"  match     {candidate_text(best)}")
         self.lines.append(f"  folder    {self.record['destination']}")
@@ -176,6 +194,7 @@ class Proposal:
         self.lines.append(f"  missing   {note or 'none'}")
         self.lines.append(f"  category  {category or '?'} (from {category_count} albums by {info.artist})")
         self.lines.append(f"  label     {label_type or '?'} (from {label_count} albums on {info.label or 'no label'})")
+        self.lines.append(f"  genres    {', '.join(genres) or '?'} (from {genre_source})")
         self.lines.extend(f"  other     {candidate_text(m)}" for m in proposal.candidates[1:1 + ALTERNATIVES])
         album = release_album(lib, info)
         self.duplicate_values = tuple(str(album.get(key)) for key in duplicate_keys())

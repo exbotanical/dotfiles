@@ -13,6 +13,8 @@ readonly IMPORT_CONFIG=${SOULSEEK_IMPORT_CONFIG:-$HOME/.config/beets/soulseek-im
 readonly ARCHIVE_DIR=music_archive
 # `beet propose` separates the fields of each record with U+001F (the ASCII unit separator)
 readonly SEPARATOR=$'\x1f'
+# beets formats and parses a multi-value field such as genres with this delimiter
+readonly GENRE_DELIMITER='; '
 readonly WARNING_SUFFIX=' (warning)'
 
 die () {
@@ -37,10 +39,11 @@ passes and 1 otherwise.
 
 With --apply, imports the folders of the last run. It stops before importing anything unless
 every folder passed that run and no file changed since. It asks whether to import each
-incomplete album, then asks for each album's category and label_type, offering the proposed
-values. An answer must be a value that an album in the library already has, or a new value that
-you confirm. beets writes the tags, moves the audio files to the library, and sets archive=1,
-category, label_type, missing, and missing_note; other files stay in the folder.
+incomplete album, then asks for each album's category, label_type, and genres, offering the
+proposed values. genres takes a comma-delimited list, or - for none. Each value must be one that
+an album in the library already has, or a new value that you confirm. beets writes the tags,
+moves the audio files to the library, and sets archive=1, category, label_type, genres, missing,
+and missing_note; other files stay in the folder.
 
   -i, --id ID      match the folder only against this MusicBrainz or Discogs release ID, at any
                    similarity; takes exactly one FOLDER
@@ -96,7 +99,7 @@ read_record () {
   record_=([folder]=${values[0]:-} [status]=${values[1]:-} [reason]=${values[2]:-}
     [release_id]=${values[3]:-} [tracks]=${values[4]:-} [missing]=${values[5]:-0}
     [missing_note]=${values[6]:-} [category]=${values[7]:-} [label_type]=${values[8]:-}
-    [destination]=${values[9]:-})
+    [destination]=${values[9]:-} [genres]=${values[10]:-})
 }
 
 # Saves the given record line $1 and the manifest of its folder if the folder passed, and removes
@@ -170,6 +173,14 @@ library_values () {
   beet ls -a -f "\$$1" "$1::." | LC_ALL=C sort -u
 }
 
+# Prints the newline-delimited distinct genres of the library's albums.
+library_genres () {
+  # beet ls prints an album's genres joined by GENRE_DELIMITER; awk prints each on its own line
+  # shellcheck disable=SC2016 # $genres is a beets template field
+  beet ls -a -f '$genres' 'genres::.' \
+    | awk -F "$GENRE_DELIMITER" '{ for (i = 1; i <= NF; i++) print $i }' | LC_ALL=C sort -u
+}
+
 # Asks the yes-or-no question $1, with no as the default, and succeeds on yes.
 ask_yes () {
   local answer
@@ -197,6 +208,50 @@ ask_value () {
   printf '%s\n' "$answer"
 }
 
+# Asks for the album's genres until every comma-delimited genre of the answer is one of the given
+# newline-delimited genres $2 or a new genre the user confirms. Prints the genres joined by
+# GENRE_DELIMITER. An empty answer selects the given proposed genres $1 (joined by
+# GENRE_DELIMITER), and - selects no genre.
+ask_genres () {
+  local proposal=$1 in_use=$2 answer genre confirmed shown
+  local -a parts genres
+  local -A seen
+  # The proposal is shown as the user types it: comma-delimited
+  shown=${proposal//"$GENRE_DELIMITER"/, }
+  while true; do
+    read -r -p "  genres [${shown:-none}]: " answer || die 'no answer'
+    [[ -n $answer ]] || answer=${proposal//"$GENRE_DELIMITER"/,}
+    [[ $answer == - ]] && answer=''
+    # 1. Split the answer at commas, trim the spaces around each genre, and drop empty and
+    # repeated genres.
+    IFS=, read -r -a parts <<< "$answer"
+    genres=() seen=()
+    for genre in "${parts[@]}"; do
+      # `%%[![:space:]]*` is the leading whitespace and `##*[![:space:]]` the trailing whitespace
+      genre=${genre#"${genre%%[![:space:]]*}"}
+      genre=${genre%"${genre##*[![:space:]]}"}
+      [[ -n $genre && -z ${seen[$genre]:-} ]] || continue
+      seen[$genre]=1
+      genres+=("$genre")
+    done
+    # 2. Confirm each genre no album has yet; a refusal asks the question again.
+    confirmed=1
+    for genre in "${genres[@]}"; do
+      [[ $'\n'$in_use$'\n' == *$'\n'"$genre"$'\n'* ]] && continue
+      printf '  no album has the genre %s\n' "$genre" >&2
+      ask_yes "  use $genre anyway?" || {
+        confirmed=''
+        break
+      }
+    done
+    [[ -n $confirmed ]] && break
+  done
+  # 3. Join the genres with GENRE_DELIMITER, which beets parses back into a list.
+  local IFS=$'\n'
+  answer="${genres[*]}"
+  printf '%s\n' "${answer//$'\n'/$GENRE_DELIMITER}"
+}
+
 # Escapes the beets template characters in the given value $1. import --set evaluates its values
 # as templates (per ImportTask.set_fields), in which $ % and } carry a meaning unless a $ precedes
 # them.
@@ -209,13 +264,16 @@ template_literal () {
   printf '%s\n' "${value//\}/\$\}}"
 }
 
-# Imports the folder of the record whose name is the given $1, with the given category $2 and
-# label_type $3, into the given library folder $4. Prints the album's new folder; beets prints its
-# own output to stderr.
+# Imports the folder of the record whose name is the given $1, with the given category $2,
+# label_type $3, and genres $4 (joined by GENRE_DELIMITER), into the given library folder $5.
+# Prints the album's new folder; beets prints its own output to stderr.
 import_album () {
   local -n album_=$1
-  local library=$4 id=${album_[release_id]} imported count
-  local -a fields=(--set archive=1 --set "category=$2" --set "label_type=$3" --set "missing=${album_[missing]}")
+  local library=$5 id=${album_[release_id]} imported count
+  local -a fields=(--set archive=1 --set "category=$(template_literal "$2")"
+  --set "label_type=$(template_literal "$3")" --set "missing=${album_[missing]}")
+  # import --set rejects an empty value, so no genres are cleared in step 3 instead
+  [[ -z $4 ]] || fields+=(--set "genres=$(template_literal "$4")")
   [[ -z ${album_[missing_note]} ]] \
     || fields+=(--set "missing_note=$(template_literal "${album_[missing_note]}")")
 
@@ -231,13 +289,21 @@ import_album () {
   count=$(beet ls -f '$id' "mb_albumid:=$id" archive:1 | wc -l) || die 'beet ls failed'
   [[ $imported == "$library/$ARCHIVE_DIR/"* && $count == "${album_[tracks]}" ]] \
     || die "beets did not import ${album_[folder]} as proposed: ${imported:-not imported}, $count of ${album_[tracks]} tracks"
+
+  # 3. Clear the genres the files' tags brought along if the user chose none. `genres!` sets the
+  # field to an empty list, -w writes that to the tags, -M moves no file, and -y skips the
+  # confirmation.
+  if [[ -z $4 ]]; then
+    beet modify -y -a -w -M "mb_albumid:=$id" archive:1 'genres!' >&2 \
+      || die "clearing the genres of $imported failed"
+  fi
   printf '%s\n' "$imported"
 }
 
 # Imports every folder of FOLDERS as proposed; the given arguments $@ are passed to soulseek_check.
 apply () {
-  local folder line library imported categories_in_use label_types_in_use i
-  local -a check_args=("$@") records=() categories=() label_types=() album_dirs=()
+  local folder line library imported categories_in_use label_types_in_use genres_in_use i
+  local -a check_args=("$@") records=() categories=() label_types=() genres=() album_dirs=()
   local -A record FAILED=()
 
   # 1. Load every saved proposal, which also confirms that no file changed since.
@@ -257,6 +323,7 @@ apply () {
   # 3. Ask every question prior to the first import. An empty category marks a skipped album.
   categories_in_use=$(library_values category) || die 'beet ls failed'
   label_types_in_use=$(library_values label_type) || die 'beet ls failed'
+  genres_in_use=$(library_genres) || die 'beet ls failed'
   for i in "${!records[@]}"; do
     read_record "${records[i]}" record
     printf '\n%s\n  -> %s\n' "${record[folder]}" "${record[destination]}"
@@ -266,6 +333,7 @@ apply () {
     fi
     categories[i]=$(ask_value category "${record[category]}" "$categories_in_use")
     label_types[i]=$(ask_value label_type "${record[label_type]}" "$label_types_in_use")
+    genres[i]=$(ask_genres "${record[genres]}" "$genres_in_use")
   done
 
   # 4. Import each album that was not skipped. A failed import stops the invocation and keeps the
@@ -276,7 +344,7 @@ apply () {
       printf 'soulseek_import: skipped %s\n' "${record[folder]}"
       continue
     fi
-    imported=$(import_album record "${categories[i]}" "${label_types[i]}" "$library") || exit 1
+    imported=$(import_album record "${categories[i]}" "${label_types[i]}" "${genres[i]}" "$library") || exit 1
     album_dirs+=("$imported")
     # `{,.files}` expands to the proposal file and its manifest
     rm -f -- "$(proposal_file "${record[folder]}")"{,.files}
