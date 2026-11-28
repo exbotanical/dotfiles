@@ -338,7 +338,7 @@ remove_download () {
 # Imports every folder of FOLDERS as proposed; the given arguments $@ are passed to soulseek_check.
 apply () {
   local folder line library imported art categories_in_use label_types_in_use genres_in_use i
-  local -a check_args=("$@") records=() categories=() label_types=() genres=() album_dirs=()
+  local -a check_args=("$@") records=() categories=() label_types=() genres=()
   local -A record FAILED=()
 
   # 1. Load every saved proposal, which also confirms that no file changed since.
@@ -380,7 +380,6 @@ apply () {
       continue
     fi
     imported=$(import_album record "${categories[i]}" "${label_types[i]}" "${genres[i]}" "$library") || exit 1
-    album_dirs+=("$imported")
     # `{,.files}` expands to the proposal file and its manifest
     rm -f -- "$(proposal_file "${record[folder]}")"{,.files}
     printf 'soulseek_import: imported %s\n' "$imported"
@@ -388,11 +387,16 @@ apply () {
     printf '  art: %s\n' "${art:-none}"
     remove_download "${record[folder]}" "$library"
   done
+  # beets rewrote every imported file with its tags, which changed each file's SHA-256. The files are
+  # not checked again here: soulseek_share checks an album the first time it shares it.
+}
 
-  # 5. beets rewrote every imported file with its tags, which changed each file's SHA-256. We check
-  # them once more so that soulseek_share finds their results in the soulseek_check cache.
-  ((${#album_dirs[@]} == 0)) || soulseek_check -- "${album_dirs[@]}" > /dev/null \
-    || printf 'soulseek_import: run soulseek_check on the imported albums; a tagged file failed a check\n' >&2
+# Lowers the CPU and I/O priority of this process and so of every command it executes, which
+# leaves the desktop responsive while the checks occupy the remaining cores.
+lower_priority () {
+  renice -n 19 -p $$ > /dev/null 2>&1 || true
+  # Class 3 (idle) receives disk time only when no other process requests it
+  ionice -c 3 -p $$ > /dev/null 2>&1 || true
 }
 
 main () {
@@ -454,4 +458,5 @@ return 2> /dev/null
 
 set -euo pipefail
 
+lower_priority
 main "$@"

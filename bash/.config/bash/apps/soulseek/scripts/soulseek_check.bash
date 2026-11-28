@@ -20,7 +20,11 @@ readonly SIGNATURE_MAX_AGE_DAYS=3
 # 26 ms); up to MAX_DAMAGED_FRAMES of them are therefore a warning.
 readonly MAX_DAMAGED_FRAMES=50
 readonly WARNING_SUFFIX=' (warning)'
-JOBS=$(nproc)
+# One job per physical core (lscpu prints one CORE,SOCKET line per logical CPU, and the two
+# hyperthreads of a core share a pair). A second job on a core's other hyperthread adds little
+# throughput and slows every other process on that core.
+JOBS=$(lscpu --parse=CORE,SOCKET 2> /dev/null | grep -v '^#' | sort -u | wc -l)
+((JOBS > 0)) || JOBS=$(nproc)
 readonly JOBS
 
 # Each row of CACHE_FILE reads "sha256<TAB>version<TAB>result" and records one result of the
@@ -244,7 +248,9 @@ band_graph () {
 # Prints "rate HZ" for each audio stream of the given file $1, then "EDGE LEVEL" for each band,
 # where LEVEL is the band's RMS level in dBFS over the whole file. Both come from ffmpeg's log.
 band_levels () {
-  ffmpeg -nostdin -hide_banner -nostats -v info -i "$1" -filter_complex "$(band_graph)" \
+  # One thread per ffmpeg: check_each_file already executes JOBS of them in parallel
+  ffmpeg -nostdin -hide_banner -nostats -threads 1 -filter_complex_threads 1 -v info -i "$1" \
+    -filter_complex "$(band_graph)" \
     -map '[out]' -f null - 2>&1 \
     | sed -n -E \
       -e 's/^ *Stream #0:[0-9]+[^:]*: Audio: [^,]*, ([0-9]+) Hz.*/rate \1/p' \
@@ -279,7 +285,7 @@ cutoff () {
 check_decode () {
   local errors damaged unit=frames suffix=$WARNING_SUFFIX
   # `2>&1 > /dev/null` sends stderr into the substitution and discards stdout
-  if ! errors=$(ffmpeg -nostdin -v repeat+error -i "$1" -f null - 2>&1 > /dev/null); then
+  if ! errors=$(ffmpeg -nostdin -threads 1 -v repeat+error -i "$1" -f null - 2>&1 > /dev/null); then
     printf '%s: decode: ffmpeg cannot decode the file\n' "$1"
     return 0
   fi
@@ -361,6 +367,14 @@ check_each_file () {
     fi
   done
   wait
+}
+
+# Lowers the CPU and I/O priority of this process and so of every command it executes, which
+# leaves the desktop responsive while the checks occupy the remaining cores.
+lower_priority () {
+  renice -n 19 -p $$ > /dev/null 2>&1 || true
+  # Class 3 (idle) receives disk time only when no other process requests it
+  ionice -c 3 -p $$ > /dev/null 2>&1 || true
 }
 
 main () {
@@ -451,4 +465,5 @@ return 2> /dev/null
 
 set -euo pipefail
 
+lower_priority
 main "$@"

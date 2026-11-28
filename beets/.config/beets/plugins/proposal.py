@@ -97,20 +97,24 @@ def proposed_genres(lib, items, artist):
     return [genre for genre, _ in counts.most_common()], source
 
 
-def destinations(lib, match, scratch_dir):
-    """Returns the sorted (file name, library path) pairs of the matched files, with the match
-    applied and the album marked as archived.
+def scratch_library(lib, scratch_dir):
+    """Returns a new library in the given scratch_dir that shares the real library's folder and the
+    configured path rules, so it yields the paths that `beet import` would.
 
-    `Item.destination` requires an item stored in a library, so we store the items in a scratch
-    library in the given scratch_dir. Said library shares the real library's folder and the
-    configured path rules, so it yields the paths that `beet import` would. The items are read
-    from the files and never written back."""
-    # A new database receives every schema migration, and beets would otherwise back the empty
-    # database up prior to each one
+    `Item.destination` requires an item stored in a library, which is what the scratch library is
+    for. One invocation creates it once, because a new database receives every schema migration."""
+    # beets would otherwise back the empty database up prior to each migration
     backups = config["create_backup_before_migrations"].get(bool)
     config["create_backup_before_migrations"].set(False)
     scratch = Library(os.path.join(scratch_dir, "scratch.db"), lib.directory, set_music_dir=False)
     config["create_backup_before_migrations"].set(backups)
+    return scratch
+
+
+def destinations(scratch, match):
+    """Returns the sorted (file name, library path) pairs of the matched files, with the match
+    applied and the album marked as archived. The items are stored in the given scratch library;
+    they are read from the files and never written back."""
     match.apply_metadata()
     for item in match.items:
         item[ARCHIVE_FIELD] = 1
@@ -172,14 +176,14 @@ class Proposal:
         self.lines.append(f"  result    FAIL: {reason}")
         return self
 
-    def describe(self, lib, proposal, forced, scratch_dir):
+    def describe(self, lib, proposal, forced, scratch):
         """Fills the record and lines from the best candidate of the given beets proposal, then
         passes or fails the proposal and returns it."""
         best = proposal.candidates[0]
         info = best.info
         # destinations applies the match to the items, so the tags' genres are read first
         genres, genre_source = proposed_genres(lib, best.items, info.artist)
-        files = destinations(lib, best, scratch_dir)
+        files = destinations(scratch, best)
         note = missing_note(info, best.extra_tracks)
         category, category_count = most_common(lib, "category", "albumartist", info.artist)
         label_type, label_count = most_common(lib, "label_type", "label", info.label)
@@ -213,9 +217,9 @@ def candidate_text(match):
             f"{len(info.tracks)} tracks, {info.data_source} {info.album_id}")
 
 
-def propose(lib, folder, release_id):
+def propose(lib, scratch, folder, release_id):
     """Returns the Proposal for the given folder, matched only against the given release_id if
-    it is not None."""
+    it is not None. The given scratch library computes the destinations."""
     result = Proposal(folder)
     items = audio_items(folder)
     if not items:
@@ -223,8 +227,7 @@ def propose(lib, folder, release_id):
     proposal = tag_album(Source.from_items(items), search_ids=[release_id] if release_id else [])
     if not proposal.candidates:
         return result.fail("no candidates")
-    with tempfile.TemporaryDirectory() as scratch_dir:
-        return result.describe(lib, proposal, bool(release_id), scratch_dir)
+    return result.describe(lib, proposal, bool(release_id), scratch)
 
 
 class ProposalPlugin(BeetsPlugin):
@@ -240,10 +243,14 @@ class ProposalPlugin(BeetsPlugin):
         # The duplicate_keys values of each folder that passed, mapped to said folder. beet import
         # skips the second of two albums with equal values, so the second fails here.
         passed = {}
-        with open(opts.output, "a", encoding="utf-8") as handle:
+        with (
+            tempfile.TemporaryDirectory() as scratch_dir,
+            open(opts.output, "a", encoding="utf-8") as handle,
+        ):
+            scratch = scratch_library(lib, scratch_dir)
             for folder in args:
                 try:
-                    result = propose(lib, folder, opts.id)
+                    result = propose(lib, scratch, folder, opts.id)
                 except Exception as error:  # A bad file must not stop the other folders
                     result = Proposal(folder).fail(f"error: {error}")
                 earlier = passed.get(result.duplicate_values)

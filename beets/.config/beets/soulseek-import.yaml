@@ -6,6 +6,10 @@ import:
   move: yes
   quiet_fallback: skip
   duplicate_action: skip
+# chroma would otherwise fingerprint every file and look it up on AcoustID, a full decode per file
+# that --search-id makes useless
+chroma:
+  auto: no
 match:
   # A quiet import applies a match only if its distance is below strong_rec_thresh, and a distance
   # never exceeds 1
