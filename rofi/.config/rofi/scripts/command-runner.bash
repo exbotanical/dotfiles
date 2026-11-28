@@ -8,17 +8,44 @@ set -euo pipefail
 
 BASH_CONFIG_DIR="$HOME/.config/bash"
 CACHE_DIR="$HOME/.cache/rofi"
+ALIASES_CACHE="$CACHE_DIR/aliases-cache"
+ALIASES_CACHE_KEY="$CACHE_DIR/aliases-cache.key"
 HISTORY_FILE="$CACHE_DIR/command-history"
 MAX_HISTORY=20
 MAX_OUTPUT_LENGTH=200
-REFRESH_TTL_IN_MINUTES=5
+
+# Prints a hash of the inputs that determine the alias and function list: the
+# bash config contents, PATH, and the mtime of each PATH directory. A directory
+# mtime changes when an executable is added or removed, which changes the set
+# of apps whose name or detect.bash predicate matches an installed command.
+compute_cache_key () {
+  local -a path_dirs
+  IFS=: read -ra path_dirs <<< "$PATH"
+
+  {
+    find -L "$BASH_CONFIG_DIR" -type f -print0 | sort -z | xargs -0 sha1sum
+    printf '%s\n' "$PATH"
+    stat -L -c '%n %y' -- "${path_dirs[@]}" 2> /dev/null || true
+  } | sha1sum | cut -d ' ' -f 1
+}
+
+# Returns success if the cache was built from the inputs that produce the given key
+# Arguments:
+#   $1=cache key
+cache_is_current () {
+  local key="$1"
+
+  [[ -f $ALIASES_CACHE && -f $ALIASES_CACHE_KEY && $(< "$ALIASES_CACHE_KEY") == "$key" ]]
+}
 
 # Spin up a login shell that sources config and dumps aliases/functions
+# Arguments:
+#   $1=cache key
 refresh_cache () {
+  local key="$1"
   mkdir -p "$CACHE_DIR"
 
   bash --login -i -c '
-    source "$HOME/.config/bash/init.bash" 2>/dev/null
     shopt -s expand_aliases
 
     echo "# Aliases"
@@ -27,19 +54,22 @@ refresh_cache () {
     echo ""
     echo "# Functions"
     declare -F | awk "{print \$3}"
-  ' 2> /dev/null > "$CACHE_DIR/aliases-cache"
+  ' 2> /dev/null > "$ALIASES_CACHE.tmp"
+
+  mv "$ALIASES_CACHE.tmp" "$ALIASES_CACHE"
+  printf '%s\n' "$key" > "$ALIASES_CACHE_KEY"
 }
 
-# Retrieves cached aliases and functions
+# Retrieves cached aliases and functions, rebuilding them when an input changed
 get_available_commands () {
-  local aliases_cache="$CACHE_DIR/aliases-cache"
+  local key
+  key=$(compute_cache_key)
 
-  # Regenerate if missing or older than 5 minutes
-  if [[ ! -f "$aliases_cache" ]] || [[ $(find "$CACHE_DIR" -name aliases-cache -mmin +$REFRESH_TTL_IN_MINUTES | wc -l) -gt 0 ]]; then
-    refresh_cache
+  if ! cache_is_current "$key"; then
+    refresh_cache "$key"
   fi
 
-  cat "$aliases_cache"
+  cat "$ALIASES_CACHE"
 }
 
 # Retrieves command history
