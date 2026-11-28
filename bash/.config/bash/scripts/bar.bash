@@ -12,9 +12,19 @@ readonly LOCK_FILE=${XDG_RUNTIME_DIR:-/tmp}/eww-bar.lock
 
 # Prints the name of each connected monitor, one per line. The name is the
 # second field of each xrandr --listmonitors line, after its + (active) and
-# * (primary) flags.
+# * (primary) flags. A monitor whose geometry equals an earlier one's is skipped,
+# because a mirror lists each of its outputs at one position and a bar for each
+# would draw on the same pixels. The geometry is the third field,
+# W/mmWxH/mmH+X+Y, compared without the millimetres, which differ between a
+# laptop panel and a TV that mirrors it.
 monitors () {
-  xrandr --listmonitors | awk 'NR > 1 { sub(/^[+*]+/, "", $2); print $2 }'
+  xrandr --listmonitors | awk 'NR > 1 {
+    geometry = $3
+    gsub(/\/[0-9]+/, "", geometry)
+    if (seen[geometry]++) next
+    sub(/^[+*]+/, "", $2)
+    print $2
+  }'
 }
 
 # Prints the id of each open bar, one per line.

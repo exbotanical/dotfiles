@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# Sends audio to the TV after autorandr applies this profile. The NVIDIA HDMI
+# audio card reports its output available only once HDMI-1-0 has a mode, so the
+# card's profile is off until this hook turns it on. Streams that follow the
+# default sink move with it. Unplugging the TV removes the sink, and PipeWire
+# falls back to the laptop's own output.
+
+set -euo pipefail
+
+readonly CARD=alsa_card.pci-0000_01_00.1
+readonly CARD_PROFILE=output:hdmi-stereo
+readonly SINK=alsa_output.pci-0000_01_00.1.hdmi-stereo
+# The sink appears shortly after the profile changes; wait up to 5 seconds.
+readonly SINK_POLLS=20
+readonly SINK_POLL_SECONDS=0.25
+
+die () {
+  printf '%s\n' "$@" >&2
+  exit 1
+}
+
+sink_exists () {
+  pactl list short sinks | awk -v sink="$SINK" '$2 == sink { found = 1 } END { exit !found }'
+}
+
+main () {
+  local poll
+
+  pactl set-card-profile "$CARD" "$CARD_PROFILE"
+  for ((poll = 0; poll < SINK_POLLS; poll++)); do
+    sink_exists && break
+    sleep "$SINK_POLL_SECONDS"
+  done
+  sink_exists || die "audio: $SINK did not appear after setting $CARD to $CARD_PROFILE"
+  pactl set-default-sink "$SINK"
+}
+
+main
